@@ -155,7 +155,9 @@ const Headers = () => {
       setIsAlarm(true);
     }
   }, 1500);
-  
+  const onClickLink = (link) =>{
+    navigate(link);
+  }
   return (
     <>
 
@@ -166,7 +168,7 @@ const Headers = () => {
           <HeaderMenuList display={menuDisplay} className="header-menu-list">
             {zBottomMenu.map((item, idx) => (
               <>
-                <HeaderMenu key={idx} onClick={() => { navigate(item.link) }} style={{ color: `${item.allowList.includes(location.pathname) ? theme.color.background1 : ''}` }}>{item.name}</HeaderMenu>
+                <HeaderMenu key={idx} onClick={() => { onClickLink(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</HeaderMenu>
               </>
             ))}
           </HeaderMenuList>
