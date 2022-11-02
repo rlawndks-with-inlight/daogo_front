@@ -140,6 +140,5 @@ export const SelectType = styled.div`
 display:flex;
 width:100%;
 z-index:5;
-background:#fff;
 margin:16px 0;
 `

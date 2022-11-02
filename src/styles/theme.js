@@ -19,6 +19,7 @@ const theme = {
     background1: "#0d7039",
     background2: "#74ad2c",
     background3: "#a0cb3d",
+    backgroundColor:"#a0cb3d11",
     font1: "#2c2c2c",
     font2: "#71706F",
     font3: "#cccccc",
