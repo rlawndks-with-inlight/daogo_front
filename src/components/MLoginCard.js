@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import $ from 'jquery';
 import axios from 'axios';
-import { logoSrc } from '../data/Data';
+import { logoSrc } from '../data/ContentData';
 const WrapperForm = styled.div`
 width:90%;
 background:#fff;

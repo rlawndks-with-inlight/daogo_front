@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { backUrl, needTwoImage } from "../data/Data";
+import { backUrl, needTwoImage } from "../data/ContentData";
 import theme from "../styles/theme";
 
 const Card = styled.div`

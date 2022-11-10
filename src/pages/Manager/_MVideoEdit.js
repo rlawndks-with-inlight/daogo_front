@@ -23,8 +23,8 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
-import { backUrl, cardDefaultColor } from '../../data/Data';
-import { objManagerListContent } from '../../data/Data';
+import { backUrl, cardDefaultColor } from '../../data/Manager/ManagerContentData';
+import { objManagerListContent } from '../../data/Manager/ManagerContentData';
 
 const SearchInput = styled.input`
 margin:12px 0 6px 24px;

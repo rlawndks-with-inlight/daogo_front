@@ -2,7 +2,7 @@ import { IoImageOutline } from 'react-icons/io5'
 import AddButton from "./elements/button/AddButton";
 import theme from '../styles/theme';
 import { Content } from './elements/UserContentTemplete';
-import { backUrl } from '../data/Data';
+import { backUrl } from '../data/ContentData';
 import axios from 'axios';
 import defaultImg from '../assets/images/icon/default-profile.png';
 const CommentComponent = (props) => {

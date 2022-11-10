@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import styled from 'styled-components'
-import { backUrl } from '../../data/Data'
+import { backUrl } from '../../data/Manager/ManagerContentData'
 import { BiEditAlt } from 'react-icons/bi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { CgToggleOn, CgToggleOff } from 'react-icons/cg'
@@ -26,7 +26,7 @@ margin-bottom:6px;
 `
 const ItemTypes = { CARD: 'card' }
 
-const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem }) => {
+const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj }) => {
     const navigate = useNavigate();
     const ref = useRef(null)
     const [status, setStatus] = useState(data?.status);
@@ -114,7 +114,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
     }
     return (
         <>
-            <Tr ref={ref} data-handler-id={handlerId}>
+            <Tr ref={obj.is_move?ref:null} data-handler-id={handlerId}>
                 {column.map((col, index) => (
                     <>
 

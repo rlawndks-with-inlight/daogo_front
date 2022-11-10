@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { backUrl } from "../data/Data";
+import { backUrl } from "../data/ContentData";
 import theme from "../styles/theme";
 import { Card } from "./elements/UserContentTemplete";
 import { AiFillHeart } from 'react-icons/ai'

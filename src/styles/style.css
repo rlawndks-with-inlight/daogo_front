@@ -120,8 +120,12 @@ div.note>p>img {
     margin: 0 1rem 0 auto;
 }
 
-.hamburgur {
-    display: none;
+.hamburgur{
+    width: 2rem; 
+    height: 1.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
 }
 
 .fade-enter {
@@ -144,8 +148,8 @@ div.note>p>img {
 
 
 @media screen and (max-width:1050px) {
-    .hamburgur {
-        display: block;
+    .hamburgur{
+        position: relative;
     }
 }
 

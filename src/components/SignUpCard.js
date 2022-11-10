@@ -1,17 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
 import $ from 'jquery';
 import axios from 'axios';
 import { Title } from './elements/UserContentTemplete';
 import { formatPhoneNumber, regExp } from '../functions/utils';
 import { WrapperForm, CategoryName, Input, Button, FlexBox, SnsLogo, RegularNotice } from './elements/AuthContentTemplete';
-import { regularExpression } from '../data/Data';
+import { regularExpression } from '../data/ContentData';
 
+const is_test = true;
 const SignUpCard = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const params = useParams();
     const [phoneCheckIng, setPhoneCheckIng] = useState(false);
     const [isCheckId, setIsCheckId] = useState(false);
     const [isCheckNickname, setIsCheckNickname] = useState(false);
@@ -26,6 +28,9 @@ const SignUpCard = () => {
     const [state, setState] = useState(undefined)
     const [coinsidePW, setCoinsidePw] = useState(true);
     useEffect(() => {
+        if (params.id) {
+            $('.recommend-id').val(params.id)
+        }
         if (location.state) {
             setState(location.state)
         }
@@ -109,7 +114,7 @@ const SignUpCard = () => {
         }
     }
     const onSignUp = async () => {
-        if (!$('.id').val() && !location.state) {
+        if ((!$('.id').val() || !$('.recommend-id').val()) && !location.state) {
             alert('필수값을 입력해주세요.');
         } else if (!isCheckId && !location.state) {
             alert('아이디 중복확인을 해주세요.');
@@ -117,7 +122,7 @@ const SignUpCard = () => {
             alert('비밀번호 정규식을 지켜주세요.');
         } else if ($('.pw').val() != $('.pw-check').val() && !location.state) {
             alert('비밀번호가 일치하지 않습니다.');
-        } else if (!isCheckPhoneNumber) {
+        } else if (!isCheckPhoneNumber && !is_test) {
             alert('전화번호 인증을 완료해 주세요.');
         } else if (!isCheckNickname) {
             alert('닉네임 중복확인을 해주세요.');
@@ -186,6 +191,11 @@ const SignUpCard = () => {
             setCoinsidePw(true);
         }
     }
+    const onKeyPressRecommendId = (e) => {
+        if (e.key == 'Enter') {
+            onSignUp();
+        }
+    }
     return (
         <>
             <WrapperForm onSubmit={onSignUp} id='login_form'>
@@ -225,6 +235,8 @@ const SignUpCard = () => {
                 <Input style={{ marginTop: '36px' }} placeholder='인증번호를 입력해주세요.' type={'text'} className='phone-check' disabled={isCheckPhoneNumber} onKeyPress={onKeyPressPhoneCheck} />
                 <RegularNotice></RegularNotice>
                 <Button onClick={confirmCoincide} disabled={isCheckPhoneNumber}>{isCheckPhoneNumber ? '확인완료' : '인증번호 확인'}</Button>
+                <CategoryName>추천인 아이디</CategoryName>
+                <Input placeholder='아이디를 입력해주세요.' type={'text'} className='recommend-id' onKeyPress={onKeyPressRecommendId} />
                 <Button style={{ marginTop: '36px' }} onClick={onSignUp}>회원가입</Button>
                 {/* <CategoryName>SNS 간편 회원가입</CategoryName>
                 <FlexBox>

@@ -8,7 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatPhoneNumber, regExp } from "../functions/utils";
 import defaultImg from '../assets/images/icon/default-profile.png';
-import { backUrl } from "../data/Data";
+import { backUrl } from "../data/ContentData";
 
 
 const Type = styled.div`
@@ -56,11 +56,11 @@ const EditMyInfoCard = () => {
     }, [])
     const sendSms = async () => {
         if (typeNum == 2 && !$('.id').val()) {
-            alert("아이디를 입력해 주세요.")
+            alert("아이디를 입력해 주세요.");
             return;
         }
         if (!$('.phone').val()) {
-            alert("핸드폰 번호를 입력해주세요.")
+            alert("핸드폰 번호를 입력해주세요.");
             return;
         }
         setIsCheckPhoneNumber(false);

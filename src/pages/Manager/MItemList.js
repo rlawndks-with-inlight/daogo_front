@@ -16,7 +16,7 @@ import AddButton from '../../components/elements/button/AddButton';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
 import { Row, Select, Input } from '../../components/elements/ManagerTemplete';
-import { objManagerListContent } from '../../data/Data';
+import { objManagerListContent } from '../../data/Manager/ManagerContentData';
 import $ from 'jquery';
 import { AiOutlineSearch } from 'react-icons/ai'
 import { SiMicrosoftexcel } from 'react-icons/si'
@@ -62,26 +62,20 @@ const MItemList = () => {
             $('.page-cut').val(15)
             setPage(1)
             let str = '';
-            if (params.table == 'master') {
-                str = `/api/users?page=1&level=30`
-            } else if (params.table == 'channel') {
-                str = `/api/users?page=1&level=25`
-            } else if (params.table == 'user') {
-                str = `/api/users?page=1&level=0`
-            } else if ((params.table == 'issue' || params.table == 'feature') && params.pk) {
-                str = `/api/items?table=${params.table}&page=1&category_pk=${params.pk}`
-            }else if(params.table == 'comment'){
-                str = `/api/items?table=${params.table}&page=1&order=pk`
-            } else {
-                let auth = JSON.parse(localStorage.getItem('auth'))
-                str = `/api/items?table=${params.table}&page=1`
-                if (auth?.user_level < 40) {
-                    str += `&user_pk=${auth.pk}`
-                }
+            let queries = '';
+            if(objManagerListContent[`${params.table}`].is_move){
+                queries += `&order=sort`
+            }
+            for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
+                queries += `&${objManagerListContent[`${params.table}`].queries[i]}`;
+            }
+            let auth = JSON.parse(localStorage.getItem('auth'))
+            str = `/api/items?table=${objManagerListContent[`${params.table}`].schema}&page=1${queries}`
+            if (auth?.user_level < 40) {
+                str += `&user_pk=${auth.pk}`
             }
             const { data: response } = await axios.get(str)
             setPosts(response.data.data)
-
             setPageList(range(1, response.data.maxPage))
             setLoading(false)
         }
@@ -92,19 +86,14 @@ const MItemList = () => {
         setPage(num)
         let keyword = $('.search').val();
         let str = '';
-        if (params.table == 'master') {
-            str = `/api/users?page=${num}&level=30`
-        } else if (params.table == 'channel') {
-            str = `/api/users?page=${num}&level=25`
-        } else if (params.table == 'user') {
-            str = `/api/users?page=${num}&level=0`
-        } else if ((params.table == 'issue' || params.table == 'feature') && params.pk) {
-            str = `/api/items?table=${params.table}&page=${num}&category_pk=${params.pk}`
-        } else if(params.table == 'comment'){
-            str = `/api/items?table=${params.table}&page=${num}&order=pk`
-        }else {
-            str = `/api/items?table=${params.table}&page=${num}`
+        let queries = '';
+        if(objManagerListContent[`${params.table}`].is_move){
+            queries += `&order=sort`
         }
+        for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
+            queries += `&${objManagerListContent[`${params.table}`].queries[i]}`;
+        }
+        str = `/api/items?table=${objManagerListContent[`${params.table}`].schema}&page=${num}${queries}`
         str += `&page_cut=${parseInt($('.page-cut').val())}&keyword=${keyword}`;
         const { data: response } = await axios.get(str)
         setPosts(response.data.data)
@@ -114,9 +103,9 @@ const MItemList = () => {
     const onchangeSelectPageCut = (e) => {
         changePage(page)
     }
-    const opTheTopItem = useCallback(async (pk,sort, schema) => {
+    const opTheTopItem = useCallback(async (pk, sort, schema) => {
         if (window.confirm('가장 위로 올리겠습니까?')) {
-            const { data: response } = await axios.post('/api/onthetopitem', { table: schema, pk: pk,sort:sort });
+            const { data: response } = await axios.post('/api/onthetopitem', { table: schema, pk: pk, sort: sort });
             if (response.result > 0) {
                 changePage(page)
             } else {
@@ -130,10 +119,10 @@ const MItemList = () => {
         } else {
             const { data: response } = await axios.post('/api/changeitemsequence', {
                 pk: pk,
-                sort:sort,
+                sort: sort,
                 table: schema,
                 change_pk: posts[idx].pk,
-                change_sort:posts[idx].sort
+                change_sort: posts[idx].sort
             });
             if (response.result > 0) {
                 changePage(page)
@@ -162,47 +151,39 @@ const MItemList = () => {
     })
     const exportExcel = async () => {
         let str = '';
-        if (params.table == 'master') {
-            str = `/api/users?level=30`
-        } else if (params.table == 'channel') {
-            str = `/api/users?level=25`
-        } else if (params.table == 'user') {
-            str = `/api/users?level=0`
-        } else if ((params.table == 'issue' || params.table == 'feature') && params.pk) {
-            str = `/api/items?table=${params.table}&category_pk=${params.pk}`
-        } else {
-            str = `/api/items?table=${params.table}`
-        }
+
+        str = `/api/items?table=${params.table}`
+
         const { data: response } = await axios.get(str)
         excelDownload(response.data);
-        
+
     }
     const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const excelFileExtension = '.xlsx';
     const excelFileName = params.table;
 
     const excelDownload = (excelData) => {
-        let ignore_name_list = ['맨위로','수정','삭제'];
-        let ignore_column_list = ['','edit','delete'];
-        
+        let ignore_name_list = ['맨위로', '수정', '삭제'];
+        let ignore_column_list = ['', 'edit', 'delete'];
+
         let name_list = [];
         let column_list = [];
-        for(var i = 0;i<objManagerListContent[`${params.table}`].zColumn.length;i++){
-            if(!ignore_name_list.includes(objManagerListContent[`${params.table}`].zColumn[i].name)){
+        for (var i = 0; i < objManagerListContent[`${params.table}`].zColumn.length; i++) {
+            if (!ignore_name_list.includes(objManagerListContent[`${params.table}`].zColumn[i].name)) {
                 name_list.push(objManagerListContent[`${params.table}`].zColumn[i].name)
                 column_list.push(objManagerListContent[`${params.table}`].zColumn[i].column)
             }
         }
         const ws = XLSX.utils.aoa_to_sheet([
             ['daogo - 다오고']
-            ,[]
-            ,name_list
+            , []
+            , name_list
         ]);
         excelData.map((data) => {
             XLSX.utils.sheet_add_aoa(
                 ws,
                 [
-                    column_list.map(item=>{
+                    column_list.map(item => {
                         return data[`${item}`]
                     })
                 ],
@@ -224,23 +205,23 @@ const MItemList = () => {
             <ManagerWrappers>
                 <SideBar />
                 <ManagerContentWrappers>
-                    <Breadcrumb title={objManagerListContent[`${params.table}`].breadcrumb + '관리'} />
+                    <Breadcrumb title={objManagerListContent[`${params.table}`].breadcrumb} />
                     <div style={{ overflowX: 'auto' }}>
                         {/* 옵션카드 */}
                         <OptionCardWrappers>
                             <Row>
                                 <SearchContainer>
-                                    <Input style={{ margin: '12px 0 12px 24px', border: 'none' }} className='search' placeholder='두 글자 이상 입력해주세요.' onKeyPress={(e)=>{e.key=='Enter'?changePage(1):console.log("")}}/>
-                                    <AiOutlineSearch className='search-button' style={{ padding: '14px', cursor: 'pointer' }} onClick={()=>changePage(1)}/>
+                                    <Input style={{ margin: '12px 0 12px 24px', border: 'none' }} className='search' placeholder='두 글자 이상 입력해주세요.' onKeyPress={(e) => { e.key == 'Enter' ? changePage(1) : console.log("") }} />
+                                    <AiOutlineSearch className='search-button' style={{ padding: '14px', cursor: 'pointer' }} onClick={() => changePage(1)} />
                                 </SearchContainer>
                                 <Select className='page-cut' style={{ margin: '12px 24px 12px 24px' }} onChange={onchangeSelectPageCut}>
                                     <option value={15}>15개</option>
                                     <option value={20}>20개</option>
                                     <option value={30}>30개</option>
                                 </Select>
-                                
-                                        <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>
-                                   
+
+                                <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>
+
                             </Row>
 
                         </OptionCardWrappers>
@@ -272,14 +253,14 @@ const MItemList = () => {
                                 마지막
                             </PageButton>
                         </PageContainer>
-                        {notAddList.includes(params.table)?
-                        <>
-                        <div/>
-                        </>
-                        :
-                        <>
-                        <AddButton onClick={() => navigate(`/manager/edit/${params.table}/0`)}>+ 추가</AddButton>
-                        </>
+                        {objManagerListContent[`${params.table}`].is_edit ?
+                            <>
+                                <AddButton onClick={() => navigate(`/manager/edit/${params.table}/0`)}>+ 추가</AddButton>
+                            </>
+                            :
+                            <>
+                                <div />
+                            </>
                         }
                     </MBottomContent>
                 </ManagerContentWrappers>

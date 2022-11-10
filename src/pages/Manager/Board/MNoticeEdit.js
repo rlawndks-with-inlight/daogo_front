@@ -1,16 +1,17 @@
+//공지사항 추가 및 수정
 import React from 'react'
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
-import ManagerWrappers from '../../components/elements/ManagerWrappers';
-import SideBar from '../../common/manager/SideBar';
-import ManagerContentWrappers from '../../components/elements/ManagerContentWrappers';
+import ManagerWrappers from '../../../components/elements/ManagerWrappers';
+import SideBar from '../../../common/manager/SideBar';
+import ManagerContentWrappers from '../../../components/elements/ManagerContentWrappers';
 import axios from 'axios';
-import Breadcrumb from '../../common/manager/Breadcrumb';
-import ButtonContainer from '../../components/elements/button/ButtonContainer';
-import AddButton from '../../components/elements/button/AddButton';
+import Breadcrumb from '../../../common/manager/Breadcrumb';
+import ButtonContainer from '../../../components/elements/button/ButtonContainer';
+import AddButton from '../../../components/elements/button/AddButton';
 import $ from 'jquery';
-import { addItem, updateItem } from '../../functions/utils';
-import { Card, Title, Input, Row, Col, Select } from '../../components/elements/ManagerTemplete';
+import { addItem, updateItem } from '../../../functions/utils';
+import { Card, Title, Input, Row, Col, Select } from '../../../components/elements/ManagerTemplete';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
@@ -20,10 +21,10 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import Picker from 'emoji-picker-react';
 import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
-import { backUrl } from '../../data/Data';
-import { objManagerListContent } from '../../data/Data';
-import { categoryToNumber } from '../../functions/utils';
-import CommentComponent from '../../components/CommentComponent';
+import { backUrl } from '../../../data/Manager/ManagerContentData';
+import { objManagerListContent } from '../../../data/Manager/ManagerContentData';
+import { categoryToNumber } from '../../../functions/utils';
+import CommentComponent from '../../../components/CommentComponent';
 
 const MNoticeEdit = () => {
     const { pathname } = useLocation();

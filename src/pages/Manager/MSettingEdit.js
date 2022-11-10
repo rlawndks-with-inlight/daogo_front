@@ -14,7 +14,7 @@ import CancelButton from '../../components/elements/button/CancelButton';
 import $ from 'jquery';
 import { addItem, updateItem } from '../../functions/utils';
 import { Card, Title, Input, Select, Row, Col } from '../../components/elements/ManagerTemplete';
-import { backUrl } from '../../data/Data';
+import { backUrl } from '../../data/Manager/ManagerContentData';
 import theme from '../../styles/theme';
 
 const ImageContainer = styled.label`

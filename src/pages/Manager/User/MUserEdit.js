@@ -2,17 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import ManagerWrappers from '../../components/elements/ManagerWrappers';
-import SideBar from '../../common/manager/SideBar';
-import ManagerContentWrappers from '../../components/elements/ManagerContentWrappers';
+import ManagerWrappers from '../../../components/elements/ManagerWrappers';
+import SideBar from '../../../common/manager/SideBar';
+import ManagerContentWrappers from '../../../components/elements/ManagerContentWrappers';
 import axios from 'axios';
-import Breadcrumb from '../../common/manager/Breadcrumb';
-import ButtonContainer from '../../components/elements/button/ButtonContainer';
-import AddButton from '../../components/elements/button/AddButton';
-import CancelButton from '../../components/elements/button/CancelButton';
+import Breadcrumb from '../../../common/manager/Breadcrumb';
+import ButtonContainer from '../../../components/elements/button/ButtonContainer';
+import AddButton from '../../../components/elements/button/AddButton';
+import CancelButton from '../../../components/elements/button/CancelButton';
 import $ from 'jquery';
-import { addItem, updateItem } from '../../functions/utils';
-import { Card, Title, Input, Row, Col, ImageContainer, Select } from '../../components/elements/ManagerTemplete';
+import { addItem, updateItem } from '../../../functions/utils';
+import { Card, Title, Input, Row, Col, ImageContainer, Select } from '../../../components/elements/ManagerTemplete';
 
 
 const MUserEdit = () => {

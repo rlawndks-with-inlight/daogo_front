@@ -8,7 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatPhoneNumber } from "../functions/utils";
 import defaultImg from '../assets/images/icon/default-profile.png';
-import { backUrl } from "../data/Data";
+import { backUrl } from "../data/ContentData";
 
 
 const Type = styled.div`

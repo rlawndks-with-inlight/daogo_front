@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { logoSrc } from "../data/Data";
+import { logoSrc } from "../data/ContentData";
 const Wrappers = styled.footer`
     display:flex;
     flex-direction:column;

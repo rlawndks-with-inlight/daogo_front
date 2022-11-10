@@ -69,12 +69,12 @@ const Home = () => {
         setNoticeList(notice_list);
     }, [])
 
-    const onClickLink = (link) =>{
+    const onClickLink = (link) => {
         localStorage.removeItem('auth')
-        if(link=='/mypage'){
-            if(localStorage.getItem('auth')){
+        if (link == '/mypage') {
+            if (localStorage.getItem('auth')) {
                 navigate('/mypage');
-            }else{
+            } else {
                 navigate('/login');
             }
         }
@@ -97,7 +97,7 @@ const Home = () => {
                                 </Col>
                             </Row>
                         </Content>
-                        <Content style={{ width: '100%', background: theme.color.background3, padding: '16px 0' }}>
+                        <Content style={{ background: `linear-gradient(to right, ${theme.color.background3}05, ${theme.color.background3} , ${theme.color.background3}05)`, padding: '16px 0' }}>
                             <Row>
                                 {headerList.map((item, idx) => (
                                     <>
@@ -133,7 +133,7 @@ const Home = () => {
                                     <Row style={{ margin: '6px 0' }}>
                                         {item.map((itm, idx) => (
                                             <>
-                                                <OneThirdCard onClick={()=>{onClickLink(itm.link)}}>
+                                                <OneThirdCard onClick={() => { onClickLink(itm.link) }}>
                                                     <div style={{ fontSize: theme.size.font5, color: theme.color.font2, margin: 'auto' }}>{itm.title}</div>
                                                 </OneThirdCard>
                                             </>

@@ -21,7 +21,7 @@ margin:12px auto;
 box-shadow:${props=>props.theme.boxShadow};
 border-radius:3px;
 padding: 24px 0;
-min-height:640px;
+min-height:320px;
 `
 export const Title = styled.div`
 margin:12px auto 6px 24px;
@@ -75,4 +75,14 @@ text-align:center;
 @media screen and (max-width:700px) {
     width:90%;
 }
+`
+export const Explain = styled.div`
+font-size: ${props=>props.theme.size.font5};
+margin:0px auto 0px 24px;
+color: ${props=>props.theme.color.font2};
+`
+export const Text = styled.div`
+font-size: ${props=>props.theme.size.font4};
+margin:6px auto 0px 24px;
+color: ${props=>props.theme.color.font2};
 `

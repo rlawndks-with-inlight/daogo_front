@@ -23,9 +23,9 @@ const MetaTag = props => {
             <meta property="og:type" content="website" />
             <meta property="og:title" content={props.title ? props.title : title} />
             <meta property="og:site_name" content={props.title ? props.title : title} />
-            {/* <meta property="og:url" content={"https://weare-first.com"} /> */}
+           <meta property="og:url" content={"https://daogo.co.kr"} /> 
             <meta name="twitter:title" content={props.title ? props.title : title} />
-            {/* <link rel="canonical" href={"https://weare-first.com"} /> */}
+             <link rel="canonical" href={"https://daogo.co.kr"} /> 
         </Helmet>
     );
 };

@@ -26,7 +26,7 @@ const App = () => {
                     </Routes>
                 </>
                 <ScrollToTopButton />
-                {/* <BottomMenu /> */}
+                 <BottomMenu /> 
                 <Footer />
 
             </Router>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useNavigate, useLocation } from "react-router-dom"
 import '../styles/style.css'
 import theme from '../styles/theme'
-import { zBottomMenu } from '../data/Data'
+import { zBottomMenu } from '../data/ContentData'
 import $ from 'jquery'
 const Container = styled.aside`
     background: #fff;
@@ -12,7 +12,7 @@ const Container = styled.aside`
     right: 0;
     bottom: -1px;
     left: 0;
-    z-index: 5;
+    z-index: 12;
     display:none;
     width:100%;
     max-width:1000px;
@@ -33,8 +33,7 @@ margin: 0 auto;
 const OneMenuContainer = styled.div`
     color: inherit;
     text-decoration: none;
-    width: 20%;
-    min-width: 20%;
+    width: 25%;
     height: 100%;
     display: flex;
     flex-direction:column;

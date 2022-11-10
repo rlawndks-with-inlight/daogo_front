@@ -3,14 +3,15 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
 import '../styles/style.css'
-import { logoSrc } from '../data/Data';
+import { logoSrc, zSidebarMenu } from '../data/ContentData';
 import { AiOutlineBell, AiOutlineSearch, AiOutlineSetting } from 'react-icons/ai'
-import { zBottomMenu } from '../data/Data';
+import { zBottomMenu } from '../data/ContentData';
 import theme from '../styles/theme';
 import $ from 'jquery';
 import { GiHamburgerMenu } from 'react-icons/gi'
-import {BsFillShareFill}from 'react-icons/bs'
+import { BsFillShareFill } from 'react-icons/bs'
 import { CSSTransition } from "react-transition-group";
+import { zSidebar } from '../data/Manager/ManagerContentData';
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -35,19 +36,10 @@ justify-content: space-between;
 `
 const HeaderMenuList = styled.div`
 display: flex;
-margin: 2rem 0;
+margin: 2rem 2rem 2rem 0;
 height: 2rem;
 @media screen and (max-width:1050px) { 
   display:none;
-  opacity:0;
-  left:-21vw;
-  flex-direction:column;
-  position:absolute;
-  top:3.2rem;
-  background:#fff;
-  height:100vh;
-  margin:0;
-  box-shadow:5px 8px 12px #00000012;
 }
 `
 
@@ -62,27 +54,51 @@ cursor:pointer;
   color:${(props) => props.theme.color.background1};
 }
 @media screen and (max-width:1600px) { 
-  font-size:${props => props.theme.size.font4};
   margin-right:0.3rem;
 }
 @media screen and (max-width:1350px) { 
-  font-size:${props => props.theme.size.font5};
   margin-right:0.2rem;
 }
 @media screen and (max-width:1050px) { 
   padding:1rem 1.5rem;
 }
 `
+const SideBarList = styled.div`
+display: flex;
+margin: 2rem 2rem 2rem 0;
+height: 2rem;
+width:12rem;
+  opacity:0;
+  right:-18rem;
+  flex-direction:column;
+  position:absolute;
+  top:6.2rem;
+  background:#fff;
+  height:100vh;
+  margin:0;
+  box-shadow:5px 8px 12px #00000012;
+  font-size:${props => props.theme.size.font3};
+  overflow-y:auto;
+  @media screen and (max-width:1050px) { 
+    top:3.2rem;
+  }
+`
+const SideBarMenu = styled.div`
+text-align:left;
+font-size:${props => props.theme.size.font3};
+padding:0.5rem;
+margin-left:0.5rem;
+font-weight:bold;
+cursor:pointer;
+`
 const HeaderLogoContainer = styled.div`
 position: absolute; 
 right: 48%;
 top: 0.5rem;
-@media screen and (max-width:1250px) {
-  right: 40%;
-}
+
 @media screen and (max-width:1050px) {
   position: relative; 
-  right: 0;
+  left: 0;
   top: 0;
 }
 `
@@ -132,51 +148,65 @@ const Headers = () => {
 
     }
   }, [location])
-  const onChangeMenuDisplay = async () =>{
-    if(menuDisplay=='flex'){
-      $('.header-menu-list').animate({left:'-21vw',opacity:'0'},300);
-      if(window.innerWidth<=1050){
+  const onChangeMenuDisplay = async () => {
+    if (menuDisplay == 'flex') {
+      $('.sidebar-menu-list').animate({ right: '-18rem', opacity: '0' }, 300);
+      if (window.innerWidth <= 1050) {
         await new Promise((r) => setTimeout(r, 300));
-        $('.header-menu-list').css("display","none");
-        
+        $('.sidebar-menu-list').css("display", "none");
+
       }
-    }else{
-      $('.header-menu-list').animate({left:'-5vw',opacity:'1'},300);
-      if(window.innerWidth<=1050){
-        $('.header-menu-list').css("display","flex");
+    } else {
+      $('.sidebar-menu-list').animate({ right: '-5vw', opacity: '1' }, 300);
+      if (window.innerWidth <= 1050) {
+        $('.sidebar-menu-list').css("display", "flex");
       }
     }
 
-    setMenuDisplay(menuDisplay=='flex'?'none':'flex');
-    
+    setMenuDisplay(menuDisplay == 'flex' ? 'none' : 'flex');
+
   }
   setInterval(() => {
     if (localStorage.getItem('is_alarm') == '1') {
       setIsAlarm(true);
     }
   }, 1500);
-  const onClickLink = (link) =>{
+  const onClickLink = (link) => {
     navigate(link);
+  }
+  const shareCopy = () => {
+    let copyText = document.getElementById("share-link");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+    navigator.clipboard.writeText(copyText.value);
+    alert("추천 url이 복사되었습니다.");
   }
   return (
     <>
 
       <Header style={{ display: `${display}` }} className='header'>
         <HeaderMenuContainer>{/* pc */}
-          <GiHamburgerMenu className='hamburgur' style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={onChangeMenuDisplay}/>
-          
-          <HeaderMenuList display={menuDisplay} className="header-menu-list">
+
+          <BsFillShareFill style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
+          <input type="text" style={{display:'none'}} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id}`} />
+          <HeaderLogoContainer>
+            <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/') }} />
+          </HeaderLogoContainer>
+          <GiHamburgerMenu className='hamburgur' onClick={onChangeMenuDisplay} />
+          <HeaderMenuList>
             {zBottomMenu.map((item, idx) => (
               <>
                 <HeaderMenu key={idx} onClick={() => { onClickLink(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</HeaderMenu>
               </>
             ))}
           </HeaderMenuList>
-          
-          <HeaderLogoContainer>
-            <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/') }} />
-          </HeaderLogoContainer>
-            <BsFillShareFill  style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} />
+          <SideBarList className="sidebar-menu-list">
+            {zSidebarMenu.map((item, idx) => (
+              <>
+                <SideBarMenu key={idx} onClick={() => { onClickLink(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</SideBarMenu>
+              </>
+            ))}
+          </SideBarList>
         </HeaderMenuContainer>
       </Header>
     </>
