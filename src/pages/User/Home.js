@@ -60,7 +60,18 @@ border-radius:8px;
 display:flex;
 flex-direction:column;
 cursor:pointer;
-height:58px;
+height:48px;
+`
+const BottomMenuText = styled.div`
+font-size: ${theme.size.font6};
+color: ${theme.color.font2};
+font-weight: bold;
+margin: auto auto auto 2rem; 
+width: 70%; 
+text-align: left;
+@media screen and (max-width:700px) { 
+margin: auto auto auto 0.5rem; 
+}
 `
 const Profile = (props) => {
     return (
@@ -79,7 +90,7 @@ const WhiteButton = (props) => {
                     <img src={yellowDot} />
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5,color:theme.color.font3,fontWeight:'bold' }}>{title}</div>
                 </div>
-                <div style={{ fontSize: theme.size.font4, margin: `${width?'0.5rem 1rem 0.5rem auto':'0.5rem 50% 0.5rem auto'}` }}>{content}</div>
+                <div style={{ fontSize: theme.size.font4, margin: `${width?'0.15rem 1rem 0.15rem auto':'0.15rem 50% 0.15rem auto'}` }}>{content}</div>
                 <div style={{ fontSize: theme.size.font6, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>{total_occurrence ?
                     <>
                         <div>Total occurrence</div>
@@ -185,7 +196,7 @@ const Home = () => {
                                 </Row>
                             </Card>
                         </Content>
-                        <Content>
+                        <Content >
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={'4000.00 STAR'} />
                             <WhiteButton title={'보유 STAR'} content={'1000.00 POINT'} total_occurrence={8000.00} />
                             <WhiteButton title={'보유 POINT'} content={'145000.00 R.B.P'} total_occurrence={2000.00} />
@@ -194,8 +205,8 @@ const Home = () => {
                                 <GreenButton width={44} />
                             </Row>
                         </Content>
-
-                        <Content>
+                        <Content style={{borderBottom:`1px solid #dddddd`,width:'86%'}}/>
+                        <Content style={{marginTop:'12px'}}>
                             {bottomMenuList.map((item, index) => (
                                 <>
                                     <Row style={{ marginBottom: '12px' }}>
@@ -205,7 +216,7 @@ const Home = () => {
                                                     <div style={{ width: '30%', textAlign: 'end', margin: 'auto', display: 'flex' }}>
                                                         <img src={itm.icon} style={{ height: '20px', margin: '0 0 0 auto' }} />
                                                     </div>
-                                                    <div style={{ fontSize: theme.size.font6, color: theme.color.font2, fontWeight: 'bold', margin: 'auto auto auto 0.5rem', width: '70%', textAlign: 'left' }}>{itm.title}</div>
+                                                    <BottomMenuText>{itm.title}</BottomMenuText>
                                                 </OneThirdCard>
                                             </>
                                         ))}

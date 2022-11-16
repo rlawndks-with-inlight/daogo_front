@@ -43,7 +43,7 @@ export const Wrappers = (props) => {
 export const TitleContainer = styled.div`
 display:flex;
 align-items:center;
-margin-top:24px;
+margin-top:16px;
 margin-bottom:8px;
 justify-content:space-between;
 `
