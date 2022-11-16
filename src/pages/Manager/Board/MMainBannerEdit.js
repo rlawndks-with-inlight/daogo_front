@@ -6,23 +6,60 @@ import ManagerWrappers from "../../../components/elements/ManagerWrappers";
 import { Card, Title, Input, Row, Col, ImageContainer, Select } from '../../../components/elements/ManagerTemplete';
 import ButtonContainer from "../../../components/elements/button/ButtonContainer";
 import AddButton from "../../../components/elements/button/AddButton";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { AiFillFileImage } from 'react-icons/ai';
+import theme from "../../../styles/theme";
 
-const MMainBannerEdit = () =>{
+const MMainBannerEdit = () => {
+    const params = useParams();
+    const [myNick, setMyNick] = useState("")
+    const [url, setUrl] = useState('')
+    const [content, setContent] = useState(undefined)
+    const [formData] = useState(new FormData())
+
+
+    const addFile = (e) => {
+        if (e.target.files[0]) {
+            setContent(e.target.files[0]);
+            setUrl(URL.createObjectURL(e.target.files[0]))
+        }
+    };
     return (
         <>
-        <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={``} nickname={``} />
-                    <Card>
 
-                    </Card>
+            <Card>
 
-                    <ButtonContainer>
-                        <AddButton>{'저장'}</AddButton>
-                    </ButtonContainer>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+                <Row>
+                    <Col>
+                        <Title>이미지</Title>
+                        <ImageContainer for="file1">
+
+                            {url ?
+                                <>
+                                    <img src={url} alt="#"
+                                        style={{
+                                            width: 'auto', height: '8rem',
+                                            margin: '2rem'
+                                        }} />
+                                </>
+                                :
+                                <>
+                                    <AiFillFileImage style={{ margin: '4rem', fontSize: '4rem', color: `${theme.color.manager.font3}` }} />
+                                </>}
+                        </ImageContainer>
+                        <div>
+                            <input type="file" id="file1" onChange={addFile} style={{ display: 'none' }} />
+                        </div>
+                    </Col>
+                </Row>
+
+            </Card>
+
+            <ButtonContainer>
+                <AddButton>{'저장'}</AddButton>
+            </ButtonContainer>
+
         </>
     )
 }

@@ -30,7 +30,6 @@ export const zSidebar = [
     ]),
     sidebarContentFormat('게시판관리', [
         sidebarObjListFormat('메인배너', '/manager/list/main_banner', 40, ['/manager/list/main_banner']),//list
-        sidebarObjListFormat('이미지갤러리', '/manager/image_gallery', 40, ['/manager/image_gallery']),// ?
         sidebarObjListFormat('공지사항', '/manager/list/notice', 40, ['/manager/list/notice']),//list
     ]),
     sidebarContentFormat('로그관리', [
@@ -140,11 +139,12 @@ export const objManagerListContent = {
         '메인 배너 리스트',
         'main_banner',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('베너이미지', 20, 'img', 'img_src'),
+            columnObjFormat('베너링크', 20, 'text', 'link'),
+            columnObjFormat('타겟설정', 20, 'target', 'target'),
+            columnObjFormat('노출여부', 20, 'status', 'status'),
+            columnObjFormat('수정', 10, 'edit', 'edit'),
+            columnObjFormat('삭제', 10, 'delete', 'delete'),
         ],
         [],
         true,

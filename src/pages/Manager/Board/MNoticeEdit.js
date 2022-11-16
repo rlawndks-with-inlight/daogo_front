@@ -52,23 +52,23 @@ const MNoticeEdit = () => {
         fetchPost();
         fetchComments();
     }, [pathname])
-    useEffect(()=>{
-        $('html').on('click',function(e) { 
-            if($(e.target).parents('.emoji-picker-react').length < 1 && $('.emoji-picker-react').css('display')=='flex'&& $(e.target).attr('class') != 'emoji'){
+    useEffect(() => {
+        $('html').on('click', function (e) {
+            if ($(e.target).parents('.emoji-picker-react').length < 1 && $('.emoji-picker-react').css('display') == 'flex' && $(e.target).attr('class') != 'emoji') {
                 $('.emoji-picker-react').attr('style', 'display: none !important')
             }
         });
         $('button.emoji').on('click', function () {
-            if($('.emoji-picker-react').css('display')=='none'){
+            if ($('.emoji-picker-react').css('display') == 'none') {
                 $('.emoji-picker-react').attr('style', 'display: flex !important')
-            }else{
+            } else {
                 $('.emoji-picker-react').attr('style', 'display: none !important')
             }
         })
         $('.toastui-editor-toolbar-icons').on('click', function () {
             $('.emoji-picker-react').attr('style', 'display: none !important')
         })
-    },[])
+    }, [])
     const [chosenEmoji, setChosenEmoji] = useState(null);
 
     const onEmojiClick = (event, emojiObject) => {
@@ -128,84 +128,80 @@ const MNoticeEdit = () => {
     }
     return (
         <>
-            <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={objManagerListContent[`notice`].breadcrumb+`${params.pk>0?'수정':'추가'}`} nickname={myNick} />
-                    <Card>
+
+            <Card>
+                <Row>
+                    <Col>
+                        <Title>제목</Title>
+                        <Input className='title' placeholder='제목을 입력해 주세요.' />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>내용 정렬</Title>
+                        <Select className='note-align'>
+                            <option value={0}>가운데</option>
+                            <option value={1}>오른쪽</option>
+                            <option value={2}>왼쪽</option>
+                        </Select>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>내용</Title>
+                        <div id="editor">
+                            <Picker onEmojiClick={onEmojiClick} />
+
+                            <Editor
+                                placeholder="내용을 입력해주세요."
+                                previewStyle="vertical"
+                                height="600px"
+                                initialEditType="wysiwyg"
+                                useCommandShortcut={false}
+                                hideModeSwitch={true}
+                                plugins={[colorSyntax, fontSize]}
+                                language="ko-KR"
+                                ref={editorRef}
+                                onChange={onChangeEditor}
+                                hooks={{
+                                    addImageBlobHook: async (blob, callback) => {
+
+                                        noteFormData.append('note', blob);
+                                        const { data: response } = await axios.post('/api/addimage', noteFormData);
+                                        if (response.result > 0) {
+                                            callback(backUrl + response.data.filename)
+                                            noteFormData.delete('note');
+                                        } else {
+                                            noteFormData.delete('note');
+                                            return;
+                                        }
+                                    }
+                                }}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+
+            </Card>
+            <ButtonContainer>
+                <AddButton onClick={editItem}>{'저장'}</AddButton>
+            </ButtonContainer>
+            {params.pk > 0 ?
+                <>
+                    <Card style={{ minHeight: '240px' }}>
                         <Row>
                             <Col>
-                                <Title>제목</Title>
-                                <Input className='title' placeholder='제목을 입력해 주세요.' />
+                                <Title>댓글 관리</Title>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col>
-                                <Title>내용 정렬</Title>
-                                <Select className='note-align'>
-                                    <option value={0}>가운데</option>
-                                    <option value={1}>오른쪽</option>
-                                    <option value={2}>왼쪽</option>
-                                </Select>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Title>내용</Title>
-                                <div id="editor">
-                                    <Picker onEmojiClick={onEmojiClick} />
-
-                                    <Editor
-                                        placeholder="내용을 입력해주세요."
-                                        previewStyle="vertical"
-                                        height="600px"
-                                        initialEditType="wysiwyg"
-                                        useCommandShortcut={false}
-                                        hideModeSwitch={true}
-                                        plugins={[colorSyntax,fontSize]}
-                                        language="ko-KR"
-                                        ref={editorRef}
-                                        onChange={onChangeEditor}
-                                        hooks={{
-                                            addImageBlobHook: async (blob, callback) => {
-
-                                                noteFormData.append('note', blob);
-                                                const { data: response } = await axios.post('/api/addimage', noteFormData);
-                                                if (response.result > 0) {
-                                                    callback(backUrl + response.data.filename)
-                                                    noteFormData.delete('note');
-                                                } else {
-                                                    noteFormData.delete('note');
-                                                    return;
-                                                }
-                                            }
-                                        }}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-
+                        <CommentComponent addComment={addComment} data={comments} fetchComments={fetchComments} />
                     </Card>
-                    <ButtonContainer>
-                        <AddButton onClick={editItem}>{'저장'}</AddButton>
-                    </ButtonContainer>
-                    {params.pk > 0 ?
-                        <>
-                            <Card style={{ minHeight: '240px' }}>
-                                <Row>
-                                    <Col>
-                                        <Title>댓글 관리</Title>
-                                    </Col>
-                                </Row>
-                                <CommentComponent addComment={addComment} data={comments} fetchComments={fetchComments} />
-                            </Card>
-                        </>
-                        :
-                        <></>
-                    }
+                </>
+                :
+                <></>
+            }
 
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+
         </>
     )
 }

@@ -2,11 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import ManagerWrappers from '../../../components/elements/ManagerWrappers';
-import SideBar from '../../../common/manager/SideBar';
-import ManagerContentWrappers from '../../../components/elements/ManagerContentWrappers';
 import axios from 'axios';
-import Breadcrumb from '../../../common/manager/Breadcrumb';
 import ButtonContainer from '../../../components/elements/button/ButtonContainer';
 import AddButton from '../../../components/elements/button/AddButton';
 import CancelButton from '../../../components/elements/button/CancelButton';
@@ -58,10 +54,7 @@ const MUserEdit = () => {
     }
     return (
         <>
-            <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={params.pk == 0 ? '회원 추가' : '회원 수정'} nickname={myNick} />
+           
                     <Card>
                         <Row>
                             <Col>
@@ -100,8 +93,7 @@ const MUserEdit = () => {
                         <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
                         <AddButton onClick={editUser}>{params.pk == 0 ? '+ 추가' : '수정'}</AddButton>
                     </ButtonContainer>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+               
         </>
     )
 }

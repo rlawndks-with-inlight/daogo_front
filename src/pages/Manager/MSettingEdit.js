@@ -90,10 +90,7 @@ const MSettingEdit = () => {
     };
     return (
         <>
-            <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={'메인 이미지'} nickname={myNick} />
+     
                     <Card>
 
                         <Row>
@@ -122,8 +119,7 @@ const MSettingEdit = () => {
                         <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
                         <AddButton onClick={editSetting}>{setting.main_img ? '수정' : '+ 추가'}</AddButton>
                     </ButtonContainer>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+              
         </>
     )
 }

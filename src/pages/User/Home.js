@@ -7,10 +7,23 @@ import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
 import { commarNumber } from '../../functions/utils';
 import defaultProfile from '../../assets/images/icon/default-profile.png'
+import albumsOutline from '../../assets/images/icon/home/albums-outline.svg';
+import box from '../../assets/images/icon/home/box.svg';
+import cart from '../../assets/images/icon/home/cart.svg';
+import downloadOutline from '../../assets/images/icon/home/download-outline.svg';
+import hamburger from '../../assets/images/icon/home/hamburger.svg';
+import kakaoTalk from '../../assets/images/icon/home/kakao-talk.svg';
+import myPage from '../../assets/images/icon/home/my-page.svg';
+import pigBank from '../../assets/images/icon/home/pig-bank.svg';
+import point from '../../assets/images/icon/home/point.svg';
+import share from '../../assets/images/icon/home/share.svg';
+import withdrawRequest from '../../assets/images/icon/home/withdraw-request.svg';
+import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
 
 const Row = styled.div`
 display:flex;
 justify-content: space-between;
+margin: auto 0;
 `
 const Col = styled.div`
 display:flex;
@@ -20,17 +33,18 @@ text-align:center;
 const OneThirdCard = styled.div`
 width:28%;
 background:#fff;
-box-shadow:0px 2px 6px #00000012;
+box-shadow:${props => props.theme.boxShadow};
 padding:2%;
 border-radius:8px;
-height:36px;
+height:24px;
 display:flex;
+align-items:center;
 cursor:pointer;
 `
 const OneSecondCard = styled.div`
 width:44.5%;
 background:#fff;
-box-shadow:0px 1px 3px #00000012;
+box-shadow:${props => props.theme.boxShadow};
 padding:2%;
 border-radius:8px;
 height:48px;
@@ -40,14 +54,75 @@ cursor:pointer;
 `
 const Card = styled.div`
 background:#fff;
-box-shadow:0px 1px 3px #00000012;
+box-shadow:${props => props.theme.boxShadow};
 padding:2%;
 border-radius:8px;
-height:48px;
 display:flex;
 flex-direction:column;
 cursor:pointer;
+height:58px;
 `
+const Profile = (props) => {
+    return (
+        <>
+
+        </>
+    )
+}
+
+const WhiteButton = (props) => {
+    let { title, content, bottom_content, width, total_occurrence } = props;
+    return (
+        <>
+            <Card style={{ marginBottom: '12px', width: `${width ? width : ''}%` }}>
+                <div style={{ display: 'flex' }}>
+                    <img src={yellowDot} />
+                    <div style={{ marginLeft: '10px', fontSize: theme.size.font5,color:theme.color.font3,fontWeight:'bold' }}>{title}</div>
+                </div>
+                <div style={{ fontSize: theme.size.font4, margin: `${width?'0.5rem 1rem 0.5rem auto':'0.5rem 50% 0.5rem auto'}` }}>{content}</div>
+                <div style={{ fontSize: theme.size.font6, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>{total_occurrence ?
+                    <>
+                        <div>Total occurrence</div>
+                        <div style={{ marginLeft: '12px' }}>{total_occurrence.toFixed(2)}</div>
+                    </>
+                    :
+                    <>
+                    </>
+                }</div>
+            </Card>
+        </>
+    )
+}
+const GreenButton = (props) => {
+    let { title, content, bottom_content, width, total_occurrence } = props;
+    return (
+        <>
+            <Card style={{ marginBottom: '12px', width: `${width ? width : ''}%`, background: theme.color.background1 }}>
+                <div>{title}</div>
+                <div>{content}</div>
+                <div>{total_occurrence ?
+                    <>
+                    </>
+                    :
+                    <>
+                    </>
+                }</div>
+            </Card>
+        </>
+    )
+}
+const SmallButton = (props) => {
+    return (
+        <>
+        </>
+    )
+}
+const NoticeContent = (props) => {
+    return (
+        <>
+        </>
+    )
+}
 const Home = () => {
     const navigate = useNavigate();
     const [headerList, setHeaderList] = useState([]);
@@ -55,15 +130,13 @@ const Home = () => {
     const [bottomMenuList, setBottomMenuList] = useState([])
     const [noticeList, setNoticeList] = useState([]);
     const [loading, setLoading] = useState(false);
+    let bottom_menu_list = [[{ title: "출금신청", link: "/", icon: withdrawRequest }, { title: "출금내역", link: "/", icon: albumsOutline }, { title: "이체하기", link: "/", icon: downloadOutline }],
+    [{ title: "ESGW POINT 구매", link: "/", icon: point }, { title: "청약예치금", link: "/", icon: pigBank }, { title: "쇼핑몰", link: "/", icon: cart }],
+    [{ title: "랜덤박스변환", link: "/", icon: box }, { title: "문의하기", link: "/", icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
+
     useEffect(() => {
         let header_list = [{ title: "구매 패키지", content: "60,000" }, { title: "소개 수익 / 할인", content: "9 %" }, { title: "롤업 보너스", content: "2 %" }, { title: "내 파트너", content: "4 / 10" }];
         setHeaderList(header_list);
-        let top_menu_list = [[{ title: "보유 STAR", content: "4000.00 STAR", background: `linear-gradient(to left, ${theme.color.background3} , ${theme.color.background1})`, fontColor: '#fff' }, { title: "총 발생 STAR", content: "8000.00 STAR", background: `linear-gradient(to left, ${theme.color.background3} , ${theme.color.background1})`, fontColor: '#fff' }],
-        [{ title: "보유 POINT", content: "1000.00 POINT" }, { title: "총 발생 POINT", content: "2000.00 POINT" }],
-        [{ title: "보유 RANDOM BOX POINT", content: "145000.00 R.B.P" }, { title: " 총 발생 RANDOM BOX", content: ["4000.00 STAR", "1000.00 POINT"] }],
-        [{ title: "보유 ESGW POINT", content: "500   ESGW" }, { title: "daogo", content: "Outlet mall with Everrang" }]];
-        setTopMenuList(top_menu_list);
-        let bottom_menu_list = [[{ title: "출금 내역", link: "/" }, { title: "이체 하기", link: "/" }, { title: "ESGW POINT 구매", link: "/" }], [{ title: "계좌 등록", link: "/" }, { title: "문의 하기", link: "/" }, { title: "마이 페이지", link: "/mypage" }]];
         setBottomMenuList(bottom_menu_list);
         let notice_list = [{ title: "3분기 정기점검 및 추석 지급건 관련", date: "2022-09-02 15:34:12", views: 77020 }, { title: "2022 1분기 정기 서버점검일 안내", date: "2022-03-14 17:27:09", views: 49004 }, { title: "2022년도 재오픈후 일정", date: "2022-01-10 12:01:01", views: 28492 }];
         setNoticeList(notice_list);
@@ -88,53 +161,51 @@ const Home = () => {
                     </>
                     :
                     <>
-                        <Content style={{ marginBottom: '16px' }}>
+                        <Content style={{ marginBottom: '12px' }}>
                             <Row style={{ justifyContent: 'flex-start' }}>
-                                <img src={defaultProfile} style={{ width: '36px', height: '36px', borderRadius: '50%' }} />
-                                <Col style={{ marginLeft: '8px', textAlign: 'left' }}>
-                                    <div style={{ fontSize: theme.size.font3, fontWeight: 'bold' }}>Hi, 민정환</div>
-                                    <div style={{ fontSize: theme.size.font5, color: theme.color.font2, marginTop: '8px' }}>{`민들레플랫폼 / 회원 / 입금코드 ${commarNumber(13741)}`}</div>
+                                <img src={defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
+                                <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>
+                                    <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold' }}>Hi, 민정환</div>
+                                    <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: '4px' }}>{`민들레플랫폼 / 회원 / 입금코드 ${commarNumber(13741)}`}</div>
                                 </Col>
                             </Row>
                         </Content>
-                        <Content style={{ background: `linear-gradient(to right, ${theme.color.background3}05, ${theme.color.background3} , ${theme.color.background3}05)`, padding: '16px 0' }}>
-                            <Row>
-                                {headerList.map((item, idx) => (
-                                    <>
-                                        <Col style={{ margin: '0 auto' }}>
-                                            <div style={{ fontSize: theme.size.font3, fontWeight: 'bold' }}>{item.content}</div>
-                                            <div style={{ fontSize: theme.size.font5, color: theme.color.font2, marginTop: '8px' }}>{item.title}</div>
-                                        </Col>
-                                    </>
-                                ))}
-                            </Row>
+
+                        <Content >
+                            <Card style={{ marginBottom: '12px', background: theme.color.background1 }}>
+                                <Row>
+                                    {headerList.map((item, idx) => (
+                                        <>
+                                            <Col style={{ margin: '0 auto', borderLeft: `${idx != 0 ? '1px solid #fff' : ''}`, width: '25%' }}>
+                                                <div style={{ fontSize: theme.size.font4, fontWeight: 'bold', color: '#fff' }}>{item.content}</div>
+                                                <div style={{ fontSize: theme.size.font6, marginTop: '8px', color: '#fff' }}>{item.title}</div>
+                                            </Col>
+                                        </>
+                                    ))}
+                                </Row>
+                            </Card>
                         </Content>
                         <Content>
-                            {topMenuList.map((item, index) => (
-                                <>
-                                    <Row style={{ margin: '6px 0' }}>
-                                        {item.map((itm, idx) => (
-                                            <>
-                                                <OneSecondCard style={{ background: `${itm.background ? itm.background : '#fff'}`, color: `${itm.fontColor ? itm.fontColor : theme.color.font1}` }}>
-                                                    <div style={{ fontSize: '10px' }}>{itm.title}</div>
-                                                    <div style={{ fontSize: theme.size.font4, textAlign: 'center', fontWeight: 'bold', margin: 'auto' }}>{typeof itm.content == 'string' ? itm.content : itm.content.map((im => (<>
-                                                        <div>{im}</div>
-                                                    </>)))}</div>
-                                                </OneSecondCard>
-                                            </>
-                                        ))}
-                                    </Row>
-                                </>
-                            ))}
+                            <WhiteButton title={'보유 RANDOM BOX POINT'} content={'4000.00 STAR'} />
+                            <WhiteButton title={'보유 STAR'} content={'1000.00 POINT'} total_occurrence={8000.00} />
+                            <WhiteButton title={'보유 POINT'} content={'145000.00 R.B.P'} total_occurrence={2000.00} />
+                            <Row>
+                                <WhiteButton width={44} title={'보유 ESGW POINT'} content={'500 ESGW'} />
+                                <GreenButton width={44} />
+                            </Row>
                         </Content>
+
                         <Content>
                             {bottomMenuList.map((item, index) => (
                                 <>
-                                    <Row style={{ margin: '6px 0' }}>
+                                    <Row style={{ marginBottom: '12px' }}>
                                         {item.map((itm, idx) => (
                                             <>
                                                 <OneThirdCard onClick={() => { onClickLink(itm.link) }}>
-                                                    <div style={{ fontSize: theme.size.font5, color: theme.color.font2, margin: 'auto' }}>{itm.title}</div>
+                                                    <div style={{ width: '30%', textAlign: 'end', margin: 'auto', display: 'flex' }}>
+                                                        <img src={itm.icon} style={{ height: '20px', margin: '0 0 0 auto' }} />
+                                                    </div>
+                                                    <div style={{ fontSize: theme.size.font6, color: theme.color.font2, fontWeight: 'bold', margin: 'auto auto auto 0.5rem', width: '70%', textAlign: 'left' }}>{itm.title}</div>
                                                 </OneThirdCard>
                                             </>
                                         ))}
@@ -146,12 +217,12 @@ const Home = () => {
                             <Title not_arrow={true} textIcon={'Read more'}>공지사항</Title>
                             {noticeList.map((item, index) => (
                                 <>
-                                    <Card style={{ margin: '6px 0' }}>
+                                    <Card style={{ marginBottom: '12px' }}>
                                         <Row>
-                                            <div style={{ fontWeight: 'bold', fontSize: theme.size.font3, textAlign: 'center', width: '15%' }}>필독</div>
+                                            <div style={{ fontSize: theme.size.font5, color: theme.color.background1, textAlign: 'center', width: '15%', margin: 'auto' }}>필독</div>
                                             <Col style={{ width: '85%', textAlign: 'left' }}>
-                                                <div style={{ color: theme.color.background1, fontWeight: 'bold', fontSize: theme.size.font3 }}>{item.title}</div>
-                                                <div style={{ fontSize: '10px', marginTop: '8px' }}>{`${item.date} / ${commarNumber(item.views ?? 0)} Views`}</div>
+                                                <div style={{ color: theme.color.background1, fontWeight: 'bold', fontSize: theme.size.font5 }}>{item.title}</div>
+                                                <div style={{ fontSize: theme.size.font6, marginTop: '8px' }}>{`${item.date} / ${commarNumber(item.views ?? 0)} Views`}</div>
                                             </Col>
                                         </Row>
                                     </Card>

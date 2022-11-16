@@ -9,10 +9,6 @@ import AddButton from "../../../components/elements/button/AddButton";
 const MProductCategoryEdit = () =>{
     return (
         <>
-        <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={``} nickname={``} />
                     <Card>
 
                     </Card>
@@ -20,8 +16,7 @@ const MProductCategoryEdit = () =>{
                     <ButtonContainer>
                         <AddButton>{'저장'}</AddButton>
                     </ButtonContainer>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+                
         </>
     )
 }

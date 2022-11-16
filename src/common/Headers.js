@@ -9,16 +9,17 @@ import { zBottomMenu } from '../data/ContentData';
 import theme from '../styles/theme';
 import $ from 'jquery';
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { BsFillShareFill } from 'react-icons/bs'
 import { CSSTransition } from "react-transition-group";
 import { zSidebar } from '../data/Manager/ManagerContentData';
+import share from '../assets/images/icon/home/share.svg';
+import hamburger from '../assets/images/icon/home/hamburger.svg';
 const Header = styled.header`
 position:fixed;
 height:6rem;
 width:100%;
 top:0;
 z-index:10;
-background:#fff;
+background:#F6F6F5;
 box-shadow: 5px 10px 10px rgb(0 0 0 / 3%);
 @media screen and (max-width:1050px) { 
   box-shadow:none;
@@ -187,12 +188,12 @@ const Headers = () => {
       <Header style={{ display: `${display}` }} className='header'>
         <HeaderMenuContainer>{/* pc */}
 
-          <BsFillShareFill style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
-          <input type="text" style={{display:'none'}} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id}`} />
+          <img src={share} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
+          <input type="text" style={{display:'none'}} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id??""}`} />
           <HeaderLogoContainer>
             <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/') }} />
           </HeaderLogoContainer>
-          <GiHamburgerMenu className='hamburgur' onClick={onChangeMenuDisplay} />
+          <img src={hamburger} className='hamburgur' onClick={onChangeMenuDisplay} />
           <HeaderMenuList>
             {zBottomMenu.map((item, idx) => (
               <>

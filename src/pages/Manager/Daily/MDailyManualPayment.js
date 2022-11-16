@@ -10,17 +10,12 @@ import AddButton from "../../../components/elements/button/AddButton";
 const MDailyManualPayment = () => {
     return (
         <>
-            <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={`데일리수당 수동지급`} nickname={``} />
-                    <Card>
-                        <Title>
-                        <AddButton style={{width:'132px'}}>데일리수동 발행</AddButton>
-                        </Title>
-                    </Card>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+            <Card>
+                <Title>
+                    <AddButton style={{ width: '132px' }}>데일리수동 발행</AddButton>
+                </Title>
+            </Card>
+
         </>
     )
 }

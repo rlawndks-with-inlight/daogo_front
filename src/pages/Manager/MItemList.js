@@ -202,10 +202,7 @@ const MItemList = () => {
     }
     return (
         <>
-            <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={objManagerListContent[`${params.table}`].breadcrumb} />
+           
                     <div style={{ overflowX: 'auto' }}>
                         {/* 옵션카드 */}
                         <OptionCardWrappers>
@@ -263,8 +260,7 @@ const MItemList = () => {
                             </>
                         }
                     </MBottomContent>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+                
         </>
     )
 }

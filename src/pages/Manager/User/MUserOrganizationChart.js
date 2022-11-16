@@ -10,18 +10,14 @@ import AddButton from "../../../components/elements/button/AddButton";
 const MUserOrganizationChart = () => {
     return (
         <>
-            <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={`회원 조직도`} nickname={``} />
+       
                     <Card>
 
                     </Card>
                     <ButtonContainer>
                         <AddButton>{'저장'}</AddButton>
                     </ButtonContainer>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+                
         </>
     )
 }

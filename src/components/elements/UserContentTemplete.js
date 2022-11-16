@@ -49,7 +49,7 @@ justify-content:space-between;
 `
 export const TitleStyle = styled.div`
 font-size:${props => props.theme.size.font2};
-font-weight:bold;
+font-weight:normal;
 margin-right:16px;
 cursor:pointer;
 `
@@ -64,7 +64,7 @@ export const Title = (props) => {
                 {props.not_arrow ?
                     <>
                         {props.textIcon ?
-                            <div style={{ fontSize: theme.size.font4, color: theme.color.font2 }}>{props.textIcon}</div>
+                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1,fontWeight:'bold' }}>{props.textIcon}</div>
                             :
                             <>
                             </>

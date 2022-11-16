@@ -27,12 +27,10 @@ import MUserOrganizationChart from '../pages/Manager/User/MUserOrganizationChart
 
 import MSetting from '../pages/Manager/MSetting';
 import MSettingEdit from '../pages/Manager/MSettingEdit';
-import MImageGallery from '../pages/Manager/Board/MImageGallery';
 
-const zRoute = [
+const zUserRoute = [
     { link: '/', element: <Home />, title: "홈" },
     { link: '/home', element: <Home />, title: "홈" },
-
     { link: '/login', element: <Login />, title: "로그인" },
     { link: '/mypage', element: <MyPage />, title: "마이페이지" },
     { link: '/editmyinfo', element: <EditMyInfo />, title: "회원수정" },
@@ -41,6 +39,9 @@ const zRoute = [
     { link: '/signup/:id', element: <SignUp />, title: "회원가입" },
     { link: '/resign', element: <Resign />, title: "회원탈퇴" },
 
+
+]
+const zManagerRoute = [
     { link: '/manager', element: <MLogin />, title: "관리자로그인" },
     { link: '/manager/login', element: <MLogin />, title: "관리자로그인" },
 
@@ -52,7 +53,6 @@ const zRoute = [
 
     { link: '/manager/edit/main_banner/:pk', element: <MMainBannerEdit />, title: "메인배너" },
     { link: '/manager/edit/notice/:pk', element: <MNoticeEdit />, title: "공지사항관리" },
-    { link: '/manager/image_gallery', element: <MImageGallery />, title: "이미지 갤러리" },
 
     { link: '/manager/edit/user/:pk', element: <MUserEdit />, title: "회원관리" },
     { link: '/manager/user_organization_chart', element: <MDailyPaymentProbabilityEdit />, title: "회원조직도" },
@@ -62,4 +62,4 @@ const zRoute = [
     { link: '/manager/list/:table/:pk', element: <MItemList />, title: "" },
     { link: '/manager/list/:table', element: <MItemList />, title: "" },
 ]
-export { zRoute }
+export { zUserRoute, zManagerRoute }

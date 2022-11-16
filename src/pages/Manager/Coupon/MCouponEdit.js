@@ -7,22 +7,18 @@ import { Card, Title, Input, Row, Col, ImageContainer, Select } from '../../../c
 import ButtonContainer from "../../../components/elements/button/ButtonContainer";
 import AddButton from "../../../components/elements/button/AddButton";
 
-const MCouponEdit = () =>{
+const MCouponEdit = () => {
     return (
         <>
-        <ManagerWrappers>
-                <SideBar />
-                <ManagerContentWrappers>
-                    <Breadcrumb title={``} nickname={``} />
-                    <Card>
 
-                    </Card>
+            <Card>
 
-                    <ButtonContainer>
-                        <AddButton>{'저장'}</AddButton>
-                    </ButtonContainer>
-                </ManagerContentWrappers>
-            </ManagerWrappers>
+            </Card>
+
+            <ButtonContainer>
+                <AddButton>{'저장'}</AddButton>
+            </ButtonContainer>
+
         </>
     )
 }

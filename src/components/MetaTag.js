@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
-import { zRoute } from '../routes/route';
+import { zUserRoute } from '../routes/route';
 const MetaTag = props => {
     const [title, setTitle] = useState("");
     const { pathname } = useLocation();
     useEffect(() => {
-        for (var i = 0; i < zRoute.length; i++) {
-            if (pathname.includes(zRoute[i].link.replace(":pk", "")) && zRoute[i].link != "/") {
-                setTitle("daogo - 다오고 " + zRoute[i].title)
+        for (var i = 0; i < zUserRoute.length; i++) {
+            if (pathname.includes(zUserRoute[i].link.replace(":pk", "")) && zUserRoute[i].link != "/") {
+                setTitle("daogo - 다오고 " + zUserRoute[i].title)
             }
         }
         if(pathname=="/"){

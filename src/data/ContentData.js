@@ -15,19 +15,26 @@ import thumbWhiteImg from '../assets/images/icon/thumb-white.svg';
 import thumbActiveImg from '../assets/images/icon/thumb-active.svg';
 import logoImg from '../assets/images/icon/logo.png'
 import { EditorState } from "draft-js"
+import {BsPerson} from 'react-icons/bs';
+import {GrEdit} from 'react-icons/gr';
+import {AiOutlineGift, AiOutlineWallet} from 'react-icons/ai';
+import theme from '../styles/theme';
 export const backUrl = "http://localhost:8001";
 export const logoSrc = logoImg;
+export const confirmAsk = "저장 하시겠습니까?";
+export const deleteAsk = "정말 삭제 하시겠습니까?";
+
 //http://weare-first.com:8001
 export const editorState = {
     editorState: EditorState.createEmpty()
 }
 
 export const zBottomMenu = [
-    { name: '선물하기', link: '#', icon: <img src={localStorage.getItem('dark_mode') ? bulbWhiteImg : bulbImg} className='menu-icon' alt="#" />, activeIcon: <img src={bulbActiveImg} className='menu-icon' alt="#" />, allowList: [] },
+    { name: '선물하기', link: '#', icon: <BsPerson src={localStorage.getItem('dark_mode') ? bulbWhiteImg : bulbImg} className='menu-icon' alt="#" />, activeIcon: <BsPerson src={bulbActiveImg} className='menu-icon' alt="#" />, allowList: [] },
     // { name: '핵심비디오', link: '/videolist', icon: <img src={playImg} className='menu-icon' alt="#" />, activeIcon: <img src={playActiveImg} className='menu-icon' alt="#" />, allowList: ['/videolist'] },
-    { name: '내 지갑 변동내역', link: '#', icon: <img src={localStorage.getItem('dark_mode') ? featureWhiteImg : featureImg} className='menu-icon' alt="#" />, activeIcon: <img src={featureActiveImg} className='menu-icon' alt="#" />, allowList: [] },
-    { name: '개인정보 수정', link: '#', icon: <img src={localStorage.getItem('dark_mode') ? albumWhiteImg : albumImg} className='menu-icon' alt="#" />, activeIcon: <img src={albumActiveImg} className='menu-icon' alt="#" />, allowList: [] },
-    { name: '마이페이지', link: '/login', icon: <img src={localStorage.getItem('dark_mode') ? talkWhiteImg : talkImg} className='menu-icon' alt="#" />, activeIcon: <img src={talkActiveImg} className='menu-icon' alt="#" />, allowList: [] }
+    { name: '지갑변동내역', link: '#', icon: <AiOutlineWallet src={localStorage.getItem('dark_mode') ? featureWhiteImg : featureImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineWallet src={featureActiveImg} className='menu-icon' alt="#" />, allowList: [] },
+    { name: '개인정보수정', link: '#', icon: <GrEdit src={localStorage.getItem('dark_mode') ? albumWhiteImg : albumImg} className='menu-icon' alt="#" />, activeIcon: <GrEdit src={albumActiveImg} className='menu-icon' alt="#" />, allowList: [] },
+    { name: '마이페이지', link: '/login', icon: <AiOutlineGift src={localStorage.getItem('dark_mode') ? talkWhiteImg : talkImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineGift src={talkActiveImg} className='menu-icon' alt="#" />, allowList: [] }
 ];
 export const zSidebarMenu = [
     { name: '아울렛 쇼핑', link: '#'},
