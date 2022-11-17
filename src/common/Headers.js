@@ -95,7 +95,7 @@ cursor:pointer;
 `
 const HeaderLogoContainer = styled.div`
 position: absolute; 
-right: 48%;
+right: 43%;
 top: 0.5rem;
 
 @media screen and (max-width:1050px) {

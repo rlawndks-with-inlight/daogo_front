@@ -40,7 +40,7 @@ const LoginCard = () => {
         alert(response.message);
         if (response.result > 0) {
             await localStorage.setItem('auth', JSON.stringify(response.data));
-            navigate('/home');
+            navigate('/lottery');
         }
     }
     const onKeyPressId = (e) => {

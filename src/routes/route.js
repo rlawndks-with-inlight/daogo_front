@@ -1,5 +1,6 @@
 import Home from '../pages/User/Home';
 
+import Lottery from '../pages/User/RandomBox/Lottery';
 
 import Login from '../pages/User/Auth/Login';
 import MyPage from '../pages/User/Auth/MyPage';
@@ -38,7 +39,8 @@ const zUserRoute = [
     { link: '/signup', element: <SignUp />, title: "회원가입" },
     { link: '/signup/:id', element: <SignUp />, title: "회원가입" },
     { link: '/resign', element: <Resign />, title: "회원탈퇴" },
-
+    { link: '/lottery', element: <Lottery />, title: "추첨" },
+    
 
 ]
 const zManagerRoute = [

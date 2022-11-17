@@ -15,9 +15,9 @@ import thumbWhiteImg from '../assets/images/icon/thumb-white.svg';
 import thumbActiveImg from '../assets/images/icon/thumb-active.svg';
 import logoImg from '../assets/images/icon/logo.png'
 import { EditorState } from "draft-js"
-import {BsPerson} from 'react-icons/bs';
-import {GrEdit} from 'react-icons/gr';
-import {AiOutlineGift, AiOutlineWallet} from 'react-icons/ai';
+import { BsPerson } from 'react-icons/bs';
+import { GrEdit } from 'react-icons/gr';
+import { AiOutlineGift, AiOutlineWallet } from 'react-icons/ai';
 import theme from '../styles/theme';
 export const backUrl = "http://localhost:8001";
 export const logoSrc = logoImg;
@@ -34,23 +34,23 @@ export const zBottomMenu = [
     // { name: '핵심비디오', link: '/videolist', icon: <img src={playImg} className='menu-icon' alt="#" />, activeIcon: <img src={playActiveImg} className='menu-icon' alt="#" />, allowList: ['/videolist'] },
     { name: '지갑변동내역', link: '#', icon: <AiOutlineWallet src={localStorage.getItem('dark_mode') ? featureWhiteImg : featureImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineWallet src={featureActiveImg} className='menu-icon' alt="#" />, allowList: [] },
     { name: '개인정보수정', link: '#', icon: <GrEdit src={localStorage.getItem('dark_mode') ? albumWhiteImg : albumImg} className='menu-icon' alt="#" />, activeIcon: <GrEdit src={albumActiveImg} className='menu-icon' alt="#" />, allowList: [] },
-    { name: '마이페이지', link: '/login', icon: <AiOutlineGift src={localStorage.getItem('dark_mode') ? talkWhiteImg : talkImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineGift src={talkActiveImg} className='menu-icon' alt="#" />, allowList: [] }
+    { name: '마이페이지', link: '/mypage', icon: <AiOutlineGift src={localStorage.getItem('dark_mode') ? talkWhiteImg : talkImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineGift src={talkActiveImg} className='menu-icon' alt="#" />, allowList: [] }
 ];
 export const zSidebarMenu = [
-    { name: '아울렛 쇼핑', link: '#'},
-    { name: '쿠폰 이벤트', link: '#'},
-    { name: '이벤트 게임', link: '#'},
-    { name: '랜덤박스 등록', link: '#'},
-    { name: '선물하기', link: '#'},
-    { name: '랜덤박스 변동내역', link: '#'},
-    { name: '스타 변동내역', link: '#'},
-    { name: '포인트 변동내역', link: '#'},
-    { name: '공유코드', link: '#'},
-    { name: '추천계보', link: '#'},
-    { name: 'QR CODE', link: '#'},
-    { name: '개인정보 수정', link: '#'},
-    { name: '출금신청', link: '#'},
-    { name: '공지사항', link: '#'},
+    { name: '아울렛 쇼핑', link: '#' },
+    { name: '쿠폰 이벤트', link: '#' },
+    { name: '이벤트 게임', link: '#' },
+    { name: '랜덤박스 등록', link: '#' },
+    { name: '선물하기', link: '#' },
+    { name: '랜덤박스 변동내역', link: '#' },
+    { name: '스타 변동내역', link: '#' },
+    { name: '포인트 변동내역', link: '#' },
+    { name: '공유코드', link: '#' },
+    { name: '추천계보', link: '#' },
+    { name: 'QR CODE', link: '#' },
+    { name: '개인정보 수정', link: '#' },
+    { name: '출금신청', link: '#' },
+    { name: '공지사항', link: '#' },
 ]
 
 
