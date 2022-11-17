@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { AiFillFileImage } from 'react-icons/ai';
 import theme from "../../../styles/theme";
+import { objManagerListContent } from "../../../data/Manager/ManagerContentData";
 
 const MMainBannerEdit = () => {
     const params = useParams();
@@ -27,7 +28,7 @@ const MMainBannerEdit = () => {
     };
     return (
         <>
-
+            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb} ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
             <Card>
 
                 <Row>
@@ -53,7 +54,21 @@ const MMainBannerEdit = () => {
                         </div>
                     </Col>
                 </Row>
-
+                <Row>
+                    <Col>
+                        <Title>배너링크</Title>
+                        <Input className='link' placeholder='링크를 입력해 주세요.' defaultValue={'#'} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>배너타겟</Title>
+                        <Select className='target'>
+                            <option value={0}>현재창</option>
+                            <option value={1}>새창</option>
+                        </Select>
+                    </Col>
+                </Row>
             </Card>
 
             <ButtonContainer>

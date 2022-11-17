@@ -13,7 +13,7 @@ import { objManagerListContent } from '../../../data/Manager/ManagerContentData'
 import Breadcrumb from '../../../common/manager/Breadcrumb';
 
 
-const MUserEdit = () => {
+const MItemEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
     const [myNick, setMyNick] = useState("")
@@ -107,4 +107,4 @@ const MUserEdit = () => {
         </>
     )
 }
-export default MUserEdit;
+export default MItemEdit;

@@ -4,15 +4,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import $ from 'jquery';
 import axios from 'axios';
-import kakao from '../assets/images/icon/kakao.png'
-import naver from '../assets/images/icon/naver.png'
-import apple from '../assets/images/icon/apple.png'
-import appleDark from '../assets/images/icon/apple-dark.png'
 import { WrapperForm, CategoryName, Input, Button, FlexBox, SnsLogo } from './elements/AuthContentTemplete';
-
+import ReCAPTCHA from "react-google-recaptcha";
 const LoginCard = () => {
     const navigate = useNavigate();
     const [isWebView, setIsWebView] = useState(false);
+    const [isCapcha, setIsCapCha] = useState('')
     useEffect(() => {
         async function isAdmin() {
             const { data: response } = await axios.get('/api/auth', {
@@ -23,39 +20,27 @@ const LoginCard = () => {
                 { withCredentials: true });
             if (response.pk > 0) {
                 localStorage.setItem('auth', JSON.stringify(response))
-                navigate('/mypage');
+                navigate('/home');
             } else {
                 localStorage.removeItem('auth')
             }
         }
         isAdmin();
-        if (window && window.flutter_inappwebview) {
-            console.log(1)
-            setIsWebView(true)
-        }
     }, [])
     const onLogin = async () => {
+        if(!isCapcha){
+            alert('보안인증 체크를 완료해 주세요');
+            return;
+        }
         const { data: response } = await axios.post('/api/loginbyid', {
             id: $('.id').val(),
-            pw: $('.pw').val()
+            pw: $('.pw').val(),
+            type: 'user'
         })
         alert(response.message);
         if (response.result > 0) {
-            let params = {
-                'login_type': 0,
-                'id': $('.id').val()
-            }
-            if (window && window.flutter_inappwebview) {
-                await window.flutter_inappwebview.callHandler('native_app_login', JSON.stringify(params)).then(async function (result) {
-                    //result = "{'code':100, 'message':'success', 'data':{'login_type':1, 'id': 1000000}}"
-                    // JSON.parse(result)
-                    let obj = JSON.parse(result);
-                });
-            }
-
             await localStorage.setItem('auth', JSON.stringify(response.data));
-
-            navigate('/mypage');
+            navigate('/home');
         }
     }
     const onKeyPressId = (e) => {
@@ -68,53 +53,10 @@ const LoginCard = () => {
             onLogin();
         }
     }
-    const onLoginBySns = async (obj) => {
-        let nick = "";
-        if (obj.login_type == 1) {
-            nick = "카카오" + new Date().getTime()
-        } else if (obj.login_type == 2) {
-            nick = "네이버" + new Date().getTime()
-        }
-        let objs = {
-            id: obj.id,
-            name: obj.profile_nickname,
-            nickname: nick,
-            phone: obj.phone_number,
-            user_level: 0,
-            typeNum: obj.login_type,
-            profile_img: obj.profile_image_url
-        }
-        const { data: response } = await axios.post('/api/loginbysns', objs);
-        if (response.result > 0) {
-            if (response.result <= 50) {//신규유저
-                navigate('/signup', { state: { id: objs.id, typeNum: objs.typeNum, profile_img: objs.profile_img, name: objs.name } })
-            } else {
-                await localStorage.setItem('auth', JSON.stringify(response.data));
-                navigate('/mypage');
-            }
-        } else {
-            //alert(response.message);
-        }
+    
+    function onChange(value) {
+        setIsCapCha(value)
     }
-
-    const snsLogin = async (num) => {
-        if (window && window.flutter_inappwebview) {
-            var params = { 'login_type': num };
-            await window.flutter_inappwebview.callHandler('native_app_login', JSON.stringify(params)).then(async function (result) {
-                //result = "{'code':100, 'message':'success', 'data':{'login_type':1, 'id': 1000000}}"
-                // JSON.parse(result)
-                console.log("##################################")
-                console.log(result);
-                console.log("##################################")
-
-                let obj = JSON.parse(result);
-                await onLoginBySns(obj.data);
-            });
-        } else {
-            alert('웹뷰가 아닙니다.');
-        }
-    }
-
     return (
         <>
             <WrapperForm onSubmit={onLogin} id='login_form'>
@@ -131,41 +73,18 @@ const LoginCard = () => {
                         아이디/비밀번호 찾기
                     </div>
                 </FlexBox>
+                <CategoryName style={{ margin: '0 auto 16px auto'}}>
+                <ReCAPTCHA
+                    sitekey='6Lce0xIjAAAAAEq66SbiwjiAt1geLBvUSn9YL1uM'
+                    onChange={onChange}
+                />
+                </CategoryName>
+                
                 <Button onClick={onLogin}>로그인</Button>
-                <CategoryName style={{ marginTop: '36px' }}>SNS 간편 로그인</CategoryName>
-                <FlexBox>
-                    <SnsLogo src={kakao} onClick={() => snsLogin(1)} />
-                    {/* <SnsLogo src={naver} onClick={() => snsLogin(2)} /> */}
-                    {localStorage.getItem('is_ios') ?
-                        <>
-                            {isWebView ?
-                                <>
-                                    {localStorage.getItem('dark_mode') ?
-                                        <>
-                                            <SnsLogo src={apple} onClick={() => snsLogin(3)} />
-                                        </>
-                                        :
-                                        <>
-                                            <SnsLogo src={appleDark} onClick={() => snsLogin(3)} />
-                                        </>
-                                    }
-                                </>
-                                :
-                                <>
-                                </>
-                            }
-                        </>
-                        :
-                        <>
-                        </>
-                    }
 
-
-                </FlexBox>
-                <CategoryName style={{ marginTop: '0', fontSize: '11px' }}>
+                <CategoryName style={{ marginTop: '16px', fontSize: '11px' }}>
                     아직 daogo 회원이 아니라면?<strong style={{ textDecoration: 'underline', cursor: 'pointer', marginLeft: '12px' }} onClick={() => { navigate('/signup') }}>회원가입</strong>
                 </CategoryName>
-                <Button style={{ marginTop: '36px' }} onClick={() => navigate('/appsetting')}>설정</Button>
             </WrapperForm>
         </>
     );

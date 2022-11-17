@@ -1,6 +1,6 @@
 import { logoSrc, backUrl } from "../ContentData";
 import { EditorState } from "draft-js"
-import { columnObjFormat, sidebarContentFormat, sidebarObjFormat, sidebarObjListFormat } from "./ManagerContentFormat";
+import { columnObjFormat, editColumnObjFormat, editContentFormat, sidebarContentFormat, sidebarObjFormat, sidebarObjListFormat } from "./ManagerContentFormat";
 
 export const editorState = {
     editorState: EditorState.createEmpty()
@@ -46,6 +46,7 @@ export const zSidebar = [
         sidebarObjListFormat('월결산리스트', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
     ]),
     sidebarContentFormat('쿠폰이벤트관리', [
+        sidebarObjListFormat('카테고리리스트', '/manager/list/coupon_category', 40, ['/manager/list/coupon_category']),//list
         sidebarObjListFormat('상품리스트', '/manager/list/coupon', 40, ['/manager/list/coupon']),//list
         sidebarObjListFormat('주문리스트', '/manager/list/coupon_order', 40, ['/manager/list/coupon_order']),//list
         sidebarObjListFormat('예치금 변동 LOG', '/manager/list/log_coupon', 40, ['/manager/list/log_coupon']),//list
@@ -221,6 +222,17 @@ export const objManagerListContent = {
         false,
         false
     ),
+    coupon_category: sidebarObjFormat(
+        '쿠폰 카테고리 리스트',
+        'coupon',
+        [
+            columnObjFormat('이름', 50, 'text', 'name'),
+            columnObjFormat('추가일', 50, 'text', 'date'),
+        ],
+        [],
+        true,
+        true
+    ),
     coupon: sidebarObjFormat(
         '쿠폰 상품 리스트',
         'coupon',
@@ -319,6 +331,28 @@ export const objManagerListContent = {
         false,
         false
     ),
+}
+export const objManagerEditContent = {
+    user:editContentFormat(
+        [
+            [
+                editColumnObjFormat("아이디","input","id","id",true,true,"아이디를 입력해주세요.",""),
+                editColumnObjFormat("비밀번호","input","pw","pw",true,false,"****",""),
+                editColumnObjFormat("이름","input","name","name",true,true,"이름을 입력해 주세요.",""),
+
+            ],
+            [
+                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
+                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
+                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
+
+            ],
+            [
+                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
+
+            ],
+        ]
+    )
 }
 export const getManagerListApi = (table, num) => {
     let str = "";

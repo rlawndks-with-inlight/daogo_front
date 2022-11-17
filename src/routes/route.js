@@ -29,9 +29,9 @@ import MSetting from '../pages/Manager/MSetting';
 import MSettingEdit from '../pages/Manager/MSettingEdit';
 
 const zUserRoute = [
-    { link: '/', element: <Home />, title: "홈" },
-    { link: '/home', element: <Home />, title: "홈" },
+    { link: '/', element: <Login />, title: "로그인" },
     { link: '/login', element: <Login />, title: "로그인" },
+    { link: '/home', element: <Home />, title: "홈" },
     { link: '/mypage', element: <MyPage />, title: "마이페이지" },
     { link: '/editmyinfo', element: <EditMyInfo />, title: "회원수정" },
     { link: '/findmyinfo', element: <FindMyInfo />, title: "아이디/비밀번호 찾기" },
@@ -50,7 +50,6 @@ const zManagerRoute = [
 
     { link: '/manager/edit/daily_payment_probability', element: <MDailyPaymentProbabilityEdit />, title: "" },
     { link: '/manager/daily_manual_payment', element: <MDailyManualPayment />, title: "" },
-
     { link: '/manager/edit/main_banner/:pk', element: <MMainBannerEdit />, title: "메인배너" },
     { link: '/manager/edit/notice/:pk', element: <MNoticeEdit />, title: "공지사항관리" },
 

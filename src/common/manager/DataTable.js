@@ -83,7 +83,7 @@ const DataTable = (props) => {
         <>
             <div style={{ marginBottom: '16px', overflowX: 'auto' }}>
                 <Table>
-                    <Tr style={{ fontWeight: 'bold', background: `${theme.color.manager.background2}`, fontSize: '16px' }}>
+                    <Tr style={{ fontWeight: 'bold', background: `${theme.color.background1}18`, fontSize: '16px' }}>
                         {column.map((item, index) => (
                             <>
                                 <Td key={index} style={{ width: `${item.width}%` }}>{item.name}</Td>

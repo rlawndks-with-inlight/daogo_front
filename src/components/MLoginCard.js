@@ -96,9 +96,9 @@ const MLoginCard = () => {
     const onLogin = async () => {
         const { data: response } = await axios.post('/api/loginbyid', {
             id: $('.id').val(),
-            pw: $('.pw').val()
+            pw: $('.pw').val(),
+            type:'manager'
         })
-        
         if (response.result > 0) {
             await localStorage.setItem('auth', JSON.stringify(response.data));
             if (response.data?.user_level >= 40) {
@@ -110,8 +110,9 @@ const MLoginCard = () => {
                 navigate('/manager/list/strategy');
             }else{
                 alert("아이디 또는 비밀번호를 확인해주세요.");
-                navigate("/")
             }
+        }else{
+            alert("아이디 또는 비밀번호를 확인해주세요.");
         }
     }
     const onKeyPressId = (e) => {

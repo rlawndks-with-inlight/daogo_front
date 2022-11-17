@@ -1,7 +1,7 @@
 import { Circles } from 'react-loader-spinner';
 import styled from 'styled-components';
 import theme from '../styles/theme';
-import loadingGif from '../assets/images/icon/logo.svg'
+import loadingGif from '../assets/images/test/loading.gif'
 
 const LoadingContainer = styled.div`
 margin: 15vw auto;

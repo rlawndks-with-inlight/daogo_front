@@ -13,6 +13,7 @@ import { CSSTransition } from "react-transition-group";
 import { zSidebar } from '../data/Manager/ManagerContentData';
 import share from '../assets/images/icon/home/share.svg';
 import hamburger from '../assets/images/icon/home/hamburger.svg';
+import axios from 'axios';
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -124,12 +125,16 @@ const Headers = () => {
 
   useEffect(() => {
 
+    async function isAuth(){
+      const {data:response} = await axios.get('/api/auth');
+      if(response.pk>0){
 
-    if (location.pathname.substring(0, 6) == '/post/' || location.pathname.substring(0, 7) == '/video/' || location.pathname == '/appsetting') {
-      setIsPost(true);
-    } else {
-      setIsPost(false)
-    }
+      }else{
+        navigate('/login');
+      }
+  }
+  isAuth();
+    
     if (location.pathname.includes('/manager')) {
       setDisplay('none');
       $('html').addClass('show-scrollbar');
@@ -191,7 +196,7 @@ const Headers = () => {
           <img src={share} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
           <input type="text" style={{display:'none'}} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id??""}`} />
           <HeaderLogoContainer>
-            <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/') }} />
+            <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/home') }} />
           </HeaderLogoContainer>
           <img src={hamburger} className='hamburgur' onClick={onChangeMenuDisplay} />
           <HeaderMenuList>

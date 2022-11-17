@@ -5,10 +5,13 @@ import ManagerWrappers from "../elements/ManagerWrappers";
 import ManagerContentWrappers from "../elements/ManagerContentWrappers";
 import Breadcrumb from "../../common/manager/Breadcrumb";
 import { BrowserRouter as Router, Route, Redirect, Routes, useParams, useLocation } from "react-router-dom";
+import { objManagerListContent } from "../../data/Manager/ManagerContentData";
+import { useEffect } from "react";
 const ManagerLayout = () => {
     const params = useParams();
     const location = useLocation();
     const nonLayoutList = ['/manager', '/manager/login'];
+    
     return (
         <>
             {nonLayoutList.includes(location.pathname) || !location.pathname.includes('/manager/') ?
@@ -26,7 +29,7 @@ const ManagerLayout = () => {
                     <ManagerWrappers>
                         <SideBar />
                         <ManagerContentWrappers>
-                            <Breadcrumb title={`메인 배너 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
+                            
                             <Routes>
                                 {zManagerRoute.map((route, idx) => (
                                     <>

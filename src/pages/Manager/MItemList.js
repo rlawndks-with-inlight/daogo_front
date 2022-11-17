@@ -202,6 +202,7 @@ const MItemList = () => {
     }
     return (
         <>
+            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb}`} nickname={``} />
            
                     <div style={{ overflowX: 'auto' }}>
                         {/* 옵션카드 */}

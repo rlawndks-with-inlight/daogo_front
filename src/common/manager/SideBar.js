@@ -49,7 +49,7 @@ color:${(props) => props.theme.color.background1};
 const SelectMenuContent = styled.div`
 width:192px;
 padding:8px;
-background:${(props) => props.theme.color.manager.background2};
+background:${(props) => props.theme.color.background1}29;
 margin:0.3rem auto;
 border-radius:3px;
 font-size:15px;
@@ -97,8 +97,6 @@ const SideBar = () => {
     const navigate = useNavigate();
 
     const [auth, setAuth] = useState({})
-    const [issueCategoryDisplay, setIssueCategoryDisplay] = useState(false);
-    const [featureCategoryDisplay, setFeatureCategoryDisplay] = useState(false);
     const [sideBarDisplayList, setSideBarDisplayList] = useState([]);
     const [display, setDisplay] = useState('none');
     useEffect(() => {
@@ -119,13 +117,6 @@ const SideBar = () => {
         fetchPost()
 
     }, [])
-
-    const changeIssueCategoryDisplay = () => {
-        setIssueCategoryDisplay(!issueCategoryDisplay);
-    }
-    const changeFeatureCategoryDisplay = () => {
-        setFeatureCategoryDisplay(!featureCategoryDisplay);
-    }
 
     const onClickMenu = (idx) => {
         let side_bar_display_list = [...sideBarDisplayList];
@@ -158,19 +149,19 @@ const SideBar = () => {
                                 <>
                                     {list.list.map((item, index) => (
                                         <>
-                                        {item.allow_list.includes(location.pathname)?
-                                        <>
-                                        <SelectMenuContent key={index} onClick={() => { onClickSubMenu(item) }}>
-                                                <SubMenuText>{item.name}</SubMenuText>
-                                            </SelectMenuContent>
-                                        </>
-                                        :
-                                        <>
-                                        <MenuContent key={index} onClick={() => { onClickSubMenu(item) }}>
-                                                <SubMenuText>{item.name}</SubMenuText>
-                                        </MenuContent>
-                                        </>
-                                        }
+                                            {item.allow_list.includes(location.pathname) ?
+                                                <>
+                                                    <SelectMenuContent key={index} onClick={() => { onClickSubMenu(item) }}>
+                                                        <SubMenuText>{item.name}</SubMenuText>
+                                                    </SelectMenuContent>
+                                                </>
+                                                :
+                                                <>
+                                                    <MenuContent key={index} onClick={() => { onClickSubMenu(item) }}>
+                                                        <SubMenuText>{item.name}</SubMenuText>
+                                                    </MenuContent>
+                                                </>
+                                            }
                                         </>
                                     ))}
                                 </>

@@ -24,13 +24,36 @@ export const sidebarObjListFormat = (name, link, level, allow_list) => {
         allow_list: allow_list,
     }
 }
-export const sidebarObjFormat = (breadcrumb, schema, zColumn, queries, is_edit, is_move) =>{
+export const sidebarObjFormat = (breadcrumb, schema, zColumn, queries, is_edit, is_move) => {
     return {
-        breadcrumb:breadcrumb,
-        schema:schema,
-        zColumn:zColumn,
-        queries:queries,
-        is_edit:is_edit,
-        is_move:is_move,
+        breadcrumb: breadcrumb,
+        schema: schema,
+        zColumn: zColumn,
+        queries: queries,
+        is_edit: is_edit,
+        is_move: is_move,
+    }
+}
+export const editContentFormat = (columns) =>{
+    return {
+        columns:columns
+    }
+}
+export const editColumnObjFormat = (title, type, name, column, is_essential, explain, input_option, select_option) => {
+    return {
+        title: title,//제목
+        type: type,//타입 -> input, select, editor, img
+        name: name,//클래스네임
+        column: column,//컬럼이름
+        is_essential: is_essential,// 필수인지
+        explain: explain,// 설명여부
+
+        input_option:input_option,
+        select_option: select_option, //type이 option일때
+    }
+}
+export const inputOption = () =>{
+    return {
+        
     }
 }

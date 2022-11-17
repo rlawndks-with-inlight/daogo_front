@@ -3,12 +3,14 @@ import { Title, Wrappers } from "../../../components/elements/UserContentTemplet
 import styled from "styled-components";
 import theme from "../../../styles/theme";
 import FindMyInfoCard from "../../../components/FindMyInfoCard";
-
+import { logoSrc } from "../../../data/ContentData";
 const FindMyInfo = () =>{
     
     return (
         <>
-        <Wrappers>
+        <Wrappers marginTop={'0px'} marginBottom={'32px'}>
+        <img src={logoSrc} style={{width:'150px',margin:'2rem auto 1rem auto'}} />
+
             <FindMyInfoCard/>
         </Wrappers>
         </>

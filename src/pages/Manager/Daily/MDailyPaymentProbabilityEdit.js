@@ -11,7 +11,11 @@ import axios from "axios";
 import { confirmAsk } from "../../../data/ContentData";
 import $ from 'jquery';
 import {returnMoment} from '../../../functions/utils';
+import { useParams } from "react-router-dom";
+import { objManagerListContent } from "../../../data/Manager/ManagerContentData";
 const MDailyPaymentProbabilityEdit = () => {
+    const params = useParams();
+
     const [post, setPost] = useState({});
     useEffect(() => {
         async function fetchPost() {
@@ -67,6 +71,7 @@ const MDailyPaymentProbabilityEdit = () => {
     }
     return (
         <>
+            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb} ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
             
                     <Card>
                         <Row>

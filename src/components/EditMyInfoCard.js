@@ -178,16 +178,15 @@ const EditMyInfoCard = () => {
         <>
             <WrapperForm>
                 <Title>마이페이지 수정</Title>
-                <SelectType className="select-type">
+                {/* <SelectType className="select-type">
                     {zType.map((item, idx) => (
                         <>
                             <Type style={{ borderBottom: `4px solid ${typeNum == idx ? theme.color.background1 : '#fff'}`, color: `${typeNum == idx ? theme.color.background1 : (localStorage.getItem('dark_mode') ? '#fff' : '#ccc')}` }} onClick={() => { onChangeTypeNum(idx) }}>{item.title}</Type>
                         </>
                     ))}
 
-                </SelectType>
-                {typeNum == 0 ?
-                    <>
+                </SelectType> */}
+               
                         <CategoryName>이미지 업로드</CategoryName>
                         <label for="file1" style={{ margin: '0 auto' }}>
                             {url ?
@@ -210,37 +209,20 @@ const EditMyInfoCard = () => {
                         <div>
                             <input type="file" id="file1" onChange={addFile} style={{ display: 'none' }} />
                         </div>
-                    </>
-                    :
-                    <>
-                    </>
-                }
-                {typeNum == 1 ?
-                    <>
+                 
                         <CategoryName>비밀번호</CategoryName>
                         <Input className="pw" type={'password'} placeholder="비밀번호를 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.nickname').focus() : null} />
                         <CategoryName>변경할 닉네임</CategoryName>
                         <Input className="nickname" placeholder="변경할 닉네임을 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? onSave(typeNum) : null} />
-                    </>
-                    :
-                    <>
-                    </>
-                }
-                {typeNum == 2 ?
-                    <>
+                  
+               
                         <CategoryName>현재 비밀번호</CategoryName>
                         <Input className="pw" type={'password'} placeholder="현재 비밀번호를 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.new-pw').focus() : null} />
                         <CategoryName>새 비밀번호</CategoryName>
                         <Input className="new-pw" type={'password'} placeholder="새 비밀번호를 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.new-pw-check').focus() : null} />
                         <CategoryName>새 비밀번호 확인</CategoryName>
                         <Input className="new-pw-check" type={'password'} placeholder="비밀번호를 한번 더 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? onSave(typeNum) : null} />
-                    </>
-                    :
-                    <>
-                    </>
-                }
-                {typeNum == 3 ?
-                    <>
+                
                         <CategoryName>비밀번호</CategoryName>
                         <Input className="pw" type={'password'} placeholder="비밀번호를 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.phone').focus() : null} />
                         <CategoryName>전화번호</CategoryName>
@@ -249,11 +231,7 @@ const EditMyInfoCard = () => {
                         <Button onClick={sendSms}>인증번호 발송</Button>
                         <CategoryName>인증번호</CategoryName>
                         <Input className="phone-check" placeholder="인증번호를 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? onSave(typeNum) : null} />
-                    </>
-                    :
-                    <>
-                    </>
-                }
+                  
                 <Button style={{ marginTop: '36px' }} onClick={() => onSave(typeNum)}>저장</Button>
             </WrapperForm>
         </>

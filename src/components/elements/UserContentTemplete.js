@@ -34,7 +34,7 @@ export const Wrappers = (props) => {
     }, [])
     return (
         <>
-            <WrappersStyle className="wrappers" style={{ minHeight: `${minHeight}px` }}>
+            <WrappersStyle className="wrappers" style={{ minHeight: `${minHeight}px`, marginTop:`${props.marginTop?props.marginTop:''}`, marginBottom:`${props.marginBottom?props.marginBottom:''}` }}>
                 {props.children ?? ""}
             </WrappersStyle>
         </>

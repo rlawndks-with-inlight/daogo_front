@@ -14,6 +14,7 @@ import CancelButton from '../../components/elements/button/CancelButton';
 import $ from 'jquery';
 import { addItem, updateItem } from '../../functions/utils';
 import { Card, Title, Input, Select, Row, Col, ImageContainer } from '../../components/elements/ManagerTemplete';
+import { objManagerListContent } from '../../data/Manager/ManagerContentData';
 
 
 const MSetting = () => {
@@ -72,6 +73,7 @@ const MSetting = () => {
     };
     return (
         <>
+            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb} ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
            
                     <Card>
                         

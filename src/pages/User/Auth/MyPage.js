@@ -73,7 +73,8 @@ const MyPage = () => {
 
     useEffect(() => {
         async function isAdmin() {
-            const { data: response } = await axios('/api/auth')
+            const { data: response } = await axios.get('/api/auth')
+            console.log(response)
             if (response.pk > 0) {
                 await localStorage.setItem('auth', JSON.stringify(response))
                 let obj = response;
@@ -84,18 +85,9 @@ const MyPage = () => {
             }
         }
         isAdmin();
-        if (window && window.flutter_inappwebview) {
-            setIsWebView(true)
-        }
     }, [])
     const onLogout = async () => {
         if (window.confirm('정말 로그아웃 하시겠습니까?')) {
-            if (window && window.flutter_inappwebview) {
-                var params = { 'login_type': JSON.parse(localStorage.getItem('auth'))?.type };
-                window.flutter_inappwebview.callHandler('native_app_logout', JSON.stringify(params)).then(async function (result) {
-                    //result = "{'code':100, 'message':'success', 'data':{'login_type':1, 'id': 1000000}}"
-                });
-            }
             const { data: response } = await axios.post('/api/logout');
             if (response.result > 0) {
                 localStorage.removeItem('auth');
@@ -147,10 +139,10 @@ const MyPage = () => {
                 <LogoutButton onClick={onLogout}>
                     로그아웃
                 </LogoutButton>
-
+{/* 
                 <LogoutButton onClick={() => navigate('/appsetting')}>
                     설정
-                </LogoutButton>
+                </LogoutButton> */}
 
 
             </Wrappers>

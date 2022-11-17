@@ -44,7 +44,8 @@ background:${(props) => props.theme.color.background1};
 color:#fff;
 font-size:16px;
 font-weight:600;
-border-radius:4px;
+border-radius:8px;
+box-shadow:${props=>props.theme.boxShadow};
 cursor:pointer;
 border: 1px solid transparent;
 @media (max-width: 600px) {

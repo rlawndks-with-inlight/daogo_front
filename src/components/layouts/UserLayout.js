@@ -6,26 +6,47 @@ import Headers from "../../common/Headers";
 import ScrollToTopButton from "../ScrollToTopButton";
 import BottomMenu from "../../common/BottomMenu";
 import Footer from "../../common/Footer";
+import { useEffect } from "react";
 
 const UserLayout = () => {
+    const location = useLocation();
+    const nonLayoutList = ['/', '/login', '/findmyinfo', '/signup'];
+
     return (
         <>
-            <Headers />
-            <ScrollToTop />
-            <MetaTag />
-            <>
-                <Routes>
-                    {zUserRoute.map((route, idx) => (
-                        <>
-                            <Route exact key={idx} path={route.link} element={route.element} />
-                        </>
-                    ))}
+            {nonLayoutList.includes(location.pathname) || location.pathname.includes('/signup') ?
+                <>
 
-                </Routes>
-            </>
-            <ScrollToTopButton />
-            {/* <BottomMenu /> */}
-            <Footer />
+                    <Routes>
+                        {zUserRoute.map((route, idx) => (
+                            <>
+                                <Route exact key={idx} path={route.link} element={route.element} />
+                            </>
+                        ))}
+
+                    </Routes>
+                </>
+                :
+                <>
+                    <Headers />
+                    <ScrollToTop />
+                    <MetaTag />
+                    <>
+                        <Routes>
+                            {zUserRoute.map((route, idx) => (
+                                <>
+                                    <Route exact key={idx} path={route.link} element={route.element} />
+                                </>
+                            ))}
+
+                        </Routes>
+                    </>
+                    <ScrollToTopButton />
+                    {/* <BottomMenu /> */}
+                    <Footer />
+                </>
+            }
+
         </>
     )
 }
