@@ -28,10 +28,10 @@ const LoginCard = () => {
         isAdmin();
     }, [])
     const onLogin = async () => {
-        // if(!isCapcha){
-        //     alert('보안인증 체크를 완료해 주세요');
-        //     return;
-        // }
+         if(!isCapcha){
+             alert('보안인증 체크를 완료해 주세요');
+             return;
+         }
         const { data: response } = await axios.post('/api/loginbyid', {
             id: $('.id').val(),
             pw: $('.pw').val(),
