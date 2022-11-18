@@ -10,7 +10,7 @@ export const WrappersStyle = styled.div`
 position:relative;
 display:flex;
 flex-direction:column;
-width:100%;
+width:90%;
 max-width:1000px;
 margin-top:8rem;
 margin-left:auto;
@@ -20,7 +20,6 @@ min-height:58vh;
 @media screen and (max-width:1050px) { 
     margin-top:4rem;
 }
-
 `
 
 export const Wrappers = (props) => {
@@ -85,7 +84,7 @@ export const Title = (props) => {
 }
 export const Content = styled.div`
 margin:0 auto;
-width:90%;
+width:100%;
 font-size:${props => props.theme.size.font3};
 display:flex;
 flex-direction:column;

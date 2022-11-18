@@ -34,26 +34,26 @@ export const sidebarObjFormat = (breadcrumb, schema, zColumn, queries, is_edit, 
         is_move: is_move,
     }
 }
-export const editContentFormat = (columns) =>{
+export const editContentFormat = (columns) => {
     return {
-        columns:columns
+        columns: columns
     }
 }
-export const editColumnObjFormat = (title, type, name, column, is_essential, explain, input_option, select_option) => {
+export const editColumnObjFormat = (title, type, name, column, is_add_essential, is_update_essential, explain, input_option, select_option) => {
     return {
         title: title,//제목
         type: type,//타입 -> input, select, editor, img
         name: name,//클래스네임
         column: column,//컬럼이름
-        is_essential: is_essential,// 필수인지
+        is_add_essential: is_add_essential,//추가에서 필수인지
+        is_update_essential: is_update_essential,//수정에서 필수인지
         explain: explain,// 설명여부
 
-        input_option:input_option,
+        input_option: input_option, //type이 input일때
         select_option: select_option, //type이 option일때
     }
 }
-export const inputOption = () =>{
+export const inputOption = () => {
     return {
-        
     }
 }

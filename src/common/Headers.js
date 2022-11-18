@@ -125,16 +125,16 @@ const Headers = () => {
 
   useEffect(() => {
 
-    async function isAuth(){
-      const {data:response} = await axios.get('/api/auth');
-      if(response.pk>0){
+    async function isAuth() {
+      const { data: response } = await axios.get('/api/auth');
+      if (response.pk > 0) {
 
-      }else{
+      } else {
         navigate('/login');
       }
-  }
-  isAuth();
-    
+    }
+    isAuth();
+
     if (location.pathname.includes('/manager')) {
       setDisplay('none');
       $('html').addClass('show-scrollbar');
@@ -194,7 +194,7 @@ const Headers = () => {
         <HeaderMenuContainer>{/* pc */}
 
           <img src={share} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
-          <input type="text" style={{display:'none'}} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id??""}`} />
+          <input type="text" style={{ display: 'none' }} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id ?? ""}`} />
           <HeaderLogoContainer>
             <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/home') }} />
           </HeaderLogoContainer>

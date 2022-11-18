@@ -187,7 +187,7 @@ const MNoticeEdit = () => {
             <ButtonContainer>
                 <AddButton onClick={editItem}>{'저장'}</AddButton>
             </ButtonContainer>
-            {params.pk > 0 ?
+            {/* {params.pk > 0 ?
                 <>
                     <Card style={{ minHeight: '240px' }}>
                         <Row>
@@ -200,7 +200,7 @@ const MNoticeEdit = () => {
                 </>
                 :
                 <></>
-            }
+            } */}
 
 
         </>

@@ -149,6 +149,15 @@ const MItemList = () => {
             alert('error')
         }
     })
+    const changeStatus = useCallback(async  (num, pk, column) => {
+        const { data: response } = await axios.post('/api/updatestatus', {
+            table: objManagerListContent[params.table].schema,
+            column:column,
+            pk: pk,
+            num: num
+        })
+        changePage(page)
+    });
     const exportExcel = async () => {
         let str = '';
 
@@ -231,7 +240,7 @@ const MItemList = () => {
                         :
                         <>
 
-                            <DataTable data={posts} column={zColumn} schema={params.table} opTheTopItem={opTheTopItem} changeItemSequence={changeItemSequence} deleteItem={deleteItem} />
+                            <DataTable data={posts} column={zColumn} schema={params.table} opTheTopItem={opTheTopItem} changeItemSequence={changeItemSequence} deleteItem={deleteItem} changeStatus={changeStatus}/>
                         </>}
 
                     <MBottomContent>

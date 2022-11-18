@@ -8,7 +8,7 @@ import theme from '../../styles/theme';
 import { commarNumber } from '../../functions/utils';
 import defaultProfile from '../../assets/images/icon/default-profile.png'
 import albumsOutline from '../../assets/images/icon/home/albums-outline.svg';
-import box from '../../assets/images/icon/home/box.png';
+import box from '../../assets/images/icon/home/box.svg';
 import cart from '../../assets/images/icon/home/cart.svg';
 import downloadOutline from '../../assets/images/icon/home/download-outline.svg';
 import hamburger from '../../assets/images/icon/home/hamburger.svg';
@@ -19,7 +19,7 @@ import point from '../../assets/images/icon/home/point.svg';
 import share from '../../assets/images/icon/home/share.svg';
 import withdrawRequest from '../../assets/images/icon/home/withdraw-request.svg';
 import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
-import logoWhite from '../../assets/images/icon/logo-white.png'
+import logoWhite from '../../assets/images/icon/logo-white.svg'
 const Row = styled.div`
 display:flex;
 justify-content: space-between;

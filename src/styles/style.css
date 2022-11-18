@@ -149,12 +149,7 @@ div.note>p>img {
     transition: opacity 400ms;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background: #f06a19;
-  }
+
   
   .App {
     font-family: sans-serif;
