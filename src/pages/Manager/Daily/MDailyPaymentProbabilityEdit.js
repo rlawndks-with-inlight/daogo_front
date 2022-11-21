@@ -71,39 +71,39 @@ const MDailyPaymentProbabilityEdit = () => {
     }
     return (
         <>
-            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb} ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
+            <Breadcrumb title={`데일리지급확률 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
             
                     <Card>
                         <Row>
                             <Col>
-                                <Title style={{ margintop: '32px' }}>마지막 수정일</Title>
+                                <Title>마지막 수정일</Title>
                                 <Text>{post?.date?.substring(0,10)}</Text>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Title style={{ margintop: '32px' }}>지급타입</Title>
+                                <Title>지급타입</Title>
                                 <Input disabled={true} value={'point,cash'} />
                                 <Explain>지급타입 분류 수량만금 입력 ( , 로 구분 / 예시 cash,point)</Explain>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Title style={{ margintop: '32px' }}>지급타입확률</Title>
+                                <Title>지급타입확률</Title>
                                 <Input placeholder="70,30" className='type-percent' defaultValue={post?.type_percent} />
                                 <Explain>지급타입 순서에 맞추어 입력 ( , 로 구분하고 총 합이 100이 되어야 함 / 최대 소숫점 7자리까지 허용 / 예시 70,30 )</Explain>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Title style={{ margintop: '32px' }}>지급금</Title>
+                                <Title>지급금</Title>
                                 <Input className='money' placeholder='0.15,0.2,0.25,0.3' defaultValue={post?.money} />
                                 <Explain>지급 % 분류 수량만금 입력 ( , 로 구분 / 예시 0.1,0.2,0.5,0.75,1,1.5,2,3)</Explain>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Title style={{ margintop: '32px' }}>지급금 확률</Title>
+                                <Title>지급금 확률</Title>
                                 <Input className='money-percent' placeholder="0,95,4,1" defaultValue={post?.money_percent} />
                                 <Explain>지급금 순서에 맞추어 입력 ( , 로 구분하고 총 합이 100이 되어야 함 / 최대 소숫점 7자리까지 허용 / 예시 3,10,10,4,50,20,2,1 )</Explain>
                             </Col>

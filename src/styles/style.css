@@ -149,7 +149,13 @@ div.note>p>img {
     transition: opacity 400ms;
 }
 
-
+.scroll-table::-webkit-scrollbar{
+    display: none;
+}
+.scroll-table::-webkit-scrollbar-thumb {
+    /* Chrome, Safari, Opera*/
+    background: rgba(103, 172, 91, 0.094);
+}
   
   .App {
     font-family: sans-serif;

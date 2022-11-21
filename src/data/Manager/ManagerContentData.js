@@ -1,6 +1,6 @@
 import { logoSrc, backUrl } from "../ContentData";
 import { EditorState } from "draft-js"
-import { columnObjFormat, editColumnObjFormat, editContentFormat, sidebarContentFormat, sidebarObjFormat, sidebarObjListFormat } from "./ManagerContentFormat";
+import { columnObjFormat, editContentFormat, sidebarContentFormat, sidebarObjFormat, sidebarObjListFormat } from "./ManagerContentFormat";
 
 export const editorState = {
     editorState: EditorState.createEmpty()
@@ -38,15 +38,15 @@ export const zSidebar = [
         sidebarObjListFormat('관리활동 LOG', '/manager/list/log_manager_action', 40, ['/manager/list/log_manager_action']),//list
     ]),
     sidebarContentFormat('운영관리', [
-        sidebarObjListFormat('마케팅등록예약', '#', 40, ['#']),
-        sidebarObjListFormat('마케팅예약리스트', '#', 40, ['#']),//list ?
-        sidebarObjListFormat('수당신청리스트', '#', 40, ['#']),//list
+        sidebarObjListFormat('마케팅예약리스트', '/manager/list/marketing', 40, ['/manager/list/marketing']),//list ?
+        sidebarObjListFormat('수당신청리스트', '/manager/list/exchange', 40, ['/manager/list/exchange']),//list
     ]),
     sidebarContentFormat('결산관리', [
         sidebarObjListFormat('월결산리스트', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
     ]),
     sidebarContentFormat('쿠폰이벤트관리', [
         sidebarObjListFormat('카테고리리스트', '/manager/list/coupon_category', 40, ['/manager/list/coupon_category']),//list
+        sidebarObjListFormat('브랜드리스트', '/manager/list/coupon_brand', 40, ['/manager/list/coupon_brand']),//list
         sidebarObjListFormat('상품리스트', '/manager/list/coupon', 40, ['/manager/list/coupon']),//list
         sidebarObjListFormat('주문리스트', '/manager/list/coupon_order', 40, ['/manager/list/coupon_order']),//list
         sidebarObjListFormat('예치금 변동 LOG', '/manager/list/log_coupon', 40, ['/manager/list/log_coupon']),//list
@@ -56,8 +56,10 @@ export const zSidebar = [
         sidebarObjListFormat('행운의전당', '/manager/list/jackpot_winner', 40, ['/manager/list/jackpot_winner']),//list
     ]),
     sidebarContentFormat('아울렛관리', [
-        sidebarObjListFormat('상품리스트', '/manager/list/product', 40, ['/manager/list/product']),//list
-        sidebarObjListFormat('주문리스트', '/manager/list/product_order', 40, ['/manager/list/product_order']),//list
+        sidebarObjListFormat('카테고리리스트', '/manager/list/outlet_category', 40, ['/manager/list/outlet_category']),//list
+        sidebarObjListFormat('브랜드리스트', '/manager/list/outlet_brand', 40, ['/manager/list/outlet_brand']),//list
+        sidebarObjListFormat('상품리스트', '/manager/list/outlet', 40, ['/manager/list/outlet']),//list
+        sidebarObjListFormat('주문리스트', '/manager/list/outlet_order', 40, ['/manager/list/outlet_order']),//list
     ]),
 ];
 
@@ -99,10 +101,10 @@ export const objManagerListContent = {
         [
             columnObjFormat('아이디', 15, 'text', 'user_id'),
             columnObjFormat('회원명', 15, 'text', 'user_name'),
-            columnObjFormat('증감', 10, 'text', 'date'),
-            columnObjFormat('금액', 20, 'text', 'ip'),
-            columnObjFormat('메모', 20, 'text', 'ip'),
-            columnObjFormat('등록일', 20, 'text', 'ip'),
+            columnObjFormat('증감', 10, 'increase', 'date'),
+            columnObjFormat('금액', 20, 'number', 'price'),
+            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('등록일', 20, 'text', 'date'),
         ],
         [],
         false,
@@ -112,11 +114,12 @@ export const objManagerListContent = {
         '포인트 변동 LOG',
         'log_point',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('아이디', 15, 'text', 'user_id'),
+            columnObjFormat('회원명', 15, 'text', 'user_name'),
+            columnObjFormat('증감', 10, 'increase', 'date'),
+            columnObjFormat('금액', 20, 'number', 'price'),
+            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('등록일', 20, 'text', 'date'),
         ],
         [],
         false,
@@ -126,11 +129,12 @@ export const objManagerListContent = {
         '랜덤박스 변동 LOG',
         'log_randombox',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('아이디', 15, 'text', 'user_id'),
+            columnObjFormat('회원명', 15, 'text', 'user_name'),
+            columnObjFormat('증감', 10, 'increase', 'date'),
+            columnObjFormat('금액', 20, 'number', 'price'),
+            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('등록일', 20, 'text', 'date'),
         ],
         [],
         false,
@@ -200,10 +204,62 @@ export const objManagerListContent = {
         '관리활동 LOG',
         'log_manager_action',
         [
-            columnObjFormat('UID', 22, 'text', 'user_id'),
-            columnObjFormat('이름', 22, 'text', 'user_name'),
-            columnObjFormat('최근접속일', 28, 'text', 'date'),
-            columnObjFormat('접속아이피', 28, 'text', 'ip'),
+            columnObjFormat('이름', 10, 'text', 'nickname'),
+            columnObjFormat('팀명', 10, 'text', 'team_name'),
+            columnObjFormat('활동내용', 35, 'text', 'note'),
+            columnObjFormat('메모', 15, 'text', 'memo'),
+            columnObjFormat('활동일', 15, 'text', 'date'),
+            columnObjFormat('접속아이피', 15, 'text', 'ip'),
+        ],
+        [],
+        false,
+        false
+    ),
+    marketing: sidebarObjFormat(
+        '마케팅 예약 리스트',
+        'marketing',
+        [
+            columnObjFormat('예약타이틀', '', 'text', 'nickname'),
+            columnObjFormat('지갑아이디', '', 'text', 'nickname'),
+            columnObjFormat('회원명', '', 'text', 'nickname'),
+            columnObjFormat('신청레벨(레벨명)', '', 'text', 'nickname'),
+            columnObjFormat('신청코드수', '', 'text', 'nickname'),
+            columnObjFormat('등록스타', '', 'text', 'nickname'),
+            columnObjFormat('등록포인트', '', 'text', 'nickname'),
+            columnObjFormat('등록랜덤박스', '', 'text', 'nickname'),
+            columnObjFormat('등록할인율', '', 'text', 'nickname'),
+            columnObjFormat('신청일', '', 'text', 'nickname'),
+            columnObjFormat('진행상황', '', 'text', 'nickname'),
+            columnObjFormat('완료일', '', 'text', 'nickname'),
+            columnObjFormat('담당자명', '', 'text', 'nickname'),
+            columnObjFormat('담당자팀', '', 'text', 'nickname'),
+            columnObjFormat('현재등록수량', '', 'text', 'nickname'),
+            columnObjFormat('코드생성수량', '', 'text', 'nickname'),
+            columnObjFormat('관리', '', 'text', 'nickname'),
+        ],
+        [],
+        true,
+        true
+    ),
+    exchange: sidebarObjFormat(
+        '수당신청 리스트',
+        'exchange',
+        [
+            columnObjFormat('지갑아이디', '', 'text', 'nickname'),
+            columnObjFormat('회원명', '', 'text', 'nickname'),
+            columnObjFormat('신청스타', '', 'text', 'nickname'),
+            columnObjFormat('신청금(원)', '', 'text', 'nickname'),
+            columnObjFormat('환전수수료(원)', '', 'text', 'nickname'),
+            columnObjFormat('실지급금(원)', '', 'text', 'nickname'),
+            columnObjFormat('신청일', '', 'text', 'nickname'),
+            columnObjFormat('입금은행', '', 'text', 'nickname'),
+            columnObjFormat('입금계좌', '', 'text', 'nickname'),
+            columnObjFormat('계좌소유자명', '', 'text', 'nickname'),
+            columnObjFormat('진행상황', '', 'text', 'nickname'),
+            columnObjFormat('담당자명', '', 'text', 'nickname'),
+            columnObjFormat('담당자팀', '', 'text', 'nickname'),
+            columnObjFormat('진행완료일', '', 'text', 'nickname'),
+            columnObjFormat('관리', '', 'text', 'nickname'),
         ],
         [],
         false,
@@ -213,11 +269,15 @@ export const objManagerListContent = {
         '월 결산 리스트',
         'month_settle',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('결산일', 10, 'text', 'date'),
+            columnObjFormat('총수당건수', 14, 'text', 'user_id'),
+            columnObjFormat('총지급수당액', 13, 'text', 'price'),
+            columnObjFormat('정산여부(y/n)', 13, 'text', 'user_id'),
+            columnObjFormat('정산메모', 10, 'text', 'user_id'),
+            columnObjFormat('관리자명', 10, 'text', 'user_id'),
+            columnObjFormat('관리자팀명', 10, 'text', 'user_id'),
+            columnObjFormat('정산완료일', 10, 'text', 'user_id'),
+            columnObjFormat('관리', 10, 'text', 'user_id'),
         ],
         [],
         false,
@@ -234,15 +294,32 @@ export const objManagerListContent = {
         true,
         true
     ),
+    coupon_brand: sidebarObjFormat(
+        '쿠폰 브랜드 리스트',
+        'coupon_brand',
+        [
+            columnObjFormat('카테고리', 30, 'text', 'category_name'),
+            columnObjFormat('이름', 30, 'text', 'name'),
+            columnObjFormat('추가일', 40, 'text', 'date'),
+        ],
+        [],
+        true,
+        true
+    ),
     coupon: sidebarObjFormat(
         '쿠폰 상품 리스트',
         'coupon',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('상품번호', 10, 'text', 'pk'),
+            columnObjFormat('카테고리명', 10, 'text', 'category_name'),
+            columnObjFormat('브랜드명', 10, 'text', 'brand_name'),
+            columnObjFormat('상품명', 20, 'text', 'name'),
+            columnObjFormat('매입가', 8, 'text', 'price'),
+            columnObjFormat('판매가', 8, 'text', 'sell_price'),
+            columnObjFormat('할인률', 8, 'text', 'discount_percent'),
+            columnObjFormat('할인금', 8, 'text', 'discount_price'),
+            columnObjFormat('진열여부', 8, 'text', 'status'),
+            columnObjFormat('관리', 10, 'edit', 'edit'),
         ],
         [],
         true,
@@ -252,11 +329,19 @@ export const objManagerListContent = {
         '쿠폰 주문 리스트',
         'coupon_order',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('문자발송여부(임시)', '', 'text', 'user_id'),
+            columnObjFormat('문자발송일(임시)', '', 'text', 'user_id'),
+            columnObjFormat('UID', '', 'text', 'user_id'),
+            columnObjFormat('회원명', '', 'text', 'user_id'),
+            columnObjFormat('발송휴대폰', '', 'text', 'user_id'),
+            columnObjFormat('상품명', '', 'text', 'user_id'),
+            columnObjFormat('상품코드', '', 'text', 'user_id'),
+            columnObjFormat('판매가', '', 'text', 'user_id'),
+            columnObjFormat('사용한 머니', '', 'text', 'user_id'),
+            columnObjFormat('사용한 POINT', '', 'text', 'user_id'),
+            columnObjFormat('상점거래코드', '', 'text', 'user_id'),
+            columnObjFormat('날짜', '', 'text', 'user_id'),
+            columnObjFormat('관리', '', 'text', 'user_id'),
         ],
         [],
         false,
@@ -266,11 +351,12 @@ export const objManagerListContent = {
         '예치금 변동 LOG',
         'log_coupon',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('아이디', 15, 'text', 'user_id'),
+            columnObjFormat('ETC', 10, 'number', 'etc'),
+            columnObjFormat('증감', 10, 'increase', 'date'),
+            columnObjFormat('금액', 20, 'number', 'price'),
+            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('최근활동일', 20, 'text', 'date'),
         ],
         [],
         false,
@@ -280,11 +366,11 @@ export const objManagerListContent = {
         '추첨 대기자 리스트',
         'jackpot_wait',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('잭팟타이틀', 10, 'text', 'user_id'),
+            columnObjFormat('추첨대기자', 10, 'text', 'user_name'),
+            columnObjFormat('잭팟적립금', 55, 'text', 'date'),
+            columnObjFormat('추첨조건', 10, 'text', 'ip'),
+            columnObjFormat('마지막추첨일', 15, 'text', 'date'),
         ],
         [],
         false,
@@ -294,66 +380,159 @@ export const objManagerListContent = {
         '행운의 전당 리스트',
         'jackpot_winner',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('잭팟타이틀', 25, 'text', 'title'),
+            columnObjFormat('당첨자아이디', 25, 'text', 'user_id'),
+            columnObjFormat('당첨자명', 25, 'text', 'user_name'),
+            columnObjFormat('당첨일', 25, 'text', 'date'),
         ],
         [],
         false,
         false
     ),
-    product: sidebarObjFormat(
+    outlet_category: sidebarObjFormat(
+        '아울렛 카테고리 리스트',
+        'outlet_category',
+        [
+            columnObjFormat('이름', 50, 'text', 'name'),
+            columnObjFormat('추가일', 50, 'text', 'date'),
+        ],
+        [],
+        true,
+        true
+    ),
+    outlet_brand: sidebarObjFormat(
+        '아울렛 브랜드 리스트',
+        'outlet_brand',
+        [
+            columnObjFormat('카테고리', 30, 'text', 'category_name'),
+            columnObjFormat('이름', 30, 'text', 'name'),
+            columnObjFormat('추가일', 40, 'text', 'date'),
+        ],
+        [],
+        true,
+        true
+    ),
+    outlet: sidebarObjFormat(
         '아울렛 상품 리스트',
-        'product',
+        'outlet',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('카테고리명', '', 'text', 'user_id'),
+            columnObjFormat('브랜드명', '', 'text', 'user_id'),
+            columnObjFormat('등록코드', '', 'text', 'user_id'),
+            columnObjFormat('상품명', '', 'text', 'user_id'),
+            columnObjFormat('대표이미지', '', 'text', 'user_id'),
+            columnObjFormat('판매가', '', 'text', 'user_id'),
+            columnObjFormat('포인트', '', 'text', 'user_id'),
+            columnObjFormat('생성코드', '', 'text', 'user_id'),
+            columnObjFormat('판매자아이디', '', 'text', 'user_id'),
+            columnObjFormat('판매자수익 %', '', 'text', 'user_id'),
+            columnObjFormat('상담링크', '', 'text', 'user_id'),
+            columnObjFormat('배송여부', '', 'text', 'user_id'),
+            columnObjFormat('관리', '', 'text', 'user_id'),
         ],
         [],
-        false,
-        false
+        true,
+        true
     ),
-    product_order: sidebarObjFormat(
+    outlet_order: sidebarObjFormat(
         '아울렛 상품 주문 리스트',
-        'product_order',
+        'outlet_order',
         [
-            columnObjFormat('타이틀', 20, 'text', 'user_id'),
-            columnObjFormat('메모', 20, 'text', 'user_name'),
-            columnObjFormat('지급타입', 20, 'text', 'date'),
-            columnObjFormat('지급내용', 20, 'text', 'ip'),
-            columnObjFormat('지급일', 20, 'text', 'ip'),
+            columnObjFormat('주문일시', '', 'text', 'user_id'),
+            columnObjFormat('주문자(이름)', '', 'text', 'user_id'),
+            columnObjFormat('상품명상품코드(주문번호)', '', 'text', 'user_id'),
+            columnObjFormat('생성코드', '', 'text', 'user_id'),
+            columnObjFormat('구매금액스타(포인트)', '', 'text', 'user_id'),
+            columnObjFormat('주문수량배송여부', '', 'text', 'user_id'),
+            columnObjFormat('수신자명(연락처)', '', 'text', 'user_id'),
+            columnObjFormat('배송지주소우편번호주소(참고항목)상세주소', '', 'text', 'user_id'),
+            columnObjFormat('주문자 요청사항', '', 'text', 'user_id'),
+            columnObjFormat('배송정보', '', 'text', 'user_id'),
+            columnObjFormat('판매자(이름)(연락처)', '', 'text', 'user_id'),
+            columnObjFormat('판매자지급금', '', 'text', 'user_id'),
+            columnObjFormat('주문상태', '', 'text', 'user_id'),
+            columnObjFormat('주문상태변경일', '', 'text', 'user_id'),
+            columnObjFormat('관리자(직급명)', '', 'text', 'user_id'),
+            columnObjFormat('관리', '', 'text', 'user_id'),
         ],
         [],
         false,
-        false
+        false,
+        '150%'
     ),
 }
+
+export const editColumnObjFormat = (type, title, option, class_name, column, explain, is_add_essential, is_update_essential) => {
+    return {
+        type: type, //타입 -> input, select, editor, img
+        title: title,//제목
+        option: option,//옵션
+        class_name: class_name,//클래스네임
+        column: column,//컬럼
+        explain: explain,//설명
+        is_add_essential: is_add_essential,//추가에서 필수인지
+        is_update_essential: is_update_essential// 수정에서 필수인지
+    }
+}
+export const inputOption = (placeholder, type) => {
+
+}
+export const selectOption = () => {
+
+}
+export const imgOption = () => {
+
+}
+export const editorOption = () => {
+
+}
 export const objManagerEditContent = {
-    user:editContentFormat(
-        [
+    coupon_category: {
+        breadcrumb: "쿠폰 카테고리",
+        list: [
             [
-                editColumnObjFormat("아이디","input","id","id",true,true,"아이디를 입력해주세요.",""),
-                editColumnObjFormat("비밀번호","input","pw","pw",true,false,"****",""),
-                editColumnObjFormat("이름","input","name","name",true,true,"이름을 입력해 주세요.",""),
-
+                editColumnObjFormat('input', '이름', {}, 'name', 'name', '', true, true)
+            ]
+        ]
+    },
+    coupon_brand: {
+        breadcrumb: "쿠폰 브랜드",
+        list: [
+            [
+                editColumnObjFormat('input', '이름', {}, 'name', 'name', '', true, true)
             ],
             [
-                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
-                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
-                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
-
+                editColumnObjFormat('img', '이미지', {}, 'coupon', 'coupon', '', true, true),
+            ]
+        ]
+    },
+    coupon: {
+        breadcrumb: "쿠폰",
+        list: [
+            [
+                editColumnObjFormat('select', '카테고리', {}, 'category', 'category_pk', '', true, true),
+                editColumnObjFormat('select', '브랜드', {}, 'brand', 'brand_pk', '', true, true)
             ],
             [
-                editColumnObjFormat("아이디","input","id","id",true,"아이디를 입력해주세요.",""),
-
+                editColumnObjFormat('input', '상품명', {}, 'category', 'category_pk', '', true, true),
             ],
         ]
-    )
+    },
+    outlet_category: {
+        breadcrumb: "",
+        list: [
+        ]
+    },
+    outlet_brand: {
+        breadcrumb: "",
+        list: [
+        ]
+    },
+    outlet: {
+        breadcrumb: "",
+        list: [
+        ]
+    },
 }
 export const getManagerListApi = (table, num) => {
     let str = "";

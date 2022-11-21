@@ -1,6 +1,6 @@
 //쿠폰 등록 및 수정
 import Breadcrumb from "../../../common/manager/Breadcrumb"
-import { Card, Title, Input, Row, Col, ImageContainer, Select } from '../../../components/elements/ManagerTemplete';
+import { Card, Title, Input, Row, Col, ImageContainer, Select, Explain } from '../../../components/elements/ManagerTemplete';
 import ButtonContainer from "../../../components/elements/button/ButtonContainer";
 import AddButton from "../../../components/elements/button/AddButton";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,7 +20,7 @@ import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import { backUrl } from '../../../data/Manager/ManagerContentData';
 import $ from 'jquery';
-const MCouponEdit = () => {
+const MOutletEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
 
@@ -74,7 +74,7 @@ const MCouponEdit = () => {
     };
     return (
         <>
-            <Breadcrumb title={`쿠폰상품 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
+            <Breadcrumb title={`아울렛상품 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
 
             <Card>
                 <Row>
@@ -99,19 +99,44 @@ const MCouponEdit = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Title>판매가</Title>
+                        <Title>판매가(스타)</Title>
                         <Input />
+                        <Explain>숫자만 입력</Explain>
                     </Col>
                     <Col>
-                        <Title>매입가</Title>
+                        <Title>구매시 생성코드 수</Title>
                         <Input />
+                        <Explain>숫자만 입력</Explain>
                     </Col>
+                </Row>
+                <Row>
                     <Col>
-                        <Title>할인율</Title>
-                        <div style={{ display: 'flex' }}>
-                            <Input style={{ marginRight: '0' }} />
-                            <div style={{ marginLeft: '6px', alignItems: 'center', display: 'flex' }}>%</div>
+                        <Title>판매자 아이디</Title>
+                        <div style={{display:'flex'}}>
+                            <Input className='' />
+                            <AddButton style={{ margin: '12px auto 6px 12px' }}>{'확인전'}</AddButton>
                         </div>
+                    </Col>
+                    <Col>
+                        <Title>판매자 이름</Title>
+                        <Input disabled={true}/>
+                    </Col>
+                    <Col>
+                    <Title>판매자 연락처</Title>
+                        <Input disabled={true}/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>판매자 수익 %</Title>
+                        <Input />
+                        <Explain>숫자만 입력</Explain>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>구매상담링크</Title>
+                        <Input />
                     </Col>
                 </Row>
                 <Row>
@@ -180,4 +205,4 @@ const MCouponEdit = () => {
         </>
     )
 }
-export default MCouponEdit
+export default MOutletEdit

@@ -21,7 +21,7 @@ min-width:700px;
 `
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
-font-size:14px;
+font-size:11px;
 background:#fff;
 color:${props => props.theme.color.manager.font2};
 `
@@ -31,7 +31,7 @@ padding:14px 0;
 margin-bottom:6px;
 `
 const DataTable = (props) => {
-    const { column, data, schema, opTheTopItem, changeItemSequence, deleteItem, changeStatus } = props;
+    const { column, data, schema, opTheTopItem, changeItemSequence, deleteItem, changeStatus, width } = props;
     const navigate = useNavigate();
     const [zStatus, setZStatus] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -82,9 +82,9 @@ const DataTable = (props) => {
 
     return (
         <>
-            <div style={{ marginBottom: '16px', overflowX: 'auto' }}>
-                <Table>
-                    <Tr style={{ fontWeight: 'bold', background: `${theme.color.background1}18`, fontSize: '16px' }}>
+            <div style={{ marginBottom: '16px', overflowX: 'auto',width:`${width?'95%':'100%'}`,margin:'0 auto' }} className='scroll-table'>
+                <Table style={{ width: `${width ? width : ''}` }}>
+                    <Tr style={{ fontWeight: 'bold', background: `${theme.color.background1}18` }}>
                         {column.map((item, index) => (
                             <>
                                 <Td key={index} style={{ width: `${item.width}%` }}>{item.name}</Td>

@@ -127,7 +127,7 @@ const Headers = () => {
 
     async function isAuth() {
       const { data: response } = await axios.get('/api/auth');
-      if (response.pk > 0) {
+      if (response.pk > 0 || location.pathname.includes('/manager')) {
 
       } else {
         navigate('/login');

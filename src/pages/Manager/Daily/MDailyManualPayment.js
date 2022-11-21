@@ -14,7 +14,7 @@ const MDailyManualPayment = () => {
 
     return (
         <>
-            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb} ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
+            <Breadcrumb title={`데일리수동지급`} nickname={``} />
 
             <Card>
                 <Title>

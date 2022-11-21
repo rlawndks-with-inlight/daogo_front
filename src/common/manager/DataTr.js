@@ -14,7 +14,7 @@ import { numberToCategory } from '../../functions/utils'
 
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
-font-size:14px;
+font-size:11px;
 background:#fff;
 color:${props => props.theme.color.manager.font2};
 

@@ -28,7 +28,7 @@ const MMainBannerEdit = () => {
     };
     return (
         <>
-            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb} ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
+            <Breadcrumb title={`메인배너 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
             <Card>
 
                 <Row>

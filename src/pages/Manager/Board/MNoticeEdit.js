@@ -50,7 +50,6 @@ const MNoticeEdit = () => {
         }
         $('div.toastui-editor-defaultUI-toolbar > div:nth-child(4)').append(`<button type="button" class='emoji' aria-label='이모티콘' style='font-size:18px;'>🙂</button>`);
         fetchPost();
-        fetchComments();
     }, [pathname])
     useEffect(() => {
         $('html').on('click', function (e) {
@@ -75,10 +74,7 @@ const MNoticeEdit = () => {
         setChosenEmoji(emojiObject);
         editorRef.current.getInstance().insertText(emojiObject.emoji)
     };
-    const fetchComments = async () => {
-        const { data: response } = await axios.get(`/api/getcommnets?pk=${params.pk}&category=${categoryToNumber('notice')}`);
-        setComments(response.data);
-    }
+    
     const editItem = async () => {
         if (!$(`.title`).val()) {
             alert('필요값이 비어있습니다.');
@@ -107,28 +103,9 @@ const MNoticeEdit = () => {
     const onChangeEditor = (e) => {
         const data = editorRef.current.getInstance().getHTML();
     }
-    const addComment = async () => {
-        if (!$('.comment').val()) {
-            alert('필수 값을 입력해 주세요.');
-        }
-        const { data: response } = await axios.post('/api/addcomment', {
-            userPk: auth.pk,
-            userNick: auth.nickname,
-            pk: params.pk,
-            note: $('.comment').val(),
-            category: categoryToNumber('notice')
-        })
-
-        if (response.result > 0) {
-            $('.comment').val("")
-            fetchComments();
-        } else {
-            alert(response.message)
-        }
-    }
     return (
         <>
-            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb} ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
+            <Breadcrumb title={`공지사항 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
 
             <Card>
                 <Row>
@@ -151,8 +128,7 @@ const MNoticeEdit = () => {
                     <Col>
                         <Title>내용</Title>
                         <div id="editor">
-                            <Picker onEmojiClick={onEmojiClick} />
-
+                        <Picker onEmojiClick={onEmojiClick} />
                             <Editor
                                 placeholder="내용을 입력해주세요."
                                 previewStyle="vertical"

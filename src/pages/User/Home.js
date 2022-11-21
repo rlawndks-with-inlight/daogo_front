@@ -128,18 +128,16 @@ const NoticeContent = (props) => {
 }
 const Home = () => {
     const navigate = useNavigate();
-    const [headerList, setHeaderList] = useState([]);
-    const [topMenuList, setTopMenuList] = useState([])
     const [bottomMenuList, setBottomMenuList] = useState([])
     const [noticeList, setNoticeList] = useState([]);
     const [loading, setLoading] = useState(false);
+    let header_list = [{ title: "구매 패키지", content: "60,000" }, { title: "소개 수익 / 할인", content: "9 %" }, { title: "롤업 보너스", content: "2 %" }, { title: "내 파트너", content: "4 / 10" }];
+
     let bottom_menu_list = [[{ title: "출금신청", link: "/home", icon: withdrawRequest }, { title: "출금내역", link: "/home", icon: albumsOutline }, { title: "이체하기", link: "/home", icon: downloadOutline }],
     [{ title: "ESGW POINT 구매", link: "/home", icon: point }, { title: "청약예치금", link: "/home", icon: pigBank }, { title: "쇼핑몰", link: "/home", icon: cart }],
     [{ title: "랜덤박스변환", link: "/home", icon: box }, { title: "문의하기", link: "/home", icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
 
     useEffect(() => {
-        let header_list = [{ title: "구매 패키지", content: "60,000" }, { title: "소개 수익 / 할인", content: "9 %" }, { title: "롤업 보너스", content: "2 %" }, { title: "내 파트너", content: "4 / 10" }];
-        setHeaderList(header_list);
         setBottomMenuList(bottom_menu_list);
         let notice_list = [{ title: "3분기 정기점검 및 추석 지급건 관련", date: "2022-09-02 15:34:12", views: 77020 }, { title: "2022 1분기 정기 서버점검일 안내", date: "2022-03-14 17:27:09", views: 49004 }, { title: "2022년도 재오픈후 일정", date: "2022-01-10 12:01:01", views: 28492 }];
         setNoticeList(notice_list);
@@ -170,7 +168,7 @@ const Home = () => {
                         <Content >
                             <Card style={{ marginBottom: '12px', background: theme.color.background1 }}>
                                 <Row>
-                                    {headerList.map((item, idx) => (
+                                    {header_list.map((item, idx) => (
                                         <>
                                             <Col style={{ margin: '0 auto', borderLeft: `${idx != 0 ? '1px solid #fff' : ''}`, width: '25%' }}>
                                                 <div style={{ fontSize: theme.size.font4, fontWeight: 'bold', color: '#fff' }}>{item.content}</div>
