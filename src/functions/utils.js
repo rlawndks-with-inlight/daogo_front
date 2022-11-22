@@ -47,7 +47,7 @@ export const commarNumber = (num) => {
     }
     let result = "";
     let count = 0;
-    for (var i = str.length - 1; i >= 0; i--) {
+    for (var i = str?.length - 1; i >= 0; i--) {
         if (count % 3 == 0 && count != 0) result = "," + result;
         result = str[i] + result;
         count++;

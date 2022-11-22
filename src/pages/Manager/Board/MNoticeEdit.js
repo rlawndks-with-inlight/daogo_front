@@ -25,6 +25,7 @@ import { backUrl } from '../../../data/Manager/ManagerContentData';
 import { objManagerListContent } from '../../../data/Manager/ManagerContentData';
 import { categoryToNumber } from '../../../functions/utils';
 import CommentComponent from '../../../components/CommentComponent';
+import CancelButton from '../../../components/elements/button/CancelButton';
 
 const MNoticeEdit = () => {
     const { pathname } = useLocation();
@@ -161,7 +162,8 @@ const MNoticeEdit = () => {
 
             </Card>
             <ButtonContainer>
-                <AddButton onClick={editItem}>{'저장'}</AddButton>
+                <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
+                <AddButton>{'저장'}</AddButton>
             </ButtonContainer>
             {/* {params.pk > 0 ?
                 <>

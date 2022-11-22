@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
 import { GrLinkTop } from 'react-icons/gr'
-import { numberToCategory } from '../../functions/utils'
+import { commarNumber, numberToCategory } from '../../functions/utils'
 
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
@@ -93,27 +93,34 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
     const opacity = isDragging ? 0 : 1
     drag(drop(ref))
 
-    
-    const getLoginTypeByNumber = (num) =>{
-        if(num==0){
+
+    const getLoginTypeByNumber = (num) => {
+        if (num == 0) {
             return "일반";
-        }else if(num==1){
+        } else if (num == 1) {
             return "카카오";
-        }else if(num==2){
+        } else if (num == 2) {
             return "네이버";
-        }else if(num==3){
+        } else if (num == 3) {
             return "애플";
         }
     }
     return (
         <>
-            <Tr ref={obj.is_move?ref:null} data-handler-id={handlerId}>
+            <Tr ref={obj.is_move ? ref : null} data-handler-id={handlerId}>
                 {column.map((col, index) => (
                     <>
 
                         {col.type == 'text' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`]}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                            {col.type == 'number' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`])}</Td>
                             </>
                             :
                             <>
@@ -125,7 +132,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'login_type' ?
+                        {col.type == 'login_type' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{getLoginTypeByNumber(data[col.column])}</Td>
                             </>
@@ -164,6 +171,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                        {col.type == 'target' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`] == 0 ? '현재창' : '새창'}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
                         {col.type == 'status' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '28px' }}>
@@ -175,7 +189,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'alarm_type' ?
+                        {col.type == 'alarm_type' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>
                                     {data[`${col.column}`] == 1 ?
@@ -186,7 +200,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'category_type' ?
+                        {col.type == 'category_type' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>
                                     {numberToCategory(data[`${col.column}`]).name}
