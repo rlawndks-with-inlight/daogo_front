@@ -176,14 +176,14 @@ div.note>p>img {
   }
   
   .box img {
-    margin: -5px;
+    margin: -120px;
   }
   
   .kuku {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
-    bottom: 0;
+    bottom: -115px;
     z-index: -1;
   }
   
@@ -191,7 +191,7 @@ div.note>p>img {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
-    bottom: 5.8em;
+    bottom: -0.2em;
   }
   
   .jump {
@@ -245,10 +245,10 @@ div.note>p>img {
   
   @keyframes jump {
     from {
-      bottom: 0;
+      bottom: -115px;
     }
     to {
-      bottom: 20em;
+      bottom: 10em;
     }
   }
   
