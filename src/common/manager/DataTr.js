@@ -118,7 +118,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'number' ?
+                        {col.type == 'number' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`])}</Td>
                             </>
@@ -204,6 +204,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             <>
                                 <Td style={{ width: `${col.width}%` }}>
                                     {numberToCategory(data[`${col.column}`]).name}
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                        {col.type == '---' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>
+                                    ---
                                 </Td>
                             </>
                             :

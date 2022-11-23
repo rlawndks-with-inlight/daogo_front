@@ -2,9 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
-import ManagerWrappers from '../../components/elements/ManagerWrappers';
-import SideBar from '../../common/manager/SideBar';
-import ManagerContentWrappers from '../../components/elements/ManagerContentWrappers';
 import axios from 'axios';
 import Breadcrumb from '../../common/manager/Breadcrumb';
 import DataTable from '../../common/manager/DataTable';

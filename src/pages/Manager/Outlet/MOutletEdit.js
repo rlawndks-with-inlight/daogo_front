@@ -20,21 +20,48 @@ import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import { backUrl } from '../../../data/Manager/ManagerContentData';
 import $ from 'jquery';
+
 const MOutletEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
 
     const editorRef = useRef();
     const [url, setUrl] = useState('')
-    const [setting, setSetting] = useState({});
     const [content, setContent] = useState(undefined)
     const [formData] = useState(new FormData())
     const [noteFormData] = useState(new FormData());
     const [brandList, setBrandList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    const [isCheckSellId, setIsCheckSellId] = useState(false);
+    const [sellUserObj, setSellUserObj] = useState({});
     useEffect(() => {
         async function fetchPost() {
-
+            const { data: response } = await axios.post('/api/getalldatabytables', {
+                tables: ['outlet_category', 'outlet_brand']
+            })
+            setBrandList(response?.data?.outlet_brand);
+            setCategoryList(response?.data?.outlet_category);
+            if (params.pk > 0) {
+                const { data: response } = await axios.get(`/api/item?table=outlet&pk=${params.pk}`);
+                setUrl(backUrl + response.data.img_src);
+                $('.category').val(response.data.category_pk)
+                $('.brand').val(response.data.brand_pk)
+                $('.name').val(response.data.name)
+                $('.sell_star').val(response.data.sell_star)
+                $('.generated_code_count').val(response.data.generated_code_count)
+                $('.sell_user_id').val(response.data.sell_user_id)
+                $('.sell_user_name').val(response.data.sell_user_name)
+                $('.sell_user_phone').val(response.data.sell_user_phone)
+                $('.sell_revenue_percent').val(response.data.sell_revenue_percent)
+                $('.link').val(response.data.link)
+                setSellUserObj({
+                    id:response?.data?.sell_user_id,
+                    pk:response?.data?.sell_user_pk,
+                    phone:response?.data?.sell_user_phone,
+                    name:response?.data?.sell_user_name
+                })
+                editorRef.current.getInstance().setHTML(response.data.note.replaceAll('http://localhost:8001', backUrl));
+            }
         }
         $('div.toastui-editor-defaultUI-toolbar > div:nth-child(4)').append(`<button type="button" class='emoji' aria-label='이모티콘' style='font-size:18px;'>🙂</button>`);
         fetchPost();
@@ -57,14 +84,31 @@ const MOutletEdit = () => {
         })
     }, [])
 
-
+    const onCheckId = async () => {
+        const { data: response } = await axios.post('/api/checkexistid', {
+            id: $('.sell_user_id').val(),
+            is_get_user_info: true
+        })
+        console.log(response)
+        if (response.result > 0) {
+            setSellUserObj(response?.data);
+            $('.sell_user_name').val(response?.data?.name);
+            $('.sell_user_phone').val(response?.data?.phone);
+            alert("존재하는 판매자 아이디 입니다.");
+        } else {
+            setSellUserObj({});
+            alert(response.message);
+            $('.sell_user_name').val("");
+            $('.sell_user_phone').val("");
+        }
+    }
     const onChangeEditor = (e) => {
         const data = editorRef.current.getInstance().getHTML();
     }
     const [chosenEmoji, setChosenEmoji] = useState(null);
     const onEmojiClick = (event, emojiObject) => {
         setChosenEmoji(emojiObject);
-        editorRef.current.getInstance().insertText(emojiObject.emoji)
+        editorRef.current.getInstance().insertText(emojiObject.emoji);
     };
     const addFile = (e) => {
         if (e.target.files[0]) {
@@ -72,6 +116,41 @@ const MOutletEdit = () => {
             setUrl(URL.createObjectURL(e.target.files[0]))
         }
     };
+    const editOutlet = async () => {
+        if ((!url && !content) || !$('.name').val() || !$('.sell_star').val() || !$('.generated_code_count').val() || !$('.sell_user_id').val()|| !$('.sell_user_name').val()|| !$('.sell_user_phone').val()|| !$('.sell_revenue_percent').val()) {
+            alert('필수 값이 비어있습니다.');
+        } else {
+            if($('.sell_user_id').val()!=sellUserObj.id){
+                alert("판매자 아이디에 비정상적인 변경이 감지되었습니다.");
+                return;
+            }
+            if (window.confirm('저장 하시겠습니까?')) {
+                if (content) formData.append('outlet', content);
+                formData.append('category_pk', $('.category').val());
+                formData.append('brand_pk', $('.brand').val());
+                formData.append('name', $('.name').val());
+                formData.append('sell_star', $('.sell_star').val());
+                formData.append('generated_code_count', $('.generated_code_count').val());
+                formData.append('sell_user_pk', sellUserObj?.pk);
+                formData.append('sell_user_id', $('.sell_user_id').val());
+                formData.append('sell_user_name', $('.sell_user_name').val());
+                formData.append('sell_user_phone', $('.sell_user_phone').val());
+
+                formData.append('sell_revenue_percent', $('.sell_revenue_percent').val());
+                formData.append('link', $('.link').val());
+                formData.append('note', editorRef.current.getInstance().getHTML());
+                formData.append('table', 'outlet');
+                if (params.pk > 0) formData.append('pk', params.pk);
+                const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, formData);
+                if (response.result > 0) {
+                    alert("성공적으로 저장되었습니다.");
+                    navigate(-1);
+                } else {
+                    alert(response.message);
+                }
+            }
+        }
+    }
     return (
         <>
             <Breadcrumb title={`아울렛상품 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
@@ -80,63 +159,69 @@ const MOutletEdit = () => {
                 <Row>
                     <Col>
                         <Title>카테고리</Title>
-                        <Select>
-
+                        <Select className="category">
+                            {categoryList.map((item, idx) => (
+                                <>
+                                    <option value={item.pk}>{item?.name ?? ""}</option>
+                                </>
+                            ))}
                         </Select>
                     </Col>
                     <Col>
                         <Title>브랜드명</Title>
-                        <Select>
-
+                        <Select className="brand">
+                            {brandList.map((item, idx) => (
+                                <>
+                                    <option value={item.pk}>{item?.name ?? ""}</option>
+                                </>
+                            ))}
                         </Select>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title>상품명</Title>
-                        <Input />
+                        <Input className="name" />
                     </Col>
-                </Row>
-                <Row>
                     <Col>
                         <Title>판매가(스타)</Title>
-                        <Input />
+                        <Input className="sell_star" />
                         <Explain>숫자만 입력</Explain>
                     </Col>
                     <Col>
                         <Title>구매시 생성코드 수</Title>
-                        <Input />
+                        <Input className="generated_code_count" />
                         <Explain>숫자만 입력</Explain>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title>판매자 아이디</Title>
-                        <div style={{display:'flex'}}>
-                            <Input className='' />
-                            <AddButton style={{ margin: '12px auto 6px 12px' }}>{'확인전'}</AddButton>
+                        <div style={{ display: 'flex' }}>
+                            <Input className="sell_user_id" onKeyPress={(e) => { e.key === 'Enter' ? onCheckId() : console.log(null) }} />
+                            <AddButton style={{ margin: '12px auto 6px 12px' }} onClick={onCheckId}>{'확인'}</AddButton>
                         </div>
                     </Col>
                     <Col>
                         <Title>판매자 이름</Title>
-                        <Input disabled={true}/>
+                        <Input disabled={true} className="sell_user_name" />
                     </Col>
                     <Col>
-                    <Title>판매자 연락처</Title>
-                        <Input disabled={true}/>
+                        <Title>판매자 연락처</Title>
+                        <Input disabled={true} className="sell_user_phone" />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title>판매자 수익 %</Title>
-                        <Input />
+                        <Input className="sell_revenue_percent" />
                         <Explain>숫자만 입력</Explain>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title>구매상담링크</Title>
-                        <Input />
+                        <Input className="link" />
                     </Col>
                 </Row>
                 <Row>
@@ -199,7 +284,7 @@ const MOutletEdit = () => {
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
-                <AddButton>{'저장'}</AddButton>
+                <AddButton onClick={editOutlet}>{'저장'}</AddButton>
             </ButtonContainer>
 
         </>

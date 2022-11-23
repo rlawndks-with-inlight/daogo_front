@@ -1,7 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
-import { useEffect, useState } from 'react';
-import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Wrappers } from '../../components/elements/Wrappers';
 import MLoginCard from '../../components/MLoginCard';
 import theme from '../../styles/theme';
