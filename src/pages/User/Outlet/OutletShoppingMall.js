@@ -2,16 +2,16 @@ import { useEffect } from "react";
 import ResignCard from "../../../components/ResignCard";
 import { Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 
-const CouponShoppingMall = () =>{
+const OutletShoppingMall = () =>{
     useEffect(()=>{
         
     },[])
     return (
         <>
         <Wrappers>
-            <Title>쿠폰이벤트</Title>
+            <Title>아울렛쇼핑</Title>
         </Wrappers>
         </>
     )
 }
-export default CouponShoppingMall;
+export default OutletShoppingMall;

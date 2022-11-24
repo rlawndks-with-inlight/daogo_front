@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv } from '../../components/elements/UserContentTemplete';
+import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, OneCard, OneThirdCard } from '../../components/elements/UserContentTemplete';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
 import { commarNumber } from '../../functions/utils';
@@ -33,44 +33,7 @@ display:flex;
 flex-direction:column;
 text-align:center;
 `
-const OneThirdCard = styled.div`
-width:28%;
-background:#fff;
-box-shadow:${props => props.theme.boxShadow};
-padding:2%;
-border-radius:8px;
-height:24px;
-display:flex;
-align-items:center;
-cursor:pointer;
-@media screen and (max-width:350px) { 
-    height:36px;
-}
-`
-const OneSecondCard = styled.div`
-width:44.5%;
-background:#fff;
-box-shadow:${props => props.theme.boxShadow};
-padding:2%;
-border-radius:8px;
-height:48px;
-display:flex;
-flex-direction:column;
-cursor:pointer;
-`
-const Card = styled.div`
-background:#fff;
-box-shadow:${props => props.theme.boxShadow};
-padding:2%;
-border-radius:8px;
-display:flex;
-flex-direction:column;
-cursor:pointer;
-height:48px;
-@media screen and (max-width:350px) { 
-    height:56px;
-}
-`
+
 const BottomMenuText = styled.div`
 font-size: ${theme.size.font6};
 color: ${theme.color.font2};
@@ -102,7 +65,7 @@ const WhiteButton = (props) => {
     let { title, content, unit, bottom_content, width, total_occurrence } = props;
     return (
         <>
-            <Card style={{ marginBottom: '12px', width: `${width ? width : ''}%` }}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }}>
                 <div style={{ display: 'flex' }}>
                     <img src={yellowDot} />
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
@@ -117,7 +80,7 @@ const WhiteButton = (props) => {
                     <>
                     </>
                 }</div>
-            </Card>
+            </OneCard>
         </>
     )
 }
@@ -125,9 +88,9 @@ const GreenButton = (props) => {
     let { title, content, bottom_content, width, img } = props;
     return (
         <>
-            <Card style={{ marginBottom: '12px', width: `${width ? width : ''}%`, background: theme.color.background1 }}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`, background: theme.color.background1 }}>
                 <img src={img} style={{ height: '100%', width: 'auto', margin: 'auto' }} />
-            </Card>
+            </OneCard>
         </>
     )
 }
@@ -152,7 +115,7 @@ const Home = () => {
     let header_list = [{ title: "구매 패키지", content: "60,000" }, { title: "소개 수익 / 할인", content: "9 %" }, { title: "롤업 보너스", content: "2 %" }, { title: "내 파트너", content: "4 / 10" }];
 
     let bottom_menu_list = [[{ title: "출금신청", link: "/home", icon: withdrawRequest }, { title: "출금내역", link: "/home", icon: albumsOutline }, { title: "이체하기", link: "/home", icon: downloadOutline }],
-    [{ title: "ESGW POINT 구매", link: "/home", icon: point }, { title: "청약예치금", link: "/home", icon: pigBank }, { title: "쇼핑몰", link: "/home", icon: cart }],
+    [{ title: "ESGW POINT 구매", link: "/home", icon: point }, { title: "청약예치금", link: "/home", icon: pigBank }, { title: "쇼핑몰", link: "/shoppingmall/outlet", icon: cart }],
     [{ title: "랜덤박스변환", link: "/home", icon: box }, { title: "문의하기", link: "/home", icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
     let notice_list = [{ title: "3분기 정기점검 및 추석 지급건 관련", date: "2022-09-02 15:34:12", views: 77020 }, { title: "2022 1분기 정기 서버점검일 안내", date: "2022-03-14 17:27:09", views: 49004 }, { title: "2022년도 재오픈후 일정", date: "2022-01-10 12:01:01", views: 28492 }];
 
@@ -195,8 +158,8 @@ const Home = () => {
                             </Row>
                         </Content>
 
-                        <Content >
-                            <Card style={{ marginBottom: '12px', background: theme.color.background1 }}>
+                        <Content>
+                            <OneCard style={{ marginBottom: '12px', background: theme.color.background1 }}>
                                 <Row style={{ margin: 'auto 0', height: '85%', color: '#fff' }}>
                                     <Col style={{ margin: '0 auto', width: '25%', display: 'flex', flexDirection: 'column' }}>
                                         <HeaderContent><div>{post?.header?.purchase_package ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
@@ -215,9 +178,9 @@ const Home = () => {
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"내 파트너"}</div>
                                     </Col>
                                 </Row>
-                            </Card>
+                            </OneCard>
                         </Content>
-                        <Content >
+                        <Content>
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox_point} unit={`STAR`} />
                             <WhiteButton title={'보유 STAR'} content={post?.star} total_occurrence={post?.star_total ?? -1} unit={`STAR`} />
                             <WhiteButton title={'보유 POINT'} content={post?.point} total_occurrence={post?.point_total ?? -1} unit={`POINT`} />
@@ -249,7 +212,7 @@ const Home = () => {
                             <Title not_arrow={true} textIcon={'Read more'}>공지사항</Title>
                             {post?.notice && post?.notice?.map((item, index) => (
                                 <>
-                                    <Card style={{ marginBottom: '12px' }}>
+                                    <OneCard style={{ marginBottom: '12px' }}>
                                         <Row>
                                             <div style={{ fontSize: theme.size.font5, color: theme.color.background1, textAlign: 'center', width: '15%', margin: 'auto' }}>필독</div>
                                             <Col style={{ width: '85%', textAlign: 'left' }}>
@@ -257,7 +220,7 @@ const Home = () => {
                                                 <div style={{ fontSize: theme.size.font6, marginTop: '8px' }}>{`${item.date} / ${commarNumber(item.views ?? 0)} Views`}</div>
                                             </Col>
                                         </Row>
-                                    </Card>
+                                    </OneCard>
                                 </>
                             ))}
                         </Content>

@@ -37,8 +37,8 @@ export const zBottomMenu = [
     { name: '마이페이지', link: '/mypage', icon: <AiOutlineGift src={localStorage.getItem('dark_mode') ? talkWhiteImg : talkImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineGift src={talkActiveImg} className='menu-icon' alt="#" />, allowList: [] }
 ];
 export const zSidebarMenu = [
-    { name: '아울렛 쇼핑', link: '#' },
-    { name: '쿠폰 이벤트', link: '#' },
+    { name: '아울렛 쇼핑', link: '/shoppingmall/outlet' },
+    { name: '쿠폰 이벤트', link: '/shoppingmall/coupon' },
     { name: '이벤트 게임', link: '#' },
     { name: '랜덤박스 등록', link: '#' },
     { name: '선물하기', link: '#' },

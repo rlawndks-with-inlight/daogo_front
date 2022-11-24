@@ -33,6 +33,8 @@ import MCouponBrandEdit from '../pages/Manager/Coupon/MCouponBrandEdit';
 import MOutletCategoryEdit from '../pages/Manager/Outlet/MOutletCategoryEdit';
 import MOutletBrandEdit from '../pages/Manager/Outlet/MOutletBrandEdit';
 import MOutletEdit from '../pages/Manager/Outlet/MOutletEdit';
+import CouponShoppingMall from '../pages/User/Coupon/CouponShoppingMall';
+import OutletShoppingMall from '../pages/User/Outlet/OutletShoppingMall';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -45,6 +47,8 @@ const zUserRoute = [
     { link: '/signup/:id', element: <SignUp />, title: "회원가입" },
     { link: '/resign', element: <Resign />, title: "회원탈퇴" },
     { link: '/lottery', element: <Lottery />, title: "추첨" },
+    { link: '/shoppingmall/coupon', element: <CouponShoppingMall />, title: "쿠폰이벤트" },
+    { link: '/shoppingmall/outlet', element: <OutletShoppingMall />, title: "아울렛쇼핑" },
     
 
 ]

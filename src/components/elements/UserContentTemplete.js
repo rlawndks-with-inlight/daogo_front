@@ -141,3 +141,41 @@ width:100%;
 z-index:5;
 margin:16px 0;
 `
+export const OneThirdCard = styled.div`
+width:28%;
+background:#fff;
+box-shadow:${props => props.theme.boxShadow};
+padding:2%;
+border-radius:8px;
+height:24px;
+display:flex;
+align-items:center;
+cursor:pointer;
+@media screen and (max-width:350px) { 
+    height:36px;
+}
+`
+export const OneSecondCard = styled.div`
+width:44.5%;
+background:#fff;
+box-shadow:${props => props.theme.boxShadow};
+padding:2%;
+border-radius:8px;
+height:48px;
+display:flex;
+flex-direction:column;
+cursor:pointer;
+`
+export const OneCard = styled.div`
+background:#fff;
+box-shadow:${props => props.theme.boxShadow};
+padding:2%;
+border-radius:8px;
+display:flex;
+flex-direction:column;
+cursor:pointer;
+height:48px;
+@media screen and (max-width:350px) { 
+    height:56px;
+}
+`
