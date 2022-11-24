@@ -4,7 +4,7 @@ import boxLid from "../../../assets/images/randombox/box-lid.png";
 import kuku from "../../../assets/images/randombox/jump-character.png";
 // import ConfettiGenerator from "./CanvasConfetti";
 import Confetti from "./confetti/Confetti.js";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import pointImg from '../../../assets/images/icon/home/point.svg';
 import { useState } from "react";
 import { logoSrc } from "../../../data/ContentData";
@@ -16,6 +16,7 @@ const init_state = {
 };
 const GiftBoxAnimation = () => {
     const navigate = useNavigate();
+    const {pathname} = useLocation();
     const [clickDouble, setClickDouble] = useState(false)
     const [state, setState] = useReducer(
         (state, new_state) => ({
@@ -24,12 +25,11 @@ const GiftBoxAnimation = () => {
         }),
         init_state
     );
-
+    
     const { move, rotating, rotated, jump } = state;
-
+    
     const animate = async () =>{
         let isDone = rotated === "rotated" ? true : false;
-        let click = false;
         if (!isDone) {
             setState({ rotating: "rotating" });
             setTimeout(() => {
@@ -39,18 +39,14 @@ const GiftBoxAnimation = () => {
                 setState({ rotated: "rotated" });
             }, 1000);
             await new Promise((r) => setTimeout(r, 3000));
-            if(!clickDouble){
-                if (window.confirm('당첨되었습니다. 홈으로 이동하시겠습니까?2')) {
+            if(pathname==='/lottery'){
+                if (window.confirm('당첨되었습니다. 홈으로 이동하시겠습니까?')) {
                     navigate('/home');
                     return;
                 }
             }
         } else {
-            if (window.confirm('당첨되었습니다. 홈으로 이동하시겠습니까?1')) {
-                setClickDouble(true);
-                navigate('/home');
-                return;
-            }
+            
         }
         let moving = move === "move" ? "" : "move";
         setState({ move: moving });
@@ -69,7 +65,7 @@ const GiftBoxAnimation = () => {
                     src={boxLid}
                     alt="box-lid"
                 />
-                <img src={logoSrc} style={{width:'84px'}} onClick={()=>navigate('/home')} />
+                <img src={logoSrc} style={{width:'84px'}} onClick={()=>{rotated === "rotated"?navigate('/home'):console.log("")}} />
             </div>
             
         </div>
