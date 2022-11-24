@@ -96,7 +96,7 @@ const OutletShoppingMall = () => {
                 </Row>
                 <Row style={{ margin: '0 0 20px 0' }}>
                     <OneThirdCard style={{ width: '44.5%' }}>
-                        <Select className="category" onChange={onSearch}>
+                        <Select className="category" onChange={onSearch} style={{ background: 'transparent'}}>
                             <option value={0}>{"-- 카테고리 --"}</option>
                             {categoryList.map((item, idx) => (
                                 <>
@@ -106,7 +106,7 @@ const OutletShoppingMall = () => {
                         </Select>
                     </OneThirdCard>
                     <OneThirdCard style={{ width: '44.5%' }}>
-                        <Select className="brand" onChange={onSearch}>
+                        <Select className="brand" onChange={onSearch} style={{ background: 'transparent'}}>
                             <option value={0}>{"-- 브랜드 --"}</option>
                             {brandList.map((item, idx) => (
                                 <>
