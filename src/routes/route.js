@@ -35,6 +35,7 @@ import MOutletBrandEdit from '../pages/Manager/Outlet/MOutletBrandEdit';
 import MOutletEdit from '../pages/Manager/Outlet/MOutletEdit';
 import CouponShoppingMall from '../pages/User/Coupon/CouponShoppingMall';
 import OutletShoppingMall from '../pages/User/Outlet/OutletShoppingMall';
+import RegisterRandomBox from '../pages/User/RandomBox/RegisterRandomBox';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -49,6 +50,7 @@ const zUserRoute = [
     { link: '/lottery', element: <Lottery />, title: "추첨" },
     { link: '/shoppingmall/coupon', element: <CouponShoppingMall />, title: "쿠폰이벤트" },
     { link: '/shoppingmall/outlet', element: <OutletShoppingMall />, title: "아울렛쇼핑" },
+    { link: '/randombox/register', element: <RegisterRandomBox />, title: "랜덤박스등록" },
     
 
 ]

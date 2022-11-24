@@ -11,7 +11,7 @@ height: 180px;
 background: ${theme.color.background3};
 cursor:pointer;
 color:#2c2c2c;
-@media screen and (max-width:1000px) {
+@media screen and (max-width:900px) {
     height: 18vw;
 }
 @media screen and (max-width:700px) {
@@ -22,7 +22,7 @@ color:#2c2c2c;
 const Img = styled.img`
 width: 150px;
 background:#fff;
-@media screen and (max-width:1000px) {
+@media screen and (max-width:900px) {
     width:15vw;
 }
 @media screen and (max-width:700px) {

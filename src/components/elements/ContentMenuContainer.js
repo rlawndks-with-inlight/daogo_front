@@ -7,7 +7,7 @@ display:flex;
 margin-top:4rem;
 height:3rem;
 align-items: end;
-@media screen and (max-width:1000px) { 
+@media screen and (max-width:900px) { 
     margin-top:3.5rem;
 }
 `

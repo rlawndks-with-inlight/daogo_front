@@ -116,11 +116,11 @@ height: 5rem;
 const Headers = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [type, setType] = useState(1)
+  const [type, setType] = useState(1);
   const [isModal, setIsModal] = useState(false);
   const [display, setDisplay] = useState('flex');
   const [isPost, setIsPost] = useState(false);
-  const [menuDisplay, setMenuDisplay] = useState('none')
+  const [menuDisplay, setMenuDisplay] = useState('none');
   const [isAlarm, setIsAlarm] = useState(false);
 
   useEffect(() => {
@@ -179,6 +179,7 @@ const Headers = () => {
   }, 1500);
   const onClickLink = (link) => {
     navigate(link);
+    onChangeMenuDisplay();
   }
   const shareCopy = () => {
     let copyText = document.getElementById("share-link");

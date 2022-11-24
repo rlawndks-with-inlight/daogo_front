@@ -40,7 +40,7 @@ export const zSidebarMenu = [
     { name: '아울렛 쇼핑', link: '/shoppingmall/outlet' },
     { name: '쿠폰 이벤트', link: '/shoppingmall/coupon' },
     { name: '이벤트 게임', link: '#' },
-    { name: '랜덤박스 등록', link: '#' },
+    { name: '랜덤박스 등록', link: '/randombox/register' },
     { name: '선물하기', link: '#' },
     { name: '랜덤박스 변동내역', link: '#' },
     { name: '스타 변동내역', link: '#' },

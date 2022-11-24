@@ -251,7 +251,12 @@ div.note>p>img {
       bottom: 10em;
     }
   }
-  
+select.select-option:not(:checked) { 
+    color: #FFF; 
+}
+select.select-option option { 
+    color: #2c2c2c; 
+}
 @media screen and (max-width:1050px) {
     .hamburgur{
         position: relative;
@@ -262,7 +267,7 @@ div.note>p>img {
 
 @media screen and (max-width:1150px) {}
 
-@media screen and (max-width:1000px) {
+@media screen and (max-width:900px) {
     #editor {
         margin: 16px auto;
         width: 90%;

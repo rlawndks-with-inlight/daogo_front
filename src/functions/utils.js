@@ -1,4 +1,5 @@
 import axios from 'axios';
+import theme from '../styles/theme';
 // 웹뷰에서 RN으로 데이터를 보낼때 사용합니다.
 export function sendToRN(num) {
     if (window.ReactNativeWebView) {
@@ -153,15 +154,28 @@ export const regExp = (type, str) => {//id,pw,nickname,name
     }
     return reg.test(str)
 }
-export const getViewerMarginByNumber = (num) =>{
-    if(num==0){
+export const getViewerMarginByNumber = (num) => {
+    if (num == 0) {
         return " 0 auto ";
-    }else if(num==1){
+    } else if (num == 1) {
         return " 0 auto 0 0 ";
 
-    }else if(num==2){
+    } else if (num == 2) {
         return " 0 0 0 auto ";
-    }else{
+    } else {
         return " 0 auto ";
+    }
+}
+export const getSelectButtonColor = (bool) => {
+    if (bool) {
+        return {
+            background: theme.color.background1,
+            color: "#fff"
+        }
+    } else {
+        return {
+            background: "#fff",
+            color: theme.color.background1
+        }
     }
 }

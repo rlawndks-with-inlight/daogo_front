@@ -100,7 +100,7 @@ const MyPage = () => {
 
     return (
         <>
-            <Wrappers className="wrapper" style={{ maxWidth: '800px' }}>
+            <Wrappers className="wrapper" style={{ maxWidth: '900px' }}>
                 <Title>마이페이지</Title>
                 <MdEdit style={{ margin: '2rem 0 1rem auto', color: `${theme.color.font2}`, fontSize: '24px', cursor: 'pointer' }} onClick={() => navigate('/editmyinfo')} />
 

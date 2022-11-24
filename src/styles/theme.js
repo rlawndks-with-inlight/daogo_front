@@ -59,7 +59,8 @@ const theme = {
     medium: "SpoqaHanSansNeo-Medium",
 
   },
-  boxShadow: "0px 12px 10px #00000029"
+  boxShadow: "0px 12px 10px #00000029",
+  itemBoxShadow: "0px 5px 12px #00000018",
 }
 
 export default theme

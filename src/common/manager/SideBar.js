@@ -24,7 +24,7 @@ position:fixed;
 background:#fff;
 overflow-y:auto;
 padding-bottom:16px;
-@media screen and (max-width:1000px) {
+@media screen and (max-width:900px) {
     position:fixed;
     display:${(props => props.display)};
     transition:1s;
@@ -88,7 +88,7 @@ top:0;
 left:0;
 z-index:5;
 padding:12px;
-@media screen and (max-width:1000px) {
+@media screen and (max-width:900px) {
     display:flex;
 }
 `

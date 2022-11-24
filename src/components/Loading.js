@@ -5,7 +5,7 @@ import loadingGif from '../assets/images/test/loading.gif'
 
 const LoadingContainer = styled.div`
 margin: 15vw auto;
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
     margin: 25vw auto;
 }
 @media (max-width: 650px) {

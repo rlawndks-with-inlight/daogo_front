@@ -39,7 +39,7 @@ margin-right:24px;
     color:#fff;
     font-weight:bold;
 }
-@media screen and (max-width:1000px) {
+@media screen and (max-width:900px) {
     margin-right:0;
 }
 `

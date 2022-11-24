@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const WrapperForm = styled.div`
 width:98%;
-max-width:800px;
+max-width:900px;
 margin: 0 auto;
 display:flex;
 flex-direction:column;
@@ -16,7 +16,7 @@ color:${(props) => props.theme.color.manager.font1};
 font-weight:500;
 margin-top: 36px;
 @media (max-width: 600px) {
-    width:85%;
+    width:100%;
 }
 `
 export const Input = styled.input`
@@ -32,13 +32,14 @@ border-radius:4px;
     font-size:12px;
 }
 @media (max-width: 600px) {
-    width:75%;
+    width:90%;
+    padding:  5%;
 }
 `
 export const Button = styled.button`
 width:364px;
 margin:0 auto;
-height:48px;
+height:50px;
 border:none;
 background:${(props) => props.theme.color.background1};
 color:#fff;
@@ -49,31 +50,7 @@ box-shadow:${props=>props.theme.boxShadow};
 cursor:pointer;
 border: 1px solid transparent;
 @media (max-width: 600px) {
-width:79.8%;
-}
-@media (max-width: 550px) {
-    width:80.5%;
-}
-@media (max-width: 500px) {
-    width:81%;
-}
-@media (max-width: 450px) {
-    width:81.5%;
-}
-@media (max-width: 400px) {
-    width:82.5%;
-}
-@media (max-width: 375px) {
-    width:83%;
-}
-@media (max-width: 350px) {
-    width:83.5%;
-}
-@media (max-width: 325px) {
-    width:84.5%;
-}
-@media (max-width: 300px) {
-    width:85.5%;
+width:100%;
 }
 `
 export const FlexBox = styled.div`

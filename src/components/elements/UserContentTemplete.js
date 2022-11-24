@@ -11,7 +11,7 @@ position:relative;
 display:flex;
 flex-direction:column;
 width:90%;
-max-width:1000px;
+max-width:900px;
 margin-top:8rem;
 margin-left:auto;
 margin-right:auto;
@@ -132,7 +132,7 @@ display:none;
 }
 `
 export const ViewerContainer = styled.div`
-max-width:1000px;
+max-width:900px;
 margin:0 auto;
 `
 export const SelectType = styled.div`
@@ -175,7 +175,18 @@ display:flex;
 flex-direction:column;
 cursor:pointer;
 height:48px;
-@media screen and (max-width:350px) { 
+width:${(props => props.width)??"100"}%;
+@media screen and (max-width:400px) { 
     height:56px;
 }
+`
+export const Row = styled.div`
+display:flex;
+justify-content: space-between;
+margin: auto 0;
+`
+export const Col = styled.div`
+display:flex;
+flex-direction:column;
+text-align:center;
 `
