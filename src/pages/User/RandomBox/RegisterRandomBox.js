@@ -13,7 +13,7 @@ import nextIcon from '../../../assets/images/icon/next.svg'
 import { Button } from "../../../components/elements/AuthContentTemplete";
 import LoadingText from "../../../components/LoadingText";
 import { Input } from "../../../components/elements/ManagerTemplete";
-
+import InputContent from "../../../components/InputContent";
 export const Col = styled.div`
 display:flex;
 flex-direction:column;
@@ -46,16 +46,15 @@ const RegisterRandomBox = () => {
                     </OneCard>
                 </Row>
                 <Row style={{ margin: '0 0 64px 0' }}>
+
                     <OneCard width={96} style={{ height: '150px', cursor: 'default' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '350px', margin: 'auto auto 0 auto' }}>
-                            <div style={{ fontSize: theme.size.font4, fontWeight: 'bold' }}>스타</div>
-                            <Input style={{ margin: '0' }} />
-                        </div>
-                        <div style={{ margin: '0 0 16px auto', display: 'flex', alignItems: 'center', fontSize: theme.size.font6, color: theme.color.background1 }}><div style={{ marginRight: '4px' }}>잔액</div><div>{post?.randombox_point ?? <LoadingText width={10} />}</div></div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '350px', margin: '0 auto auto auto' }}>
-                            <div style={{ fontSize: theme.size.font4, fontWeight: 'bold' }}>결제비밀번호</div>
-                            <Input style={{ margin: '0' }} type={'password'} />
-                        </div>
+                        <InputContent title="스타" placeholder="보낼 스타" className="send_star" bottom_contents={[
+                            <div>{post?.star ?? <LoadingText width={10} />}</div>,
+                            <div style={{ marginRight: '4px' }}>잔액</div>
+
+                        ]} />
+                        <InputContent title="결제비밀번호" input_type="password" className="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
+
                     </OneCard>
                 </Row>
                 <Button>랜덤박스 등록하기</Button>

@@ -18,6 +18,7 @@ import { EditorState } from "draft-js"
 import { BsPerson } from 'react-icons/bs';
 import { GrEdit } from 'react-icons/gr';
 import { AiOutlineGift, AiOutlineWallet } from 'react-icons/ai';
+import { columnObjFormat } from './Manager/ManagerContentFormat';
 import theme from '../styles/theme';
 export const backUrl = "https://daogo.co.kr:8443";
 export const logoSrc = logoImg;
@@ -39,20 +40,52 @@ export const zBottomMenu = [
 export const zSidebarMenu = [
     { name: '아울렛 쇼핑', link: '/shoppingmall/outlet' },
     { name: '쿠폰 이벤트', link: '/shoppingmall/coupon' },
-    { name: '이벤트 게임', link: '#' },
+    { name: '이벤트 게임', link: '/eventgame' },
     { name: '랜덤박스 등록', link: '/randombox/register' },
-    { name: '선물하기', link: '#' },
-    { name: '랜덤박스 변동내역', link: '#' },
-    { name: '스타 변동내역', link: '#' },
-    { name: '포인트 변동내역', link: '#' },
-    { name: '공유코드', link: '#' },
-    { name: '추천계보', link: '#' },
-    { name: 'QR CODE', link: '#' },
-    { name: '개인정보 수정', link: '#' },
-    { name: '출금신청', link: '#' },
-    { name: '공지사항', link: '#' },
+    { name: '선물하기', link: '/gift' },
+    { name: '랜덤박스 변동내역', link: '/randombox/history' },
+    { name: '스타 변동내역', link: '/star/history' },
+    { name: '포인트 변동내역', link: '/point/history' },
+    { name: '공유코드', link: '/sharecode/history' },
+    { name: '추천계보', link: '/recommendgenealogy' },
+    { name: 'QR CODE', link: '/qrcode' },
+    { name: '개인정보 수정', link: '/editmyinfo' },
+    { name: '출금신청', link: '/withdrawrequest' },
+    { name: '공지사항', link: '/noticelist' },
 ]
-
+export const historyContent = {
+    randombox:{
+        title:"랜덤박스 변동내역",
+        columns:[
+            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('Time', 25, 'text', 'date'),
+            columnObjFormat('Point', 25, 'number', 'point'),
+        ]
+    } ,
+    star: {
+        title:"스타 변동내역",
+        columns:[
+            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('Time', 25, 'text', 'date'),
+            columnObjFormat('Point', 25, 'number', 'point'),
+        ]
+    },
+    point:{
+        title:"포인트 변동내역",
+        columns:[
+            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('Time', 25, 'text', 'date'),
+            columnObjFormat('Point', 25, 'number', 'point'),
+        ]
+    },
+    sharecode: {
+        title:"공유코드",
+        columns:[
+            columnObjFormat('Code', 50, 'text', 'code'),
+            columnObjFormat('Quantity', 50, 'text', 'quantity'), 
+        ]
+    }
+};
 
 export const cardDefaultColor = {
     font: "#000",

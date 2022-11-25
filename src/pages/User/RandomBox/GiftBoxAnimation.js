@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import pointImg from '../../../assets/images/icon/home/point.svg';
 import { useState } from "react";
 import { logoSrc } from "../../../data/ContentData";
+import axios from "axios";
 const init_state = {
     move: "move",
     jump: "",
@@ -31,6 +32,8 @@ const GiftBoxAnimation = () => {
     const animate = async () =>{
         let isDone = rotated === "rotated" ? true : false;
         if (!isDone) {
+            const { data: response } = await axios.get('/api/getdailypercent');
+            console.log(response)
             setState({ rotating: "rotating" });
             setTimeout(() => {
                 setState({ jump: "jump" });
@@ -39,7 +42,7 @@ const GiftBoxAnimation = () => {
                 setState({ rotated: "rotated" });
             }, 1000);
             await new Promise((r) => setTimeout(r, 3000));
-            if(pathname==='/lottery'){
+            if(pathname==='/randombox/lottery'){
                 if (window.confirm('당첨되었습니다. 홈으로 이동하시겠습니까?')) {
                     navigate('/home');
                     return;

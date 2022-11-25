@@ -190,3 +190,20 @@ display:flex;
 flex-direction:column;
 text-align:center;
 `
+export const Table = styled.table`
+font-size:12px;
+width:95%;
+margin:0 auto;
+text-align:center;
+border-collapse: collapse;
+color:${props => props.theme.color.font1};
+background:#fff;
+`
+export const Tr = styled.tr`
+width:100%;
+height:26px;
+border-bottom:1px solid ${props => props.theme.color.font4};
+`
+export const Td = styled.td`
+border-bottom:1px solid ${props => props.theme.color.font4};
+`

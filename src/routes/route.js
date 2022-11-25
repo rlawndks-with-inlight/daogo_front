@@ -36,6 +36,13 @@ import MOutletEdit from '../pages/Manager/Outlet/MOutletEdit';
 import CouponShoppingMall from '../pages/User/Coupon/CouponShoppingMall';
 import OutletShoppingMall from '../pages/User/Outlet/OutletShoppingMall';
 import RegisterRandomBox from '../pages/User/RandomBox/RegisterRandomBox';
+import Gift from '../pages/User/Gift';
+import History from '../pages/User/History/History';
+import RecommendGenealogy from '../pages/User/Auth/RecommendGenealogy';
+import EventGame from '../pages/User/EventGame';
+import QrCode from '../pages/User/QrCode';
+import WithdrawRequest from '../pages/User/Auth/WithdrawRequest';
+import NoticeList from '../pages/User/Notice/NoticeList';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -47,11 +54,18 @@ const zUserRoute = [
     { link: '/signup', element: <SignUp />, title: "회원가입" },
     { link: '/signup/:id', element: <SignUp />, title: "회원가입" },
     { link: '/resign', element: <Resign />, title: "회원탈퇴" },
-    { link: '/lottery', element: <Lottery />, title: "추첨" },
+    { link: '/randombox/lottery', element: <Lottery />, title: "추첨" },
     { link: '/shoppingmall/coupon', element: <CouponShoppingMall />, title: "쿠폰이벤트" },
     { link: '/shoppingmall/outlet', element: <OutletShoppingMall />, title: "아울렛쇼핑" },
     { link: '/randombox/register', element: <RegisterRandomBox />, title: "랜덤박스등록" },
-    
+    { link: '/gift', element: <Gift />, title: "선물하기" },
+    { link: '/:schema/history', element: <History />, title: "리스트" },
+    { link: '/recommendgenealogy', element: <RecommendGenealogy />, title: "추천계보" },
+    { link: '/eventgame', element: <EventGame />, title: "이벤트게임" },
+    { link: '/qrcode', element: <QrCode />, title: "QR코드" },
+    { link: '/withdrawrequest', element: <WithdrawRequest />, title: "출금신청" },
+    { link: '/noticelist', element: <NoticeList />, title: "공지사항" },
+
 
 ]
 const zManagerRoute = [

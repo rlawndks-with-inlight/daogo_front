@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 const UserLayout = () => {
     const location = useLocation();
-    const nonLayoutList = ['/', '/login', '/findmyinfo', '/signup', '/lottery'];
+    const nonLayoutList = ['/', '/login', '/findmyinfo', '/signup', '/randombox/lottery'];
 
     return (
         <>
