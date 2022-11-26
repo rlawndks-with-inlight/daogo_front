@@ -43,6 +43,8 @@ import EventGame from '../pages/User/EventGame';
 import QrCode from '../pages/User/QrCode';
 import WithdrawRequest from '../pages/User/Auth/WithdrawRequest';
 import NoticeList from '../pages/User/Notice/NoticeList';
+import BuyESGWPoint from '../pages/User/BuyESGWPoint';
+import MUserMoneyEdit from '../pages/Manager/User/MUserMoneyEdit';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -58,6 +60,7 @@ const zUserRoute = [
     { link: '/shoppingmall/coupon', element: <CouponShoppingMall />, title: "쿠폰이벤트" },
     { link: '/shoppingmall/outlet', element: <OutletShoppingMall />, title: "아울렛쇼핑" },
     { link: '/randombox/register', element: <RegisterRandomBox />, title: "랜덤박스등록" },
+    { link: '/buyesgwpoint', element: <BuyESGWPoint />, title: "ESGW 구매" },
     { link: '/gift', element: <Gift />, title: "선물하기" },
     { link: '/:schema/history', element: <History />, title: "리스트" },
     { link: '/recommendgenealogy', element: <RecommendGenealogy />, title: "추천계보" },
@@ -80,6 +83,7 @@ const zManagerRoute = [
     { link: '/manager/edit/notice/:pk', element: <MNoticeEdit />, title: "공지사항관리" },
 
     { link: '/manager/edit/user/:pk', element: <MUserEdit />, title: "회원관리" },
+    { link: '/manager/usermoneyedit/:pk', element: <MUserMoneyEdit />, title: "회원머니관리" },
 
     { link: '/manager/edit/coupon/:pk', element: <MCouponEdit />, title: "쿠폰관리" },
     { link: '/manager/edit/coupon_category/:pk', element: <MCouponCategoryEdit />, title: "쿠폰카테고리관리" },

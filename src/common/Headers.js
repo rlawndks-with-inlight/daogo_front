@@ -127,13 +127,15 @@ const Headers = () => {
 
     async function isAuth() {
       const { data: response } = await axios.get('/api/auth');
-      if (response.pk > 0 || location.pathname.includes('/manager')) {
+      if (response.pk > 0) {
 
       } else {
         navigate('/login');
       }
     }
-    isAuth();
+    if(!location.pathname.includes('/manager')){
+      isAuth();
+    }
 
     if (location.pathname.includes('/manager')) {
       setDisplay('none');
@@ -203,8 +205,8 @@ const Headers = () => {
           <HeaderMenuList>
             {zBottomMenu.map((item, idx) => (
               <>
-                <HeaderMenu key={idx} onClick={() => { onClickLink(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</HeaderMenu>
-              </>
+                <HeaderMenu key={idx} onClick={() => { navigate(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</HeaderMenu>
+              </> 
             ))}
           </HeaderMenuList>
           <SideBarList className="sidebar-menu-list">

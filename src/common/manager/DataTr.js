@@ -5,6 +5,7 @@ import { backUrl } from '../../data/Manager/ManagerContentData'
 import { BiEditAlt } from 'react-icons/bi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { CgToggleOn, CgToggleOff } from 'react-icons/cg'
+import { AiOutlineDollar } from 'react-icons/ai'
 import theme from '../../styles/theme'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -227,6 +228,16 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                        {col.type == 'user_money_edit' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
+                                    <AiOutlineDollar style={{ cursor: 'pointer', color: theme.color.background1 }} onClick={() => navigate(`/manager/usermoneyedit/${data.pk}`)} />
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
+
                         {col.type == 'delete' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>

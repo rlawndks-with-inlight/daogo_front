@@ -31,9 +31,9 @@ export const editorState = {
 }
 
 export const zBottomMenu = [
-    { name: '선물하기', link: '#', icon: <BsPerson src={localStorage.getItem('dark_mode') ? bulbWhiteImg : bulbImg} className='menu-icon' alt="#" />, activeIcon: <BsPerson src={bulbActiveImg} className='menu-icon' alt="#" />, allowList: [] },
+    { name: '선물하기', link: '/gift', icon: <BsPerson src={localStorage.getItem('dark_mode') ? bulbWhiteImg : bulbImg} className='menu-icon' alt="#" />, activeIcon: <BsPerson src={bulbActiveImg} className='menu-icon' alt="#" />, allowList: [] },
     // { name: '핵심비디오', link: '/videolist', icon: <img src={playImg} className='menu-icon' alt="#" />, activeIcon: <img src={playActiveImg} className='menu-icon' alt="#" />, allowList: ['/videolist'] },
-    { name: '지갑변동내역', link: '#', icon: <AiOutlineWallet src={localStorage.getItem('dark_mode') ? featureWhiteImg : featureImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineWallet src={featureActiveImg} className='menu-icon' alt="#" />, allowList: [] },
+    { name: '지갑변동내역', link: '/randombox/history', icon: <AiOutlineWallet src={localStorage.getItem('dark_mode') ? featureWhiteImg : featureImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineWallet src={featureActiveImg} className='menu-icon' alt="#" />, allowList: [] },
     { name: '개인정보수정', link: '/editmyinfo', icon: <GrEdit src={localStorage.getItem('dark_mode') ? albumWhiteImg : albumImg} className='menu-icon' alt="#" />, activeIcon: <GrEdit src={albumActiveImg} className='menu-icon' alt="#" />, allowList: ['/editmyinfo'] },
     { name: '마이페이지', link: '/mypage', icon: <AiOutlineGift src={localStorage.getItem('dark_mode') ? talkWhiteImg : talkImg} className='menu-icon' alt="#" />, activeIcon: <AiOutlineGift src={talkActiveImg} className='menu-icon' alt="#" />, allowList: [] }
 ];
@@ -58,7 +58,7 @@ export const historyContent = {
         title:"랜덤박스 변동내역",
         columns:[
             columnObjFormat('History', 50, 'text', 'note'),
-            columnObjFormat('Time', 25, 'text', 'date'),
+            columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'point'),
         ]
     } ,
@@ -66,7 +66,7 @@ export const historyContent = {
         title:"스타 변동내역",
         columns:[
             columnObjFormat('History', 50, 'text', 'note'),
-            columnObjFormat('Time', 25, 'text', 'date'),
+            columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'point'),
         ]
     },
@@ -74,7 +74,15 @@ export const historyContent = {
         title:"포인트 변동내역",
         columns:[
             columnObjFormat('History', 50, 'text', 'note'),
-            columnObjFormat('Time', 25, 'text', 'date'),
+            columnObjFormat('Time', 25, 'date', 'date'),
+            columnObjFormat('Point', 25, 'number', 'point'),
+        ]
+    },
+    withdraw:{
+        title:"출금 내역",
+        columns:[
+            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'point'),
         ]
     },
@@ -83,6 +91,14 @@ export const historyContent = {
         columns:[
             columnObjFormat('Code', 50, 'text', 'code'),
             columnObjFormat('Quantity', 50, 'text', 'quantity'), 
+        ]
+    },
+    outlet_order: {
+        title:"아울렛 주문 내역",
+        columns:[
+            columnObjFormat('상품명', 50, 'text', 'name'),
+            columnObjFormat('날짜', 25, 'date', 'date'),
+            columnObjFormat('비고', 25, 'status', 'status'), 
         ]
     }
 };

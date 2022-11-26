@@ -5,7 +5,7 @@ import { historyContent } from "../../../data/ContentData";
 
 const History = () => {
     const params = useParams();
-    const point_data = [{ note: '데일리포인트에서 발생', date: '2022-11-25', point: -3000 },{ note: '데일리', date: '2022-11-25', point: 2000 },{ note: '데일리포인트에서 발생', date: '2022-11-25', point: 1000 }];
+    const point_data = [{ note: '데일리포인트에서 발생', date: '2022-11-25', point: -3000 },{ note: '데일리', date: '2022-11-25 17:03:00', point: 2000 },{ note: '데일리포인트에서 발생', date: '2022-11-25', point: 1000 }];
     return (
         <>
             <Wrappers className='wrappers'>

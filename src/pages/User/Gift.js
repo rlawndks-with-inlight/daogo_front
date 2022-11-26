@@ -53,7 +53,7 @@ const Gift = () => {
                         <InputContent title="아이디" className="receiver_id" placeholder="받는사람 아이디" />
                         <InputContent title="휴대폰" className="receiver_phone" placeholder="받는사람 휴대폰 마지막 4자리" bottom_contents={[
                             <div style={{ marginLeft: '4px' }}>받는 사람 아이디와 휴대폰 번호를 꼼꼼히 확인해 주세요</div>,
-                            <img src={infoCircle} style={{ width: '10px', height: '10px', marginTop: '2px' }} />
+                            <img src={infoCircle} style={{ width: '10px', height: '10px'}} />
                         ]}
                             bottom_contents_margin={"0 auto auto auto"} />
                     </OneCard>

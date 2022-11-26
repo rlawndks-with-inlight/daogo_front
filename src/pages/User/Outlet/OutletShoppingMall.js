@@ -6,9 +6,10 @@ import theme from "../../../styles/theme";
 import { commarNumber, getSelectButtonColor, range } from "../../../functions/utils";
 import styled from "styled-components";
 import $ from 'jquery'
-import { backUrl } from "../../../data/ContentData";
+import { backUrl, historyContent } from "../../../data/ContentData";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
+import ContentTable from "../../../components/ContentTable";
 const Select = styled.select`
 width:100%;
 border:none;
@@ -94,51 +95,61 @@ const OutletShoppingMall = () => {
                         <div style={{ margin: 'auto' }}>주문리스트</div>
                     </OneCard>
                 </Row>
-                <Row style={{ margin: '0 0 20px 0' }}>
-                    <OneThirdCard style={{ width: '44.5%' }}>
-                        <Select className="category" onChange={onSearch} style={{ background: 'transparent'}}>
-                            <option value={0}>{"-- 카테고리 --"}</option>
-                            {categoryList.map((item, idx) => (
-                                <>
-                                    <option value={item.pk}>{item?.name ?? ""}</option>
-                                </>
-                            ))}
-                        </Select>
-                    </OneThirdCard>
-                    <OneThirdCard style={{ width: '44.5%' }}>
-                        <Select className="brand" onChange={onSearch} style={{ background: 'transparent'}}>
-                            <option value={0}>{"-- 브랜드 --"}</option>
-                            {brandList.map((item, idx) => (
-                                <>
-                                    <option value={item.pk}>{item?.name ?? ""}</option>
-                                </>
-                            ))}
-                        </Select>
-                    </OneThirdCard>
-                </Row>
-                {loading ?
+                {typeNum === 0 ?
                     <>
-                        <Loading />
+                        <Row style={{ margin: '0 0 20px 0' }}>
+                            <OneThirdCard style={{ width: '44.5%' }}>
+                                <Select className="category" onChange={onSearch} style={{ background: 'transparent' }}>
+                                    <option value={0}>{"-- 카테고리 --"}</option>
+                                    {categoryList.map((item, idx) => (
+                                        <>
+                                            <option value={item.pk}>{item?.name ?? ""}</option>
+                                        </>
+                                    ))}
+                                </Select>
+                            </OneThirdCard>
+                            <OneThirdCard style={{ width: '44.5%' }}>
+                                <Select className="brand" onChange={onSearch} style={{ background: 'transparent' }}>
+                                    <option value={0}>{"-- 브랜드 --"}</option>
+                                    {brandList.map((item, idx) => (
+                                        <>
+                                            <option value={item.pk}>{item?.name ?? ""}</option>
+                                        </>
+                                    ))}
+                                </Select>
+                            </OneThirdCard>
+                        </Row>
+                        {loading ?
+                            <>
+                                <Loading />
+                            </>
+                            :
+                            <>
+                                <Row style={{ margin: '0 0 16px 0', flexWrap: 'wrap' }}>
+                                    {itemList.map((item, index) => (
+                                        <>
+                                            <Col onClick={() => { navigate(`/item/outlet/${item?.pk}`) }}>
+                                                <ItemImg src={backUrl + item?.img_src} />
+                                                <div style={{ marginBottom: '8px' }}>{item.name}</div>
+                                                <div style={{ color: theme.color.background1 }}>{commarNumber(item.sell_star)} 스타</div>
+                                            </Col>
+                                        </>
+                                    ))}
+                                    {itemList && range(0, (window.innerWidth >= 650 ? ((4 - 1) - 4 % itemList.length) : ((2 - 1) - 2 % itemList.length))).map(() => (
+                                        <>
+                                            <Col style={{ cursor: 'default' }}></Col>
+                                        </>
+                                    ))}
+                                </Row>
+                            </>}
                     </>
                     :
                     <>
-                        <Row style={{ margin: '0 0 16px 0', flexWrap: 'wrap' }}>
-                            {itemList.map((item, index) => (
-                                <>
-                                    <Col onClick={() => { navigate(`/item/outlet/${item?.pk}`) }}>
-                                        <ItemImg src={backUrl + item?.img_src} />
-                                        <div style={{ marginBottom: '8px' }}>{item.name}</div>
-                                        <div style={{ color: theme.color.background1 }}>{commarNumber(item.sell_star)} 스타</div>
-                                    </Col>
-                                </>
-                            ))}
-                            {itemList && range(0, (window.innerWidth >= 650 ? ((4 - 1) - 4 % itemList.length) : ((2 - 1) - 2 % itemList.length))).map(() => (
-                                <>
-                                    <Col style={{ cursor: 'default' }}></Col>
-                                </>
-                            ))}
-                        </Row>
+                    <ContentTable columns={historyContent['outlet_order'].columns}
+                    data={[]}
+                    schema={'outlet_order'} />
                     </>}
+
 
             </Wrappers>
         </>

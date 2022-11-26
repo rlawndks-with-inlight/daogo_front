@@ -103,12 +103,10 @@ const Home = () => {
     const [noticeList, setNoticeList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState({});
-    let header_list = [{ title: "구매 패키지", content: "60,000" }, { title: "소개 수익 / 할인", content: "9 %" }, { title: "롤업 보너스", content: "2 %" }, { title: "내 파트너", content: "4 / 10" }];
 
-    let bottom_menu_list = [[{ title: "출금신청", link: "/home", icon: withdrawRequest }, { title: "출금내역", link: "/home", icon: albumsOutline }, { title: "이체하기", link: "/home", icon: downloadOutline }],
-    [{ title: "ESGW POINT 구매", link: "/home", icon: point }, { title: "청약예치금", link: "/home", icon: pigBank }, { title: "쇼핑몰", link: "/shoppingmall/outlet", icon: cart }],
+    let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "이체하기", link: "/gift", icon: downloadOutline }],
+    [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/home", icon: pigBank }, { title: "쇼핑몰", link: "/shoppingmall/outlet", icon: cart }],
     [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: "/home", icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
-    let notice_list = [{ title: "3분기 정기점검 및 추석 지급건 관련", date: "2022-09-02 15:34:12", views: 77020 }, { title: "2022 1분기 정기 서버점검일 안내", date: "2022-03-14 17:27:09", views: 49004 }, { title: "2022년도 재오픈후 일정", date: "2022-01-10 12:01:01", views: 28492 }];
 
     useEffect(() => {
         async function fetchPosts() {

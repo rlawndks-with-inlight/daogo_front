@@ -163,7 +163,7 @@ const MNoticeEdit = () => {
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
-                <AddButton>{'저장'}</AddButton>
+                <AddButton onClick={editItem}>{'저장'}</AddButton>
             </ButtonContainer>
             {/* {params.pk > 0 ?
                 <>

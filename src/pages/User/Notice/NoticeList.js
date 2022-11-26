@@ -8,15 +8,17 @@ import { columnObjFormat } from "../../../data/Manager/ManagerContentFormat";
 const NoticeList = () => {
     const [posts, setPosts] = useState([]);
 
-    useEffect(()=>{
-        async function fetchPosts(){
+    useEffect(() => {
+        async function fetchPosts() {
             const { data: response } = await axios.post('/api/items', {
                 table: 'notice',
+                status: 1,
+                order: 'sort'
             });
             setPosts(response.data)
         }
         fetchPosts();
-    },[])
+    }, [])
     const onSearch = async () => {
         const { data: response } = await axios.post('/api/items', {
             table: 'notice',
@@ -33,7 +35,7 @@ const NoticeList = () => {
                 <SearchComponent onSearch={onSearch} />
                 <ContentTable columns={[
                     columnObjFormat('title', 70, 'text', 'title'),
-                    columnObjFormat('date', 30, 'text', 'date'),
+                    columnObjFormat('date', 30, 'date', 'date'),
                 ]}
                     is_not_display_thead={true}
                     data={posts} />
