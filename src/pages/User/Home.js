@@ -106,7 +106,7 @@ const Home = () => {
 
     let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "이체하기", link: "/gift", icon: downloadOutline }],
     [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/home", icon: pigBank }, { title: "쇼핑몰", link: "/shoppingmall/outlet", icon: cart }],
-    [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: "/home", icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
+    [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: 'kakaotalk', icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
 
     useEffect(() => {
         async function fetchPosts() {
@@ -126,7 +126,12 @@ const Home = () => {
     }, [])
 
     const onClickLink = (link) => {
-        navigate(link);
+        if (link == 'kakaotalk') {
+            //window.location.href = 'kakaoopen://join?l=_xgCPzxj&r=EW'
+            window.location.href = 'https://pf.kakao.com/_xgCPzxj'
+        } else {
+            navigate(link);
+        }
     }
     return (
         <>
