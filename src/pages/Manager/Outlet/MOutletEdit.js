@@ -55,10 +55,10 @@ const MOutletEdit = () => {
                 $('.sell_revenue_percent').val(response.data.sell_revenue_percent)
                 $('.link').val(response.data.link)
                 setSellUserObj({
-                    id:response?.data?.sell_user_id,
-                    pk:response?.data?.sell_user_pk,
-                    phone:response?.data?.sell_user_phone,
-                    name:response?.data?.sell_user_name
+                    id: response?.data?.sell_user_id,
+                    pk: response?.data?.sell_user_pk,
+                    phone: response?.data?.sell_user_phone,
+                    name: response?.data?.sell_user_name
                 })
                 editorRef.current.getInstance().setHTML(response.data.note.replaceAll('http://localhost:8001', backUrl));
             }
@@ -117,10 +117,10 @@ const MOutletEdit = () => {
         }
     };
     const editOutlet = async () => {
-        if ((!url && !content) || !$('.name').val() || !$('.sell_star').val() || !$('.generated_code_count').val() || !$('.sell_user_id').val()|| !$('.sell_user_name').val()|| !$('.sell_user_phone').val()|| !$('.sell_revenue_percent').val()) {
+        if ((!url && !content) || !$('.name').val() || !$('.sell_star').val() || !$('.generated_code_count').val() || !$('.sell_user_id').val() || !$('.sell_user_name').val() || !$('.sell_user_phone').val() || !$('.sell_revenue_percent').val()) {
             alert('필수 값이 비어있습니다.');
         } else {
-            if($('.sell_user_id').val()!=sellUserObj.id){
+            if ($('.sell_user_id').val() != sellUserObj.id) {
                 alert("판매자 아이디에 비정상적인 변경이 감지되었습니다.");
                 return;
             }
@@ -140,7 +140,10 @@ const MOutletEdit = () => {
                 formData.append('link', $('.link').val());
                 formData.append('note', editorRef.current.getInstance().getHTML());
                 formData.append('table', 'outlet');
-                if (params.pk > 0) formData.append('pk', params.pk);
+                if (params.pk > 0) {
+                    formData.append('pk', params.pk);
+                    formData.append('reason_correction',$('.reason-correction').val());
+                };
                 const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, formData);
                 if (response.result > 0) {
                     alert("성공적으로 저장되었습니다.");
@@ -281,6 +284,18 @@ const MOutletEdit = () => {
                         </div>
                     </Col>
                 </Row>
+                {params.pk > 0 ?
+                    <>
+                        <Row>
+                            <Col>
+                                <Title>관리자 수정사유</Title>
+                                <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
+                            </Col>
+                        </Row>
+                    </>
+                    :
+                    <>
+                    </>}
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>

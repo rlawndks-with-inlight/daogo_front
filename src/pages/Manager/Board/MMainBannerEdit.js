@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AiFillFileImage } from 'react-icons/ai';
 import theme from "../../../styles/theme";
-import { backUrl, objManagerListContent } from "../../../data/Manager/ManagerContentData";
+import { backUrl, managerNoteObj, objManagerListContent } from "../../../data/Manager/ManagerContentData";
 import CancelButton from "../../../components/elements/button/CancelButton";
 import $ from 'jquery';
 import axios from "axios";
@@ -26,7 +26,7 @@ const MMainBannerEdit = () => {
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/item?table=main_banner&pk=${params.pk}`);
-                setUrl(backUrl+response.data.img_src);
+                setUrl(backUrl + response.data.img_src);
                 $('.id').val(response.data.id)
                 $('.link').val(response.data.link)
                 $('.target').val(response.data.target)
@@ -35,20 +35,24 @@ const MMainBannerEdit = () => {
         fetchPost();
     }, [])
     const editBanner = async () => {
-        if ((!url && !content) || !$('.link').val() || !$('.target').val()) {
+        if ((!url && !content) || !$('.link').val() || !$('.target').val() || (params.pk > 0 && !$('.reason-correction').val())) {
             alert('필수 값이 비어있습니다.');
         } else {
             if (window.confirm('저장 하시겠습니까?')) {
-                if(content)formData.append('banner', content);
+                if (content) formData.append('banner', content);
                 formData.append('link', $('.link').val());
                 formData.append('target', $('.target').val());
                 formData.append('table', 'main_banner');
-                if (params.pk > 0) formData.append('pk', params.pk);
+                formData.append('manager_note', `${params.pk>0?managerNoteObj.UPDATE_MAIN_BANNER:managerNoteObj.ADD_MAIN_BANNER}`);
+                if (params.pk > 0) {
+                    formData.append('pk', params.pk);
+                    formData.append('reason_correction', $('.reason-correction').val());
+                };
                 const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, formData);
                 if (response.result > 0) {
                     alert("성공적으로 저장되었습니다.");
                     navigate(-1);
-                }else{
+                } else {
                     alert(response.message);
                 }
             }
@@ -103,6 +107,18 @@ const MMainBannerEdit = () => {
                         </Select>
                     </Col>
                 </Row>
+                {params.pk > 0 ?
+                    <>
+                        <Row>
+                            <Col>
+                                <Title>관리자 수정사유</Title>
+                                <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
+                            </Col>
+                        </Row>
+                    </>
+                    :
+                    <>
+                    </>}
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>

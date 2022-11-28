@@ -111,7 +111,9 @@ div.note>p>img {
 .pointer {
     cursor: pointer;
 }
-
+.long-input{
+    width: 300px !important;
+}
 .bar {
     flex: auto;
     border: 1px solid #4CDAD8;
@@ -127,7 +129,6 @@ div.note>p>img {
     width: 2rem; 
     height: 1.5rem;
     cursor: pointer;
-    position: absolute;
     right: 0;
 }
 
@@ -265,7 +266,11 @@ select.select-option option {
 
 @media screen and (max-width:1200px) {}
 
-@media screen and (max-width:1150px) {}
+@media screen and (max-width:1150px) {
+    .long-input{
+        width: 200px !important;
+    }
+}
 
 @media screen and (max-width:900px) {
     #editor {

@@ -30,6 +30,7 @@ const ItemTypes = { CARD: 'card' }
 const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus }) => {
     const navigate = useNavigate();
     const ref = useRef(null)
+    console.log(data)
     const [status, setStatus] = useState(data?.status);
     const [{ handlerId }, drop] = useDrop({
         accept: ItemTypes.CARD,
@@ -114,7 +115,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
 
                         {col.type == 'text' ?
                             <>
-                                <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`]}</Td>
+                                <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`]??"---"}</Td>
                             </>
                             :
                             <>

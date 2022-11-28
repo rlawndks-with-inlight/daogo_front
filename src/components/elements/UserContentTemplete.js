@@ -5,6 +5,7 @@ import $ from 'jquery'
 import { useState } from "react";
 import { MdNavigateNext } from 'react-icons/md'
 import theme from "../../styles/theme";
+import Loading from "../Loading";
 
 export const WrappersStyle = styled.div`
 position:relative;
@@ -25,16 +26,31 @@ min-height:58vh;
 export const Wrappers = (props) => {
     const [minHeight, setMinHeight] = useState(500);
     const { pathname } = useLocation();
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         setMinHeight($(window).height() - 300);
+        async function onLoading(){
+            setLoading(true);
+            await new Promise((r) => setTimeout(r, 500));
+            setLoading(false);
+        }
+        onLoading();
     }, [pathname])
     useEffect(() => {
 
     }, [])
     return (
         <>
-            <WrappersStyle className="wrappers" style={{ minHeight: `${minHeight}px`, marginTop:`${props.marginTop?props.marginTop:''}`, marginBottom:`${props.marginBottom?props.marginBottom:''}` }}>
-                {props.children ?? ""}
+
+            <WrappersStyle className="wrappers" style={{ minHeight: `${minHeight}px`, marginTop: `${props.marginTop ? props.marginTop : ''}`, marginBottom: `${props.marginBottom ? props.marginBottom : ''}` }}>
+                {loading ?
+                    <>
+                        <Loading />
+                    </>
+                    :
+                    <>
+                        {props.children ?? ""}
+                    </>}
             </WrappersStyle>
         </>
     )
@@ -63,7 +79,7 @@ export const Title = (props) => {
                 {props.not_arrow ?
                     <>
                         {props.textIcon ?
-                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1,fontWeight:'bold' }}>{props.textIcon}</div>
+                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1, fontWeight: 'bold' }}>{props.textIcon}</div>
                             :
                             <>
                             </>
@@ -141,20 +157,7 @@ width:100%;
 z-index:5;
 margin:16px 0;
 `
-export const OneThirdCard = styled.div`
-width:28%;
-background:#fff;
-box-shadow:${props => props.theme.boxShadow};
-padding:2%;
-border-radius:8px;
-height:24px;
-display:flex;
-align-items:center;
-cursor:pointer;
-@media screen and (max-width:350px) { 
-    height:36px;
-}
-`
+
 export const OneSecondCard = styled.div`
 width:44.5%;
 background:#fff;
@@ -166,16 +169,44 @@ display:flex;
 flex-direction:column;
 cursor:pointer;
 `
+export const OneThirdCard = styled.div`
+width:28%;
+background:#fff;
+background:${props=>props.background};
+color:${props=>props.theme.font1};
+color:${(props=>props.color)};
+box-shadow:${props => props.theme.boxShadow};
+padding:2%;
+border-radius:8px;
+height:24px;
+display:flex;
+align-items:center;
+${(props=>props.is_hover?('cursor:pointer'):'')};
+transition-duration: 0.3s;
+&:hover{  
+    background : ${(props=>props.is_hover?(props=>props.theme.color.background1+'29'):'')};
+}
+@media screen and (max-width:350px) { 
+    height:36px;
+}
+`
 export const OneCard = styled.div`
 background:#fff;
+background:${props=>props.background};
+color:${props=>props.theme.font1};
+color:${(props=>props.color)};
 box-shadow:${props => props.theme.boxShadow};
 padding:2%;
 border-radius:8px;
 display:flex;
 flex-direction:column;
-cursor:pointer;
+${(props=>props.is_hover?('cursor:pointer'):'')};
 height:48px;
-width:${(props => props.width)??"100"}%;
+width:${(props => props.width) ?? "100"}%;
+transition-duration: 0.3s;
+&:hover{  
+    background : ${(props=>props.is_hover?(props=>props.theme.color.background1+'29'):'')};
+}
 @media screen and (max-width:400px) { 
     height:56px;
 }

@@ -26,7 +26,8 @@ export const zSidebar = [
         sidebarObjListFormat('수당지급리스트', '/manager/list/extra_pay', 40, ['/manager/list/extra_pay']),//list
         sidebarObjListFormat('스타 변동 LOG', '/manager/list/log_star', 40, ['/manager/list/log_star']),//list
         sidebarObjListFormat('포인트 변동 LOG', '/manager/list/log_point', 40, ['/manager/list/log_point']),//list
-        sidebarObjListFormat('랜덤박스 변동 LOG', '/manager/list/log_randombox', 40, ['/manager/list/log_randombox']),//list
+        sidebarObjListFormat('랜덤박스 변동 LOG', '/manager/list/log_randombox_point', 40, ['/manager/list/log_randombox_point']),//list
+        sidebarObjListFormat('ESGW 포인트 변동 LOG', '/manager/list/log_esgw_point', 40, ['/manager/list/log_esgw_point']),//list
     ]),
     sidebarContentFormat('게시판관리', [
         sidebarObjListFormat('메인배너', '/manager/list/main_banner', 40, ['/manager/list/main_banner']),//list
@@ -68,20 +69,21 @@ export const objManagerListContent = {
         '회원 리스트',
         'user',
         [
-            columnObjFormat('로그인타입', 10, 'login_type', 'type'),
-            columnObjFormat('아이디', 10, 'text', 'id'),
-            columnObjFormat('닉네임', 10, 'text', 'nickname'),
-            columnObjFormat('이름', 10, 'text', 'name'),
-            columnObjFormat('폰번호', 10, 'text', 'phone'),
-            columnObjFormat('레벨', 10, 'level', 'user_level'),
+            columnObjFormat('로그인타입', 8, 'login_type', 'type'),
+            columnObjFormat('아이디', 8, 'text', 'id'),
+            columnObjFormat('닉네임', 8, 'text', 'nickname'),
+            columnObjFormat('이름', 8, 'text', 'name'),
+            columnObjFormat('폰번호', 8, 'text', 'phone'),
+            columnObjFormat('레벨', 8, 'level', 'user_level'),
+            columnObjFormat('가입일', 19, 'text', 'date'),
             columnObjFormat('로그인시간', 19, 'text', 'last_login'),
-            columnObjFormat('정보수정', 10, 'edit', 'edit'),
-            columnObjFormat('머니수정', 10, 'user_money_edit', 'user_money_edit'),
+            columnObjFormat('정보수정', 7, 'edit', 'edit'),
+            columnObjFormat('머니수정', 7, 'user_money_edit', 'user_money_edit'),
 
         ],
         [],
         true,
-        true),
+        false),
 
     extra_pay: sidebarObjFormat(
         '수당지급 리스트',
@@ -127,9 +129,24 @@ export const objManagerListContent = {
         false,
         false
     ),
-    log_randombox: sidebarObjFormat(
+    log_randombox_point: sidebarObjFormat(
         '랜덤박스 변동 LOG',
-        'log_randombox',
+        'log_randombox_point',
+        [
+            columnObjFormat('아이디', 15, 'text', 'user_id'),
+            columnObjFormat('회원명', 15, 'text', 'user_name'),
+            columnObjFormat('증감', 10, 'increase', 'date'),
+            columnObjFormat('금액', 20, 'number', 'price'),
+            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('등록일', 20, 'text', 'date'),
+        ],
+        [],
+        false,
+        false
+    ),
+    log_esgw_point: sidebarObjFormat(
+        'ESGW 포인트 변동 LOG',
+        'log_esgw_point',
         [
             columnObjFormat('아이디', 15, 'text', 'user_id'),
             columnObjFormat('회원명', 15, 'text', 'user_name'),
@@ -206,10 +223,10 @@ export const objManagerListContent = {
         '관리활동 LOG',
         'log_manager_action',
         [
-            columnObjFormat('이름', 10, 'text', 'nickname'),
+            columnObjFormat('이름', 10, 'text', 'user_name'),
             columnObjFormat('팀명', 10, 'text', 'team_name'),
-            columnObjFormat('활동내용', 35, 'text', 'note'),
-            columnObjFormat('메모', 15, 'text', 'memo'),
+            columnObjFormat('활동내용', 35, 'text', 'manager_note'),
+            columnObjFormat('메모', 15, 'text', 'reason_correction'),
             columnObjFormat('활동일', 15, 'text', 'date'),
             columnObjFormat('접속아이피', 15, 'text', 'ip'),
         ],
@@ -561,5 +578,29 @@ export const slideSetting = {
     breakpoint: 480,
     beforeChange: (current, next) => { console.log(current) },
     afterChange: current => { console.log(current) },
+}
+export const managerNoteObj = {
+    DAILY_PAYMENT_PROBABILITY: "데일리 지급 확률이 수정 되었습니다.",
+    ADD_USER: "회원이 추가 되었습니다.",
+    UPDATE_USER: "회원 정보가 수정 되었습니다.",
+    UPDATE_USER_MONEY: "회원 머니가 수정 되었습니다.",
+    ADD_MAIN_BANNER: "메인 배너가 추가 되었습니다.",
+    UPDATE_MAIN_BANNER: "메인 배너가 수정 되었습니다.",
+    ADD_NOTICE: "공지가 추가 되었습니다.",
+    UPDATE_NOTICE: "공지가 수정 되었습니다.",
+    ADD_MARKETING: "마케팅이 추가 되었습니다.",
+    UPDATE_MARKETING: "마케팅이 수정 되었습니다.",
+    ADD_COUPON_CATEGORY: "쿠폰 카테고리가 추가 되었습니다.",
+    UPDATE_COUPON_CATEGORY: "쿠폰 카테고리가 수정 되었습니다.",
+    ADD_COUPON_BRAND: "쿠폰 브랜드가 추가 되었습니다.",
+    UPDATE_COUPON_BRAND: "쿠폰 브랜드가 수정 되었습니다.",
+    ADD_COUPON: "쿠폰 상품이 추가 되었습니다.",
+    UPDATE_COUPON: "쿠폰 상품이 수정 되었습니다.",
+    ADD_OUTLET_CATEGORY: "아울렛 카테고리가 추가 되었습니다.",
+    UPDATE_OUTLET_CATEGORY: "아울렛 카테고리가 수정 되었습니다.",
+    ADD_OUTLET_BRAND: "아울렛 브랜드가 추가 되었습니다.",
+    UPDATE_OUTLET_BRAND: "아울렛 브랜드가 수정 되었습니다.",
+    ADD_OUTLET: "아울렛 상품이 추가 되었습니다.",
+    UPDATE_OUTLET: "아울렛 상품이 수정 되었습니다.",
 }
 export { backUrl };

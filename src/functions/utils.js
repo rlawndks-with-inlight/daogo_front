@@ -179,3 +179,5 @@ export const getSelectButtonColor = (bool) => {
         }
     }
 }
+export const makeManagerNote = (key) =>{
+}

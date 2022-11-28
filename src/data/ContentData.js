@@ -43,9 +43,10 @@ export const zSidebarMenu = [
     { name: '이벤트 게임', link: '/eventgame' },
     { name: '랜덤박스 등록', link: '/randombox/register' },
     { name: '선물하기', link: '/gift' },
-    { name: '랜덤박스 변동내역', link: '/randombox/history' },
     { name: '스타 변동내역', link: '/star/history' },
     { name: '포인트 변동내역', link: '/point/history' },
+    { name: '랜덤박스 변동내역', link: '/randombox/history' },
+    { name: 'ESGW포인트 변동내역', link: '/esgw/history' },
     { name: '공유코드', link: '/sharecode/history' },
     { name: '추천계보', link: '/recommendgenealogy' },
     { name: 'QR CODE', link: '/qrcode' },
@@ -54,51 +55,59 @@ export const zSidebarMenu = [
     { name: '공지사항', link: '/noticelist' },
 ]
 export const historyContent = {
-    randombox:{
-        title:"랜덤박스 변동내역",
-        columns:[
+    randombox: {
+        title: "랜덤박스 변동내역",
+        columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'point'),
         ]
-    } ,
+    },
     star: {
-        title:"스타 변동내역",
-        columns:[
+        title: "스타 변동내역",
+        columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'point'),
         ]
     },
-    point:{
-        title:"포인트 변동내역",
-        columns:[
+    point: {
+        title: "포인트 변동내역",
+        columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'point'),
         ]
     },
-    withdraw:{
-        title:"출금 내역",
-        columns:[
+    esgw: {
+        title: "ESGW포인트 변동내역",
+        columns: [
+            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('Time', 25, 'date', 'date'),
+            columnObjFormat('Point', 25, 'number', 'point'),
+        ]
+    },
+    withdraw: {
+        title: "출금 내역",
+        columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'point'),
         ]
     },
     sharecode: {
-        title:"공유코드",
-        columns:[
+        title: "공유코드",
+        columns: [
             columnObjFormat('Code', 50, 'text', 'code'),
-            columnObjFormat('Quantity', 50, 'text', 'quantity'), 
+            columnObjFormat('Quantity', 50, 'text', 'quantity'),
         ]
     },
     outlet_order: {
-        title:"아울렛 주문 내역",
-        columns:[
+        title: "아울렛 주문 내역",
+        columns: [
             columnObjFormat('상품명', 50, 'text', 'name'),
             columnObjFormat('날짜', 25, 'date', 'date'),
-            columnObjFormat('비고', 25, 'status', 'status'), 
+            columnObjFormat('비고', 25, 'status', 'status'),
         ]
     }
 };

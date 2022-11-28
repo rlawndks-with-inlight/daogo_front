@@ -21,7 +21,7 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import Picker from 'emoji-picker-react';
 import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
-import { backUrl } from '../../../data/Manager/ManagerContentData';
+import { backUrl, managerNoteObj } from '../../../data/Manager/ManagerContentData';
 import { objManagerListContent } from '../../../data/Manager/ManagerContentData';
 import { categoryToNumber } from '../../../functions/utils';
 import CommentComponent from '../../../components/CommentComponent';
@@ -75,18 +75,22 @@ const MNoticeEdit = () => {
         setChosenEmoji(emojiObject);
         editorRef.current.getInstance().insertText(emojiObject.emoji)
     };
-    
+
     const editItem = async () => {
-        if (!$(`.title`).val()) {
+        if (!$(`.title`).val()||(params.pk > 0 && !$('.reason-correction').val())) {
             alert('필요값이 비어있습니다.');
         } else {
             let obj = {
                 user_pk: auth.pk,
                 title: $('.title').val(),
                 note_align: $('.note-align').val(),
-                note: editorRef.current.getInstance().getHTML()
+                note: editorRef.current.getInstance().getHTML(),
+                manager_note: `${params.pk>0?managerNoteObj.UPDATE_NOTICE:managerNoteObj.ADD_NOTICE}`
             }
-            if (params.pk > 0) obj.pk = params.pk;
+            if (params.pk > 0) {
+                obj.pk = params.pk;
+                obj.reason_correction = $('.reason-correction').val();
+            };
 
             if (window.confirm(`저장하시겠습니까?`)) {
 
@@ -129,7 +133,7 @@ const MNoticeEdit = () => {
                     <Col>
                         <Title>내용</Title>
                         <div id="editor">
-                        <Picker onEmojiClick={onEmojiClick} />
+                            <Picker onEmojiClick={onEmojiClick} />
                             <Editor
                                 placeholder="내용을 입력해주세요."
                                 previewStyle="vertical"
@@ -159,7 +163,18 @@ const MNoticeEdit = () => {
                         </div>
                     </Col>
                 </Row>
-
+                {params.pk > 0 ?
+                    <>
+                        <Row>
+                            <Col>
+                                <Title>관리자 수정사유</Title>
+                                <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
+                            </Col>
+                        </Row>
+                    </>
+                    :
+                    <>
+                    </>}
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>

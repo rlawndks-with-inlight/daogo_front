@@ -25,8 +25,6 @@ import MDailyPaymentProbabilityEdit from '../pages/Manager/Daily/MDailyPaymentPr
 import MUserEdit from '../pages/Manager/User/MUserEdit';
 import MUserOrganizationChart from '../pages/Manager/User/MUserOrganizationChart';
 
-import MSetting from '../pages/Manager/MSetting';
-import MSettingEdit from '../pages/Manager/MSettingEdit';
 import MCouponCategoryEdit from '../pages/Manager/Coupon/MCouponCategoryEdit';
 import MItemEdit from '../pages/Manager/MItemEdit';
 import MCouponBrandEdit from '../pages/Manager/Coupon/MCouponBrandEdit';
@@ -45,6 +43,8 @@ import WithdrawRequest from '../pages/User/Auth/WithdrawRequest';
 import NoticeList from '../pages/User/Notice/NoticeList';
 import BuyESGWPoint from '../pages/User/BuyESGWPoint';
 import MUserMoneyEdit from '../pages/Manager/User/MUserMoneyEdit';
+import SubscriptionDeposit from '../pages/User/SubscriptionDeposit/SubscriptionDeposit';
+import Post from '../pages/User/Posts/Post';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -68,7 +68,8 @@ const zUserRoute = [
     { link: '/qrcode', element: <QrCode />, title: "QR코드" },
     { link: '/withdrawrequest', element: <WithdrawRequest />, title: "출금신청" },
     { link: '/noticelist', element: <NoticeList />, title: "공지사항" },
-
+    { link: '/subscriptiondeposit', element: <SubscriptionDeposit />, title: "청약예치금 등록" },
+    { link: '/post/:table/:pk', element: <Post />, title: "게시물" },
 
 ]
 const zManagerRoute = [
@@ -96,8 +97,6 @@ const zManagerRoute = [
 
     { link: '/manager/user_organization_chart', element: <MDailyPaymentProbabilityEdit />, title: "회원조직도" },
 
-    { link: '/manager/setting', element: <MSetting />, title: "환경설정" },
-    { link: '/manager/edit/setting', element: <MSettingEdit />, title: "환경설정" },
     { link: '/manager/edit/:table/:pk', element: <MItemEdit />, title: "" },
     { link: '/manager/edit/:table', element: <MItemEdit />, title: "" },
     { link: '/manager/list/:table/:pk', element: <MItemList />, title: "" },

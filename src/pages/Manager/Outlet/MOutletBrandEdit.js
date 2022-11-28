@@ -26,9 +26,9 @@ const MOutletBrandEdit = () => {
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/item?table=outlet_brand&pk=${params.pk}`);
-                setUrl(backUrl+response.data.img_src);
+                setUrl(backUrl + response.data.img_src);
                 $('.name').val(response.data.name)
-                
+
             }
         }
         fetchPost();
@@ -38,15 +38,18 @@ const MOutletBrandEdit = () => {
             alert('필수 값이 비어있습니다.');
         } else {
             if (window.confirm('저장 하시겠습니까?')) {
-                if(content)formData.append('outlet', content);
+                if (content) formData.append('outlet', content);
                 formData.append('name', $('.name').val());
                 formData.append('table', 'outlet_brand');
-                if (params.pk > 0) formData.append('pk', params.pk);
+                if (params.pk > 0) {
+                    formData.append('pk', params.pk);
+                    formData.append('reason_correction',$('.reason-correction').val());
+                };;
                 const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, formData);
                 if (response.result > 0) {
                     alert("성공적으로 저장되었습니다.");
                     navigate(-1);
-                }else{
+                } else {
                     alert(response.message);
                 }
             }
@@ -92,6 +95,18 @@ const MOutletBrandEdit = () => {
                         <Input className='name' />
                     </Col>
                 </Row>
+                {params.pk > 0 ?
+                    <>
+                        <Row>
+                            <Col>
+                                <Title>관리자 수정사유</Title>
+                                <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
+                            </Col>
+                        </Row>
+                    </>
+                    :
+                    <>
+                    </>}
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>

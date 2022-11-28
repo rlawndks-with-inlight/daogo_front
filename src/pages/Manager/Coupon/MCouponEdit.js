@@ -102,7 +102,10 @@ const MCouponEdit = () => {
                 formData.append('discount_percent', $('.discount_percent').val());
                 formData.append('note', editorRef.current.getInstance().getHTML());
                 formData.append('table', 'coupon');
-                if (params.pk > 0) formData.append('pk', params.pk);
+                if (params.pk > 0) {
+                    formData.append('pk', params.pk);
+                    formData.append('reason_correction',$('.reason-correction').val());
+                };
                 const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, formData);
                 if (response.result > 0) {
                     alert("성공적으로 저장되었습니다.");
@@ -221,6 +224,18 @@ const MCouponEdit = () => {
                         </div>
                     </Col>
                 </Row>
+                {params.pk > 0 ?
+                    <>
+                        <Row>
+                            <Col>
+                                <Title>관리자 수정사유</Title>
+                                <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
+                            </Col>
+                        </Row>
+                    </>
+                    :
+                    <>
+                    </>}
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>

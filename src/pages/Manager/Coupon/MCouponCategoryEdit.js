@@ -36,7 +36,10 @@ const MCouponCategoryEdit = () => {
                 name:$('.name').val()
             }
 
-            if(params.pk>0) obj.pk = params.pk;
+            if (params.pk > 0) {
+                obj.pk = params.pk;
+                obj.reason_correction = $('.reason-correction').val();
+            };
 
             const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, obj);
                 if (response.result > 0) {
@@ -57,6 +60,18 @@ const MCouponCategoryEdit = () => {
                         <Input className='name' />
                     </Col>
                 </Row>
+                {params.pk > 0 ?
+                    <>
+                        <Row>
+                            <Col>
+                                <Title>관리자 수정사유</Title>
+                                <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
+                            </Col>
+                        </Row>
+                    </>
+                    :
+                    <>
+                    </>}
             </Card>
 
             <ButtonContainer>

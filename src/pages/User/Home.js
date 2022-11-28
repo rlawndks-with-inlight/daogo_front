@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, OneCard, OneThirdCard, Row, Col } from '../../components/elements/UserContentTemplete';
+import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, Row, Col, OneCard, OneThirdCard } from '../../components/elements/UserContentTemplete';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
 import { commarNumber } from '../../functions/utils';
@@ -24,7 +24,21 @@ import axios from 'axios';
 import LoadingText from '../../components/LoadingText';
 import { backUrl } from '../../data/ContentData';
 
+const OneTopCard = styled.div`
+background:${(props => props.background) ?? ""};
+color:${(props => props.color) ?? ""};
+box-shadow:${props => props.theme.boxShadow};
+padding:2%;
+border-radius:8px;
+display:flex;
+flex-direction:column;
+height:48px;
+width:${(props => props.width) ?? "100"}%;
 
+@media screen and (max-width:400px) { 
+    height:56px;
+}
+`
 const BottomMenuText = styled.div`
 font-size: ${theme.size.font6};
 color: ${theme.color.font2};
@@ -53,10 +67,11 @@ const Profile = (props) => {
 }
 
 const WhiteButton = (props) => {
-    let { title, content, unit, bottom_content, width, total_occurrence } = props;
+    let { title, content, unit, bottom_content, width, total_occurrence, background, font_color, link } = props;
+    const navigate = useNavigate();
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} color={font_color} background={background ?? '#fff'} is_hover={true} onClick={() => navigate(link)}>
                 <div style={{ display: 'flex' }}>
                     <img src={yellowDot} />
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
@@ -79,24 +94,13 @@ const GreenButton = (props) => {
     let { title, content, bottom_content, width, img } = props;
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`, background: theme.color.background1 }}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} background={theme.color.background1} is_hover={true}>
                 <img src={img} style={{ height: '100%', width: 'auto', margin: 'auto' }} />
             </OneCard>
         </>
     )
 }
-const SmallButton = (props) => {
-    return (
-        <>
-        </>
-    )
-}
-const NoticeContent = (props) => {
-    return (
-        <>
-        </>
-    )
-}
+
 const Home = () => {
     const navigate = useNavigate();
     const [bottomMenuList, setBottomMenuList] = useState([])
@@ -105,7 +109,7 @@ const Home = () => {
     const [post, setPost] = useState({});
 
     let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "이체하기", link: "/gift", icon: downloadOutline }],
-    [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/home", icon: pigBank }, { title: "쇼핑몰", link: "/shoppingmall/outlet", icon: cart }],
+    [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "/shoppingmall/outlet", icon: cart }],
     [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: 'kakaotalk', icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
 
     useEffect(() => {
@@ -114,6 +118,7 @@ const Home = () => {
             console.log(response)
             console.log(response.data.notice)
             if (response?.result > 0) {
+                console.log(response)
                 setPost(response?.data);
             } else {
                 alert(response?.message);
@@ -153,7 +158,7 @@ const Home = () => {
                         </Content>
 
                         <Content>
-                            <OneCard style={{ marginBottom: '12px', background: theme.color.background1 }}>
+                            <OneTopCard style={{ marginBottom: '12px' }} background={theme.color.background1}>
                                 <Row style={{ margin: 'auto 0', height: '85%', color: '#fff' }}>
                                     <Col style={{ margin: '0 auto', width: '25%', display: 'flex', flexDirection: 'column' }}>
                                         <HeaderContent><div>{post?.header?.purchase_package ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
@@ -172,14 +177,14 @@ const Home = () => {
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"내 파트너"}</div>
                                     </Col>
                                 </Row>
-                            </OneCard>
+                            </OneTopCard>
                         </Content>
                         <Content>
-                            <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox_point} unit={`STAR`} />
-                            <WhiteButton title={'보유 STAR'} content={post?.star} total_occurrence={post?.star_total ?? -1} unit={`STAR`} />
-                            <WhiteButton title={'보유 POINT'} content={post?.point} total_occurrence={post?.point_total ?? -1} unit={`POINT`} />
+                            <WhiteButton title={'보유 POINT'} content={post?.point} total_occurrence={post?.point_total ?? -1} unit={`POINT`} link={'/point/history'} />
+                            <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox_point} unit={`STAR`} link={'/randombox/history'} />
+                            <WhiteButton title={'보유 STAR'} content={post?.star} total_occurrence={post?.star_total ?? -1} unit={`STAR`} link={'/star/history'} />
                             <Row>
-                                <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw_point} unit={`ESGW`} />
+                                <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw_point} unit={`ESGW`} link={'/esgw/history'} />
                                 <GreenButton width={45} img={logoWhite} />
                             </Row>
                         </Content>
@@ -190,7 +195,7 @@ const Home = () => {
                                     <Row style={{ marginBottom: '12px' }}>
                                         {item.map((itm, idx) => (
                                             <>
-                                                <OneThirdCard onClick={() => { onClickLink(itm.link) }}>
+                                                <OneThirdCard onClick={() => { onClickLink(itm.link) }} is_hover={true}>
                                                     <div style={{ width: '30%', textAlign: 'end', margin: 'auto', display: 'flex' }}>
                                                         <img src={itm.icon} style={{ height: '20px', margin: '0 0 0 auto' }} />
                                                     </div>
@@ -206,7 +211,7 @@ const Home = () => {
                             <Title not_arrow={true} textIcon={'Read more'}>공지사항</Title>
                             {post?.notice && post?.notice?.map((item, index) => (
                                 <>
-                                    <OneCard style={{ marginBottom: '12px' }}>
+                                    <OneCard style={{ marginBottom: '12px' }} is_hover={true} onClick={()=>{navigate(`/post/notice/${item.pk}`)}}>
                                         <Row>
                                             <div style={{ fontSize: theme.size.font5, color: theme.color.background1, textAlign: 'center', width: '15%', margin: 'auto' }}>필독</div>
                                             <Col style={{ width: '85%', textAlign: 'left' }}>

@@ -12,7 +12,7 @@ import { confirmAsk } from "../../../data/ContentData";
 import $ from 'jquery';
 import {returnMoment} from '../../../functions/utils';
 import { useParams } from "react-router-dom";
-import { objManagerListContent } from "../../../data/Manager/ManagerContentData";
+import { managerNoteObj, objManagerListContent } from "../../../data/Manager/ManagerContentData";
 const MDailyPaymentProbabilityEdit = () => {
     const params = useParams();
 
@@ -60,6 +60,7 @@ const MDailyPaymentProbabilityEdit = () => {
                 money: $('.money').val(),
                 money_percent: $('.money-percent').val(),
                 date: returnMoment(),
+                manager_note: `${managerNoteObj.DAILY_PAYMENT_PROBABILITY}`,
                 pk: post.pk
             });
             if (response.result > 0) {

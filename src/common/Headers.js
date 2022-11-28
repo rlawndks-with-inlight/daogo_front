@@ -65,6 +65,15 @@ cursor:pointer;
   padding:1rem 1.5rem;
 }
 `
+const OpenSideBarBackground = styled.div`
+    position: fixed;
+    background: #00000055;
+    width: 100%;
+    display: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+`
 const SideBarList = styled.div`
 display: flex;
 margin: 2rem 2rem 2rem 0;
@@ -74,16 +83,13 @@ width:12rem;
   right:-18rem;
   flex-direction:column;
   position:absolute;
-  top:6.2rem;
+  top:0;
   background:#fff;
   height:100vh;
   margin:0;
   box-shadow:5px 8px 12px #00000012;
   font-size:${props => props.theme.size.font3};
   overflow-y:auto;
-  @media screen and (max-width:1050px) { 
-    top:3.2rem;
-  }
 `
 const SideBarMenu = styled.div`
 text-align:left;
@@ -93,17 +99,7 @@ margin-left:0.5rem;
 font-weight:bold;
 cursor:pointer;
 `
-const HeaderLogoContainer = styled.div`
-position: absolute; 
-right: 43%;
-top: 0.5rem;
 
-@media screen and (max-width:1050px) {
-  position: relative; 
-  left: 0;
-  top: 0;
-}
-`
 const HeaderLogo = styled.img`
 height: 5rem;
 @media screen and (max-width:1050px) { 
@@ -159,16 +155,12 @@ const Headers = () => {
   const onChangeMenuDisplay = async () => {
     if (menuDisplay == 'flex') {
       $('.sidebar-menu-list').animate({ right: '-18rem', opacity: '0' }, 300);
-      if (window.innerWidth <= 1050) {
-        await new Promise((r) => setTimeout(r, 300));
-        $('.sidebar-menu-list').css("display", "none");
+      $('.sidebar-open-background').attr("style", "display: none !important;");
 
-      }
     } else {
       $('.sidebar-menu-list').animate({ right: '-5vw', opacity: '1' }, 300);
-      if (window.innerWidth <= 1050) {
-        $('.sidebar-menu-list').css("display", "flex");
-      }
+      $('.sidebar-open-background').attr("style", "display: flex !important;");
+
     }
 
     setMenuDisplay(menuDisplay == 'flex' ? 'none' : 'flex');
@@ -198,17 +190,9 @@ const Headers = () => {
 
           <img src={share} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
           <input type="text" style={{ display: 'none' }} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id ?? ""}`} />
-          <HeaderLogoContainer>
             <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/home') }} />
-          </HeaderLogoContainer>
           <img src={hamburger} className='hamburgur' onClick={onChangeMenuDisplay} />
-          <HeaderMenuList>
-            {zBottomMenu.map((item, idx) => (
-              <>
-                <HeaderMenu key={idx} onClick={() => { navigate(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</HeaderMenu>
-              </> 
-            ))}
-          </HeaderMenuList>
+          <OpenSideBarBackground className='sidebar-open-background'onClick={onChangeMenuDisplay} />
           <SideBarList className="sidebar-menu-list">
             {zSidebarMenu.map((item, idx) => (
               <>

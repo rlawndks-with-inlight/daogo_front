@@ -16,6 +16,7 @@ import { AiFillStar } from 'react-icons/ai'
 import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi'
 import { FaMoneyBillWave } from 'react-icons/fa'
 import theme from '../../../styles/theme';
+import { SiHiveBlockchain } from 'react-icons/si';
 const MUserMoneyEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
@@ -27,57 +28,56 @@ const MUserMoneyEdit = () => {
     const [addressList, setAddressList] = useState([])
 
     useEffect(() => {
-
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/item?table=user&pk=${params.pk}`)
-                $('.id').val(response.data.id)
-                $('.pw').val("")
-                $('.name').val(response.data.name)
-                $('.nickname').val(response.data.nickname)
-                $('.phone').val(response.data.phone)
-                $('.user_level').val(response.data.user_level)
                 setUser(response.data);
+            } else {
+                navigate(-1);
             }
         }
         fetchPost();
     }, [])
-    const geocoding = async () => {
-        const { data: response } = await axios.post('/api/getaddressbytext', {
-            text: $('.place').val()
-        });
-        console.log(response)
-        setAddressList(response.data ?? []);
-    }
-    const editUser = () => {
-        if (!$(`.id`).val() || !$(`.name`).val() || !$(`.nickname`).val() || !$(`.phone`).val()) {
+
+    const editUserMoney = async () => {
+        if (!$(`.reason-correction`).val()) {
             alert('필요값이 비어있습니다.');
         } else {
-            let obj = {
-                id: $(`.id`).val(),
-                pw: `${params == 0 ? 'a123456!' : $(`.pw`).val()}`,
-                name: $(`.name`).val(),
-                nickname: $(`.nickname`).val(),
-                phone: $(`.phone`).val(),
-                user_level: $(`.user_level`).val(),
-                parent_id: $('.parent_id').val()
-            }
+            let obj = {};
             if (params.pk > 0) {
-                obj.payment_pw = $('.payment_pw').val();
-                obj.zip_code = $('.zip_code').val();
-                obj.address = $('.address').val();
-                obj.address_detail = $('.address_detail').val();
-                obj.bank_name = $('.bank_name').val();
-                obj.account_number = $('.account_number').val();
-                obj.account_name = $('.account_name').val();
+                let manager_note = "";
+                manager_note += `${user.id}(${user.name}) 회원 `
+                let money_categories = [{en:"star",kor:"스타",column:"star"},{en:"point",kor:"포인트",column:"point"},{en:"randombox",kor:"랜덤박스포인트",column:"randombox_point"},{en:"esgw",kor:"ESGW포인트",column:"esgw_point"},];
+                for(var i = 0;i<money_categories.length;i++){
+                    if ($(`.${money_categories[i].en}`).val()) {
+                        if(isNaN(parseFloat($(`.${money_categories[i].en}`).val()))){
+                            alert(`${money_categories[i].kor}에 숫자 이외의 값이 감지되었습니다.`);
+                            return;
+                        }
+                        if($(`.${money_categories[i].en}-increase`).val()==1){
+                            obj[money_categories[i].column] = user[money_categories[i].column] + (parseFloat($(`.${money_categories[i].en}`).val()))
+                        }else{
+                            obj[money_categories[i].column] = user[money_categories[i].column] - (parseFloat($(`.${money_categories[i].en}`).val()))
+                        }
+                        manager_note += `${money_categories[i].kor},`
+                    }
+                }
+                manager_note = manager_note.substring(0, manager_note.length - 1);
+                manager_note += "을(를) 수정했습니다."
+                obj.pk = params.pk;
+                obj.reason_correction = $('.reason-correction').val();
+                obj.manager_note = manager_note;
             }
-            if (window.confirm(`${params.pk == 0 ? '추가하시겠습니까?' : '수정하시겠습니까?'}`)) {
-
-                params.pk == 0 ? addItem('user', obj) : updateItem('user', obj);
+            if (window.confirm('수정하시겠습니까?')) {
+                const { data: response } = await axios.post('/api/updateitem', obj);
+                if (response.result > 0) {
+                    alert('성공적으로 저장되었습니다.');
+                    navigate(-1);
+                } else {
+                    alert(response.message);
+                }
             }
         }
-
-
     }
     return (
         <>
@@ -101,8 +101,8 @@ const MUserMoneyEdit = () => {
                 <Row>
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>스타</div><AiFillStar style={{ color: theme.color.background1 }} /></Title>
-                        <Input className='star' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW: </div><div>{user?.star ?? <LoadingText width={13} />}</div></Explain>
+                        <Input className='star' placeholder='숫자만 입력해 주세요.' />
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.star ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -113,14 +113,14 @@ const MUserMoneyEdit = () => {
                     </Col>
                     <Col>
                         <Title>변동사유</Title>
-                        <Input className='star-note' placeholder='스타 변동사유를 적어주세요.' />
+                        <Input className='star-note long-input' placeholder='스타 변동사유를 적어주세요.' />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>포인트</div><FaMoneyBillWave style={{ color: theme.color.background1 }} /></Title>
-                        <Input className='point' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW: </div><div>{user?.point ?? <LoadingText width={13} />}</div></Explain>
+                        <Input className='point' placeholder='숫자만 입력해 주세요.' />
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.point ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -131,14 +131,14 @@ const MUserMoneyEdit = () => {
                     </Col>
                     <Col>
                         <Title>변동사유</Title>
-                        <Input className='point-note' placeholder='포인트 변동사유를 적어주세요.' />
+                        <Input className='point-note long-input' placeholder='포인트 변동사유를 적어주세요.' />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>랜덤박스</div><GiPerspectiveDiceSixFacesRandom style={{ color: theme.color.background1 }} /></Title>
-                        <Input className='randombox' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW: </div><div>{user?.randombox ?? <LoadingText width={13} />}</div></Explain>
+                        <Input className='randombox' placeholder='숫자만 입력해 주세요.' />
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.randombox_point ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -149,13 +149,37 @@ const MUserMoneyEdit = () => {
                     </Col>
                     <Col>
                         <Title>변동사유</Title>
-                        <Input className='randombox-note' placeholder='랜덤박스 변동사유를 적어주세요.' />
+                        <Input className='randombox-note long-input' placeholder='랜덤박스 변동사유를 적어주세요.' />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>ESGW 포인트</div><SiHiveBlockchain style={{ color: theme.color.background1 }} /></Title>
+                        <Input className='esgw' placeholder='숫자만 입력해 주세요.' />
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.esgw_point ?? <LoadingText width={13} />}</div></Explain>
+                    </Col>
+                    <Col>
+                        <Title>증감</Title>
+                        <Select className='esgw-increase'>
+                            <option value={1}>+</option>
+                            <option value={0}>-</option>
+                        </Select>
+                    </Col>
+                    <Col>
+                        <Title>변동사유</Title>
+                        <Input className='esgw-note long-input' placeholder='ESGW 포인트 변동사유를 적어주세요.' />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>관리자 수정사유</Title>
+                        <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
                     </Col>
                 </Row>
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
-                <AddButton onClick={editUser}>{params.pk == 0 ? '+ 추가' : '수정'}</AddButton>
+                <AddButton onClick={editUserMoney}>{params.pk == 0 ? '+ 추가' : '수정'}</AddButton>
             </ButtonContainer>
 
         </>
