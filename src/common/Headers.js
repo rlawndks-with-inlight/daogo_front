@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
 import '../styles/style.css'
-import { logoSrc, zSidebarMenu } from '../data/ContentData';
+import { backUrl, logoSrc, zSidebarMenu } from '../data/ContentData';
 import { AiOutlineBell, AiOutlineSearch, AiOutlineSetting } from 'react-icons/ai'
 import { zBottomMenu } from '../data/ContentData';
 import theme from '../styles/theme';
@@ -14,6 +14,10 @@ import { zSidebar } from '../data/Manager/ManagerContentData';
 import share from '../assets/images/icon/home/share.svg';
 import hamburger from '../assets/images/icon/home/hamburger.svg';
 import axios from 'axios';
+import { Col, Row } from '../components/elements/UserContentTemplete';
+import { commarNumber } from '../functions/utils';
+import defaultProfile from '../assets/images/icon/default-profile.png'
+
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -74,11 +78,11 @@ const OpenSideBarBackground = styled.div`
     left: 0;
     height: 100%;
 `
-const SideBarList = styled.div`
-display: flex;
-margin: 2rem 2rem 2rem 0;
-height: 2rem;
-width:12rem;
+const SideBarContainer = styled.div`
+  display: flex;
+  margin: 2rem 2rem 2rem 0;
+  height: 2rem;
+  width:250px;
   opacity:0;
   right:-18rem;
   flex-direction:column;
@@ -87,7 +91,18 @@ width:12rem;
   background:#fff;
   height:100vh;
   margin:0;
-  box-shadow:5px 8px 12px #00000012;
+  @media screen and (max-width:300px) { 
+    width:90%;
+  }
+`
+const SideBarList = styled.div`
+  display: flex;
+  margin: 2rem 2rem 2rem 0;
+  width:100%;
+  flex-direction:column;
+  background:#fff;
+  height:85vh;
+  margin:0;
   font-size:${props => props.theme.size.font3};
   overflow-y:auto;
 `
@@ -95,9 +110,13 @@ const SideBarMenu = styled.div`
 text-align:left;
 font-size:${props => props.theme.size.font3};
 padding:0.5rem;
-margin-left:0.5rem;
+margin-left:1rem;
 font-weight:bold;
 cursor:pointer;
+transition-duration: 0.3s;
+&:hover{  
+  color : ${props => props.theme.color.background3};
+}
 `
 
 const HeaderLogo = styled.img`
@@ -118,18 +137,18 @@ const Headers = () => {
   const [isPost, setIsPost] = useState(false);
   const [menuDisplay, setMenuDisplay] = useState('none');
   const [isAlarm, setIsAlarm] = useState(false);
-
+  const [auth, setAuth] = useState({})
   useEffect(() => {
 
     async function isAuth() {
       const { data: response } = await axios.get('/api/auth');
       if (response.pk > 0) {
-
+        setAuth(response);
       } else {
         navigate('/login');
       }
     }
-    if(!location.pathname.includes('/manager')){
+    if (!location.pathname.includes('/manager')) {
       isAuth();
     }
 
@@ -190,16 +209,29 @@ const Headers = () => {
 
           <img src={share} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
           <input type="text" style={{ display: 'none' }} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id ?? ""}`} />
-            <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/home') }} />
+          <HeaderLogo src={logoSrc} alt="홈으로" onClick={() => { navigate('/home') }} />
           <img src={hamburger} className='hamburgur' onClick={onChangeMenuDisplay} />
-          <OpenSideBarBackground className='sidebar-open-background'onClick={onChangeMenuDisplay} />
-          <SideBarList className="sidebar-menu-list">
-            {zSidebarMenu.map((item, idx) => (
-              <>
-                <SideBarMenu key={idx} onClick={() => { onClickLink(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</SideBarMenu>
-              </>
-            ))}
-          </SideBarList>
+          <OpenSideBarBackground className='sidebar-open-background' onClick={onChangeMenuDisplay} />
+          <SideBarContainer className="sidebar-menu-list">
+            <div style={{ width: '100%', background: theme.color.background1, margin: '0', height: '15vh', color: '#fff', display: 'flex' }}>
+              <Row style={{ justifyContent: 'flex-start', margin: 'auto' }}>
+                <img src={auth?.profile_img ? backUrl + auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
+                <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>
+                  <div style={{ fontSize: theme.size.font3, fontWeight: 'bold' }}>Hi, {auth?.name}</div>
+                  <div style={{ fontSize: theme.size.font6, marginTop: '4px' }}>{`민들레플랫폼 / 회원 / 입금코드 ${commarNumber(13741)}`}</div>
+                </Col>
+              </Row>
+            </div>
+            <div style={{ width: '100%', background: theme.color.background3, height: '5vh' }} />
+            <SideBarList>
+              {zSidebarMenu.map((item, idx) => (
+                <>
+                  <SideBarMenu key={idx} onClick={() => { onClickLink(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</SideBarMenu>
+                </>
+              ))}
+            </SideBarList>
+          </SideBarContainer>
+
         </HeaderMenuContainer>
       </Header>
     </>

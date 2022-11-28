@@ -18,7 +18,7 @@ const theme = {
     light: "#ababab",
     background1: "#67AC5B",
     background2: "#74ad2c",
-    background3: "#a0cb3d",
+    background3: "#A0CA3D",
     backgroundColor: "#a0cb3d11",
     font1: "#2F2E35",
     font2: "#2F2F2F",

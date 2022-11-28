@@ -79,7 +79,7 @@ export const Title = (props) => {
                 {props.not_arrow ?
                     <>
                         {props.textIcon ?
-                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1, fontWeight: 'bold' }}>{props.textIcon}</div>
+                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1, fontWeight: 'bold',cursor:`${props?.textIconLink?'pointer':''}` }} onClick={()=>{navigate(props?.textIconLink??"")}}>{props.textIcon}</div>
                             :
                             <>
                             </>

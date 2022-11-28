@@ -11,12 +11,10 @@ import albumsOutline from '../../assets/images/icon/home/albums-outline.svg';
 import box from '../../assets/images/icon/home/box.svg';
 import cart from '../../assets/images/icon/home/cart.svg';
 import downloadOutline from '../../assets/images/icon/home/download-outline.svg';
-import hamburger from '../../assets/images/icon/home/hamburger.svg';
 import kakaoTalk from '../../assets/images/icon/home/kakao-talk.svg';
 import myPage from '../../assets/images/icon/home/my-page.svg';
 import pigBank from '../../assets/images/icon/home/pig-bank.svg';
 import point from '../../assets/images/icon/home/point.svg';
-import share from '../../assets/images/icon/home/share.svg';
 import withdrawRequest from '../../assets/images/icon/home/withdraw-request.svg';
 import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
 import logoWhite from '../../assets/images/icon/logo-white.svg'
@@ -208,7 +206,7 @@ const Home = () => {
                             ))}
                         </Content>
                         <Content>
-                            <Title not_arrow={true} textIcon={'Read more'}>공지사항</Title>
+                            <Title not_arrow={true} textIcon={'Read more'} textIconLink={'/noticelist'}>공지사항</Title>
                             {post?.notice && post?.notice?.map((item, index) => (
                                 <>
                                     <OneCard style={{ marginBottom: '12px' }} is_hover={true} onClick={()=>{navigate(`/post/notice/${item.pk}`)}}>
