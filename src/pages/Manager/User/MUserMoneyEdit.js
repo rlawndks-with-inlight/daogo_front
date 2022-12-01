@@ -7,7 +7,7 @@ import ButtonContainer from '../../../components/elements/button/ButtonContainer
 import AddButton from '../../../components/elements/button/AddButton';
 import CancelButton from '../../../components/elements/button/CancelButton';
 import $ from 'jquery';
-import { addItem, updateItem } from '../../../functions/utils';
+import { addItem, commarNumber, updateItem } from '../../../functions/utils';
 import { Card, Title, Input, Row, Col, ImageContainer, Select, Explain } from '../../../components/elements/ManagerTemplete';
 import { objManagerListContent } from '../../../data/Manager/ManagerContentData';
 import Breadcrumb from '../../../common/manager/Breadcrumb';
@@ -30,8 +30,15 @@ const MUserMoneyEdit = () => {
     useEffect(() => {
         async function fetchPost() {
             if (params.pk > 0) {
-                const { data: response } = await axios.get(`/api/item?table=user&pk=${params.pk}`)
-                setUser(response.data);
+                const { data: response } = await axios.get(`/api/getusermoney?pk=${params.pk}`);
+                let user_obj = {...response?.data?.user};
+                console.log(response?.data)
+                user_obj['star'] = response?.data?.star.star??0;
+                user_obj['point'] = response?.data?.point?.point??0;
+                user_obj['randombox'] = response?.data?.randombox?.randombox??0;
+                user_obj['esgw'] = response?.data?.esgw?.esgw??0;
+                setUser(user_obj);
+                console.log(user_obj)
             } else {
                 navigate(-1);
             }
@@ -47,21 +54,29 @@ const MUserMoneyEdit = () => {
             if (params.pk > 0) {
                 let manager_note = "";
                 manager_note += `${user.id}(${user.name}) 회원 `
-                let money_categories = [{en:"star",kor:"스타",column:"star"},{en:"point",kor:"포인트",column:"point"},{en:"randombox",kor:"랜덤박스포인트",column:"randombox_point"},{en:"esgw",kor:"ESGW포인트",column:"esgw_point"},];
+                let money_categories = [{en:"star",kor:"스타",column:"star"},{en:"point",kor:"포인트",column:"point"},{en:"randombox",kor:"랜덤박스포인트",column:"randombox"},{en:"esgw",kor:"ESGW포인트",column:"esgw"},];
+                let edit_list = [];
                 for(var i = 0;i<money_categories.length;i++){
                     if ($(`.${money_categories[i].en}`).val()) {
                         if(isNaN(parseFloat($(`.${money_categories[i].en}`).val()))){
                             alert(`${money_categories[i].kor}에 숫자 이외의 값이 감지되었습니다.`);
                             return;
                         }
+                        let price = 0;
                         if($(`.${money_categories[i].en}-increase`).val()==1){
-                            obj[money_categories[i].column] = user[money_categories[i].column] + (parseFloat($(`.${money_categories[i].en}`).val()))
+                            price = price + (parseFloat($(`.${money_categories[i].en}`).val()));
                         }else{
-                            obj[money_categories[i].column] = user[money_categories[i].column] - (parseFloat($(`.${money_categories[i].en}`).val()))
+                            price = price - (parseFloat($(`.${money_categories[i].en}`).val()));
                         }
-                        manager_note += `${money_categories[i].kor},`
+                        manager_note += `${money_categories[i].kor},`;
+                        edit_list.push({
+                            price:price,
+                            type:money_categories[i].en,
+                            note:$(`.${money_categories[i].en}-note`).val()
+                        })
                     }
                 }
+                obj.edit_list = edit_list;
                 manager_note = manager_note.substring(0, manager_note.length - 1);
                 manager_note += "을(를) 수정했습니다."
                 obj.pk = params.pk;
@@ -69,7 +84,8 @@ const MUserMoneyEdit = () => {
                 obj.manager_note = manager_note;
             }
             if (window.confirm('수정하시겠습니까?')) {
-                const { data: response } = await axios.post('/api/updateitem', obj);
+                const { data: response } = await axios.post('/api/updateusermoneybymanager', obj);
+                console.log(response)
                 if (response.result > 0) {
                     alert('성공적으로 저장되었습니다.');
                     navigate(-1);
@@ -102,7 +118,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>스타</div><AiFillStar style={{ color: theme.color.background1 }} /></Title>
                         <Input className='star' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.star ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.star) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -120,7 +136,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>포인트</div><FaMoneyBillWave style={{ color: theme.color.background1 }} /></Title>
                         <Input className='point' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.point ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.point) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -138,7 +154,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>랜덤박스</div><GiPerspectiveDiceSixFacesRandom style={{ color: theme.color.background1 }} /></Title>
                         <Input className='randombox' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.randombox_point ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.randombox) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -156,7 +172,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>ESGW 포인트</div><SiHiveBlockchain style={{ color: theme.color.background1 }} /></Title>
                         <Input className='esgw' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{user?.esgw_point ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.esgw) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>

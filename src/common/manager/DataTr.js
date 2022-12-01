@@ -12,7 +12,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import { GrLinkTop } from 'react-icons/gr'
 import { commarNumber, numberToCategory } from '../../functions/utils'
-
+import { AiOutlinePlus,AiOutlineMinus } from 'react-icons/ai'
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -30,7 +30,6 @@ const ItemTypes = { CARD: 'card' }
 const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus }) => {
     const navigate = useNavigate();
     const ref = useRef(null)
-    console.log(data)
     const [status, setStatus] = useState(data?.status);
     const [{ handlerId }, drop] = useDrop({
         accept: ItemTypes.CARD,
@@ -115,7 +114,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
 
                         {col.type == 'text' ?
                             <>
-                                <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`]??"---"}</Td>
+                                <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`] ?? "---"}</Td>
                             </>
                             :
                             <>
@@ -123,6 +122,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                         {col.type == 'number' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`])}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                        {col.type == 'abs' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{commarNumber(Math.abs(data[`${col.column}`]))}</Td>
                             </>
                             :
                             <>
@@ -215,6 +221,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             <>
                                 <Td style={{ width: `${col.width}%` }}>
                                     ---
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                        {col.type == 'increase' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] > 0 ? '#546de5' : '#ff0000'}`, fontSize: '18px' }}>
+                                    {data[`${col.column}`] > 0 ? <AiOutlinePlus/> : <AiOutlineMinus/>}
                                 </Td>
                             </>
                             :

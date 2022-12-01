@@ -151,7 +151,7 @@ const MItemList = () => {
             table: objManagerListContent[params.table].schema,
             column:column,
             pk: pk,
-            num: num
+            num: num,
         })
         changePage(page)
     });

@@ -53,6 +53,7 @@ export const zSidebarMenu = [
     { name: '개인정보 수정', link: '/editmyinfo' },
     { name: '출금신청', link: '/withdrawrequest' },
     { name: '공지사항', link: '/noticelist' },
+    { name: '마이페이지', link: '/mypage' },
 ]
 export const historyContent = {
     randombox: {
@@ -60,7 +61,7 @@ export const historyContent = {
         columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
-            columnObjFormat('Point', 25, 'number', 'point'),
+            columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
     star: {
@@ -68,7 +69,7 @@ export const historyContent = {
         columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
-            columnObjFormat('Point', 25, 'number', 'point'),
+            columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
     point: {
@@ -76,7 +77,7 @@ export const historyContent = {
         columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
-            columnObjFormat('Point', 25, 'number', 'point'),
+            columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
     esgw: {
@@ -84,7 +85,7 @@ export const historyContent = {
         columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
-            columnObjFormat('Point', 25, 'number', 'point'),
+            columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
     withdraw: {
@@ -92,7 +93,7 @@ export const historyContent = {
         columns: [
             columnObjFormat('History', 50, 'text', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
-            columnObjFormat('Point', 25, 'number', 'point'),
+            columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
     sharecode: {

@@ -42,7 +42,7 @@ const SubscriptionDeposit = () => {
                         <div style={{ margin: 'auto auto 8px auto', fontSize: theme.size.font2 }}>등록한 청약예치금</div>
                         <div style={{ margin: '8px auto auto auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '240px' }}>{post?.star ?? <LoadingText color={"#fff"} width={15} />}<div>스타</div></div>
                         <div style={{ margin: '8px auto auto auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '240px' }}>{post?.point ?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></div>
-                        <div style={{ margin: '8px auto auto auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '240px' }}>{post?.esgw_point ?? <LoadingText color={"#fff"} width={15} />}<div>ESGW 포인트</div></div>
+                        <div style={{ margin: '8px auto auto auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '240px' }}>{post?.esgw ?? <LoadingText color={"#fff"} width={15} />}<div>ESGW 포인트</div></div>
                     </OneCard>
                 </Row>
                 <Row style={{ margin: '0 0 64px 0' }}>
@@ -55,8 +55,8 @@ const SubscriptionDeposit = () => {
                             <div>{post?.point ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
-                        <InputContent title="ESGW 포인트" placeholder="등록할 ESGW 포인트" className="esgw_point" bottom_contents={[
-                            <div>{post?.esgw_point ?? <LoadingText width={10} />}</div>,
+                        <InputContent title="ESGW 포인트" placeholder="등록할 ESGW 포인트" className="esgw" bottom_contents={[
+                            <div>{post?.esgw ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
                         <InputContent title="결제비밀번호" input_type="password" className="payment_pw" placeholder="결제 비밀번호를 입력하세요." />

@@ -113,8 +113,6 @@ const Home = () => {
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get('/api/gethomecontent');
-            console.log(response)
-            console.log(response.data.notice)
             if (response?.result > 0) {
                 console.log(response)
                 setPost(response?.data);
@@ -170,7 +168,7 @@ const Home = () => {
                                         <HeaderContent><div>{post?.header?.rollup_bonus ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"롤업 보너스"}</div>
                                     </Col>
-                                    <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff' }}>
+                                    <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/recommendgenealogy')}>
                                         <HeaderContent><div>{post?.header?.my_partner ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"내 파트너"}</div>
                                     </Col>
@@ -178,11 +176,11 @@ const Home = () => {
                             </OneTopCard>
                         </Content>
                         <Content>
-                            <WhiteButton title={'보유 POINT'} content={post?.point} total_occurrence={post?.point_total ?? -1} unit={`POINT`} link={'/point/history'} />
-                            <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox_point} unit={`STAR`} link={'/randombox/history'} />
-                            <WhiteButton title={'보유 STAR'} content={post?.star} total_occurrence={post?.star_total ?? -1} unit={`STAR`} link={'/star/history'} />
+                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence={post?.point_total ?? -1} unit={`POINT`} link={'/point/history'} />
+                            <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
+                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence={post?.star_total ?? -1} unit={`STAR`} link={'/star/history'} />
                             <Row>
-                                <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw_point} unit={`ESGW`} link={'/esgw/history'} />
+                                <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw?.esgw} unit={`ESGW`} link={'/esgw/history'} />
                                 <GreenButton width={45} img={logoWhite} />
                             </Row>
                         </Content>
@@ -209,7 +207,7 @@ const Home = () => {
                             <Title not_arrow={true} textIcon={'Read more'} textIconLink={'/noticelist'}>공지사항</Title>
                             {post?.notice && post?.notice?.map((item, index) => (
                                 <>
-                                    <OneCard style={{ marginBottom: '12px' }} is_hover={true} onClick={()=>{navigate(`/post/notice/${item.pk}`)}}>
+                                    <OneCard style={{ marginBottom: '12px' }} is_hover={true} onClick={() => { navigate(`/post/notice/${item.pk}`) }}>
                                         <Row>
                                             <div style={{ fontSize: theme.size.font5, color: theme.color.background1, textAlign: 'center', width: '15%', margin: 'auto' }}>필독</div>
                                             <Col style={{ width: '85%', textAlign: 'left' }}>

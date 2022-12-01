@@ -17,7 +17,7 @@ import axios from 'axios';
 import { Col, Row } from '../components/elements/UserContentTemplete';
 import { commarNumber } from '../functions/utils';
 import defaultProfile from '../assets/images/icon/default-profile.png'
-
+import logoutIcon from '../assets/images/icon/logout.svg'
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -91,6 +91,7 @@ const SideBarContainer = styled.div`
   background:#fff;
   height:100vh;
   margin:0;
+  z-index:50;
   @media screen and (max-width:300px) { 
     width:90%;
   }
@@ -101,10 +102,12 @@ const SideBarList = styled.div`
   width:100%;
   flex-direction:column;
   background:#fff;
-  height:85vh;
+  height:82vh;
   margin:0;
   font-size:${props => props.theme.size.font3};
   overflow-y:auto;
+  padding-bottom:16px;
+
 `
 const SideBarMenu = styled.div`
 text-align:left;
@@ -201,6 +204,17 @@ const Headers = () => {
     navigator.clipboard.writeText(copyText.value);
     alert("추천 url이 복사되었습니다.");
   }
+  const onLogout = async () => {
+    if (window.confirm('정말 로그아웃 하시겠습니까?')) {
+        const { data: response } = await axios.post('/api/logout');
+        if (response.result > 0) {
+            localStorage.removeItem('auth');
+            navigate('/login');
+        } else {
+            alert('error');
+        }
+    }
+}
   return (
     <>
 
@@ -213,7 +227,8 @@ const Headers = () => {
           <img src={hamburger} className='hamburgur' onClick={onChangeMenuDisplay} />
           <OpenSideBarBackground className='sidebar-open-background' onClick={onChangeMenuDisplay} />
           <SideBarContainer className="sidebar-menu-list">
-            <div style={{ width: '100%', background: theme.color.background1, margin: '0', height: '15vh', color: '#fff', display: 'flex' }}>
+            <img src={logoutIcon} className='hamburgur' style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }} onClick={onLogout}/>
+            <div style={{ width: '100%', background: theme.color.background1, margin: '0', height: '18vh', color: '#fff', display: 'flex' }}>
               <Row style={{ justifyContent: 'flex-start', margin: 'auto' }}>
                 <img src={auth?.profile_img ? backUrl + auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
                 <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>

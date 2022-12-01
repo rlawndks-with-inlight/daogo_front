@@ -67,6 +67,13 @@ const ContentTable = (props) => {
                                             :
                                             <>
                                             </>}
+                                            {column.type === 'price' ?
+                                            <>
+                                                <Td style={{ width: `${column.width}%`, color: `${item[`${column.column}`] >= 0 ? '#1A7EFC' : '#FF0000'}` }}>{commarNumber(item[`${column.column}`])}</Td>
+                                            </>
+                                            :
+                                            <>
+                                            </>}
                                     </>
                                 ))}
                             </Tr>

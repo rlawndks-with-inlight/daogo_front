@@ -26,8 +26,8 @@ export const zSidebar = [
         sidebarObjListFormat('수당지급리스트', '/manager/list/extra_pay', 40, ['/manager/list/extra_pay']),//list
         sidebarObjListFormat('스타 변동 LOG', '/manager/list/log_star', 40, ['/manager/list/log_star']),//list
         sidebarObjListFormat('포인트 변동 LOG', '/manager/list/log_point', 40, ['/manager/list/log_point']),//list
-        sidebarObjListFormat('랜덤박스 변동 LOG', '/manager/list/log_randombox_point', 40, ['/manager/list/log_randombox_point']),//list
-        sidebarObjListFormat('ESGW 포인트 변동 LOG', '/manager/list/log_esgw_point', 40, ['/manager/list/log_esgw_point']),//list
+        sidebarObjListFormat('랜덤박스 변동 LOG', '/manager/list/log_randombox', 40, ['/manager/list/log_randombox']),//list
+        sidebarObjListFormat('ESGW 포인트 변동 LOG', '/manager/list/log_esgw', 40, ['/manager/list/log_esgw']),//list
     ]),
     sidebarContentFormat('게시판관리', [
         sidebarObjListFormat('메인배너', '/manager/list/main_banner', 40, ['/manager/list/main_banner']),//list
@@ -69,16 +69,15 @@ export const objManagerListContent = {
         '회원 리스트',
         'user',
         [
-            columnObjFormat('로그인타입', 8, 'login_type', 'type'),
-            columnObjFormat('아이디', 8, 'text', 'id'),
-            columnObjFormat('닉네임', 8, 'text', 'nickname'),
-            columnObjFormat('이름', 8, 'text', 'name'),
-            columnObjFormat('폰번호', 8, 'text', 'phone'),
-            columnObjFormat('레벨', 8, 'level', 'user_level'),
+            columnObjFormat('로그인타입', 9, 'login_type', 'type'),
+            columnObjFormat('아이디', 10, 'text', 'id'),
+            columnObjFormat('이름', 9, 'text', 'name'),
+            columnObjFormat('폰번호', 9, 'text', 'phone'),
+            columnObjFormat('레벨', 9, 'level', 'user_level'),
             columnObjFormat('가입일', 19, 'text', 'date'),
             columnObjFormat('로그인시간', 19, 'text', 'last_login'),
-            columnObjFormat('정보수정', 7, 'edit', 'edit'),
-            columnObjFormat('머니수정', 7, 'user_money_edit', 'user_money_edit'),
+            columnObjFormat('정보수정', 8, 'edit', 'edit'),
+            columnObjFormat('머니수정', 8, 'user_money_edit', 'user_money_edit'),
 
         ],
         [],
@@ -105,9 +104,9 @@ export const objManagerListContent = {
         [
             columnObjFormat('아이디', 15, 'text', 'user_id'),
             columnObjFormat('회원명', 15, 'text', 'user_name'),
-            columnObjFormat('증감', 10, 'increase', 'date'),
-            columnObjFormat('금액', 20, 'number', 'price'),
-            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('증감', 10, 'increase', 'price'),
+            columnObjFormat('금액', 20, 'abs', 'price'),
+            columnObjFormat('메모', 20, 'text', 'note'),
             columnObjFormat('등록일', 20, 'text', 'date'),
         ],
         [],
@@ -120,39 +119,39 @@ export const objManagerListContent = {
         [
             columnObjFormat('아이디', 15, 'text', 'user_id'),
             columnObjFormat('회원명', 15, 'text', 'user_name'),
-            columnObjFormat('증감', 10, 'increase', 'date'),
-            columnObjFormat('금액', 20, 'number', 'price'),
-            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('증감', 10, 'increase', 'price'),
+            columnObjFormat('금액', 20, 'abs', 'price'),
+            columnObjFormat('메모', 20, 'text', 'note'),
             columnObjFormat('등록일', 20, 'text', 'date'),
         ],
         [],
         false,
         false
     ),
-    log_randombox_point: sidebarObjFormat(
+    log_randombox: sidebarObjFormat(
         '랜덤박스 변동 LOG',
-        'log_randombox_point',
+        'log_randombox',
         [
             columnObjFormat('아이디', 15, 'text', 'user_id'),
             columnObjFormat('회원명', 15, 'text', 'user_name'),
-            columnObjFormat('증감', 10, 'increase', 'date'),
-            columnObjFormat('금액', 20, 'number', 'price'),
-            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('증감', 10, 'increase', 'price'),
+            columnObjFormat('금액', 20, 'abs', 'price'),
+            columnObjFormat('메모', 20, 'text', 'note'),
             columnObjFormat('등록일', 20, 'text', 'date'),
         ],
         [],
         false,
         false
     ),
-    log_esgw_point: sidebarObjFormat(
+    log_esgw: sidebarObjFormat(
         'ESGW 포인트 변동 LOG',
-        'log_esgw_point',
+        'log_esgw',
         [
             columnObjFormat('아이디', 15, 'text', 'user_id'),
             columnObjFormat('회원명', 15, 'text', 'user_name'),
-            columnObjFormat('증감', 10, 'increase', 'date'),
-            columnObjFormat('금액', 20, 'number', 'price'),
-            columnObjFormat('메모', 20, 'text', 'memo'),
+            columnObjFormat('증감', 10, 'increase', 'price'),
+            columnObjFormat('금액', 20, 'abs', 'price'),
+            columnObjFormat('메모', 20, 'text', 'note'),
             columnObjFormat('등록일', 20, 'text', 'date'),
         ],
         [],
@@ -223,12 +222,13 @@ export const objManagerListContent = {
         '관리활동 LOG',
         'log_manager_action',
         [
+            columnObjFormat('UID', 10, 'text', 'user_id'),
             columnObjFormat('이름', 10, 'text', 'user_name'),
             columnObjFormat('팀명', 10, 'text', 'team_name'),
-            columnObjFormat('활동내용', 35, 'text', 'manager_note'),
+            columnObjFormat('활동내용', 32, 'text', 'manager_note'),
             columnObjFormat('메모', 15, 'text', 'reason_correction'),
-            columnObjFormat('활동일', 15, 'text', 'date'),
-            columnObjFormat('접속아이피', 15, 'text', 'ip'),
+            columnObjFormat('활동일', 12, 'text', 'date'),
+            columnObjFormat('접속아이피', 10, 'text', 'ip'),
         ],
         [],
         false,

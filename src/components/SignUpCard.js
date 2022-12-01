@@ -47,37 +47,37 @@ const SignUpCard = () => {
             alert(response.message);
             if (response.result > 0) {
                 setIsCheckId(true);
-                $('.pw').focus();
+                $('.name').focus();
             } else {
                 setIsCheckId(false);
             }
         }
     }
-    const onCheckNickname = async () => {
-        if (!$('.nickname').val()) {
-            alert('아이디를 입력해주세요.');
-        } else if ($('.nickname').val().includes(' ')) {
-            alert('닉네임의 공백을 제거해 주세요.');
-        } else if (!regExp('nickname', $('.nickname').val())) {
-            alert('닉네임 정규식에 맞지 않습니다.');
-        } else {
-            const { data: response } = await axios.post('/api/checkexistnickname', { nickname: $('.nickname').val() });
-            alert(response.message);
-            if (response.result > 0) {
-                setIsCheckNickname(true);
-                $('.phone').focus();
-            } else {
-                setIsCheckNickname(false);
-            }
-        }
-    }
+    // const onCheckNickname = async () => {
+    //     if (!$('.nickname').val()) {
+    //         alert('아이디를 입력해주세요.');
+    //     } else if ($('.nickname').val().includes(' ')) {
+    //         alert('닉네임의 공백을 제거해 주세요.');
+    //     } else if (!regExp('nickname', $('.nickname').val())) {
+    //         alert('닉네임 정규식에 맞지 않습니다.');
+    //     } else {
+    //         const { data: response } = await axios.post('/api/checkexistnickname', { nickname: $('.nickname').val() });
+    //         alert(response.message);
+    //         if (response.result > 0) {
+    //             setIsCheckNickname(true);
+    //             $('.phone').focus();
+    //         } else {
+    //             setIsCheckNickname(false);
+    //         }
+    //     }
+    // }
     const sendSms = async () => {
         if (!$('.phone').val()) {
             alert("핸드폰 번호를 입력해주세요.")
             return;
         }
         setIsCheckPhoneNumber(false);
-        let fix_phone = $('.phone').val().replace('-', '');
+        let fix_phone = $('.phone').val().replaceAll('-', '');
         setFixPhoneNumber(fix_phone);
         let content = "";
         for (var i = 0; i < 6; i++) {
@@ -114,31 +114,21 @@ const SignUpCard = () => {
         }
     }
     const onSignUp = async () => {
-        if ((!$('.id').val() || !$('.recommend-id').val()) && !location.state) {
+        if (!$('.id').val() || !$('.recommend-id').val() || !$('.name').val() || !$('.phone').val()) {
             alert('필수값을 입력해주세요.');
-        } else if (!isCheckId && !location.state) {
+        } else if (!isCheckId) {
             alert('아이디 중복확인을 해주세요.');
-        } else if (!regExp('pw', $('.pw').val()) && !location.state) {
-            alert('비밀번호 정규식을 지켜주세요.');
-        } else if ($('.pw').val() != $('.pw-check').val() && !location.state) {
-            alert('비밀번호가 일치하지 않습니다.');
-        } else if (!isCheckPhoneNumber && !is_test) {
-            alert('전화번호 인증을 완료해 주세요.');
-        } else if (!isCheckNickname) {
-            alert('닉네임 중복확인을 해주세요.');
-        } else if (!regExp('nickname', $('.nickname').val())) {
-            alert('닉네임 정규식을 지켜주세요.');
-        } else {
+        }  else {
             if (window.confirm('회원가입 하시겠습니까?')) {
                 const { data: response } = await axios.post('/api/adduser', {
-                    id: location.state ? state.id : $('.id').val(),
-                    pw: location.state ? "111" : $('.pw').val(),
-                    name: location.state ? state.name : $('.name').val(),
-                    nickname: $('.nickname').val(),
+                    id: $('.id').val(),
+                    pw: "a123456!",
+                    name: $('.name').val(),
                     phone: $('.phone').val(),
                     user_level: 0,
-                    type_num: location.state ? state.typeNum : typeNum,
-                    profile_img: location.state ? state.profile_img : null
+                    type_num: 0,
+                    profile_img: null,
+                    parent_id: $('.recommend-id').val(),
                 })
                 if (response.result > 0) {
                     alert('회원가입이 완료되었습니다.');
@@ -154,26 +144,13 @@ const SignUpCard = () => {
             onCheckId();
         }
     }
-    const onKeyPressPw = (e) => {
-        if (e.key == 'Enter') {
-            $('.pw-check').focus();
-        }
-    }
-    const onKeyPressPwCheck = (e) => {
-        if (e.key == 'Enter') {
-            $('.name').focus();
-        }
-    }
+
     const onKeyPressName = (e) => {
         if (e.key == 'Enter') {
             $('.nickname').focus();
         }
     }
-    const onKeyPressNickname = (e) => {
-        if (e.key == 'Enter') {
-            onCheckNickname();
-        }
-    }
+
     const onKeyPressPhone = (e) => {
         if (e.key == 'Enter') {
             sendSms();
@@ -182,13 +159,6 @@ const SignUpCard = () => {
     const onKeyPressPhoneCheck = (e) => {
         if (e.key == 'Enter') {
             confirmCoincide();
-        }
-    }
-    const onChangePwCheck = (e) => {
-        if (e.target.value != $('.pw').val()) {
-            setCoinsidePw(false);
-        } else {
-            setCoinsidePw(true);
         }
     }
     const onKeyPressRecommendId = (e) => {
@@ -200,41 +170,23 @@ const SignUpCard = () => {
         <>
             <WrapperForm onSubmit={onSignUp} id='login_form'>
                 <Title>회원가입</Title>
-                {location.state ?
-                    <>
-                    </>
-                    :
-                    <>
-                        <CategoryName>아이디</CategoryName>
-                        <Input placeholder='아이디를 입력해주세요.' type={'text'} className='id' disabled={isCheckId} onKeyPress={onKeyPressId} />
-                        <RegularNotice>5~20자 내의 영문, 숫자 조합만 가능합니다.</RegularNotice>
-                        <Button onClick={onCheckId} disabled={isCheckId}>{isCheckId ? '사용가능' : '중복확인'}</Button>
-                        <CategoryName>비밀번호</CategoryName>
-                        <Input placeholder='비밀번호를 입력해주세요.' type={'password'} className='pw' onKeyPress={onKeyPressPw} />
-                        <RegularNotice>8~15자 내의 영문, 숫자, 특수문자 조합만 가능합니다.</RegularNotice>
-                        <CategoryName>비밀번호 확인</CategoryName>
-                        <Input placeholder='비밀번호를 한번더 입력해주세요.' type={'password'} className='pw-check' onKeyPress={onKeyPressPwCheck} onChange={onChangePwCheck} />
-                        <RegularNotice>{!coinsidePW ? '비밀번호가 일치하지 않습니다.' : ''}</RegularNotice>
-                        <CategoryName>이름</CategoryName>
-                        <Input placeholder='이름을 입력해주세요.' type={'text'} className='name' onKeyPress={onKeyPressName} />
-                        <RegularNotice>실명으로 입력해주세요.</RegularNotice>
-                    </>
-                }
 
-
-
-                <CategoryName>닉네임</CategoryName>
-                <Input placeholder='닉네임을 입력해주세요.' type={'text'} disabled={isCheckNickname} className='nickname' onKeyPress={onKeyPressNickname} />
-                <RegularNotice>2~8자 내의 한글, 영문, 숫자 조합만 가능합니다.</RegularNotice>
-                <Button onClick={onCheckNickname} disabled={isCheckNickname}>{isCheckNickname ? '사용가능' : '중복확인'}</Button>
+                <CategoryName>아이디</CategoryName>
+                <Input placeholder='아이디를 입력해주세요.' type={'text'} className='id' disabled={isCheckId} onKeyPress={onKeyPressId} />
+                <RegularNotice>5~20자 내의 영문, 숫자 조합만 가능합니다.</RegularNotice>
+                <Button onClick={onCheckId} disabled={isCheckId}>{isCheckId ? '사용가능' : '중복확인'}</Button>
+                <CategoryName>비밀번호</CategoryName>
+                <RegularNotice>a123456! 으로 자동생성 됩니다.</RegularNotice>
+                <CategoryName>회원명</CategoryName>
+                <Input placeholder='이름을 입력해주세요.' type={'text'} className='name' onKeyPress={onKeyPressName} />
                 <CategoryName>전화번호</CategoryName>
-                <CategoryName style={{ marginTop: '8px', fontSize: '12px' }}>- 아이디 찾기 및 비밀번호 찾기에 이용됩니다.</CategoryName>
+                {/* <CategoryName style={{ marginTop: '8px', fontSize: '12px' }}>- 아이디 찾기 및 비밀번호 찾기에 이용됩니다.</CategoryName> */}
                 <Input placeholder='전화번호를 입력해주세요.' type={'text'} className='phone' disabled={isCheckPhoneNumber} onKeyPress={onKeyPressPhone} />
-                <RegularNotice></RegularNotice>
+                {/* <RegularNotice></RegularNotice>
                 <Button onClick={sendSms} disabled={isCheckPhoneNumber}>인증번호 발송</Button>
                 <Input style={{ marginTop: '36px' }} placeholder='인증번호를 입력해주세요.' type={'text'} className='phone-check' disabled={isCheckPhoneNumber} onKeyPress={onKeyPressPhoneCheck} />
                 <RegularNotice></RegularNotice>
-                <Button onClick={confirmCoincide} disabled={isCheckPhoneNumber}>{isCheckPhoneNumber ? '확인완료' : '인증번호 확인'}</Button>
+                <Button onClick={confirmCoincide} disabled={isCheckPhoneNumber}>{isCheckPhoneNumber ? '확인완료' : '인증번호 확인'}</Button> */}
                 <CategoryName>추천인 아이디</CategoryName>
                 <Input placeholder='아이디를 입력해주세요.' type={'text'} className='recommend-id' onKeyPress={onKeyPressRecommendId} />
                 <Button style={{ marginTop: '36px' }} onClick={onSignUp}>회원가입</Button>

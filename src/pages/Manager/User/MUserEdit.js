@@ -55,7 +55,7 @@ const MUserEdit = () => {
         setAddressList(response.data ?? []);
     }
     const editUser = async () => {
-        if (!$(`.id`).val() || !$(`.name`).val() || !$(`.nickname`).val() || !$(`.phone`).val()) {
+        if (!$(`.id`).val() || !$(`.name`).val() ||  !$(`.phone`).val()) {
             alert('필요값이 비어있습니다.');
         } else {
             if (window.confirm(`${params.pk == 0 ? '추가하시겠습니까?' : '수정하시겠습니까?'}`)) {
@@ -78,7 +78,6 @@ const MUserEdit = () => {
                         obj['pw'] = $(`.pw`).val()
                     }
                     obj['hash_list'] = hash_list;
-
                     obj['zip_code'] = $(`.zip_code`).val()
                     obj['address'] = $(`.address`).val()
                     obj['address_detail'] = $(`.address_detail`).val()
@@ -88,9 +87,8 @@ const MUserEdit = () => {
                     obj['table'] = "user";
                     obj['pk'] = params.pk;
                     obj['reason_correction'] = $('.reason-correction').val();
-                    
                 }
-                obj['manager_note'] = `${params.pk>0?managerNoteObj.UPDATE_USER:managerNoteObj.ADD_USER}`
+                obj['manager_note'] = `${$(`.id`).val()} ${params.pk>0?(managerNoteObj.UPDATE_USER):managerNoteObj.ADD_USER}`
                 let api_str = '';
                 params.pk == 0 ? api_str = '/api/adduser' : api_str = '/api/updateitem'
                 const { data: response } = await axios.post(api_str, obj);
@@ -139,10 +137,6 @@ const MUserEdit = () => {
                 </Row>
 
                 <Row>
-                    <Col>
-                        <Title>닉네임</Title>
-                        <Input className='nickname' />
-                    </Col>
                     <Col>
                         <Title>폰번호</Title>
                         <Input className='phone' />

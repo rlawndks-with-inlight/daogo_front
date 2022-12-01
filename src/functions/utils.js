@@ -1,4 +1,5 @@
 import axios from 'axios';
+import LoadingText from '../components/LoadingText';
 import theme from '../styles/theme';
 // 웹뷰에서 RN으로 데이터를 보낼때 사용합니다.
 export function sendToRN(num) {
@@ -40,16 +41,22 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
+    if(!num){
+        return undefined;
+    }
     let str = "";
-    if (typeof num == "number") {
-        str = num.toString();
-    } else {
+    if (typeof num == "string") {
         str = num;
+    } else {
+        str = num.toString();
+    }
+    if(str?.length<=3) {
+        return str;
     }
     let result = "";
     let count = 0;
     for (var i = str?.length - 1; i >= 0; i--) {
-        if (count % 3 == 0 && count != 0) result = "," + result;
+        if (count % 3 == 0 && count != 0 && !isNaN(parseInt(str[i]))) result = "," + result;
         result = str[i] + result;
         count++;
     }

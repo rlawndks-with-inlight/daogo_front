@@ -52,6 +52,7 @@
     "react-spinners": "^0.13.4",
     "react-toastify": "^9.0.8",
     "react-transition-group": "^4.4.5",
+    "react-tree-graph": "^8.0.0",
     "sass": "^1.56.1",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.5",
@@ -60,7 +61,7 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "set PORT=80&&react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build"
   },
   "eslintConfig": {

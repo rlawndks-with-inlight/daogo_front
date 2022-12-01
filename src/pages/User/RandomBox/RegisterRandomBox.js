@@ -42,7 +42,7 @@ const RegisterRandomBox = () => {
                 <Row style={{ margin: '0 0 16px 0' }}>
                     <OneCard width={96} style={{ background: theme.color.background1, color: "#fff", height: '175px', cursor: 'default', fontSize: theme.size.font2 }}>
                         <div style={{ margin: 'auto auto 8px auto' }}>나의 랜덤박스</div>
-                        <div style={{ margin: '8px auto auto auto' }}>{post?.randombox_point ?? <LoadingText color={"#fff"} width={15} />}</div>
+                        <div style={{ margin: '8px auto auto auto' }}>{post?.randombox ?? <LoadingText color={"#fff"} width={15} />}</div>
                     </OneCard>
                 </Row>
                 <Row style={{ margin: '0 0 64px 0' }}>
