@@ -84,7 +84,7 @@ const SideBarContainer = styled.div`
   height: 2rem;
   width:250px;
   opacity:0;
-  right:-18rem;
+  right:-100rem;
   flex-direction:column;
   position:absolute;
   top:0;
@@ -176,7 +176,7 @@ const Headers = () => {
   }, [location])
   const onChangeMenuDisplay = async () => {
     if (menuDisplay == 'flex') {
-      $('.sidebar-menu-list').animate({ right: '-18rem', opacity: '0' }, 300);
+      $('.sidebar-menu-list').animate({ right: '-100rem', opacity: '0' }, 300);
       $('.sidebar-open-background').attr("style", "display: none !important;");
 
     } else {
