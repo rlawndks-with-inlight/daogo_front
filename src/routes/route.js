@@ -46,6 +46,8 @@ import MUserMoneyEdit from '../pages/Manager/User/MUserMoneyEdit';
 import SubscriptionDeposit from '../pages/User/SubscriptionDeposit/SubscriptionDeposit';
 import Post from '../pages/User/Posts/Post';
 import MMarketingEdit from '../pages/Manager/Operate/MMarketingEdit';
+import Outlet from '../pages/User/Outlet/Outlet';
+import Coupon from '../pages/User/Coupon/Coupon';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -70,7 +72,11 @@ const zUserRoute = [
     { link: '/withdrawrequest', element: <WithdrawRequest />, title: "출금신청" },
     { link: '/noticelist', element: <NoticeList />, title: "공지사항" },
     { link: '/subscriptiondeposit', element: <SubscriptionDeposit />, title: "청약예치금 등록" },
+    { link: '/item/outlet/:pk', element: <Outlet />, title: "아울렛쇼핑" },
+    { link: '/item/coupon/:pk', element: <Coupon />, title: "쿠폰이벤트" },
+
     { link: '/post/:table/:pk', element: <Post />, title: "게시물" },
+    
 
 ]
 const zManagerRoute = [

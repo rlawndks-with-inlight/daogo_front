@@ -238,3 +238,14 @@ border-bottom:1px solid ${props => props.theme.color.font4};
 export const Td = styled.td`
 border-bottom:1px solid ${props => props.theme.color.font4};
 `
+export const ItemImg = styled.img`
+margin-bottom: 8px;
+width:100%;
+height:202.5px;
+border-radius: 8px;
+border:1px solid ${props => props.theme.color.font3};
+@media screen and (max-width:1000px) {
+    height:20.25vw;
+}
+
+`

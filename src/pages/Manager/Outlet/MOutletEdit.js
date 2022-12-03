@@ -49,10 +49,13 @@ const MOutletEdit = () => {
                 $('.name').val(response.data.name)
                 $('.sell_star').val(response.data.sell_star)
                 $('.generated_code_count').val(response.data.generated_code_count)
+                $('.randombox_point').val(response.data.randombox_point)
                 $('.sell_user_id').val(response.data.sell_user_id)
                 $('.sell_user_name').val(response.data.sell_user_name)
                 $('.sell_user_phone').val(response.data.sell_user_phone)
                 $('.sell_revenue_percent').val(response.data.sell_revenue_percent)
+                $('.is_use_point').val(response.data.is_use_point)
+                $('.point_percent').val(response.data.point_percent)
                 $('.link').val(response.data.link)
                 setSellUserObj({
                     id: response?.data?.sell_user_id,
@@ -135,14 +138,17 @@ const MOutletEdit = () => {
                 formData.append('sell_user_id', $('.sell_user_id').val());
                 formData.append('sell_user_name', $('.sell_user_name').val());
                 formData.append('sell_user_phone', $('.sell_user_phone').val());
+                formData.append('is_use_point', $('.is_use_point').val());
+                formData.append('point_percent', $('.point_percent').val());
 
+                formData.append('randombox_point', $('.randombox_point').val());
                 formData.append('sell_revenue_percent', $('.sell_revenue_percent').val());
                 formData.append('link', $('.link').val());
                 formData.append('note', editorRef.current.getInstance().getHTML());
                 formData.append('table', 'outlet');
                 if (params.pk > 0) {
                     formData.append('pk', params.pk);
-                    formData.append('reason_correction',$('.reason-correction').val());
+                    formData.append('reason_correction', $('.reason-correction').val());
                 };
                 const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, formData);
                 if (response.result > 0) {
@@ -195,6 +201,24 @@ const MOutletEdit = () => {
                         <Title>구매시 생성코드 수</Title>
                         <Input className="generated_code_count" />
                         <Explain>숫자만 입력</Explain>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>혜택 랜덤박스 포인트</Title>
+                        <Input className="randombox_point" />
+                        <Explain>숫자만 입력</Explain>
+                    </Col>
+                    <Col>
+                        <Title>포인트사용여부</Title>
+                        <Select className="is_use_point">
+                            <option value={1}>사용가능</option>
+                            <option value={0}>사용불가</option>
+                        </Select>
+                    </Col>
+                    <Col>
+                        <Title>사용가능포인트 %</Title>
+                        <Input className="point_percent" placeholder="5.5" />
                     </Col>
                 </Row>
                 <Row>
