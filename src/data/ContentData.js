@@ -20,7 +20,7 @@ import { GrEdit } from 'react-icons/gr';
 import { AiOutlineGift, AiOutlineWallet } from 'react-icons/ai';
 import { columnObjFormat } from './Manager/ManagerContentFormat';
 import theme from '../styles/theme';
-export const backUrl = "http://localhost:8001";
+export const backUrl = "https://daogo.co.kr:8443";
 export const logoSrc = logoImg;
 export const confirmAsk = "저장 하시겠습니까?";
 export const deleteAsk = "정말 삭제 하시겠습니까?";
