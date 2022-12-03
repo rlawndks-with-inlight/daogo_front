@@ -67,23 +67,9 @@ const Post = (props) => {
         }
     }
     useEffect(() => {
-        async function isLogined() {
-            await window.flutter_inappwebview.callHandler('native_app_logined', {}).then(async function (result) {
-              //result = "{'code':100, 'message':'success', 'data':{'login_type':1, 'id': 1000000}}"
-              // JSON.parse(result)
-              let obj = JSON.parse(result);
-              if (obj['is_ios']) {
-                await localStorage.setItem('is_ios', '1');
-              }
-              await onLoginBySns(obj.data);
-            });
-          }
-          
         async function fetchPost() {
             setLoading(true)
-            if (window && window.flutter_inappwebview && !localStorage.getItem('auth')) {
-                await isLogined();
-            }
+            
             setPostPk(params.pk || post_pk)
             setPostTable(params.table || post_table)
             const { data: response } = await axios.get(`/api/item?table=${params.table || post_table}&pk=${params.pk || post_pk}&views=1`);
@@ -122,12 +108,13 @@ const Post = (props) => {
                 $('.footer').addClass("dark-mode");
                 $('.viewer > div > div > div > p').addClass("dark-mode");
             }
+            setLoading(false);
         }
         if ((params.table || post_table) != 'notice') {
         }
 
         fetchPost();
-        fetchComments();
+        //fetchComments();
         $('.lazy-load-image-background').addClass('comment-img');
         window.addEventListener('scroll', function (el) {
             let per = Math.floor(($(window).scrollTop() / ($(document).height() - $(window).height())) * 100);
@@ -135,30 +122,6 @@ const Post = (props) => {
         })
         
     }, [])
-    const onLoginBySns = async (obj) => {
-        let nick = "";
-        if (obj.login_type == 1) {
-            nick = "카카오" + new Date().getTime();
-        } else if (obj.login_type == 2) {
-            nick = "네이버" + new Date().getTime();
-        }
-        let objs = {
-            id: obj.id,
-            name: obj.legal_name,
-            nickname: nick,
-            phone: obj.phone_number,
-            user_level: 0,
-            typeNum: obj.login_type,
-            profile_img: obj.profile_image_url
-        }
-        const { data: response } = await axios.post('/api/loginbysns', objs);
-        if (response.result > 0) {
-            await localStorage.setItem('auth', JSON.stringify(response.data));
-            setAuth(response.data);
-        } else {
-            //alert(response.message);
-        }
-    }
     const fetchComments = async () => {
         const { data: response } = await axios.get(`/api/getcommnets?pk=${params.pk || post_pk}&category=${categoryToNumber(params.table || post_table)}`);
         setComments(response.data);
@@ -227,7 +190,7 @@ const Post = (props) => {
                     <>
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'end', fontSize: `${theme.size.font4}` }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <div style={{ margin: '0 4px' }}>{post.nickname}</div> /
+                                <div style={{ margin: '0 4px' }}>{'관리자'}</div> /
                                 <div style={{ margin: '0 4px' }}>{post?.date?.substring(0, 10)}</div> /
                                 <div style={{ margin: '0 8px 0 4px' }}>조회수 {commarNumber(post?.views ?? 0)}</div>
                                 <BsFillShareFill style={{ cursor: 'pointer' }} onClick={handleShare} />

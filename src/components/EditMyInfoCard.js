@@ -8,7 +8,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatPhoneNumber, regExp } from "../functions/utils";
 import defaultImg from '../assets/images/icon/default-profile.png';
-import { backUrl } from "../data/ContentData";
+import { backUrl, historyContent } from "../data/ContentData";
+import ContentTable from "./ContentTable";
 
 
 const Type = styled.div`
@@ -31,204 +32,196 @@ const EditMyInfoCard = () => {
 
     const [myPk, setMyPk] = useState(0);
     const [myId, setMyId] = useState("");
-    const [phoneCheckIng, setPhoneCheckIng] = useState(false);
-    const [isCheckId, setIsCheckId] = useState(false);
-    const [isCheckNickname, setIsCheckNickname] = useState(false);
-    const [isCheckPhoneNumber, setIsCheckPhoneNumber] = useState(false)
-    const [isCheckIdAndPhone, setIsCheckIdAndPhone] = useState(false)
+    const [auth, setAuth] = useState({})
     const [url, setUrl] = useState('')
     const [content, setContent] = useState(undefined)
     const [formData] = useState(new FormData())
-    const [randNum, setRandNum] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [num, setNum] = useState("");
-    const [isCoinside, setIsCoinside] = useState(false);
-    const [isSendSms, setIsSendSms] = useState(false)
-    const [fixPhoneNumber, setFixPhoneNumber] = useState("")
 
-    const zType = [{ title: "프로필 변경" }, { title: "" }, { title: "비밀번호 변경" }, { title: "전화번호 변경" }];
+
+    const zType = [{ title: "프로필 변경" }, { title: "비밀번호 변경" }, { title: "결제 비밀번호 변경" }];
     useEffect(() => {
-        let auth = JSON.parse(localStorage.getItem('auth'))
-        if (auth.profile_img) {
-            setUrl(auth.profile_img.substring(0, 4) == "http" ? auth.profile_img : backUrl + auth.profile_img)
+        async function isAuth() {
+            const { data: response } = await axios.get('/api/auth');
+            setAuth(response)
+            $('.zip-code').val(response?.zip_code)
+            $('.address').val(response?.address)
+            $('.address-detail').val(response?.address_detail)
+            $('.bank-name').val(response?.bank_name)
+            $('.account-number').val(response?.account_number)
+            $('.account-name').val(response?.account_name)
+            setUrl(response?.profile_img?(backUrl+response?.profile_img):"")
         }
-        setMyId(auth.id);
+        isAuth();
     }, [])
-    const sendSms = async () => {
-        if (typeNum == 2 && !$('.id').val()) {
-            alert("아이디를 입력해 주세요.");
-            return;
-        }
-        if (!$('.phone').val()) {
-            alert("핸드폰 번호를 입력해주세요.");
-            return;
-        }
-        setIsCheckPhoneNumber(false);
-        let fix_phone = $('.phone').val().replace('-', '');
-        setFixPhoneNumber(fix_phone);
-        let content = "";
-        for (var i = 0; i < 6; i++) {
-            content += Math.floor(Math.random() * 10).toString();
-        }
 
-        let string = `\n인증번호를 입력해주세요 ${content}.\n\n-We are-`;
-        try {
-            const { data: response } = await axios.post(`/api/sendsms`, {
-                receiver: [fix_phone, formatPhoneNumber(fix_phone)],
-                content: string
-            })
-            if (response?.result > 0) {
-                alert('인증번호가 발송되었습니다.');
-
-                setIsSendSms(true)
-                setRandNum(content);
-                $('phone-check').focus();
-            } else {
-                setIsSendSms(false)
-            }
-        } catch (e) {
-        }
-    }
-    const refresh = () => {
-
-    }
-    const onChangeTypeNum = (num) => {
+    const onChangeTypeNum = async(num) => {
+        setTypeNum(num);
         if (num != typeNum) {
-            $('.id').val('');
-            $('.phone').val('');
-            $('.phone-check').val('');
-            $('.nickname').val('');
-            $('.new-pw').val('');
-            $('.new-pw-check').val('');
-            setTypeNum(num);
+            if (num == 0) {
+                await new Promise((r) => setTimeout(r, 300));
+                $('.zip-code').val(auth?.zip_code)
+                $('.address').val(auth?.address)
+                $('.address-detail').val(auth?.address_detail)
+                $('.bank-name').val(auth?.bank_name)
+                $('.account-number').val(auth?.account_number)
+                $('.account-name').val(auth?.account_name)
+            }
         }
     }
     const addFile = (e) => {
         if (e.target.files[0]) {
             setContent(e.target.files[0]);
-            setUrl(URL.createObjectURL(e.target.files[0]))
+            setUrl(URL.createObjectURL(e.target.files[0]));
         }
     };
     const onSave = async (num) => {
         if (num == 0) {
-            formData.append('id', myId);
             formData.append('profile', content);
-            const { data: response } = await axios.post('/api/uploadprofile', formData);
-            if (response.result > 0) {
-                alert("성공적으로 저장되었습니다.\n다시 로그인 해주세요.");
-                const { data: response } = await axios.post('/api/logout');
-                navigate('/login');
-            } else {
-                alert(response.message);
-            }
-            return;
-        }
-        let str = '/api/editmyinfo';
-        if (!$('.pw').val()) {
-            alert("비밀번호를 입력해주세요.");
-            return;
-        }
-        let obj = { id: myId, pw: $('.pw').val() };
-
-        if (num == 1) {
-            if (!$('.nickname').val()) {
-                alert("닉네임을 입력해주세요.");
+            formData.append('zip_code', $('.zip-code').val());
+            formData.append('address', $('.address').val());
+            formData.append('address_detail', $('.address-detail').val());
+            formData.append('bank_name', $('.bank-name').val());
+            formData.append('account_number', $('.account-number').val());
+            formData.append('account_name', $('.account-name').val());
+            formData.append('pw', $('.pw').val());
+        } else if (num == 1) {
+            if(!$('.new-pw').val() || !$('.new-pw-check').val() || !$('.pw').val()){
+                alert("필요값이 비어있습니다.");
                 return;
             }
-            if ($('.nickname').val().includes(' ')) {
-                alert("닉네임의 공백을 제거해 주세요.");
+            if ($('.new-pw').val() !== $('.new-pw-check').val()) {
+                alert("새 비밀번호가 일치하지 않습니다.");
                 return;
             }
-            if (!regExp('nickname', $('.nickname').val())) {
-                alert("닉네임 정규식에 맞지 않습니다.");
-                return;
-            }
-            obj.nickname = $('.nickname').val();
+            formData.append('pw', $('.pw').val());
+            formData.append('new_pw', $('.new-pw').val());
         } else if (num == 2) {
-            if ($('.new-pw').val() != $('.new-pw-check').val()) {
-                alert("비밀번호가 일치하지 않습니다.");
+            if(!$('.payment-pw').val() || !$('.payment-pw-check').val() || !$('.pw').val()){
+                alert("필요값이 비어있습니다.");
                 return;
             }
-            if (!regExp('pw', $('.new-pw').val())) {
-                alert("비밀번호 정규식에 맞지 않습니다.");
+            if ($('.payment-pw').val() !== $('.payment-pw-check').val()) {
+                alert("결제 비밀번호가 일치하지 않습니다.");
                 return;
             }
-            obj.newPw = $('.new-pw').val();
-        } else if (num == 3) {
-            if (!randNum) {
-                alert("인증번호를 발송해 주세요.");
-                return;
-            }
-            if ($('.phone-check').val() != randNum) {
-                alert("인증번호가 일치하지 않습니다.");
-                return;
-            }
-            obj.phone = $('.phone').val();
+            formData.append('pw', $('.pw').val());
+            formData.append('payment_pw', $('.payment-pw').val());
         }
-        const { data: response } = await axios.post(str, obj);
-        if (response.result > 0) {
-            alert("성공적으로 저장되었습니다.\n다시 로그인 해주세요.");
-            const { data: response } = await axios.post('/api/logout');
-            navigate('/login');
-        } else {
+        formData.append('type', num);
+        console.log(formData)
+        const { data: response } = await axios.post('/api/editmyinfo', formData);
+        if (response?.result < 0) {
             alert(response.message);
+            formData.delete('profile');
+            formData.delete('zip_code');
+            formData.delete('address');
+            formData.delete('address_detail');
+            formData.delete('bank_name');
+            formData.delete('account_number');
+            formData.delete('account_name');
+            formData.delete('pw');
+            formData.delete('new_pw');
+            formData.delete('payment_pw');
+            formData.delete('type');
+        } else {
+            alert('성공적으로 수정되었습니다.');
+            navigate(-1);
         }
     }
     return (
         <>
             <WrapperForm>
-                <Title>마이페이지 수정</Title>
-                {/* <SelectType className="select-type">
+                <Title>개인정보 수정</Title>
+                <SelectType className="select-type">
                     {zType.map((item, idx) => (
                         <>
                             <Type style={{ borderBottom: `4px solid ${typeNum == idx ? theme.color.background1 : '#F6F6F5'}`, color: `${typeNum == idx ? theme.color.background1 : (localStorage.getItem('dark_mode') ? '#fff' : '#ccc')}` }} onClick={() => { onChangeTypeNum(idx) }}>{item.title}</Type>
                         </>
                     ))}
 
-                </SelectType> */}
-                <CategoryName>이미지 업로드</CategoryName>
-                <label for="file1" style={{ margin: '0 auto' }}>
-                    {url ?
-                        <>
-                            <img src={url} alt="#"
-                                style={{
-                                    width: '8rem', height: '8rem',
-                                    margin: '2rem auto', borderRadius: '50%'
-                                }} />
-                        </>
-                        :
-                        <>
-                            <img src={defaultImg} alt="#"
-                                style={{
-                                    width: '8rem', height: '8rem',
-                                    margin: '2rem auto', borderRadius: '50%'
-                                }} />
-                        </>}
-                </label>
-                <div>
-                    <input type="file" id="file1" onChange={addFile} style={{ display: 'none' }} />
-                </div>
-
-                <CategoryName>비밀번호</CategoryName>
-                <Input className="pw" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.pw-check').focus() : null} />
-                <CategoryName>비밀번호 확인</CategoryName>
-                <Input className="pw-check" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw').focus() : null} />
-                <CategoryName>결제비밀번호</CategoryName>
-                <Input className="payment-pw" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw-check').focus() : null} />
-                <CategoryName>결제비밀번호 확인</CategoryName>
-                <Input className="payment-pw-check" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw-check').focus() : null} />
-                <CategoryName>변경할 닉네임</CategoryName>
-                <Input className="nickname" placeholder="변경할 닉네임을 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? onSave(typeNum) : null} />
-
-
-                <CategoryName>전화번호</CategoryName>
-                <Input className="phone" placeholder="전화번호를 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? sendSms() : null} />
-                <RegularNotice></RegularNotice>
-                <Button onClick={sendSms}>인증번호 발송</Button>
-                <CategoryName>인증번호</CategoryName>
-                <Input className="phone-check" placeholder="인증번호를 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? onSave(typeNum) : null} />
-
-                <Button style={{ marginTop: '36px' }} onClick={() => onSave(typeNum)}>저장</Button>
+                </SelectType>
+                {typeNum === 0 ?
+                    <>
+                        <CategoryName>이미지 업로드</CategoryName>
+                        <label for="file1" style={{ margin: '0 auto' }}>
+                            {url ?
+                                <>
+                                    <img src={url} alt="#"
+                                        style={{
+                                            width: '8rem', height: '8rem',
+                                            margin: '2rem auto', borderRadius: '50%'
+                                        }} />
+                                </>
+                                :
+                                <>
+                                    <img src={defaultImg} alt="#"
+                                        style={{
+                                            width: '8rem', height: '8rem',
+                                            margin: '2rem auto', borderRadius: '50%'
+                                        }} />
+                                </>}
+                        </label>
+                        <div>
+                            <input type="file" id="file1" onChange={addFile} style={{ display: 'none' }} />
+                        </div>
+                        <CategoryName>우편번호</CategoryName>
+                        <Input className="zip-code" placeholder="예) 12345" onKeyPress={(e) => e.key == 'Enter' ? $('.address').focus() : null} />
+                        <CategoryName>주소</CategoryName>
+                        <Input className="address" placeholder="예) XX시 YY구 ZZ동 111-11" onKeyPress={(e) => e.key == 'Enter' ? $('.address-detail').focus() : null} />
+                        <CategoryName>상세주소</CategoryName>
+                        <Input className="address-detail" placeholder="예) XX동 YY호" onKeyPress={(e) => e.key == 'Enter' ? $('.bank-name').focus() : null} />
+                        <CategoryName>입금은행명</CategoryName>
+                        <Input className="bank-name" placeholder="예) 농협" onKeyPress={(e) => e.key == 'Enter' ? $('.account-number').focus() : null} />
+                        <CategoryName>입금계좌번호</CategoryName>
+                        <Input className="account-number" placeholder="예) 1234567890" onKeyPress={(e) => e.key == 'Enter' ? $('.account-name').focus() : null} />
+                        <CategoryName>계좌소유자명</CategoryName>
+                        <Input className="account-name" placeholder="홍길동" onKeyPress={(e) => e.key == 'Enter' ? $('.pw').focus() : null} />
+                        <CategoryName>비밀번호</CategoryName>
+                        <Input className="pw" type={'password'} placeholder="확인을 위하여 입력해주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw').focus() : null} />
+                    </>
+                    :
+                    <>
+                    </>}
+                {typeNum === 1 ?
+                    <>
+                        <CategoryName>현재 비밀번호</CategoryName>
+                        <Input className="pw" type={'password'} placeholder="확인을 위하여 입력해주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.new-pw').focus() : null} />
+                        <CategoryName>새 비밀번호</CategoryName>
+                        <Input className="new-pw" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.new-pw-check').focus() : null} />
+                        <CategoryName>새 비밀번호 확인</CategoryName>
+                        <Input className="new-pw-check" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw').focus() : null} />
+                    </>
+                    :
+                    <>
+                    </>}
+                {typeNum === 2 ?
+                    <>
+                        <CategoryName>비밀번호</CategoryName>
+                        <Input className="pw" type={'password'} placeholder="확인을 위하여 입력해주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw').focus() : null} />
+                        <CategoryName>결제비밀번호</CategoryName>
+                        <Input className="payment-pw" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw-check').focus() : null} />
+                        <CategoryName>결제비밀번호 확인</CategoryName>
+                        <Input className="payment-pw-check" type={'password'} placeholder="변경을 원하시면 입력해 주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.payment-pw-check').focus() : null} />
+                    </>
+                    :
+                    <>
+                    </>}
+                {/* {typeNum === 3 ?
+                    <>
+                        <ContentTable columns={historyContent['exchange'].columns}
+                            data={[]}
+                            schema={'exchange'} />
+                    </>
+                    :
+                    <>
+                    </>} */}
+                {typeNum !== 3 ?
+                    <>
+                        <Button style={{ marginTop: '36px' }} onClick={() => onSave(typeNum)}>저장</Button>
+                    </>
+                    :
+                    <>
+                    </>}
             </WrapperForm>
         </>
     )

@@ -45,6 +45,7 @@ import BuyESGWPoint from '../pages/User/BuyESGWPoint';
 import MUserMoneyEdit from '../pages/Manager/User/MUserMoneyEdit';
 import SubscriptionDeposit from '../pages/User/SubscriptionDeposit/SubscriptionDeposit';
 import Post from '../pages/User/Posts/Post';
+import MMarketingEdit from '../pages/Manager/Operate/MMarketingEdit';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -85,6 +86,8 @@ const zManagerRoute = [
 
     { link: '/manager/edit/user/:pk', element: <MUserEdit />, title: "회원관리" },
     { link: '/manager/usermoneyedit/:pk', element: <MUserMoneyEdit />, title: "회원머니관리" },
+
+    { link: '/manager/edit/marketing/:pk', element: <MMarketingEdit />, title: "마케팅예약" },
 
     { link: '/manager/edit/coupon/:pk', element: <MCouponEdit />, title: "쿠폰관리" },
     { link: '/manager/edit/coupon_category/:pk', element: <MCouponCategoryEdit />, title: "쿠폰카테고리관리" },

@@ -238,7 +238,7 @@ const Headers = () => {
               </Row>
             </div>
             <div style={{ width: '100%', background: theme.color.background3, height: '5vh' }} />
-            <SideBarList>
+            <SideBarList className='scroll-table'>
               {zSidebarMenu.map((item, idx) => (
                 <>
                   <SideBarMenu key={idx} onClick={() => { onClickLink(item.link) }} style={{ color: `${item.link == location.pathname ? theme.color.background1 : ''}` }}>{item.name}</SideBarMenu>

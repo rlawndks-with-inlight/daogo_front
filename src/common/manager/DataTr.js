@@ -106,6 +106,32 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             return "애플";
         }
     }
+    const getTextByLogType = (obj_) =>{
+        let obj = {...obj_};
+        if(obj?.type==0){
+            return "아울렛 상품 구매";
+        }else if(obj?.type==1){
+            return "쿠폰 상품 구매";
+        }else if(obj?.type==2){
+            return "랜덤박스 등록에 사용됨.";
+        }else if(obj?.type==3){
+            if(obj?.price>=0){
+                return "선물 받음";
+            }else{
+                return "선물을 다른 유저에게 전달";
+            }
+        }else if(obj?.type==4){
+            return "출금신청함.";
+        }else if(obj?.type==5){
+            return "관리자로부터 회원머니수정을 통해 수정됨";
+        }else if(obj?.type==6){
+            return "데일리 자동지급으로 수령";
+        }else if(obj?.type==7){
+            return "출석 데일리포인트 발생";
+        }else{
+            return "---";
+        }
+    }
     return (
         <>
             <Tr ref={obj.is_move ? ref : null} data-handler-id={handlerId}>
@@ -197,6 +223,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                            {col.type == 'type_note' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`}}>
+                                   {getTextByLogType(data)}
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
                         {col.type == 'alarm_type' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>
@@ -228,7 +263,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             </>}
                         {col.type == 'increase' ?
                             <>
-                                <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] > 0 ? '#546de5' : '#ff0000'}`, fontSize: '18px' }}>
+                                <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] > 0 ? '#546de5' : '#ff0000'}` }}>
                                     {data[`${col.column}`] > 0 ? <AiOutlinePlus/> : <AiOutlineMinus/>}
                                 </Td>
                             </>

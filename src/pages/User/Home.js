@@ -75,15 +75,16 @@ const WhiteButton = (props) => {
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
                 </div>
                 <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 50% 0.15rem auto'}`, display: 'flex', alignItems: 'center' }}><div>{content ? commarNumber(content) : <LoadingText width={15} />}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
-                <div style={{ fontSize: theme.size.font6, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>{total_occurrence ?
-                    <>
-                        <div>Total occurrence</div>
-                        <div style={{ marginLeft: '12px' }}>{total_occurrence > 0 ? total_occurrence.toFixed(2) : <LoadingText width={12} />}</div>
-                    </>
-                    :
-                    <>
-                    </>
-                }</div>
+                <div style={{ fontSize: theme.size.font6, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
+                    {typeof total_occurrence == 'number' ?
+                        <>
+                            <div>Total occurrence</div>
+                            <div style={{ marginLeft: '12px' }}>{total_occurrence >= 0 ? total_occurrence.toFixed(2) : <LoadingText width={12} />}</div>
+                        </>
+                        :
+                        <>
+                        </>
+                    }</div>
             </OneCard>
         </>
     )
@@ -113,8 +114,8 @@ const Home = () => {
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get('/api/gethomecontent');
+            console.log(response)
             if (response?.result > 0) {
-                console.log(response)
                 setPost(response?.data);
             } else {
                 alert(response?.message);
@@ -176,9 +177,9 @@ const Home = () => {
                             </OneTopCard>
                         </Content>
                         <Content>
-                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence={post?.point_total ?? -1} unit={`POINT`} link={'/point/history'} />
+                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
-                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence={post?.star_total ?? -1} unit={`STAR`} link={'/star/history'} />
+                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence={(post?.star?.star - (post?.star_gift?.star_gift ?? 0))} unit={`STAR`} link={'/star/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw?.esgw} unit={`ESGW`} link={'/esgw/history'} />
                                 <GreenButton width={45} img={logoWhite} />

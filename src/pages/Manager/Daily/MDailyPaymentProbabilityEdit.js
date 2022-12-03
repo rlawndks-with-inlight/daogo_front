@@ -84,8 +84,8 @@ const MDailyPaymentProbabilityEdit = () => {
                         <Row>
                             <Col>
                                 <Title>지급타입</Title>
-                                <Input disabled={true} value={'point,cash'} />
-                                <Explain>지급타입 분류 수량만금 입력 ( , 로 구분 / 예시 cash,point)</Explain>
+                                <Input disabled={true} value={'point,star'} />
+                                <Explain>지급타입 분류 수량만금 입력 ( , 로 구분 / 예시 star,point)</Explain>
                             </Col>
                         </Row>
                         <Row>

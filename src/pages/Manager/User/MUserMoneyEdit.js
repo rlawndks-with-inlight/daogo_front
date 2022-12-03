@@ -20,7 +20,7 @@ import { SiHiveBlockchain } from 'react-icons/si';
 const MUserMoneyEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
-    const [user, setUser] = useState({})
+    const [post, setPost] = useState({})
     const [myNick, setMyNick] = useState("")
     const [url, setUrl] = useState('')
     const [content, setContent] = useState(undefined)
@@ -31,14 +31,8 @@ const MUserMoneyEdit = () => {
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/getusermoney?pk=${params.pk}`);
-                let user_obj = {...response?.data?.user};
-                console.log(response?.data)
-                user_obj['star'] = response?.data?.star.star??0;
-                user_obj['point'] = response?.data?.point?.point??0;
-                user_obj['randombox'] = response?.data?.randombox?.randombox??0;
-                user_obj['esgw'] = response?.data?.esgw?.esgw??0;
-                setUser(user_obj);
-                console.log(user_obj)
+                console.log(response)
+                setPost(response?.data);
             } else {
                 navigate(-1);
             }
@@ -53,7 +47,7 @@ const MUserMoneyEdit = () => {
             let obj = {};
             if (params.pk > 0) {
                 let manager_note = "";
-                manager_note += `${user.id}(${user.name}) 회원 `
+                manager_note += `${post?.user?.id}(${post.user?.id}) 회원 `
                 let money_categories = [{en:"star",kor:"스타",column:"star"},{en:"point",kor:"포인트",column:"point"},{en:"randombox",kor:"랜덤박스포인트",column:"randombox"},{en:"esgw",kor:"ESGW포인트",column:"esgw"},];
                 let edit_list = [];
                 for(var i = 0;i<money_categories.length;i++){
@@ -103,22 +97,22 @@ const MUserMoneyEdit = () => {
                 <Row>
                     <Col>
                         <Title><div>아이디</div></Title>
-                        <Explain style={{ margin: '12px auto 6px 24px', width: '218px' }}>{user?.id ?? <LoadingText width={15} />}</Explain>
+                        <Explain style={{ margin: '12px auto 6px 24px', width: '218px' }}>{post?.user?.id ?? <LoadingText width={15} />}</Explain>
                     </Col>
                     <Col>
                         <Title>이름</Title>
-                        <Explain style={{ margin: '12px auto 6px 24px', width: '218px' }}>{user?.name ?? <LoadingText width={15} />}</Explain>
+                        <Explain style={{ margin: '12px auto 6px 24px', width: '218px' }}>{post?.user?.name ?? <LoadingText width={15} />}</Explain>
                     </Col>
                     <Col>
                         <Title>휴대폰번호</Title>
-                        <Explain style={{ margin: '12px auto 6px 24px', width: '218px' }}>{user?.phone ?? <LoadingText width={15} />}</Explain>
+                        <Explain style={{ margin: '12px auto 6px 24px', width: '218px' }}>{post?.user?.phone ?? <LoadingText width={15} />}</Explain>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>스타</div><AiFillStar style={{ color: theme.color.background1 }} /></Title>
                         <Input className='star' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.star) ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.star) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -136,7 +130,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>포인트</div><FaMoneyBillWave style={{ color: theme.color.background1 }} /></Title>
                         <Input className='point' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.point) ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.point) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -154,7 +148,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>랜덤박스</div><GiPerspectiveDiceSixFacesRandom style={{ color: theme.color.background1 }} /></Title>
                         <Input className='randombox' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.randombox) ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.randombox) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -172,7 +166,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>ESGW 포인트</div><SiHiveBlockchain style={{ color: theme.color.background1 }} /></Title>
                         <Input className='esgw' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(user?.esgw) ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.esgw) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>

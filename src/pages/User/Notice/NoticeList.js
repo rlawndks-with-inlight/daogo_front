@@ -5,7 +5,9 @@ import $ from 'jquery';
 import ContentTable from "../../../components/ContentTable";
 import { useEffect, useState } from "react";
 import { columnObjFormat } from "../../../data/Manager/ManagerContentFormat";
+import { useNavigate } from "react-router-dom";
 const NoticeList = () => {
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -28,6 +30,9 @@ const NoticeList = () => {
         setPosts(response.data)
         console.log(response)
     }
+    const onClick = (pk) =>{
+        navigate(`/post/notice/${pk}`);
+    }
     return (
         <>
             <Wrappers>
@@ -38,7 +43,8 @@ const NoticeList = () => {
                     columnObjFormat('date', 30, 'date', 'date'),
                 ]}
                     is_not_display_thead={true}
-                    data={posts} />
+                    data={posts}
+                    onClick={onClick} />
             </Wrappers>
         </>
     )

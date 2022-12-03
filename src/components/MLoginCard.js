@@ -101,11 +101,11 @@ const MLoginCard = () => {
         })
         if (response.result > 0) {
             await localStorage.setItem('auth', JSON.stringify(response.data));
-            if (response.data?.user_level >= 40) {
+            if (response.data?.user?.user_level >= 40) {
                 alert(response.message);
                 navigate('/manager/list/user');
 
-            } else if (response.data?.user_level >= 30) {
+            } else if (response.data?.user?.user_level >= 30) {
                 alert(response.message);
                 navigate('/manager/list/strategy');
             }else{

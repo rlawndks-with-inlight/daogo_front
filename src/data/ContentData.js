@@ -43,15 +43,16 @@ export const zSidebarMenu = [
     { name: '이벤트 게임', link: '/eventgame' },
     { name: '랜덤박스 등록', link: '/randombox/register' },
     { name: '선물하기', link: '/gift' },
+    { name: '출금신청', link: '/withdrawrequest' },
     { name: '스타 변동내역', link: '/star/history' },
     { name: '포인트 변동내역', link: '/point/history' },
     { name: '랜덤박스 변동내역', link: '/randombox/history' },
     { name: 'ESGW포인트 변동내역', link: '/esgw/history' },
+    { name: '출금신청내역', link: '/withdraw/history' },
     { name: '공유코드', link: '/sharecode/history' },
     { name: '추천계보', link: '/recommendgenealogy' },
     { name: 'QR CODE', link: '/qrcode' },
     { name: '개인정보 수정', link: '/editmyinfo' },
-    { name: '출금신청', link: '/withdrawrequest' },
     { name: '공지사항', link: '/noticelist' },
     { name: '마이페이지', link: '/mypage' },
 ]
@@ -59,7 +60,7 @@ export const historyContent = {
     randombox: {
         title: "랜덤박스 변동내역",
         columns: [
-            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('History', 50, 'history', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'price'),
         ]
@@ -67,7 +68,7 @@ export const historyContent = {
     star: {
         title: "스타 변동내역",
         columns: [
-            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('History', 50, 'history', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'price'),
         ]
@@ -75,7 +76,7 @@ export const historyContent = {
     point: {
         title: "포인트 변동내역",
         columns: [
-            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('History', 50, 'history', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'price'),
         ]
@@ -83,15 +84,15 @@ export const historyContent = {
     esgw: {
         title: "ESGW포인트 변동내역",
         columns: [
-            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('History', 50, 'history', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
     withdraw: {
-        title: "출금 내역",
+        title: "출금신청내역",
         columns: [
-            columnObjFormat('History', 50, 'text', 'note'),
+            columnObjFormat('History', 50, 'history', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'price'),
         ]
@@ -110,7 +111,7 @@ export const historyContent = {
             columnObjFormat('날짜', 25, 'date', 'date'),
             columnObjFormat('비고', 25, 'status', 'status'),
         ]
-    }
+    },
 };
 
 export const cardDefaultColor = {

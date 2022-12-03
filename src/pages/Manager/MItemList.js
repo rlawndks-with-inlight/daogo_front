@@ -56,7 +56,7 @@ const MItemList = () => {
         setZColumn(objManagerListContent[`${params.table}`].zColumn ?? {})
         async function fetchPost() {
             setLoading(true)
-            $('.page-cut').val(15)
+            $('.page-cut').val(10);
             setPage(1)
             let str = '';
             let queries = '';
@@ -219,9 +219,10 @@ const MItemList = () => {
                                     <AiOutlineSearch className='search-button' style={{ padding: '14px', cursor: 'pointer' }} onClick={() => changePage(1)} />
                                 </SearchContainer>
                                 <Select className='page-cut' style={{ margin: '12px 24px 12px 24px' }} onChange={onchangeSelectPageCut}>
-                                    <option value={15}>15개</option>
+                                    <option value={10}>10개</option>
                                     <option value={20}>20개</option>
-                                    <option value={30}>30개</option>
+                                    <option value={50}>50개</option>
+                                    <option value={100}>100개</option>
                                 </Select>
 
                                 <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>

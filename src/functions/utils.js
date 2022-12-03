@@ -41,7 +41,8 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
-    if(!num){
+    console.log(num)
+    if (!num && num != 0) {
         return undefined;
     }
     let str = "";
@@ -50,7 +51,14 @@ export const commarNumber = (num) => {
     } else {
         str = num.toString();
     }
-    if(str?.length<=3) {
+    let decimal = "";
+    if (str.includes(".")) {
+        decimal = "." + str.split(".")[1].substring(0, 2);
+        str = str.split(".")[0];
+    } else {
+        decimal = "";
+    }
+    if (str?.length <= 3) {
         return str;
     }
     let result = "";
@@ -60,7 +68,7 @@ export const commarNumber = (num) => {
         result = str[i] + result;
         count++;
     }
-    return result;
+    return result + decimal;
 }
 export const formatPhoneNumber = (input) => {
     const cleanInput = String(input).replaceAll(/[^0-9]/g, "");
@@ -186,5 +194,5 @@ export const getSelectButtonColor = (bool) => {
         }
     }
 }
-export const makeManagerNote = (key) =>{
+export const makeManagerNote = (key) => {
 }
