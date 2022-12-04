@@ -125,7 +125,7 @@ const EditMyInfoCard = () => {
             formData.delete('type');
         } else {
             alert('성공적으로 수정되었습니다.');
-            navigate(-1);
+            navigate('/mypage');
         }
     }
     return (

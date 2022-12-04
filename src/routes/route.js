@@ -48,6 +48,7 @@ import Post from '../pages/User/Posts/Post';
 import MMarketingEdit from '../pages/Manager/Operate/MMarketingEdit';
 import Outlet from '../pages/User/Outlet/Outlet';
 import Coupon from '../pages/User/Coupon/Coupon';
+import OutletOrder from '../pages/User/Outlet/OutletOrder';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -73,6 +74,7 @@ const zUserRoute = [
     { link: '/noticelist', element: <NoticeList />, title: "공지사항" },
     { link: '/subscriptiondeposit', element: <SubscriptionDeposit />, title: "청약예치금 등록" },
     { link: '/item/outlet/:pk', element: <Outlet />, title: "아울렛쇼핑" },
+    { link: '/item/outlet/order/:pk', element: <OutletOrder />, title: "아울렛쇼핑" },
     { link: '/item/coupon/:pk', element: <Coupon />, title: "쿠폰이벤트" },
 
     { link: '/post/:table/:pk', element: <Post />, title: "게시물" },

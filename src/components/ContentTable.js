@@ -27,7 +27,7 @@ const ContentTable = (props) => {
         let obj = { ...obj_ };
         console.log(schema)
         let result = "";
-        if (obj?.type == 0) {
+        if (obj?.type == 0) {//아울렛구매
             result = "";
         } else if (obj?.type == 1) {//쿠폰 구매
             result = "";
@@ -54,7 +54,15 @@ const ContentTable = (props) => {
             }
         } else if (obj?.type == 4) {//출금
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = "출금신청 하였습니다 " + `(${obj['explain_obj']?.status == 1 ? '처리완료' : '처리중'}).`;
+            result = "출금신청 하였습니다 " + `(`;
+            if (obj['explain_obj']?.status == 0) {
+                result += "접수대기";
+            } else if (obj['explain_obj']?.status == 1) {
+                result += "접수완료";
+            } else if (obj['explain_obj']?.status == 2) {
+                result += "지급완료";
+            }
+            result += ')';
         } else if (obj?.type == 5) {//관리자가 수정
             result = "관리자의 수정에 의해 변경 되었습니다.";
         } else if (obj?.type == 6) {//데일리자동지급
@@ -63,16 +71,16 @@ const ContentTable = (props) => {
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
             result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} 발생 하였습니다.`;
         } else if (obj?.type == 8) {//청약예치금등록
-            if(schema=='star'||schema=='point'||schema=='esgw'){
+            if (schema == 'star' || schema == 'point' || schema == 'esgw') {
                 result = `청약예치금에 등록 하였습니다.`;
-            }else{
+            } else {
                 result = "";
             }
         } else if (obj?.type == 9) {//esgw포인트구매
             if (schema == 'point') {
                 result = "ESGW포인트로 전환 하였습니다.";
             } else if (schema == 'esgw') {
-                result = `${obj?.price*100} 포인트에서 ESGW포인트로 전환 하였습니다.`;
+                result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
             }
         } else {
             result = "";
