@@ -142,10 +142,10 @@ const OutletOrder = () => {
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: theme.color.red }}>{count}</strong> 개 구매 신청</CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>상품가격 <strong style={{ color: theme.color.blue, fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star * count)}</strong> 스타</CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>포인트 모두 사용시 <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star * (100 - post?.point_percent) / 100 * count)}</strong> 스타</CategoryName>
+                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5}}>잔여 포인트: <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber(auth?.point)}</strong></CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5, display: 'flex', justifyContent: 'space-between' }}>
                         <div />
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <strong style={{ color: theme.color.red }}>{commarNumber(auth?.point)}</strong>
                             <div style={{ margin: '0 8px' }}>포인트 사용하기</div>
                             {isUsePoint ?
                                 <>
