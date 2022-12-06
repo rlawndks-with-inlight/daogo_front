@@ -12,7 +12,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import { GrLinkTop } from 'react-icons/gr'
 import { commarNumber, numberToCategory } from '../../functions/utils'
-import { AiOutlinePlus,AiOutlineMinus } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -106,29 +106,36 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             return "애플";
         }
     }
-    const getTextByLogType = (obj_) =>{
-        let obj = {...obj_};
-        if(obj?.type==0){
+    const getTextByLogType = (obj_) => {
+        let obj = { ...obj_ };
+        if (obj?.type == 0) {
             return "아울렛 상품 구매";
-        }else if(obj?.type==1){
+        } else if (obj?.type == 1) {
             return "쿠폰 상품 구매";
-        }else if(obj?.type==2){
+        } else if (obj?.type == 2) {
             return "랜덤박스 등록에 사용됨.";
-        }else if(obj?.type==3){
-            if(obj?.price>=0){
-                return "선물 받음";
-            }else{
-                return "선물을 다른 유저에게 전달";
+        } else if (obj?.type == 3) {
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            let sche = "";
+            if (schema == 'log_star') {//쿠폰 구매
+                sche = "스타";
+            } else if (schema == 'log_point') {
+                sche = "포인트";
             }
-        }else if(obj?.type==4){
+            if (obj?.price > 0) {
+                return `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 수수료 제외 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
+            } else {
+                return `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
+            }
+        } else if (obj?.type == 4) {
             return "출금신청함.";
-        }else if(obj?.type==5){
+        } else if (obj?.type == 5) {
             return "관리자로부터 회원머니수정을 통해 수정됨";
-        }else if(obj?.type==6){
+        } else if (obj?.type == 6) {
             return "데일리 자동지급으로 수령";
-        }else if(obj?.type==7){
+        } else if (obj?.type == 7) {
             return "출석 데일리포인트 발생";
-        }else{
+        } else {
             return "---";
         }
     }
@@ -148,6 +155,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                         {col.type == 'number' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`])}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                        {col.type == 'date' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`].substring(0, 10)}</Td>
                             </>
                             :
                             <>
@@ -223,10 +237,10 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'type_note' ?
+                        {col.type == 'type_note' ?
                             <>
-                                <Td style={{ width: `${col.width}%`}}>
-                                   {getTextByLogType(data)}
+                                <Td style={{ width: `${col.width}%` }}>
+                                    {getTextByLogType(data)}
                                 </Td>
                             </>
                             :
@@ -264,7 +278,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                         {col.type == 'increase' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] > 0 ? '#546de5' : '#ff0000'}` }}>
-                                    {data[`${col.column}`] > 0 ? <AiOutlinePlus/> : <AiOutlineMinus/>}
+                                    {data[`${col.column}`] > 0 ? <AiOutlinePlus /> : <AiOutlineMinus />}
                                 </Td>
                             </>
                             :
@@ -302,7 +316,48 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-
+                        {col.type.includes('exchange') ?
+                            <>
+                                {col.type.split('_')[1] == 'star' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(data[`${col.column}`] * (-1))}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('_')[1] == 'money' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(data[`${col.column}`] * (-1) * 100)}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('_')[1] == 'moneycommission' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(data[`${col.column}`] * (-1) * 3.3)}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('_')[1] == 'moneypayment' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(data[`${col.column}`] * (-1) * 96.7)}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                            </>
+                            :
+                            <>
+                            </>}
                     </>
                 ))}
 

@@ -72,6 +72,7 @@ const MItemList = () => {
                 str += `&user_pk=${auth.pk}`
             }
             const { data: response } = await axios.get(str)
+            console.log(response)
             setPosts(response.data.data)
             setPageList(range(1, response.data.maxPage))
             setLoading(false)
