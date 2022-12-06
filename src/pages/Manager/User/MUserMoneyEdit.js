@@ -31,7 +31,6 @@ const MUserMoneyEdit = () => {
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/getusermoney?pk=${params.pk}`);
-                console.log(response)
                 setPost(response?.data);
             } else {
                 navigate(-1);
@@ -79,7 +78,6 @@ const MUserMoneyEdit = () => {
             }
             if (window.confirm('수정하시겠습니까?')) {
                 const { data: response } = await axios.post('/api/updateusermoneybymanager', obj);
-                console.log(response)
                 if (response.result > 0) {
                     alert('성공적으로 저장되었습니다.');
                     navigate(-1);

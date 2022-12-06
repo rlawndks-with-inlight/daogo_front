@@ -28,7 +28,6 @@ const NoticeList = () => {
             keyword_columns: ['title', 'date']
         });
         setPosts(response.data)
-        console.log(response)
     }
     const onClick = (pk) =>{
         navigate(`/post/notice/${pk}`);

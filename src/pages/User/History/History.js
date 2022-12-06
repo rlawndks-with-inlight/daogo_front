@@ -13,7 +13,6 @@ const History = () => {
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get(`/api/items?table=log_${params.schema}`)
-            console.log(response)
             setPosts(response?.data)
         }
         fetchPosts();

@@ -92,7 +92,6 @@ const MOutletEdit = () => {
             id: $('.sell_user_id').val(),
             is_get_user_info: true
         })
-        console.log(response)
         if (response.result > 0) {
             setSellUserObj(response?.data);
             $('.sell_user_name').val(response?.data?.name);

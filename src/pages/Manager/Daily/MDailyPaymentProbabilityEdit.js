@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { confirmAsk } from "../../../data/ContentData";
 import $ from 'jquery';
-import {returnMoment} from '../../../functions/utils';
+import { returnMoment } from '../../../functions/utils';
 import { useParams } from "react-router-dom";
 import { managerNoteObj, objManagerListContent } from "../../../data/Manager/ManagerContentData";
 const MDailyPaymentProbabilityEdit = () => {
@@ -20,7 +20,6 @@ const MDailyPaymentProbabilityEdit = () => {
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get('/api/getdailypercent');
-            console.log(response)
             setPost(response.data);
         }
         fetchPost();
@@ -55,10 +54,16 @@ const MDailyPaymentProbabilityEdit = () => {
                 alert('지급금 확률은 합이 100이 되어야 합니다.');
                 return;
             }
+            if(isNaN(parseFloat($('.daily_deduction_point').val()))){
+                alert('랜덤박스 데일리 차감 포인트에 숫자 이외의 값이 들어 있습니다.');
+                return;
+            }
             const { data: response } = await axios.post('/api/updatedailypercent', {
                 type_percent: $('.type-percent').val(),
                 money: $('.money').val(),
                 money_percent: $('.money-percent').val(),
+                randombox_initialization_time: $('.randombox_initialization_time').val(),
+                daily_deduction_point: $('.daily_deduction_point').val(),
                 date: returnMoment(),
                 manager_note: `${managerNoteObj.DAILY_PAYMENT_PROBABILITY}`,
                 pk: post.pk
@@ -73,48 +78,60 @@ const MDailyPaymentProbabilityEdit = () => {
     return (
         <>
             <Breadcrumb title={`데일리지급확률 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
-            
-                    <Card>
-                        <Row>
-                            <Col>
-                                <Title>마지막 수정일</Title>
-                                <Text>{post?.date?.substring(0,10)}</Text>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Title>지급타입</Title>
-                                <Input disabled={true} value={'point,star'} />
-                                <Explain>지급타입 분류 수량만금 입력 ( , 로 구분 / 예시 star,point)</Explain>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Title>지급타입확률</Title>
-                                <Input placeholder="70,30" className='type-percent' defaultValue={post?.type_percent} />
-                                <Explain>지급타입 순서에 맞추어 입력 ( , 로 구분하고 총 합이 100이 되어야 함 / 최대 소숫점 7자리까지 허용 / 예시 70,30 )</Explain>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Title>지급금</Title>
-                                <Input className='money' placeholder='0.15,0.2,0.25,0.3' defaultValue={post?.money} />
-                                <Explain>지급 % 분류 수량만금 입력 ( , 로 구분 / 예시 0.1,0.2,0.5,0.75,1,1.5,2,3)</Explain>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Title>지급금 확률</Title>
-                                <Input className='money-percent' placeholder="0,95,4,1" defaultValue={post?.money_percent} />
-                                <Explain>지급금 순서에 맞추어 입력 ( , 로 구분하고 총 합이 100이 되어야 함 / 최대 소숫점 7자리까지 허용 / 예시 3,10,10,4,50,20,2,1 )</Explain>
-                            </Col>
-                        </Row>
-                    </Card>
 
-                    <ButtonContainer>
-                        <AddButton onClick={onUpdateDailyPercent}>{'저장'}</AddButton>
-                    </ButtonContainer>
-               
+            <Card>
+                <Row>
+                    <Col>
+                        <Title>마지막 수정일</Title>
+                        <Text>{post?.date?.substring(0, 10)}</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>지급타입</Title>
+                        <Input disabled={true} value={'point,star'} />
+                        <Explain>지급타입 분류 수량만금 입력 ( , 로 구분 / 예시 star,point)</Explain>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>지급타입확률</Title>
+                        <Input placeholder="70,30" className='type-percent' defaultValue={post?.type_percent} />
+                        <Explain>지급타입 순서에 맞추어 입력 ( , 로 구분하고 총 합이 100이 되어야 함 / 최대 소숫점 7자리까지 허용 / 예시 70,30 )</Explain>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>지급금</Title>
+                        <Input className='money' placeholder='0.15,0.2,0.25,0.3' defaultValue={post?.money} />
+                        <Explain>지급 % 분류 수량만금 입력 ( , 로 구분 / 예시 0.1,0.2,0.5,0.75,1,1.5,2,3)</Explain>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>지급금 확률</Title>
+                        <Input className='money-percent' placeholder="0,95,4,1" defaultValue={post?.money_percent} />
+                        <Explain>지급금 순서에 맞추어 입력 ( , 로 구분하고 총 합이 100이 되어야 함 / 최대 소숫점 7자리까지 허용 / 예시 3,10,10,4,50,20,2,1 )</Explain>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>랜덤박스 초기화 시간</Title>
+                        <Input className='randombox_initialization_time' type={'time'} defaultValue={post?.randombox_initialization_time} />
+                    </Col>
+                    <Col>
+                        <Title>랜덤박스 데일리 차감 포인트</Title>
+                        <Input className='daily_deduction_point' placeholder="숫자만 입력" defaultValue={post?.daily_deduction_point} />
+                        <Explain>접속하지 않을 시 차감될 랜덤박스 포인트 입니다.</Explain>
+                    </Col>
+                </Row>
+
+            </Card>
+
+            <ButtonContainer>
+                <AddButton onClick={onUpdateDailyPercent}>{'저장'}</AddButton>
+            </ButtonContainer>
+
         </>
     )
 }

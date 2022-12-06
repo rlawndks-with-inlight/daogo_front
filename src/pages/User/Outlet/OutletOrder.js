@@ -80,7 +80,6 @@ const OutletOrder = () => {
 
     useEffect(() => {
         async function fetchPost() {
-            console.log(location.state)
             if (!location?.state) {
                 alert('잘못된 접근입니다.');
                 navigate(-1);

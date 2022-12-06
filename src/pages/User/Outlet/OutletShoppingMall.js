@@ -76,7 +76,6 @@ const OutletShoppingMall = () => {
             brand_pk: ($('.brand').val() != 0 ? $('.brand').val() : undefined),
         }
         const { data: response } = await axios.post(`/api/items`, obj)
-        console.log(response)
         setItemList(response?.data ?? []);
         setLoading(false);
     }

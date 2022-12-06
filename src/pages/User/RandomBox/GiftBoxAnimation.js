@@ -34,7 +34,6 @@ const GiftBoxAnimation = () => {
         if (!isDone) {
             const { data: response } = await axios.post('/api/lotterydailypoint');
             
-            console.log(response)
             if(response?.result<0){
                 alert(response.message);
                 navigate('/home')

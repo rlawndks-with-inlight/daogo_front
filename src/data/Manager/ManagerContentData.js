@@ -23,7 +23,7 @@ export const zSidebar = [
         sidebarObjListFormat('회원조직도(레벨별)', '/manager/user_organization_chart', 40, ['/manager/user_organization_chart']),
     ]),
     sidebarContentFormat('매출관리', [
-        sidebarObjListFormat('수당지급리스트', '/manager/list/extra_pay', 40, ['/manager/list/extra_pay']),//list
+        sidebarObjListFormat('매출(패키지)리스트', '/manager/list/marketing', 40, ['/manager/list/marketing']),//list ?
         sidebarObjListFormat('스타 변동 LOG', '/manager/list/log_star', 40, ['/manager/list/log_star']),//list
         sidebarObjListFormat('포인트 변동 LOG', '/manager/list/log_point', 40, ['/manager/list/log_point']),//list
         sidebarObjListFormat('랜덤박스 변동 LOG', '/manager/list/log_randombox', 40, ['/manager/list/log_randombox']),//list
@@ -39,7 +39,6 @@ export const zSidebar = [
         sidebarObjListFormat('관리활동 LOG', '/manager/list/log_manager_action', 40, ['/manager/list/log_manager_action']),//list
     ]),
     sidebarContentFormat('운영관리', [
-        sidebarObjListFormat('마케팅예약리스트', '/manager/list/marketing', 40, ['/manager/list/marketing']),//list ?
         sidebarObjListFormat('수당신청리스트', '/manager/list/exchange', 40, ['/manager/list/exchange']),//list
     ]),
     sidebarContentFormat('결산관리', [
@@ -74,10 +73,11 @@ export const objManagerListContent = {
             columnObjFormat('이름', 9, 'text', 'name'),
             columnObjFormat('폰번호', 9, 'text', 'phone'),
             columnObjFormat('레벨', 9, 'level', 'user_level'),
-            columnObjFormat('가입일', 19, 'text', 'date'),
-            columnObjFormat('로그인시간', 19, 'text', 'last_login'),
+            columnObjFormat('가입일', 15, 'text', 'date'),
+            columnObjFormat('로그인시간', 15, 'text', 'last_login'),
             columnObjFormat('정보수정', 8, 'edit', 'edit'),
             columnObjFormat('머니수정', 8, 'user_money_edit', 'user_money_edit'),
+            columnObjFormat('매출등록', 8, 'user_marketing', 'user_marketing'),
 
         ],
         [],
@@ -93,6 +93,21 @@ export const objManagerListContent = {
             columnObjFormat('지급타입', 20, 'text', 'date'),
             columnObjFormat('지급내용', 20, 'text', 'ip'),
             columnObjFormat('지급일', 20, 'text', 'ip'),
+        ],
+        [],
+        false,
+        false
+    ),
+    marketing: sidebarObjFormat(
+        '매출(패키지) 리스트',
+        'marketing',
+        [
+            columnObjFormat('지갑아이디', '', 'text', 'user_id'),
+            columnObjFormat('회원명', '', 'text', 'user_name'),
+            columnObjFormat('신청레벨(레벨명)', '', 'marketing_tier', 'marketing_tier'),
+            columnObjFormat('완료일', '', 'text', 'date'),
+            columnObjFormat('처리자아이디', '', 'text', 'manager_id'),
+            columnObjFormat('처리자닉네임', '', 'text', 'manager_name'),
         ],
         [],
         false,
@@ -237,32 +252,6 @@ export const objManagerListContent = {
         [],
         false,
         false
-    ),
-    marketing: sidebarObjFormat(
-        '마케팅 예약 리스트',
-        'marketing',
-        [
-            columnObjFormat('예약타이틀', '', 'text', 'nickname'),
-            columnObjFormat('지갑아이디', '', 'text', 'nickname'),
-            columnObjFormat('회원명', '', 'text', 'nickname'),
-            columnObjFormat('신청레벨(레벨명)', '', 'text', 'nickname'),
-            columnObjFormat('신청코드수', '', 'text', 'nickname'),
-            columnObjFormat('등록스타', '', 'text', 'nickname'),
-            columnObjFormat('등록포인트', '', 'text', 'nickname'),
-            columnObjFormat('등록랜덤박스', '', 'text', 'nickname'),
-            columnObjFormat('등록할인율', '', 'text', 'nickname'),
-            columnObjFormat('신청일', '', 'text', 'nickname'),
-            columnObjFormat('진행상황', '', 'text', 'nickname'),
-            columnObjFormat('완료일', '', 'text', 'nickname'),
-            columnObjFormat('담당자명', '', 'text', 'nickname'),
-            columnObjFormat('담당자팀', '', 'text', 'nickname'),
-            columnObjFormat('현재등록수량', '', 'text', 'nickname'),
-            columnObjFormat('코드생성수량', '', 'text', 'nickname'),
-            columnObjFormat('관리', '', 'text', 'nickname'),
-        ],
-        [],
-        true,
-        true
     ),
     exchange: sidebarObjFormat(
         '수당신청 리스트',
@@ -592,8 +581,8 @@ export const managerNoteObj = {
     UPDATE_MAIN_BANNER: "메인 배너가 수정 되었습니다.",
     ADD_NOTICE: "공지가 추가 되었습니다.",
     UPDATE_NOTICE: "공지가 수정 되었습니다.",
-    ADD_MARKETING: "마케팅이 추가 되었습니다.",
-    UPDATE_MARKETING: "마케팅이 수정 되었습니다.",
+    ADD_MARKETING: "매출이 추가 되었습니다.",
+    UPDATE_MARKETING: "매출이 수정 되었습니다.",
     ADD_COUPON_CATEGORY: "쿠폰 카테고리가 추가 되었습니다.",
     UPDATE_COUPON_CATEGORY: "쿠폰 카테고리가 수정 되었습니다.",
     ADD_COUPON_BRAND: "쿠폰 브랜드가 추가 되었습니다.",

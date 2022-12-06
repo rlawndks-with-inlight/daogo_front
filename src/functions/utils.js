@@ -41,7 +41,6 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
-    console.log(num)
     if (!num && num != 0) {
         return undefined;
     }
@@ -195,4 +194,27 @@ export const getSelectButtonColor = (bool) => {
     }
 }
 export const makeManagerNote = (key) => {
+}
+export const getTierByUserTier = (num,id) =>{
+    if(num==0){
+        return "일반유저";
+
+    }else if(num==5){
+        return "화이트";
+
+    }else if(num==10){
+        return "그린";
+
+    }else if(num==15){
+        return "실버";
+
+    }else if(num==20){
+        return "골드";
+
+    }else if(num==25){
+        return "플레티넘";
+
+    }else{
+        return "잘못된 레벨";
+    }
 }

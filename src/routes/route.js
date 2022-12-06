@@ -45,10 +45,10 @@ import BuyESGWPoint from '../pages/User/BuyESGWPoint';
 import MUserMoneyEdit from '../pages/Manager/User/MUserMoneyEdit';
 import SubscriptionDeposit from '../pages/User/SubscriptionDeposit/SubscriptionDeposit';
 import Post from '../pages/User/Posts/Post';
-import MMarketingEdit from '../pages/Manager/Operate/MMarketingEdit';
 import Outlet from '../pages/User/Outlet/Outlet';
 import Coupon from '../pages/User/Coupon/Coupon';
 import OutletOrder from '../pages/User/Outlet/OutletOrder';
+import MUserMarketingEdit from '../pages/Manager/User/MUserMarketingEdit';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -86,7 +86,6 @@ const zManagerRoute = [
     { link: '/manager/login', element: <MLogin />, title: "관리자로그인" },
 
     { link: '/manager/user_organization_chart', element: <MUserOrganizationChart />, title: "" },
-
     { link: '/manager/edit/daily_payment_probability', element: <MDailyPaymentProbabilityEdit />, title: "" },
     { link: '/manager/daily_manual_payment', element: <MDailyManualPayment />, title: "" },
     { link: '/manager/edit/main_banner/:pk', element: <MMainBannerEdit />, title: "메인배너" },
@@ -94,8 +93,7 @@ const zManagerRoute = [
 
     { link: '/manager/edit/user/:pk', element: <MUserEdit />, title: "회원관리" },
     { link: '/manager/usermoneyedit/:pk', element: <MUserMoneyEdit />, title: "회원머니관리" },
-
-    { link: '/manager/edit/marketing/:pk', element: <MMarketingEdit />, title: "마케팅예약" },
+    { link: '/manager/usermarketing/:pk', element: <MUserMarketingEdit />, title: "매출(패키지)" },
 
     { link: '/manager/edit/coupon/:pk', element: <MCouponEdit />, title: "쿠폰관리" },
     { link: '/manager/edit/coupon_category/:pk', element: <MCouponCategoryEdit />, title: "쿠폰카테고리관리" },
@@ -104,9 +102,6 @@ const zManagerRoute = [
     { link: '/manager/edit/outlet/:pk', element: <MOutletEdit />, title: "아울렛관리" },
     { link: '/manager/edit/outlet_brand/:pk', element: <MOutletBrandEdit />, title: "아울렛브랜드관리" },
     { link: '/manager/edit/outlet_category/:pk', element: <MOutletCategoryEdit />, title: "아울렛카테고리관리" },
-
-
-    { link: '/manager/user_organization_chart', element: <MDailyPaymentProbabilityEdit />, title: "회원조직도" },
 
     { link: '/manager/edit/:table/:pk', element: <MItemEdit />, title: "" },
     { link: '/manager/edit/:table', element: <MItemEdit />, title: "" },

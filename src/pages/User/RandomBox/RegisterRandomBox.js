@@ -31,15 +31,12 @@ const RegisterRandomBox = () => {
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/getusermoney`);
-            console.log(response)
             setPost(response?.data);
 
         }
         fetchPost();
     }, [])
     const registerRandomBox = async () => {
-        console.log($('.send_star').val())
-        console.log($('.payment_pw').val())
         if (!$('.send_star').val() || !$('.payment_pw').val()) {
             alert("필수값이 비어있습니다.");
             return;
@@ -60,7 +57,6 @@ const RegisterRandomBox = () => {
             if(response?.result>0){
                 alert("성공적으로 등록되었습니다.");
                 const { data: response } = await axios.get(`/api/getusermoney`);
-                console.log(response)
                 setPost(response?.data);
             }else{
                 alert(response?.message);

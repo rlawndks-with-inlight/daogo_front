@@ -74,7 +74,6 @@ const Outlet = () => {
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/item?table=outlet&pk=${params?.pk}`);
-            console.log(response);
             setPost(response?.data);
         }
         fetchPost();

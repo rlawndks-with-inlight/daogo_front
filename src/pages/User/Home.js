@@ -1,12 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, Row, Col, OneCard, OneThirdCard } from '../../components/elements/UserContentTemplete';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
-import { commarNumber } from '../../functions/utils';
-import defaultProfile from '../../assets/images/icon/default-profile.png'
+import { commarNumber, getTierByUserTier } from '../../functions/utils';
+import defaultProfile from '../../assets/images/icon/default-profile.png';
 import albumsOutline from '../../assets/images/icon/home/albums-outline.svg';
 import box from '../../assets/images/icon/home/box.svg';
 import cart from '../../assets/images/icon/home/cart.svg';
@@ -17,7 +17,7 @@ import pigBank from '../../assets/images/icon/home/pig-bank.svg';
 import point from '../../assets/images/icon/home/point.svg';
 import withdrawRequest from '../../assets/images/icon/home/withdraw-request.svg';
 import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
-import logoWhite from '../../assets/images/icon/logo-white.svg'
+import logoWhite from '../../assets/images/icon/logo-white.svg';
 import axios from 'axios';
 import LoadingText from '../../components/LoadingText';
 import { backUrl } from '../../data/ContentData';
@@ -32,7 +32,6 @@ display:flex;
 flex-direction:column;
 height:48px;
 width:${(props => props.width) ?? "100"}%;
-
 @media screen and (max-width:400px) { 
     height:56px;
 }
@@ -56,16 +55,8 @@ align-items: center;
 display: flex;
 flex-direction: column;
 `
-const Profile = (props) => {
-    return (
-        <>
-
-        </>
-    )
-}
-
 const WhiteButton = (props) => {
-    let { title, content, unit, bottom_content, width, total_occurrence, background, font_color, link } = props;
+    let { title, content, unit, bottom_content, width,total_occurrence_title, total_occurrence, background, font_color, link } = props;
     const navigate = useNavigate();
     return (
         <>
@@ -78,8 +69,8 @@ const WhiteButton = (props) => {
                 <div style={{ fontSize: theme.size.font6, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
-                            <div>Total occurrence</div>
-                            <div style={{ marginLeft: '12px' }}>{total_occurrence >= 0 ? total_occurrence.toFixed(2) : <LoadingText width={12} />}</div>
+                            <div>{total_occurrence_title}</div>
+                            <div style={{ marginLeft: '12px' }}>{total_occurrence >= 0 ? commarNumber(total_occurrence) : <LoadingText width={12} />}</div>
                         </>
                         :
                         <>
@@ -90,10 +81,11 @@ const WhiteButton = (props) => {
     )
 }
 const GreenButton = (props) => {
-    let { title, content, bottom_content, width, img } = props;
+    const navigate = useNavigate();
+    let { title, content, bottom_content, width, img, link } = props;
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} background={theme.color.background1} is_hover={true}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} background={theme.color.background1} is_hover={true} onClick={()=>navigate(link)}>
                 <img src={img} style={{ height: '100%', width: 'auto', margin: 'auto' }} />
             </OneCard>
         </>
@@ -102,19 +94,18 @@ const GreenButton = (props) => {
 
 const Home = () => {
     const navigate = useNavigate();
-    const [bottomMenuList, setBottomMenuList] = useState([])
+    const [bottomMenuList, setBottomMenuList] = useState([]);
     const [noticeList, setNoticeList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState({});
 
     let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "이체하기", link: "/gift", icon: downloadOutline }],
-    [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "/shoppingmall/outlet", icon: cart }],
+    [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "shoppingmall", icon: cart }],
     [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: 'kakaotalk', icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
 
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get('/api/gethomecontent');
-            console.log(response)
             if (response?.result > 0) {
                 setPost(response?.data);
             } else {
@@ -130,7 +121,10 @@ const Home = () => {
     const onClickLink = (link) => {
         if (link == 'kakaotalk') {
             //window.location.href = 'kakaoopen://join?l=_xgCPzxj&r=EW'
-            window.location.href = 'https://pf.kakao.com/_xgCPzxj'
+            window.location.href = 'https://pf.kakao.com/_xgCPzxj';
+        }else if (link == 'shoppingmall') {
+            //window.location.href = 'kakaoopen://join?l=_xgCPzxj&r=EW'
+            window.open('https://www.daogo.kr/');
         } else {
             navigate(link);
         }
@@ -149,7 +143,7 @@ const Home = () => {
                                 <img src={post?.auth?.profile_img ? backUrl + post?.auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
                                 <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>
                                     <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold' }}>Hi, {post?.auth?.name}</div>
-                                    <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: '4px' }}>{`민들레플랫폼 / 회원 / 입금코드 ${commarNumber(13741)}`}</div>
+                                    <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼  / ${getTierByUserTier(post?.user?.tier)}`}</div>
                                 </Col>
                             </Row>
                         </Content>
@@ -177,12 +171,12 @@ const Home = () => {
                             </OneTopCard>
                         </Content>
                         <Content>
-                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
+                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
-                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence={(post?.star?.star - (post?.star_gift?.star_gift ?? 0))} unit={`STAR`} link={'/star/history'} />
+                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={(post?.star?.star - (post?.star_gift?.star_gift ?? 0))} unit={`STAR`} link={'/star/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw?.esgw} unit={`ESGW`} link={'/esgw/history'} />
-                                <GreenButton width={45} img={logoWhite} />
+                                <GreenButton width={45} img={logoWhite} link={'/shoppingmall/outlet'} />
                             </Row>
                         </Content>
                         <Content style={{ borderBottom: `1px solid #dddddd`, width: '86%' }} />

@@ -25,7 +25,6 @@ const ContentTable = (props) => {
     }
     const getHistoryByObj = (obj_) => {
         let obj = { ...obj_ };
-        console.log(schema)
         let result = "";
         if (obj?.type == 0) {//아울렛구매
             result = "";
@@ -81,6 +80,13 @@ const ContentTable = (props) => {
                 result = "ESGW포인트로 전환 하였습니다.";
             } else if (schema == 'esgw') {
                 result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
+            }
+        }else if (obj?.type == 10) {//매출등록
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            if (schema == 'point'||schema == 'star') {
+                result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
+            } else if (schema == 'randombox') {
+                result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
             }
         } else {
             result = "";

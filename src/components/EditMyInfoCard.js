@@ -108,7 +108,6 @@ const EditMyInfoCard = () => {
             formData.append('payment_pw', $('.payment-pw').val());
         }
         formData.append('type', num);
-        console.log(formData)
         const { data: response } = await axios.post('/api/editmyinfo', formData);
         if (response?.result < 0) {
             alert(response.message);

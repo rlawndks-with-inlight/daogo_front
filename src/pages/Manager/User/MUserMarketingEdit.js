@@ -15,29 +15,34 @@ import CancelButton from "../../../components/elements/button/CancelButton";
 import $ from 'jquery';
 import axios from "axios";
 
-const MMarketingEdit = () => {
+const MUserMarketingEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
     const [myNick, setMyNick] = useState("")
     const [url, setUrl] = useState('')
     const [content, setContent] = useState(undefined)
-    const [formData] = useState(new FormData())
-
-    useEffect(()=>{
-        if(params.pk!=0){
+    const [user, setUser] = useState({})
+    useEffect(() => {
+        if (params.pk <= 0) {
             navigate(-1);
         }
-    },[])
-    const editOutletBrand = async () => {
-        if ((!url && !content) || !$('.name').val()) {
+        async function fetchPost(){
+            const { data: response } = await axios.get(`/api/item?table=user&pk=${params.pk}`);
+            setUser(response?.data)
+        }
+        fetchPost();
+    }, [])
+    const addMarketing = async () => {
+        if (!$('.id').val() || !$('.marketing').val()) {
             alert('필수 값이 비어있습니다.');
         } else {
             if (window.confirm('저장 하시겠습니까?')) {
                 let obj = {
-                    id:$('.id').val(),
-                    marketing:$('.marketing').val(),
+                    id: user?.id,
+                    marketing: $('.marketing').val(),
+                    manager_note: `${user?.id}의 매출을(를) 등록 했습니다.`
                 }
-                const { data: response } = await axios.post(`/api/${params.pk > 0 ? 'update' : 'add'}item`, obj);
+                const { data: response } = await axios.post(`/api/addmarketing`, obj);
                 if (response.result > 0) {
                     alert("성공적으로 저장되었습니다.");
                     navigate(-1);
@@ -47,30 +52,24 @@ const MMarketingEdit = () => {
             }
         }
     }
-    const addFile = (e) => {
-        if (e.target.files[0]) {
-            setContent(e.target.files[0]);
-            setUrl(URL.createObjectURL(e.target.files[0]))
-        }
-    };
     return (
         <>
-            <Breadcrumb title={`마케팅 예약리스트 추가`} nickname={``} />
+            <Breadcrumb title={`매출(패키지) 추가`} nickname={``} />
             <Card>
                 <Row>
                     <Col>
-                        <Explain>[주의사항] 마케팅 신규등록은 수정 삭제가 불가합니다. 필히 [ 아이디 ]를 확인하시기 바랍니다.</Explain>
+                        <Explain>[주의사항] 매출(패키지) 신규등록은 수정 삭제가 불가합니다. 필히 [ 아이디 ]를 확인하시기 바랍니다.</Explain>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Title>아이디</Title>
-                        <Input className='id' />
+                        <Input className='id' defaultValue={user?.id} disabled={true} />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <Title>마케팅 등록</Title>
+                        <Title>매출(패키지) 등록</Title>
                         <Select className="marketing">
                             <option value={36}>화이트 (36만원)</option>
                             <option value={120}>그린 (120만원)</option>
@@ -80,25 +79,13 @@ const MMarketingEdit = () => {
                         </Select>
                     </Col>
                 </Row>
-                {params.pk > 0 ?
-                    <>
-                        <Row>
-                            <Col>
-                                <Title>관리자 수정사유</Title>
-                                <Input className='reason-correction long-input' placeholder='수정 시 필수 입력' />
-                            </Col>
-                        </Row>
-                    </>
-                    :
-                    <>
-                    </>}
             </Card>
             <ButtonContainer>
                 <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
-                <AddButton onClick={editOutletBrand}>{'저장'}</AddButton>
+                <AddButton onClick={addMarketing}>{'저장'}</AddButton>
             </ButtonContainer>
 
         </>
     )
 }
-export default MMarketingEdit
+export default MUserMarketingEdit

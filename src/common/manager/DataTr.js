@@ -11,8 +11,9 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
 import { GrLinkTop } from 'react-icons/gr'
-import { commarNumber, numberToCategory } from '../../functions/utils'
+import { commarNumber, getTierByUserTier, numberToCategory } from '../../functions/utils'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
+import {RiMoneyDollarBoxFill} from 'react-icons/ri'
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -108,13 +109,21 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
     }
     const getTextByLogType = (obj_) => {
         let obj = { ...obj_ };
-        if (obj?.type == 0) {
-            return "아울렛 상품 구매";
-        } else if (obj?.type == 1) {
-            return "쿠폰 상품 구매";
-        } else if (obj?.type == 2) {
-            return "랜덤박스 등록에 사용됨.";
-        } else if (obj?.type == 3) {
+        
+        let result = "";
+        if (obj?.type == 0) {//아울렛구매
+            result = "";
+        } else if (obj?.type == 1) {//쿠폰 구매
+            result = "";
+        } else if (obj?.type == 2) {//랜덤박스 등록
+            if (schema == 'log_star') {
+                result = "랜덤박스로 전환 하였습니다.";
+            } else if (schema == 'log_randombox') {
+                result = ` ${commarNumber(obj?.price / 3)} 스타에서 랜덤박스로 전환 하였습니다.`;
+            } else {
+                result = "";
+            }
+        } else if (obj?.type == 3) {//선물하기
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
             let sche = "";
             if (schema == 'log_star') {//쿠폰 구매
@@ -123,19 +132,58 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                 sche = "포인트";
             }
             if (obj?.price > 0) {
-                return `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 수수료 제외 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
+                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
             } else {
-                return `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
+                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
             }
-        } else if (obj?.type == 4) {
-            return "출금신청함.";
-        } else if (obj?.type == 5) {
-            return "관리자로부터 회원머니수정을 통해 수정됨";
-        } else if (obj?.type == 6) {
-            return "데일리 자동지급으로 수령";
-        } else if (obj?.type == 7) {
-            return "출석 데일리포인트 발생";
+        } else if (obj?.type == 4) {//출금
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            result = "출금신청 하였습니다 " + `(`;
+            if (obj['explain_obj']?.status == 0) {
+                result += "접수대기";
+            } else if (obj['explain_obj']?.status == 1) {
+                result += "접수완료";
+            } else if (obj['explain_obj']?.status == 2) {
+                result += "지급완료";
+            }
+            result += ')';
+        } else if (obj?.type == 5) {//관리자가 수정
+            result = "관리자의 수정에 의해 변경 되었습니다.";
+        } else if (obj?.type == 6) {//데일리자동지급
+            result = "";
+        } else if (obj?.type == 7) {//데일리수동지급
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} 발생 하였습니다.`;
+        } else if (obj?.type == 8) {//청약예치금등록
+            if (schema == 'log_star' || schema == 'log_point' || schema == 'log_esgw') {
+                result = `청약예치금에 등록 하였습니다.`;
+            } else {
+                result = "";
+            }
+        } else if (obj?.type == 9) {//esgw포인트구매
+            if (schema == 'log_point') {
+                result = "ESGW포인트로 전환 하였습니다.";
+            } else if (schema == 'log_esgw') {
+                result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
+            }
+        }else if (obj?.type == 10) {//매출등록
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            if (schema == 'log_point'||schema == 'log_star') {
+                result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
+            } else if (schema == 'log_randombox') {
+                result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
+            }
         } else {
+            result = "";
+        }
+        return result;
+    }
+    const getMarketingTier = (obj_) =>{
+        let obj ={...obj_};
+        obj['explain_obj'] = JSON.parse(obj['explain_obj']);
+        if(obj['explain_obj']?.tier){
+            return getTierByUserTier(obj['explain_obj']?.tier);
+        }else{
             return "---";
         }
     }
@@ -180,6 +228,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                            {col.type == 'marketing_tier' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{getMarketingTier(data)}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
                         {col.type == 'login_type' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{getLoginTypeByNumber(data[col.column])}</Td>
@@ -219,6 +274,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                           
                         {col.type == 'target' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`] == 0 ? '현재창' : '새창'}</Td>
@@ -302,7 +358,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-
+                            {col.type == 'user_marketing' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
+                                    <RiMoneyDollarBoxFill style={{ cursor: 'pointer', color: 'ffd700' }} onClick={() => navigate(`/manager/usermarketing/${data.pk}`)} />
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
                         {col.type == 'delete' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>

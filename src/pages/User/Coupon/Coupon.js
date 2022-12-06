@@ -31,7 +31,6 @@ const Coupon = () => {
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/item?table=coupon&pk=${params?.pk}`);
-            console.log(response);
             setPost(response?.data);
         }
         fetchPost();

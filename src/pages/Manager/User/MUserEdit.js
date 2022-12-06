@@ -51,7 +51,6 @@ const MUserEdit = () => {
         const { data: response } = await axios.post('/api/getaddressbytext', {
             text: $('.place').val()
         });
-        console.log(response)
         setAddressList(response.data ?? []);
     }
     const editUser = async () => {

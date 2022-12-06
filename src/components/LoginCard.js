@@ -37,7 +37,6 @@ const LoginCard = () => {
             pw: $('.pw').val(),
             type: 'user'
         })
-        console.log(response)
         alert(response.message);
         if (response.result > 0) {
             await localStorage.setItem('auth', JSON.stringify(response?.data?.user));

@@ -47,19 +47,22 @@ const Breadcrumb = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [nickname, setNickname] = useState('')
+    const [auth, setAuth] = useState({})
     useEffect(() => {
         async function isAuth() {
             const { data: response } = await axios.get('/api/auth');
-            if (location.pathname.includes('/manager') && location.pathname != '/manager/login' && location.pathname != '/manager') {
                 if (response.user_level >= 30) {
                     localStorage.setItem('auth', JSON.stringify(response));
+                    setAuth(response);
                 } else {
                     localStorage.removeItem('auth')
                     navigate('/manager/login')
                 }
-            }
         }
-        isAuth();
+        if (location.pathname.includes('/manager') && location.pathname != '/manager/login' && location.pathname != '/manager') {
+            isAuth();
+
+        }
     }, [])
     useEffect(() => {
         if (!localStorage.getItem('auth')) {
@@ -83,7 +86,7 @@ const Breadcrumb = (props) => {
                 <Wrappers>
                     <div style={{ marginLeft: '24px' }}>{props.title}</div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={{ marginRight: '12px', fontSize: '14px', fontWeight: '400' }}>{nickname}</div>
+                        <div style={{ marginRight: '12px', fontSize: '14px', fontWeight: '400' }}>{auth?.name}</div>
                         <Logout onClick={() => {
                             if (window.confirm("Do you want to log out?")) {
                                 onLogout();

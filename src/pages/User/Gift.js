@@ -40,7 +40,6 @@ const Gift = () => {
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/getusermoney`);
-            console.log(response);
             if (!response?.data?.user?.payment_pw) {
                 alert("결제 비밀번호 등록 후 사용해 주세요.");
                 navigate('/editmyinfo');
