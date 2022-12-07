@@ -239,3 +239,19 @@ export const dateFormat = (date) => {//두날짜의 시간차
         return date.substring(0, 10);
     }
 }
+export const getIntroducePercentByUserTier = (num) =>{
+    let introduce_percent_list = [0,6,7,8,9,10];
+    if(!(num>=0&&num<=25)){
+        return "---";
+    }else{
+        return introduce_percent_list[num/5];
+    }
+}
+export const getRollUpBonusByUserTier = (num) =>{
+    let introduce_percent_list = [0,0.5,1,1.5,2,2.5];
+    if(!(num>=0&&num<=25)){
+        return "---";
+    }else{
+        return introduce_percent_list[num/5];
+    }
+}

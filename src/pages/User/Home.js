@@ -5,7 +5,7 @@ import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, Row, Col, OneCard, OneThirdCard } from '../../components/elements/UserContentTemplete';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
-import { commarNumber, getTierByUserTier } from '../../functions/utils';
+import { commarNumber, getIntroducePercentByUserTier, getRollUpBonusByUserTier, getTierByUserTier } from '../../functions/utils';
 import defaultProfile from '../../assets/images/icon/default-profile.png';
 import albumsOutline from '../../assets/images/icon/home/albums-outline.svg';
 import box from '../../assets/images/icon/home/box.svg';
@@ -56,7 +56,7 @@ display: flex;
 flex-direction: column;
 `
 const WhiteButton = (props) => {
-    let { title, content, unit, bottom_content, width,total_occurrence_title, total_occurrence, background, font_color, link } = props;
+    let { title, content, unit, bottom_content, width, total_occurrence_title, total_occurrence, background, font_color, link } = props;
     const navigate = useNavigate();
     return (
         <>
@@ -65,7 +65,7 @@ const WhiteButton = (props) => {
                     <img src={yellowDot} />
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
                 </div>
-                <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 50% 0.15rem auto'}`, display: 'flex', alignItems: 'center' }}><div>{ commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
+                <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 50% 0.15rem auto'}`, display: 'flex', alignItems: 'center' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
                 <div style={{ fontSize: theme.size.font6, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
@@ -85,7 +85,7 @@ const GreenButton = (props) => {
     let { title, content, bottom_content, width, img, link } = props;
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} background={theme.color.background1} is_hover={true} onClick={()=>navigate(link)}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} background={theme.color.background1} is_hover={true} onClick={() => navigate(link)}>
                 <img src={img} style={{ height: '100%', width: 'auto', margin: 'auto' }} />
             </OneCard>
         </>
@@ -106,6 +106,7 @@ const Home = () => {
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get('/api/gethomecontent');
+            console.log(response)
             if (response?.result > 0) {
                 setPost(response?.data);
             } else {
@@ -122,12 +123,35 @@ const Home = () => {
         if (link == 'kakaotalk') {
             //window.location.href = 'kakaoopen://join?l=_xgCPzxj&r=EW'
             window.location.href = 'https://pf.kakao.com/_xgCPzxj';
-        }else if (link == 'shoppingmall') {
+        } else if (link == 'shoppingmall') {
             //window.location.href = 'kakaoopen://join?l=_xgCPzxj&r=EW'
             window.open('https://www.daogo.kr/');
         } else {
             navigate(link);
         }
+    }
+    const getPurchasePackageByList = (list_) =>{
+        let list = [...list_];
+        console.log(list)
+        let sum = 0;
+        for(var i = 0;i<list.length;i++){
+            if(list[i]?.price==9000){
+                sum+= 360000;
+            }else if(list[i]?.price==30000){
+                sum+= 1200000;
+
+            }else if(list[i]?.price==90000){
+                sum+= 3600000;
+                
+            }else if(list[i]?.price==150000){
+                sum+= 6000000;
+                
+            }else if(list[i]?.price==300000){
+                sum+= 12000000;
+                
+            }
+        }
+        return sum/100;
     }
     return (
         <>
@@ -147,20 +171,19 @@ const Home = () => {
                                 </Col>
                             </Row>
                         </Content>
-
                         <Content>
                             <OneTopCard style={{ marginBottom: '12px' }} background={theme.color.background1}>
                                 <Row style={{ margin: 'auto 0', height: '85%', color: '#fff' }}>
                                     <Col style={{ margin: '0 auto', width: '25%', display: 'flex', flexDirection: 'column' }}>
-                                        <HeaderContent><div>{post?.header?.purchase_package ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
+                                        <HeaderContent><div>{commarNumber(getPurchasePackageByList(post?.purchase_package??[])) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"구매 패키지"}</div>
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff' }}>
-                                        <HeaderContent><div>{post?.header?.discount_percent ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
+                                        <HeaderContent><div>{getIntroducePercentByUserTier(post?.user?.tier) ?? <LoadingText color={"#fff"} width={15} />}%</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"소개 수익 / 할인"}</div>
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff' }}>
-                                        <HeaderContent><div>{post?.header?.rollup_bonus ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
+                                        <HeaderContent><div>{getRollUpBonusByUserTier(post?.user?.tier) ?? <LoadingText color={"#fff"} width={15} />}%</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"롤업 보너스"}</div>
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/recommendgenealogy')}>

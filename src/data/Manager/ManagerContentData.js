@@ -110,7 +110,7 @@ export const objManagerListContent = {
             columnObjFormat('신청레벨(레벨명)', '', 'marketing_tier', 'marketing_tier'),
             columnObjFormat('완료일', '', 'text', 'date'),
             columnObjFormat('처리자아이디', '', 'text', 'manager_id'),
-            columnObjFormat('처리자닉네임', '', 'text', 'manager_name'),
+            columnObjFormat('처리자이름', '', 'text', 'manager_name'),
         ],
         [],
         false,
