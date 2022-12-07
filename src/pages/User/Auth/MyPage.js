@@ -109,9 +109,9 @@ const MyPage = () => {
                     </ProfileContainer>
                     <Container>
                         <Content>
-                            <Category>닉네임</Category>
+                            <Category>이름</Category>
                             <Result>
-                                {auth?.nickname ?? "---"}
+                                {auth?.name ?? "---"}
                             </Result>
                         </Content>
                         <Content>
