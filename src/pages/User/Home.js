@@ -106,7 +106,6 @@ const Home = () => {
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get('/api/gethomecontent');
-            console.log(response)
             if (response?.result > 0) {
                 setPost(response?.data);
             } else {
