@@ -112,8 +112,9 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
 
         let result = "";
         if (obj?.type == 0) {//아울렛구매
-            result = "";
-        } else if (obj?.type == 1) {//쿠폰 구매
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            result = `아울렛쇼핑 ${obj['explain_obj']?.item_name??""} 구매로 인해 사용 되었습니다.`;
+        }  else if (obj?.type == 1) {//쿠폰 구매
             result = "";
         } else if (obj?.type == 2) {//랜덤박스 등록
             if (schema == 'log_star') {
@@ -175,6 +176,9 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             }
         } else if (obj?.type == 11) {//이벤트 랜덤수익
             result = "이벤트 랜덤수익 발생하였습니다.";
+        } else if (obj?.type == 12) {//이벤트 랜덤수익
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
         } else {
             result = "";
         }

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { backUrl } from "../../../data/ContentData";
 import theme from "../../../styles/theme";
 import { Viewer } from '@toast-ui/react-editor';
-import { commarNumber, range } from "../../../functions/utils";
+import { commarNumber, getIntroducePercentByUserTier, range } from "../../../functions/utils";
 import AddButton from "../../../components/elements/button/AddButton";
 import playFillIcon from '../../../assets/images/icon/play-fill.svg';
 import $ from 'jquery';
@@ -71,10 +71,13 @@ const Outlet = () => {
     const [post, setPost] = useState({})
     const [count, setCount] = useState(1);
     const [display, setDisplay] = useState('none')
+    const [auth, setAuth] = useState({});
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/item?table=outlet&pk=${params?.pk}`);
             setPost(response?.data);
+            const { data: user_response } = await axios.get('/api/getusermoney');
+            setAuth(user_response?.data);
         }
         fetchPost();
     }, [pathname])
@@ -101,8 +104,8 @@ const Outlet = () => {
                         <ItemImg src={backUrl + post?.img_src} />
                         <ExplainContainer>
                             <div>{post?.name} {post?.randombox_point ? `- ${commarNumber(post?.randombox_point)}P (랜덤박스 적립)` : ''}</div>
-                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: '#ff0000', fontSize: theme.size.font5 }}>{(post?.point_percent / 100) * post?.sell_star}포인트 ({post?.point_percent}%)</strong>사용가능</div>
-                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1 }}>{commarNumber(post?.sell_star * (100 - post?.point_percent) / 100)} 스타 <strong style={{ fontSize: theme.size.font5 }}>판매가(포인트사용 시)</strong></div>
+                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: '#ff0000', fontSize: theme.size.font5 }}>{(getIntroducePercentByUserTier(auth?.user?.tier??0) / 100) * post?.sell_star}포인트 ({getIntroducePercentByUserTier(auth?.user?.tier??0)}%)</strong>사용가능</div>
+                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1 }}>{commarNumber(post?.sell_star * (100 - getIntroducePercentByUserTier(auth?.user?.tier??0)) / 100)} 스타 <strong style={{ fontSize: theme.size.font5 }}>판매가(포인트사용 시)</strong></div>
                             {post?.randombox_point > 0 ?
                                 <>
                                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
