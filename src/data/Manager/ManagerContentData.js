@@ -49,7 +49,7 @@ export const zSidebar = [
         sidebarObjListFormat('브랜드리스트', '/manager/list/coupon_brand', 40, ['/manager/list/coupon_brand']),//list
         sidebarObjListFormat('상품리스트', '/manager/list/coupon', 40, ['/manager/list/coupon']),//list
         sidebarObjListFormat('주문리스트', '/manager/list/coupon_order', 40, ['/manager/list/coupon_order']),//list
-        sidebarObjListFormat('예치금 변동 LOG', '/manager/list/log_coupon', 40, ['/manager/list/log_coupon']),//list
+        //sidebarObjListFormat('예치금 변동 LOG', '/manager/list/log_coupon', 40, ['/manager/list/log_coupon']),//list
     ]),
     sidebarContentFormat('잭팟관리', [
         sidebarObjListFormat('추첨대기자', '/manager/list/jackpot_wait', 40, ['/manager/list/jackpot_wait']),//list
