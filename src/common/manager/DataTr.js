@@ -13,7 +13,7 @@ import { useState } from 'react'
 import { GrLinkTop } from 'react-icons/gr'
 import { commarNumber, dateFormat, getTierByUserTier, numberToCategory } from '../../functions/utils'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
-import {RiMoneyDollarBoxFill} from 'react-icons/ri'
+import { RiMoneyDollarBoxFill } from 'react-icons/ri'
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -109,7 +109,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
     }
     const getTextByLogType = (obj_) => {
         let obj = { ...obj_ };
-        
+
         let result = "";
         if (obj?.type == 0) {//아울렛구매
             result = "";
@@ -166,24 +166,26 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             } else if (schema == 'log_esgw') {
                 result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
             }
-        }else if (obj?.type == 10) {//매출등록
+        } else if (obj?.type == 10) {//매출등록
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            if (schema == 'log_point'||schema == 'log_star') {
+            if (schema == 'log_point' || schema == 'log_star') {
                 result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
             } else if (schema == 'log_randombox') {
                 result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
             }
+        } else if (obj?.type == 11) {//이벤트 랜덤수익
+            result = "이벤트 랜덤수익 발생하였습니다.";
         } else {
             result = "";
         }
         return result;
     }
-    const getMarketingTier = (obj_) =>{
-        let obj ={...obj_};
+    const getMarketingTier = (obj_) => {
+        let obj = { ...obj_ };
         obj['explain_obj'] = JSON.parse(obj['explain_obj']);
-        if(obj['explain_obj']?.tier){
+        if (obj['explain_obj']?.tier) {
             return getTierByUserTier(obj['explain_obj']?.tier);
-        }else{
+        } else {
             return "---";
         }
     }
@@ -202,7 +204,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             </>}
                         {col.type == 'number' ?
                             <>
-                                <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`]??0)}</Td>
+                                <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`] ?? 0)}</Td>
                             </>
                             :
                             <>
@@ -228,7 +230,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'marketing_tier' ?
+                        {col.type == 'marketing_tier' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{getMarketingTier(data)}</Td>
                             </>
@@ -249,7 +251,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'tier' ?
+                        {col.type == 'tier' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{getTierByUserTier(data[col.column])}</Td>
                             </>
@@ -281,7 +283,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                           
+
                         {col.type == 'target' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`] == 0 ? '현재창' : '새창'}</Td>
@@ -365,7 +367,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'user_marketing' ?
+                        {col.type == 'user_marketing' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
                                     <RiMoneyDollarBoxFill style={{ cursor: 'pointer', color: 'ffd700' }} onClick={() => navigate(`/manager/usermarketing/${data.pk}`)} />

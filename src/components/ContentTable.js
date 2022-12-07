@@ -71,8 +71,10 @@ const ContentTable = (props) => {
             } else if (schema == 'randombox') {
                 result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
             }
+        }else if (obj?.type == 11) {//이벤트 랜덤수익
+            result = "이벤트 랜덤수익 발생하였습니다.";
         } else {
-            result = "";
+            result = "---";
         }
         return result;
     }
