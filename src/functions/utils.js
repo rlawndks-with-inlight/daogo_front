@@ -218,3 +218,24 @@ export const getTierByUserTier = (num,id) =>{
         return "잘못된 레벨";
     }
 }
+export const dateFormat = (date) => {//두날짜의 시간차
+    if(!date){
+        return "---";
+    }
+    let f_d = new Date(returnMoment()).getTime();
+    let s_d = new Date(date).getTime();
+    let hour = (f_d - s_d) / (1000 * 3600);
+    let minute = (f_d - s_d) / (1000 * 60);
+    let day = (f_d - s_d) / (1000 * 3600 * 24);
+    if (minute <= 1) {
+        return "방금 전";
+    } else if (hour < 1) {
+        return `${parseInt(minute)}분 전`;
+    } else if (hour < 24) {
+        return `${parseInt(hour)}시간 전`;
+    } else if (day < 7) {
+        return `${parseInt(day)}일 전`;
+    } else {
+        return date.substring(0, 10);
+    }
+}

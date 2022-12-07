@@ -54,16 +54,11 @@ const MDailyPaymentProbabilityEdit = () => {
                 alert('지급금 확률은 합이 100이 되어야 합니다.');
                 return;
             }
-            if(isNaN(parseFloat($('.daily_deduction_point').val()))){
-                alert('랜덤박스 데일리 차감 포인트에 숫자 이외의 값이 들어 있습니다.');
-                return;
-            }
             const { data: response } = await axios.post('/api/updatedailypercent', {
                 type_percent: $('.type-percent').val(),
                 money: $('.money').val(),
                 money_percent: $('.money-percent').val(),
                 randombox_initialization_time: $('.randombox_initialization_time').val(),
-                daily_deduction_point: $('.daily_deduction_point').val(),
                 date: returnMoment(),
                 manager_note: `${managerNoteObj.DAILY_PAYMENT_PROBABILITY}`,
                 pk: post.pk
@@ -118,11 +113,6 @@ const MDailyPaymentProbabilityEdit = () => {
                     <Col>
                         <Title>랜덤박스 초기화 시간</Title>
                         <Input className='randombox_initialization_time' type={'time'} defaultValue={post?.randombox_initialization_time} />
-                    </Col>
-                    <Col>
-                        <Title>랜덤박스 데일리 차감 포인트</Title>
-                        <Input className='daily_deduction_point' placeholder="숫자만 입력" defaultValue={post?.daily_deduction_point} />
-                        <Explain>접속하지 않을 시 차감될 랜덤박스 포인트 입니다.</Explain>
                     </Col>
                 </Row>
 

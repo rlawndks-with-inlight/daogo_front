@@ -77,8 +77,8 @@ export const objManagerListContent = {
             columnObjFormat('랜덤박스', 8, 'number', 'randombox'),
             columnObjFormat('ESGW', 8, 'number', 'esgw'),
             columnObjFormat('티어', 6, 'tier', 'tier'),
-            columnObjFormat('가입일',9, 'text', 'date'),
-            columnObjFormat('로그인시간', 9, 'text', 'last_login'),
+            columnObjFormat('가입일',9, 'date', 'date'),
+            columnObjFormat('로그인시간', 9, 'date', 'last_login'),
             columnObjFormat('정보수정', 6, 'edit', 'edit'),
             columnObjFormat('머니수정', 6, 'user_money_edit', 'user_money_edit'),
             columnObjFormat('매출등록', 6, 'user_marketing', 'user_marketing'),
@@ -216,7 +216,7 @@ export const objManagerListContent = {
         [
             columnObjFormat('UID', 22, 'text', 'user_id'),
             columnObjFormat('이름', 22, 'text', 'user_name'),
-            columnObjFormat('최근접속일', 28, 'text', 'date'),
+            columnObjFormat('최근접속일', 28, 'date', 'date'),
             columnObjFormat('접속아이피', 28, 'text', 'ip'),
         ],
         [
@@ -231,7 +231,7 @@ export const objManagerListContent = {
         [
             columnObjFormat('UID', 22, 'text', 'user_id'),
             columnObjFormat('이름', 22, 'text', 'user_name'),
-            columnObjFormat('최근접속일', 28, 'text', 'date'),
+            columnObjFormat('최근접속일', 28, 'date', 'date'),
             columnObjFormat('접속아이피', 28, 'text', 'ip'),
         ],
         [
@@ -249,7 +249,7 @@ export const objManagerListContent = {
             columnObjFormat('팀명', 10, 'text', 'team_name'),
             columnObjFormat('활동내용', 32, 'text', 'manager_note'),
             columnObjFormat('메모', 15, 'text', 'reason_correction'),
-            columnObjFormat('활동일', 12, 'text', 'date'),
+            columnObjFormat('활동일', 12, 'date', 'date'),
             columnObjFormat('접속아이피', 10, 'text', 'ip'),
         ],
         [],
@@ -266,7 +266,7 @@ export const objManagerListContent = {
             columnObjFormat('신청금(원)', '', 'exchange_money', 'price'),
             columnObjFormat('환전수수료(원)', '', 'exchange_moneycommission', 'price'),
             columnObjFormat('실지급금(원)', '', 'exchange_moneypayment', 'price'),
-            columnObjFormat('신청일', '', 'date', 'date'),
+            columnObjFormat('신청일', '', 'text', 'date'),
             columnObjFormat('입금은행', '', 'text', 'bank_name'),
             columnObjFormat('입금계좌', '', 'text', 'account_number'),
             columnObjFormat('계좌소유자명', '', 'text', 'account_name'),

@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
 import { GrLinkTop } from 'react-icons/gr'
-import { commarNumber, getTierByUserTier, numberToCategory } from '../../functions/utils'
+import { commarNumber, dateFormat, getTierByUserTier, numberToCategory } from '../../functions/utils'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import {RiMoneyDollarBoxFill} from 'react-icons/ri'
 const Tr = styled.tr`
@@ -209,7 +209,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             </>}
                         {col.type == 'date' ?
                             <>
-                                <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`].substring(0, 10)}</Td>
+                                <Td style={{ width: `${col.width}%` }}>{dateFormat(data[`${col.column}`])}</Td>
                             </>
                             :
                             <>

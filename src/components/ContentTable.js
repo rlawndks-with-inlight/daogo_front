@@ -1,28 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { commarNumber, returnMoment } from "../functions/utils";
+import { commarNumber, returnMoment, dateFormat } from "../functions/utils";
 import theme from "../styles/theme";
 import { Table, Tr, Td } from "./elements/UserContentTemplete";
 const ContentTable = (props) => {
     const navigate = useNavigate();
     const { columns, data, is_not_display_thead, schema, onClick } = props;
-    const dateFormat = (date) => {//두날짜의 시간차
-        let f_d = new Date(returnMoment()).getTime();
-        let s_d = new Date(date).getTime();
-        let hour = (f_d - s_d) / (1000 * 3600);
-        let minute = (f_d - s_d) / (1000 * 60);
-        let day = (f_d - s_d) / (1000 * 3600 * 24);
-        if (minute <= 1) {
-            return "방금 전";
-        } else if (hour < 1) {
-            return `${parseInt(minute)}분 전`;
-        } else if (hour < 24) {
-            return `${parseInt(hour)}시간 전`;
-        } else if (day < 7) {
-            return `${parseInt(day)}일 전`;
-        } else {
-            return date.substring(0, 10);
-        }
-    }
+    
     const getHistoryByObj = (obj_) => {
         let obj = { ...obj_ };
         let result = "";
