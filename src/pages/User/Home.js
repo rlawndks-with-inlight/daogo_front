@@ -187,7 +187,7 @@ const Home = () => {
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"롤업 보너스"}</div>
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/recommendgenealogy')}>
-                                        <HeaderContent><div>{post?.header?.my_partner ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
+                                        <HeaderContent><div>{(post?.genealogy_score?.loss) ?? <LoadingText color={"#fff"} width={15} />} / {(post?.genealogy_score?.great) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"내 파트너"}</div>
                                     </Col>
                                 </Row>

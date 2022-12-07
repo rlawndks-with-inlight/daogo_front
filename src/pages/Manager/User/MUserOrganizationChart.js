@@ -10,6 +10,7 @@ import { Tree, TreeNode } from 'react-organizational-chart';
 import styled from "styled-components";
 import { getTierByUserTier, range } from "../../../functions/utils";
 import theme from "../../../styles/theme";
+import { max_child_depth } from "../../../data/ContentData";
 const StyledNode = styled.div`
   padding: 5px;
   border-radius: 8px;
@@ -23,7 +24,7 @@ const MUserOrganizationChart = () => {
     const [tree, setTree] = useState(undefined);
     useEffect(() => {
         async function fetchPosts() {
-            setRangeList(range(0, 100));
+            setRangeList(range(0, max_child_depth));
             const { data: response } = await axios.post('/api/getgenealogy');
             setTreeList([...response?.data?.data])
         }
@@ -38,7 +39,7 @@ const MUserOrganizationChart = () => {
         }
     }
     const returnChildTree = (pk, depth) => {
-        if (depth > 99) {
+        if (depth > max_child_depth-1) {
             return;
         } else {
             return getChildByUserPk(pk, depth).map((item, idx) => (
