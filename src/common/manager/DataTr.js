@@ -249,6 +249,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                            {col.type == 'tier' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{getTierByUserTier(data[col.column])}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
                         {col.type == 'img' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>
