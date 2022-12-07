@@ -202,7 +202,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             </>}
                         {col.type == 'number' ?
                             <>
-                                <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`])}</Td>
+                                <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`]??0)}</Td>
                             </>
                             :
                             <>
