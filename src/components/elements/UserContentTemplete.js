@@ -211,6 +211,21 @@ transition-duration: 0.3s;
     height:56px;
 }
 `
+export const OneCardImg = styled.img`
+box-shadow:${props => props.theme.boxShadow};
+border-radius:8px;
+${(props=>props.is_hover?('cursor:pointer'):'')};
+height:84px;
+width:100%;
+transition-duration: 0.3s;
+border:none;
+&:hover{  
+    background : ${(props=>props.is_hover?(props=>props.theme.color.background1+'29'):'')};
+}
+@media screen and (max-width:400px) { 
+    height:56px;
+}
+`
 export const Row = styled.div`
 display:flex;
 justify-content: space-between;

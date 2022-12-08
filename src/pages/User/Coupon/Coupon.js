@@ -44,7 +44,7 @@ const Coupon = () => {
                         <ItemImg src={backUrl + post?.img_src} />
                         <div style={{ display: 'flex', flexDirection: 'column', width: '370px', fontWeight: 'bold', fontSize: theme.size.font5, lineHeight: '30px' }}>
                             <div>{post?.name}</div>
-                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.price)} 스타 <strong style={{ color: '#ff0000', fontSize: theme.size.font5 }}>{(post?.discount_percent / 100) * post?.price}포인트 ({post?.discount_percent}%)</strong>사용가능</div>
+                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.price)} 스타 <strong style={{ color: theme.color.red, fontSize: theme.size.font5 }}>{(post?.discount_percent / 100) * post?.price}포인트 ({post?.discount_percent}%)</strong>사용가능</div>
                             <div style={{ fontSize: theme.size.font4, color: theme.color.background1 }}>{commarNumber(post?.price * (100 - post?.discount_percent) / 100)} 스타 <strong style={{ fontSize: theme.size.font5 }}>판매가(포인트사용 시)</strong></div>
                             <div>구매상담(상품문의, 배송문의 등등)</div>
                             <AddButton style={{ width: '105px', marginTop: '16px' }}>주문하기</AddButton>

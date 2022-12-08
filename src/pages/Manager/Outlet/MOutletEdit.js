@@ -48,7 +48,7 @@ const MOutletEdit = () => {
                 $('.brand').val(response.data.brand_pk)
                 $('.name').val(response.data.name)
                 $('.sell_star').val(response.data.sell_star)
-                $('.generated_code_count').val(response.data.generated_code_count)
+                //$('.generated_code_count').val(response.data.generated_code_count)
                 $('.randombox_point').val(response.data.randombox_point)
                 $('.sell_user_id').val(response.data.sell_user_id)
                 $('.sell_user_name').val(response.data.sell_user_name)
@@ -119,7 +119,7 @@ const MOutletEdit = () => {
         }
     };
     const editOutlet = async () => {
-        if ((!url && !content) || !$('.name').val() || !$('.sell_star').val() || !$('.generated_code_count').val() || !$('.sell_user_id').val() || !$('.sell_user_name').val() || !$('.sell_user_phone').val() || !$('.sell_revenue_percent').val()) {
+        if ((!url && !content) || !$('.name').val() || !$('.sell_star').val() || !$('.sell_user_id').val() || !$('.sell_user_name').val() || !$('.sell_user_phone').val() || !$('.sell_revenue_percent').val()) {
             alert('필수 값이 비어있습니다.');
         } else {
             if ($('.sell_user_id').val() != sellUserObj.id) {
@@ -132,7 +132,7 @@ const MOutletEdit = () => {
                 formData.append('brand_pk', $('.brand').val());
                 formData.append('name', $('.name').val());
                 formData.append('sell_star', $('.sell_star').val());
-                formData.append('generated_code_count', $('.generated_code_count').val());
+                //formData.append('generated_code_count', $('.generated_code_count').val());
                 formData.append('sell_user_pk', sellUserObj?.pk);
                 formData.append('sell_user_id', $('.sell_user_id').val());
                 formData.append('sell_user_name', $('.sell_user_name').val());
@@ -196,11 +196,11 @@ const MOutletEdit = () => {
                         <Input className="sell_star" />
                         <Explain>숫자만 입력</Explain>
                     </Col>
-                    <Col>
+                    {/* <Col>
                         <Title>구매시 생성코드 수</Title>
                         <Input className="generated_code_count" />
                         <Explain>숫자만 입력</Explain>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <Row>
                     <Col>

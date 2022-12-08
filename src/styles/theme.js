@@ -26,6 +26,7 @@ const theme = {
     font4: "#F6F6F6",
     blue: "#546de5",
     red: "#ff0000",
+    gold: "#ffd700",
     cardColor: [
       { font: '#fff', background: '#024643' },
       { font: '#fff', background: '#31125A' },

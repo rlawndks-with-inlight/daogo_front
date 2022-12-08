@@ -58,22 +58,20 @@ const MItemList = () => {
             setLoading(true)
             $('.page-cut').val(10);
             setPage(1)
-            let str = '';
-            let queries = '';
+            let obj = {};
+            obj['page'] = 1;
+            obj['table'] = objManagerListContent[`${params.table}`].schema;
+            obj['page_cut'] = 10;
             if(objManagerListContent[`${params.table}`].is_move){
-                queries += `&order=sort`
+                obj['order'] = 'sort';
             }
             for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
-                queries += `&${objManagerListContent[`${params.table}`].queries[i]}`;
+                obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
             }
-            let auth = JSON.parse(localStorage.getItem('auth'))
-            str = `/api/items?table=${objManagerListContent[`${params.table}`].schema}&page=1${queries}`
-            if (auth?.user_level < 40) {
-                str += `&user_pk=${auth.pk}`
-            }
-            const { data: response } = await axios.get(str)
+            console.log(obj)
+            const { data: response } = await axios.post('/api/items',obj);
             setPosts(response.data.data)
-            setPageList(range(1, response.data.maxPage))
+            setPageList(range(1, response.data.maxPage));
             setLoading(false)
         }
         fetchPost();
@@ -81,20 +79,20 @@ const MItemList = () => {
     const changePage = async (num) => {
         setLoading(true)
         setPage(num)
-        let keyword = $('.search').val();
-        let str = '';
-        let queries = '';
+        let obj = {};
+        obj['page'] = num;
+        obj['table'] = objManagerListContent[`${params.table}`].schema;
+        obj['page_cut'] = $('.page-cut').val();
+        obj['keyword'] = $('.search').val();
         if(objManagerListContent[`${params.table}`].is_move){
-            queries += `&order=sort`
+            obj['order'] = 'sort';
         }
         for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
-            queries += `&${objManagerListContent[`${params.table}`].queries[i]}`;
+            obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
         }
-        str = `/api/items?table=${objManagerListContent[`${params.table}`].schema}&page=${num}${queries}`
-        str += `&page_cut=${parseInt($('.page-cut').val())}&keyword=${keyword}`;
-        const { data: response } = await axios.get(str)
+        const { data: response } = await axios.post('/api/items',obj);
         setPosts(response.data.data)
-        setPageList(range(1, response.data.maxPage))
+        setPageList(range(1, response.data.maxPage));
         setLoading(false)
     }
     const onchangeSelectPageCut = (e) => {

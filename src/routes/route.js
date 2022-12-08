@@ -34,7 +34,7 @@ import MOutletEdit from '../pages/Manager/Outlet/MOutletEdit';
 import CouponShoppingMall from '../pages/User/Coupon/CouponShoppingMall';
 import OutletShoppingMall from '../pages/User/Outlet/OutletShoppingMall';
 import RegisterRandomBox from '../pages/User/RandomBox/RegisterRandomBox';
-import Gift from '../pages/User/Gift';
+import Gift from '../pages/User/Gift/Gift';
 import History from '../pages/User/History/History';
 import RecommendGenealogy from '../pages/User/Auth/RecommendGenealogy';
 import EventGame from '../pages/User/EventGame';
@@ -49,6 +49,7 @@ import Outlet from '../pages/User/Outlet/Outlet';
 import Coupon from '../pages/User/Coupon/Coupon';
 import OutletOrder from '../pages/User/Outlet/OutletOrder';
 import MUserMarketingEdit from '../pages/Manager/User/MUserMarketingEdit';
+import GiftHistory from '../pages/User/Gift/GiftHistory';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -66,6 +67,7 @@ const zUserRoute = [
     { link: '/randombox/register', element: <RegisterRandomBox />, title: "랜덤박스등록" },
     { link: '/buyesgwpoint', element: <BuyESGWPoint />, title: "ESGW 구매" },
     { link: '/gift', element: <Gift />, title: "선물하기" },
+    { link: '/gift/history', element: <GiftHistory />, title: "선물한 내역" },
     { link: '/:schema/history', element: <History />, title: "리스트" },
     { link: '/recommendgenealogy', element: <RecommendGenealogy />, title: "추천계보" },
     { link: '/eventgame', element: <EventGame />, title: "이벤트게임" },

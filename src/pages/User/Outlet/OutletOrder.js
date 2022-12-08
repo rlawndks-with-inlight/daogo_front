@@ -113,7 +113,8 @@ const OutletOrder = () => {
             refer: $('.refer').val(),
             payment_pw: $('.payment_pw').val(),
             item_pk: params?.pk,
-            use_point: isUsePoint
+            use_point: isUsePoint,
+            item_count:count
         }
         if(window.confirm("정말 구매하시겠습니까?")){
             const { data: response } = await axios.post('/api/onoutletorder', obj);
@@ -149,7 +150,7 @@ const OutletOrder = () => {
                                 </>
                                 :
                                 <>
-                                    <CgToggleOff style={{ color: '#aaaaaa', cursor: 'pointer', fontSize: '25px' }} onClick={() => { setIsUsePoint(true); setDiscountPoint(auth?.point > (getIntroducePercentByUserTier(auth?.user?.tier) / 100 * post?.sell_star) ? (getIntroducePercentByUserTier(auth?.user?.tier) / 100 * post?.sell_star) : auth?.point) }} />
+                                    <CgToggleOff style={{ color: '#aaaaaa', cursor: 'pointer', fontSize: '25px' }} onClick={() => { setIsUsePoint(true); setDiscountPoint(auth?.point > (getIntroducePercentByUserTier(auth?.user?.tier) / 100 * post?.sell_star)*count ? (getIntroducePercentByUserTier(auth?.user?.tier) / 100 * post?.sell_star)*count : auth?.point) }} />
                                 </>
                             }
                         </div>

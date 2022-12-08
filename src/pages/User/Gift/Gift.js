@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { OneCard, OneThirdCard, Row, Title, Wrappers } from "../../components/elements/UserContentTemplete";
+import { OneCard, OneThirdCard, Row, Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 import axios from "axios";
-import theme from "../../styles/theme";
+import theme from "../../../styles/theme";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../components/elements/AuthContentTemplete";
-import LoadingText from "../../components/LoadingText";
-import { Input } from "../../components/elements/ManagerTemplete";
-import infoCircle from '../../assets/images/icon/info-circle.svg'
-import profileImg from '../../assets/images/icon/profile.svg'
-import peoplesImg from '../../assets/images/icon/peoples.svg'
-import InputContent from "../../components/InputContent";
-import { commarNumber } from "../../functions/utils";
+import { Button } from "../../../components/elements/AuthContentTemplete";
+import LoadingText from "../../../components/LoadingText";
+import { Input } from "../../../components/elements/ManagerTemplete";
+import infoCircle from '../../../assets/images/icon/info-circle.svg'
+import profileImg from '../../../assets/images/icon/profile.svg'
+import peoplesImg from '../../../assets/images/icon/peoples.svg'
+import InputContent from "../../../components/InputContent";
+import { commarNumber } from "../../../functions/utils";
 import $ from 'jquery'
 export const Col = styled.div`
 display:flex;
@@ -82,7 +82,7 @@ const Gift = () => {
     return (
         <>
             <Wrappers>
-                <Title>선물하기</Title>
+                <Title not_arrow={true} textIcon={'선물한 내역'} textIconLink={'/gift/history'}>선물하기</Title>
                 <Row style={{ margin: '0 0 16px 0' }}>
                     <OneCard width={96} style={{ height: '180px', cursor: 'default' }}>
                         <CardTitle title="받는사람 정보" icon={peoplesImg} />

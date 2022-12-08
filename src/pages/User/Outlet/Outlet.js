@@ -104,7 +104,7 @@ const Outlet = () => {
                         <ItemImg src={backUrl + post?.img_src} />
                         <ExplainContainer>
                             <div>{post?.name} {post?.randombox_point ? `- ${commarNumber(post?.randombox_point)}P (랜덤박스 적립)` : ''}</div>
-                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: '#ff0000', fontSize: theme.size.font5 }}>{(getIntroducePercentByUserTier(auth?.user?.tier??0) / 100) * post?.sell_star}포인트 ({getIntroducePercentByUserTier(auth?.user?.tier??0)}%)</strong>사용가능</div>
+                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: theme.color.red, fontSize: theme.size.font5 }}>{(getIntroducePercentByUserTier(auth?.user?.tier??0) / 100) * post?.sell_star}포인트 ({getIntroducePercentByUserTier(auth?.user?.tier??0)}%)</strong>사용가능</div>
                             <div style={{ fontSize: theme.size.font4, color: theme.color.background1 }}>{commarNumber(post?.sell_star * (100 - getIntroducePercentByUserTier(auth?.user?.tier??0)) / 100)} 스타 <strong style={{ fontSize: theme.size.font5 }}>판매가(포인트사용 시)</strong></div>
                             {post?.randombox_point > 0 ?
                                 <>

@@ -6,7 +6,7 @@ const ContentTable = (props) => {
     const navigate = useNavigate();
     const { columns, data, is_not_display_thead, schema, onClick } = props;
     
-    const getHistoryByObj = (obj_) => {
+    const getHistoryByObj = (obj_, width) => {
         let obj = { ...obj_ };
         let result = "";
         if (obj?.type == 0) {//아울렛구매
@@ -30,6 +30,9 @@ const ContentTable = (props) => {
             } else if (schema == 'point') {
                 sche = "포인트";
             }
+            if(schema=='gift'){
+                sche = obj?.category;
+            }
             if (obj?.price > 0) {
                 result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
             } else {
@@ -47,7 +50,9 @@ const ContentTable = (props) => {
             }
             result += ')';
         } else if (obj?.type == 5) {//관리자가 수정
-            result = "관리자의 수정에 의해 변경 되었습니다.";
+            result = obj?.note;
+            console.log(result)
+
         } else if (obj?.type == 6) {//데일리자동지급
             result = "";
         } else if (obj?.type == 7) {//데일리수동지급
@@ -80,7 +85,7 @@ const ContentTable = (props) => {
         } else {
             result = "---";
         }
-        return result;
+        return <Td style={{ width: `${width}%`, whiteSpace:'pre-line' }}>{result}</Td>;
     }
     return (
         <>
@@ -127,21 +132,21 @@ const ContentTable = (props) => {
                                             </>}
                                         {column.type === 'number' ?
                                             <>
-                                                <Td style={{ width: `${column.width}%`, color: `${item[`${column.column}`] >= 0 ? '#1A7EFC' : '#FF0000'}` }}>{item[`${column.column}`] >= 0 ? '+' : ''}{commarNumber(item[`${column.column}`])}</Td>
+                                                <Td style={{ width: `${column.width}%`, color: `${item[`${column.column}`] >= 0 ? '#1A7EFC' : theme.color.red}` }}>{item[`${column.column}`] >= 0 ? '+' : ''}{commarNumber(item[`${column.column}`])}</Td>
                                             </>
                                             :
                                             <>
                                             </>}
                                         {column.type === 'price' ?
                                             <>
-                                                <Td style={{ width: `${column.width}%`, color: `${item[`${column.column}`] >= 0 ? '#1A7EFC' : '#FF0000'}` }}>{item[`${column.column}`] >= 0 ? '+' : ''}{commarNumber(item[`${column.column}`])}</Td>
+                                                <Td style={{ width: `${column.width}%`, color: `${item[`${column.column}`] >= 0 ? '#1A7EFC' : theme.color.red}` }}>{item[`${column.column}`] >= 0 ? '+' : ''}{commarNumber(item[`${column.column}`])}</Td>
                                             </>
                                             :
                                             <>
                                             </>}
                                         {column.type === 'history' ?
                                             <>
-                                                <Td style={{ width: `${column.width}%` }}>{getHistoryByObj(item)}</Td>
+                                            {getHistoryByObj(item, column.width)}
                                             </>
                                             :
                                             <>

@@ -79,7 +79,7 @@ const BuyESGWPoint = () => {
                         <InputContent title="포인트" placeholder="등록할 포인트 수량" class_name="point" 
                         top_contents_margin="auto auto 0 auto"
                         top_contents={[
-                            <div style={{color:'#ff0000'}}>10 Point 당 1 ESGW Point</div>
+                            <div style={{color:theme.color.red}}>10 Point 당 1 ESGW Point</div>
                         ]}
                         bottom_contents={[
                             <div>{commarNumber(post?.point) ?? <LoadingText width={10} />}</div>,

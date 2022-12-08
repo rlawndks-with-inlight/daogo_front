@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, Row, Col, OneCard, OneThirdCard } from '../../components/elements/UserContentTemplete';
+import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, Row, Col, OneCard, OneThirdCard, OneCardImg } from '../../components/elements/UserContentTemplete';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
 import { commarNumber, getIntroducePercentByUserTier, getRollUpBonusByUserTier, getTierByUserTier } from '../../functions/utils';
@@ -21,7 +21,7 @@ import logoWhite from '../../assets/images/icon/logo-white.svg';
 import axios from 'axios';
 import LoadingText from '../../components/LoadingText';
 import { backUrl } from '../../data/ContentData';
-
+import {GiLaurelsTrophy} from 'react-icons/gi'
 const OneTopCard = styled.div`
 background:${(props => props.background) ?? ""};
 color:${(props => props.color) ?? ""};
@@ -66,7 +66,7 @@ const WhiteButton = (props) => {
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
                 </div>
                 <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 50% 0.15rem auto'}`, display: 'flex', alignItems: 'center' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
-                <div style={{ fontSize: theme.size.font6, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
+                <div style={{ fontSize: theme.size.font4, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
                             <div>{total_occurrence_title}</div>
@@ -99,13 +99,14 @@ const Home = () => {
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState({});
 
-    let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "이체하기", link: "/gift", icon: downloadOutline }],
+    let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "선물하기", link: "/gift", icon: downloadOutline }],
     [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "shoppingmall", icon: cart }],
     [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: 'kakaotalk', icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
 
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get('/api/gethomecontent');
+            console.log(response)
             if (response?.result > 0) {
                 setPost(response?.data);
             } else {
@@ -129,28 +130,28 @@ const Home = () => {
             navigate(link);
         }
     }
-    const getPurchasePackageByList = (list_) =>{
+    const getPurchasePackageByList = (list_) => {
         let list = [...list_];
         console.log(list)
         let sum = 0;
-        for(var i = 0;i<list.length;i++){
-            if(list[i]?.price==9000){
-                sum+= 360000;
-            }else if(list[i]?.price==30000){
-                sum+= 1200000;
+        for (var i = 0; i < list.length; i++) {
+            if (list[i]?.price == 9000) {
+                sum += 360000;
+            } else if (list[i]?.price == 30000) {
+                sum += 1200000;
 
-            }else if(list[i]?.price==90000){
-                sum+= 3600000;
-                
-            }else if(list[i]?.price==150000){
-                sum+= 6000000;
-                
-            }else if(list[i]?.price==300000){
-                sum+= 12000000;
-                
+            } else if (list[i]?.price == 90000) {
+                sum += 3600000;
+
+            } else if (list[i]?.price == 150000) {
+                sum += 6000000;
+
+            } else if (list[i]?.price == 300000) {
+                sum += 12000000;
+
             }
         }
-        return sum/100;
+        return sum / 100;
     }
     return (
         <>
@@ -162,19 +163,22 @@ const Home = () => {
                     :
                     <>
                         <Content style={{ marginBottom: '12px' }}>
-                            <Row style={{ justifyContent: 'flex-start' }}>
-                                <img src={post?.auth?.profile_img ? backUrl + post?.auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
-                                <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>
-                                    <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold' }}>Hi, {post?.auth?.name}</div>
-                                    <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼  / ${getTierByUserTier(post?.user?.tier)}`}</div>
-                                </Col>
+                            <Row style={{ justifyContent: 'flex-start', justifyContent: 'space-between' }}>
+                                <Row>
+                                    <img src={post?.auth?.profile_img ? backUrl + post?.auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
+                                    <Col style={{ marginLeft: '8px', textAlign: 'left', height: '20px',marginTop:'auto' }}>
+                                        <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold',display:'flex',alignItems:'center' }}>{post?.sell_outlet?.sell_outlet>0?<GiLaurelsTrophy style={{marginRight:'4px',marginTop:'2px',color:theme.color.gold}}/>:''}<div>Hi, {post?.auth?.name}</div></div>
+                                    </Col>
+                                </Row>
+
+                                <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: 'auto' }}>{`다오고 그린슈머스 소비경제 플랫폼  / ${getTierByUserTier(post?.user?.tier)} / ${post?.auth?.id}`}</div>
                             </Row>
                         </Content>
                         <Content>
                             <OneTopCard style={{ marginBottom: '12px' }} background={theme.color.background1}>
                                 <Row style={{ margin: 'auto 0', height: '85%', color: '#fff' }}>
                                     <Col style={{ margin: '0 auto', width: '25%', display: 'flex', flexDirection: 'column' }}>
-                                        <HeaderContent><div>{commarNumber(getPurchasePackageByList(post?.purchase_package??[])) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
+                                        <HeaderContent><div>{commarNumber(getPurchasePackageByList(post?.purchase_package ?? [])) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"구매 패키지"}</div>
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff' }}>
@@ -183,7 +187,7 @@ const Home = () => {
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff' }}>
                                         <HeaderContent><div>{getRollUpBonusByUserTier(post?.user?.tier) ?? <LoadingText color={"#fff"} width={15} />}%</div></HeaderContent>
-                                        <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"롤업 보너스"}</div>
+                                        <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"이벤트 보너스"}</div>
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/recommendgenealogy')}>
                                         <HeaderContent><div>{(post?.genealogy_score?.loss) ?? <LoadingText color={"#fff"} width={15} />} / {(post?.genealogy_score?.great) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
@@ -193,8 +197,8 @@ const Home = () => {
                             </OneTopCard>
                         </Content>
                         <Content>
-                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
+                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={(post?.star?.star - (post?.star_gift?.star_gift ?? 0))} unit={`STAR`} link={'/star/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw?.esgw} unit={`ESGW`} link={'/esgw/history'} />
@@ -233,6 +237,21 @@ const Home = () => {
                                             </Col>
                                         </Row>
                                     </OneCard>
+                                </>
+                            ))}
+                        </Content>
+                        <Content>
+                            <Title not_arrow={true}>메인배너 콘텐츠</Title>
+                            {post?.main_banner && post?.main_banner?.map((item, index) => (
+                                <>
+                                    <OneCardImg style={{ marginBottom: '12px' }} src={backUrl + item?.img_src} is_hover={true} onClick={() => {
+                                        if (item?.target === 0) {
+                                            window.location.href = (item?.link.includes('http') ? '' : 'http://') + item?.link;
+                                        } else {
+                                            window.open((item?.link.includes('http') ? '' : 'http://') + item?.link);
+                                        }
+                                    }}>
+                                    </OneCardImg>
                                 </>
                             ))}
                         </Content>

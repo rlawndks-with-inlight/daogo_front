@@ -71,7 +71,7 @@ const WithdrawRequest = () => {
                                 <div style={{ marginRight: '4px' }}>잔액</div>
                             ]}
                             bottom_contents={[
-                                <div style={{ marginLeft: '4px', color: '#FF0000' }}>* 최소 500 스타부터 신청 가능하며, 100단위 이상으로 신청해 주세요.</div>
+                                <div style={{ marginLeft: '4px', color: theme.color.red }}>* 최소 500 스타부터 신청 가능하며, 100단위 이상으로 신청해 주세요.</div>
                             ]} />
                         <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
                     </OneCard>

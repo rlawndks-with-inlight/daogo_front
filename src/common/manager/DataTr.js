@@ -113,8 +113,8 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
         let result = "";
         if (obj?.type == 0) {//아울렛구매
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `아울렛쇼핑 ${obj['explain_obj']?.item_name??""} 구매로 인해 사용 되었습니다.`;
-        }  else if (obj?.type == 1) {//쿠폰 구매
+            result = `아울렛쇼핑 ${obj['explain_obj']?.item_name ?? ""} 구매로 인해 사용 되었습니다.`;
+        } else if (obj?.type == 1) {//쿠폰 구매
             result = "";
         } else if (obj?.type == 2) {//랜덤박스 등록
             if (schema == 'log_star') {
@@ -193,6 +193,9 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             return "---";
         }
     }
+    const outletOrderFormat = (column) => {
+        return "---";
+    }
     return (
         <>
             <Tr ref={obj.is_move ? ref : null} data-handler-id={handlerId}>
@@ -209,6 +212,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                         {col.type == 'number' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`] ?? 0)}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                        {col.type == 'minus_number' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{commarNumber((data[`${col.column}`] ?? 0) * (-1))}</Td>
                             </>
                             :
                             <>
@@ -346,7 +356,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             </>}
                         {col.type == 'increase' ?
                             <>
-                                <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] > 0 ? '#546de5' : '#ff0000'}` }}>
+                                <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] > 0 ? theme.color.blue : theme.color.red}` }}>
                                     {data[`${col.column}`] > 0 ? <AiOutlinePlus /> : <AiOutlineMinus />}
                                 </Td>
                             </>
@@ -356,7 +366,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                         {col.type == 'edit' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
-                                    <BiEditAlt style={{ cursor: 'pointer', color: '#546de5' }} onClick={() => navigate(`/manager/edit/${schema}/${data.pk}`)} />
+                                    <BiEditAlt style={{ cursor: 'pointer', color: theme.color.blue }} onClick={() => navigate(`/manager/edit/${schema}/${data.pk}`)} />
                                 </Td>
                             </>
                             :
@@ -374,7 +384,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                         {col.type == 'user_marketing' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
-                                    <RiMoneyDollarBoxFill style={{ cursor: 'pointer', color: 'ffd700' }} onClick={() => navigate(`/manager/usermarketing/${data.pk}`)} />
+                                    <RiMoneyDollarBoxFill style={{ cursor: 'pointer', color: theme.color.gold }} onClick={() => navigate(`/manager/usermarketing/${data.pk}`)} />
                                 </Td>
                             </>
                             :
@@ -426,6 +436,114 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
                                             {commarNumber(data[`${col.column}`] * (-1) * 96.7)}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                            </>
+                            :
+                            <>
+                            </>}
+
+                        {col.type.includes('outlet_order') ?
+                            <>
+                                {col.type.split('order_')[1] == 'name' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {data['user_id']}({data['user_name']})
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'point' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(JSON?.parse(data['explain_obj'])?.point ?? 0)}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'phone' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {JSON?.parse(data['explain_obj'])?.name ?? "---"}({JSON?.parse(data['explain_obj'])?.phone ?? "---"})
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'address' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {JSON?.parse(data['explain_obj'])?.address ?? ""} {JSON?.parse(data['explain_obj'])?.address_detail ?? ""}({JSON?.parse(data['explain_obj'])?.refer ?? ""})
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'request' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {JSON?.parse(data['explain_obj'])?.request ?? ""}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'refer' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(data[`${col.column}`] * (-1))}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'sell_user' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {data[`sell_user_id`]}({data[`sell_user_name`]})({data[`sell_user_phone`]})
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'sell_user_price' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(data['sell_revenue_percent'] / 100 * data['item_price'])}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'status' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                                <>반품처리</>
+                                                :
+                                                <></>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                                <>확인대기</>
+                                                :
+                                                <></>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                                <>주문확인</>
+                                                :
+                                                <></>}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'edit' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            { }
                                         </Td>
                                     </>
                                     :

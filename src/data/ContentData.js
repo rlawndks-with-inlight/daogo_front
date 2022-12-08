@@ -57,6 +57,14 @@ export const zSidebarMenu = [
     { name: '마이페이지', link: '/mypage' },
 ]
 export const historyContent = {
+    gift: {
+        title: "선물한 내역",
+        columns: [
+            columnObjFormat('History', 50, 'history', 'note'),
+            columnObjFormat('Time', 25, 'date', 'date'),
+            columnObjFormat('Price', 25, 'number', 'price'),
+        ]
+    },
     randombox: {
         title: "랜덤박스 변동내역",
         columns: [
