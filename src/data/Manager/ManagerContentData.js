@@ -280,7 +280,7 @@ export const objManagerListContent = {
             columnObjFormat('회원명', '', 'text', 'user_name'),
             columnObjFormat('신청스타', '', 'exchange_star', 'price'),
             columnObjFormat('신청금(원)', '', 'exchange_money', 'price'),
-            columnObjFormat('환전수수료(원)', '', 'exchange_moneycommission', 'price'),
+            columnObjFormat('환전수수료(스타)', '', 'exchange_moneycommission', 'price'),
             columnObjFormat('실지급금(원)', '', 'exchange_moneypayment', 'price'),
             columnObjFormat('신청일', '', 'text', 'date'),
             columnObjFormat('입금은행', '', 'text', 'bank_name'),
