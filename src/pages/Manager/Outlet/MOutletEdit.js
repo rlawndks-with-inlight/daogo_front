@@ -20,6 +20,7 @@ import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import { backUrl } from '../../../data/Manager/ManagerContentData';
 import $ from 'jquery';
+import { commarNumber } from "../../../functions/utils";
 
 const MOutletEdit = () => {
     const params = useParams();
@@ -32,8 +33,8 @@ const MOutletEdit = () => {
     const [noteFormData] = useState(new FormData());
     const [brandList, setBrandList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
-    const [isCheckSellId, setIsCheckSellId] = useState(false);
     const [sellUserObj, setSellUserObj] = useState({});
+    const [isInputPoint, setIsInputPoint] = useState(false);
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.post('/api/getalldatabytables', {
@@ -55,7 +56,13 @@ const MOutletEdit = () => {
                 $('.sell_user_phone').val(response.data.sell_user_phone)
                 $('.sell_revenue_percent').val(response.data.sell_revenue_percent)
                 $('.is_use_point').val(response.data.is_use_point)
-                $('.point_percent').val(response.data.point_percent)
+                if(response?.data?.is_use_point!=1){
+                    setIsInputPoint(false);
+                    $('.point_percent').val(null);
+                }else{
+                    setIsInputPoint(true);
+                    $('.point_percent').val(response?.data?.point_percent);
+                }
                 $('.link').val(response.data.link)
                 setSellUserObj({
                     id: response?.data?.sell_user_id,
@@ -122,23 +129,31 @@ const MOutletEdit = () => {
         if ((!url && !content) || !$('.name').val() || !$('.sell_star').val() || !$('.sell_user_id').val() || !$('.sell_user_name').val() || !$('.sell_user_phone').val() || !$('.sell_revenue_percent').val()) {
             alert('필수 값이 비어있습니다.');
         } else {
+            if(!$('.reason-correction').val()&&params.pk>0){
+                alert('필수 값이 비어있습니다.');
+                return;
+            }
             if ($('.sell_user_id').val() != sellUserObj.id) {
                 alert("판매자 아이디에 비정상적인 변경이 감지되었습니다.");
                 return;
             }
+            console.log($('.point_percent').val()??0)
             if (window.confirm('저장 하시겠습니까?')) {
+                
                 if (content) formData.append('outlet', content);
                 formData.append('category_pk', $('.category').val());
                 formData.append('brand_pk', $('.brand').val());
                 formData.append('name', $('.name').val());
                 formData.append('sell_star', $('.sell_star').val());
-                //formData.append('generated_code_count', $('.generated_code_count').val());
+               // formData.append('generated_code_count', $('.generated_code_count').val());
                 formData.append('sell_user_pk', sellUserObj?.pk);
                 formData.append('sell_user_id', $('.sell_user_id').val());
                 formData.append('sell_user_name', $('.sell_user_name').val());
                 formData.append('sell_user_phone', $('.sell_user_phone').val());
                 formData.append('is_use_point', $('.is_use_point').val());
-                formData.append('point_percent', $('.point_percent').val());
+                if($('.point_percent').val()){
+                    formData.append('point_percent', $('.point_percent').val()??0);
+                }
 
                 formData.append('randombox_point', $('.randombox_point').val());
                 formData.append('sell_revenue_percent', $('.sell_revenue_percent').val());
@@ -157,6 +172,19 @@ const MOutletEdit = () => {
                     alert(response.message);
                 }
             }
+        }
+    }
+    const onChangeIsUsePoint = (e) => {
+        if (e.target.value == 0) {
+            setIsInputPoint(false);
+            $('.point_percent').val(null);
+        } else if (e.target.value == 1) {
+            setIsInputPoint(true);
+        } else if (e.target.value == 2) {
+            setIsInputPoint(false);
+            $('.point_percent').val(null);
+        } else {
+            alert("잘못된 값입니다.")
         }
     }
     return (
@@ -210,14 +238,15 @@ const MOutletEdit = () => {
                     </Col>
                     <Col>
                         <Title>포인트사용여부</Title>
-                        <Select className="is_use_point">
-                            <option value={1}>사용가능</option>
+                        <Select className="is_use_point" onChange={onChangeIsUsePoint}>
                             <option value={0}>사용불가</option>
+                            <option value={1}>직접입력</option>
+                            <option value={2}>회원 티어별 포인트</option>
                         </Select>
                     </Col>
                     <Col>
                         <Title>사용가능포인트 %</Title>
-                        <Input className="point_percent" placeholder="5.5" />
+                        <Input className="point_percent" placeholder="5.5"  disabled={!isInputPoint} />
                     </Col>
                 </Row>
                 <Row>
