@@ -14,7 +14,7 @@ outline:none;
 }
 @media screen and (max-width:500px) { 
     width:40vw;
-    margin-right:25px !important;
+    margin-right:${props=>props.input_category};
 }
 `
 const InputCategory = styled.div`
@@ -23,7 +23,7 @@ position:absolute;
 right:-54px;
 font-size:${props=>props.theme.size.font4};
 @media screen and (max-width:500px) { 
-    right:-27px;
+    right:${props=>props.input_category};
     font-size:${props=>props.theme.size.font5};
 }
 `
@@ -57,10 +57,10 @@ const InputContent = (props) => {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '95%', maxWidth: '350px', margin: `${top_contents ? '4px' : 'auto'} auto ${bottom_contents ? '4px' : 'auto'} auto` }}>
                 <InputTitle>{title??<LoadingText width={12} />}</InputTitle>
                 <div style={{display:'flex',alignItems:'center',position:'relative'}}>
-                <Input style={{ margin: '0' }} placeholder={placeholder} type={input_type ?? "text"} className={class_name} disabled={input_disabled} onChange={onChange} autoComplete="new-password" />
+                <Input style={{ margin: '0' }} placeholder={placeholder} type={input_type ?? "text"} className={class_name} disabled={input_disabled} onChange={onChange} autoComplete="new-password" input_category={input_category?'25px !important':''} />
                 {input_category?
                 <>
-                <InputCategory>{input_category}</InputCategory>
+                <InputCategory input_category={input_category?'-27px':'0'}>{input_category}</InputCategory>
                 </>
                 :
                 <>
