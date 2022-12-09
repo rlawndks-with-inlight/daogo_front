@@ -15,9 +15,10 @@ const ContentTable = (props) => {
         } else if (obj?.type == 1) {//쿠폰 구매
             result = "";
         } else if (obj?.type == 2) {//랜덤박스 등록
-            if (schema == 'star') {
+            console.log(obj)
+            if (schema == 'star' || obj?.category=='star') {
                 result = "랜덤박스로 전환 하였습니다.";
-            } else if (schema == 'randombox') {
+            } else if (schema == 'randombox' || obj?.category=='randombox' ) {
                 result = ` ${commarNumber(obj?.price / 3)} 스타에서 랜덤박스로 전환 하였습니다.`;
             } else {
                 result = "";
@@ -57,7 +58,7 @@ const ContentTable = (props) => {
             result = "";
         } else if (obj?.type == 7) {//데일리수동지급
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} 발생 하였습니다.`;
+            result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} ${obj?.category?obj?.category:''} ${obj?.price>=0?'지급 되었습니다.':'차감 되었습니다.'}`;
         } else if (obj?.type == 8) {//청약예치금등록
             if (schema == 'star' || schema == 'point' || schema == 'esgw') {
                 result = `청약예치금에 등록 하였습니다.`;

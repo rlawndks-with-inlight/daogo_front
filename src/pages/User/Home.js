@@ -17,11 +17,11 @@ import pigBank from '../../assets/images/icon/home/pig-bank.svg';
 import point from '../../assets/images/icon/home/point.svg';
 import withdrawRequest from '../../assets/images/icon/home/withdraw-request.svg';
 import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
-import logoWhite from '../../assets/images/icon/logo-white.svg';
+import logoOutlet from '../../assets/images/icon/logo-outlet.png';
 import axios from 'axios';
 import LoadingText from '../../components/LoadingText';
 import { backUrl } from '../../data/ContentData';
-import {GiLaurelsTrophy} from 'react-icons/gi'
+import { GiLaurelsTrophy } from 'react-icons/gi';
 const OneTopCard = styled.div`
 background:${(props => props.background) ?? ""};
 color:${(props => props.color) ?? ""};
@@ -63,6 +63,15 @@ margin: auto 0;
     flex-direction:column;
 }
 `
+const OutletImg = styled.img`
+height: 100%;
+width: auto; 
+margin: auto;
+@media screen and (max-width:500px) { 
+    width: 90%;
+    height: auto;
+}
+`
 const WhiteButton = (props) => {
     let { title, content, unit, bottom_content, width, total_occurrence_title, total_occurrence, background, font_color, link } = props;
     const navigate = useNavigate();
@@ -77,7 +86,7 @@ const WhiteButton = (props) => {
                 <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
-                            <div style={{ color: theme.color.font3}}>{total_occurrence_title}</div>
+                            <div style={{ color: theme.color.font3 }}>{total_occurrence_title}</div>
                             <div style={{ marginLeft: '12px' }}>{total_occurrence >= 0 ? commarNumber(total_occurrence) : <LoadingText width={12} />}</div>
                         </>
                         :
@@ -94,7 +103,7 @@ const GreenButton = (props) => {
     return (
         <>
             <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} background={theme.color.background1} is_hover={true} onClick={() => navigate(link)}>
-                <img src={img} style={{ height: '100%', width: 'auto', margin: 'auto' }} />
+                <OutletImg src={img}/>
             </OneCard>
         </>
     )
@@ -174,8 +183,8 @@ const Home = () => {
                             <ProfileContainer>
                                 <Row>
                                     {/* <img src={post?.auth?.profile_img ? backUrl + post?.auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} /> */}
-                                    <Col style={{ textAlign: 'left', height: '20px',marginTop:'auto' }}>
-                                        <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold',display:'flex',alignItems:'center' }}>{post?.sell_outlet?.sell_outlet>0?<GiLaurelsTrophy style={{marginRight:'4px',marginTop:'2px',color:theme.color.gold}}/>:''}<div>Hi, {post?.auth?.name}</div></div>
+                                    <Col style={{ textAlign: 'left', height: '20px', marginTop: 'auto' }}>
+                                        <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>{post?.sell_outlet?.sell_outlet > 0 ? <GiLaurelsTrophy style={{ marginRight: '4px', marginTop: '2px', color: theme.color.gold }} /> : ''}<div>Hi, {post?.auth?.name}</div></div>
                                     </Col>
                                 </Row>
 
@@ -193,7 +202,7 @@ const Home = () => {
                                         <HeaderContent><div>{getIntroducePercentByUserTier(post?.user?.tier) ?? <LoadingText color={"#fff"} width={15} />}%</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"소개 수익 / 할인"}</div>
                                     </Col>
-                                    <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/randomboxrolling/history')}>
+                                    <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/randombox_rolling/history')}>
                                         <HeaderContent><div>{getRollUpBonusByUserTier(post?.user?.tier) ?? <LoadingText color={"#fff"} width={15} />}%</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"이벤트 보너스"}</div>
                                     </Col>
@@ -210,7 +219,7 @@ const Home = () => {
                             <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw?.esgw} unit={`ESGW`} link={'/esgw/history'} />
-                                <GreenButton width={45} img={logoWhite} link={'/shoppingmall/outlet'} />
+                                <GreenButton width={45} img={logoOutlet} link={'/shoppingmall/outlet'} />
                             </Row>
                         </Content>
                         <Content style={{ borderBottom: `1px solid #dddddd`, width: '86%' }} />

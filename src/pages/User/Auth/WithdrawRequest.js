@@ -25,12 +25,17 @@ const WithdrawRequest = () => {
     const [post, setPost] = useState({});
     useEffect(() => {
         async function fetchPost() {
-            const { data: response } = await axios.get(`/api/getusermoney`);
+            const { data: response } = await axios.get(`/api/getusermoney?type=withdrawrequest`);
+            console.log(response)
+
             if (!response?.data?.user?.payment_pw) {
                 alert("결제 비밀번호 등록 후 사용해 주세요.");
                 navigate('/editmyinfo');
             }
             setPost(response.data);
+            $('.commission').val(0);
+            $('.deduction_star').val(0);
+            $('.receipt_won').val(0);
         }
         fetchPost();
     }, [])
@@ -51,11 +56,31 @@ const WithdrawRequest = () => {
             const { data: response } = await axios.post('/api/requestwithdraw', obj);
             if (response?.result > 0) {
                 alert("성공적으로 저장되었습니다.");
-                const { data: response } = await axios.get(`/api/getusermoney`);
+                $('.send_star').val("");
+                $('.commission').val(0);
+                $('.deduction_star').val(0);
+                $('.receipt_won').val(0);
+                const { data: response } = await axios.get(`/api/getusermoney?type=withdrawrequest`);
                 setPost(response.data);
             } else {
                 alert(response?.message);
             }
+        }
+    }
+    const onChangeSendStar = (e) =>{
+        let price = e.target.value;
+        if(isNaN(parseInt(price[price.length-1]))){
+            $('.send_star').val($('.send_star').val().substring(0,$('.send_star').val().length-1))
+        }else{
+            price = parseInt(price);
+            $('.commission').val(commarNumber(price*post?.withdraw_commission_percent/100));
+            $('.deduction_star').val(commarNumber(price+price*post?.withdraw_commission_percent/100));
+            $('.receipt_won').val(commarNumber(price*100));
+        }
+        if(!e.target.value){
+            $('.commission').val(0);
+            $('.deduction_star').val(0);
+            $('.receipt_won').val(0);
         }
     }
     return (
@@ -63,9 +88,10 @@ const WithdrawRequest = () => {
             <Wrappers>
                 <Title>출금신청</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                    <OneCard width={96} style={{ height: '160px', cursor: 'default' }}>
-                        <InputContent title="스타" placeholder="보낼 스타" class_name="send_star"
+                    <OneCard width={96} style={{ height: '350px', cursor: 'default' }}>
+                        <InputContent title="스타" placeholder="신청 스타" class_name="send_star" onChange={onChangeSendStar}
                             top_contents_margin="auto auto 0 auto"
+                            input_category={'STAR'}
                             top_contents={[
                                 <div>{commarNumber(post?.star) ?? <LoadingText width={10} />}</div>,
                                 <div style={{ marginRight: '4px' }}>잔액</div>
@@ -73,6 +99,9 @@ const WithdrawRequest = () => {
                             bottom_contents={[
                                 <div style={{ marginLeft: '4px', color: theme.color.red }}>* 최소 500 스타부터 신청 가능하며, 100단위 이상으로 신청해 주세요.</div>
                             ]} />
+                        <InputContent title="출금 수수료"  class_name="commission" input_category={'STAR'} input_disabled={true} />
+                        <InputContent title="총 차감스타"  class_name="deduction_star" input_category={'STAR'} input_disabled={true} />
+                        <InputContent title="실 수령액"  class_name="receipt_won" input_category={'￦'} input_disabled={true} />
                         <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
                     </OneCard>
                 </Row>

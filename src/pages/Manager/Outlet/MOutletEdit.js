@@ -281,7 +281,7 @@ const MOutletEdit = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Title>상품이미지</Title>
+                        <Title>상품이미지 (권장 512x512)</Title>
                         <ImageContainer for="file1">
 
                             {url ?

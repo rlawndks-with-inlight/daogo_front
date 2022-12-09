@@ -73,6 +73,14 @@ export const historyContent = {
             columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
+    randombox_rolling: {
+        title: "랜덤박스 이벤트 롤링 변동내역",
+        columns: [
+            columnObjFormat('History', 50, 'history', 'note'),
+            columnObjFormat('Time', 25, 'date', 'date'),
+            columnObjFormat('Point', 25, 'number', 'price'),
+        ]
+    },
     star: {
         title: "스타 변동내역",
         columns: [

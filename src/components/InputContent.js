@@ -2,7 +2,7 @@ import theme from "../styles/theme";
 import { Input } from "./elements/ManagerTemplete";
 import LoadingText from "./LoadingText";
 const InputContent = (props) => {
-    let { top_contents, top_contents_margin, bottom_contents, input_type, placeholder, title, class_name, bottom_contents_margin } = props;
+    let { top_contents, top_contents_margin, bottom_contents, input_type, input_category, input_disabled, placeholder, title, class_name, bottom_contents_margin ,onChange  } = props;
     return (
         <>
             {top_contents ?
@@ -23,7 +23,16 @@ const InputContent = (props) => {
             }
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '95%', maxWidth: '350px', margin: `${top_contents ? '4px' : 'auto'} auto ${bottom_contents ? '4px' : 'auto'} auto` }}>
                 <div style={{ fontSize: theme.size.font4, fontWeight: 'bold' }}>{title??<LoadingText width={12} />}</div>
-                <Input style={{ margin: '0' }} placeholder={placeholder} type={input_type ?? "text"} className={class_name} />
+                <div style={{display:'flex',alignItems:'center',position:'relative'}}>
+                <Input style={{ margin: '0' }} placeholder={placeholder} type={input_type ?? "text"} className={class_name} disabled={input_disabled} onChange={onChange} autoComplete="new-password" />
+                {input_category?
+                <>
+                <div style={{width:'50px',position:'absolute',right:'-54px',}}>{input_category}</div>
+                </>
+                :
+                <>
+                </>}
+                </div>
             </div>
             {bottom_contents ?
                 <>

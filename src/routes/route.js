@@ -18,8 +18,8 @@ import MNoticeEdit from '../pages/Manager/Board/MNoticeEdit';
 
 import MCouponEdit from '../pages/Manager/Coupon/MCouponEdit';
 
-import MDailyManualPayment from '../pages/Manager/Daily/MDailyManualPayment';
-import MDailyPaymentProbabilityEdit from '../pages/Manager/Daily/MDailyPaymentProbabilityEdit';
+import MDailyManualPayment from '../pages/Manager/Setting/MDailyManualPayment';
+import MDailyPaymentProbabilityEdit from '../pages/Manager/Setting/MDailyPaymentProbabilityEdit';
 
 
 import MUserEdit from '../pages/Manager/User/MUserEdit';
@@ -50,6 +50,8 @@ import Coupon from '../pages/User/Coupon/Coupon';
 import OutletOrder from '../pages/User/Outlet/OutletOrder';
 import MUserMarketingEdit from '../pages/Manager/User/MUserMarketingEdit';
 import GiftHistory from '../pages/User/Gift/GiftHistory';
+import RandomboxRollingHistory from '../pages/User/RandomBox/RandomboxRollingHistory';
+import MWithdrawSetting from '../pages/Manager/Setting/MWithdrawSetting';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -71,6 +73,7 @@ const zUserRoute = [
     { link: '/:schema/history', element: <History />, title: "리스트" },
     { link: '/recommendgenealogy', element: <RecommendGenealogy />, title: "추천계보" },
     { link: '/eventgame', element: <EventGame />, title: "이벤트게임" },
+    { link: '/randombox_rolling/history', element: <RandomboxRollingHistory />, title: "랜덤박스 롤링 내역" },
     { link: '/qrcode', element: <QrCode />, title: "QR코드" },
     { link: '/withdrawrequest', element: <WithdrawRequest />, title: "출금신청" },
     { link: '/noticelist', element: <NoticeList />, title: "공지사항" },
@@ -89,6 +92,7 @@ const zManagerRoute = [
 
     { link: '/manager/user_organization_chart', element: <MUserOrganizationChart />, title: "" },
     { link: '/manager/edit/daily_payment_probability', element: <MDailyPaymentProbabilityEdit />, title: "" },
+    { link: '/manager/edit/withdraw_setting', element: <MWithdrawSetting />, title: "" },
     { link: '/manager/daily_manual_payment', element: <MDailyManualPayment />, title: "" },
     { link: '/manager/edit/main_banner/:pk', element: <MMainBannerEdit />, title: "메인배너" },
     { link: '/manager/edit/notice/:pk', element: <MNoticeEdit />, title: "공지사항관리" },

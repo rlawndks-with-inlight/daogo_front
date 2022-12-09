@@ -408,7 +408,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'star' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(data[`${col.column}`] * (-1))}
+                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star)}
                                         </Td>
                                     </>
                                     :
@@ -417,7 +417,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'money' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(data[`${col.column}`] * (-1) * 100)}
+                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star*100)}
                                         </Td>
                                     </>
                                     :
@@ -426,7 +426,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'moneycommission' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(data[`${col.column}`] * (-1) * 3.3)}
+                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star*(JSON.parse(data[`explain_obj`])?.withdraw_commission_percent/100))}
                                         </Td>
                                     </>
                                     :
@@ -435,7 +435,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'moneypayment' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(data[`${col.column}`] * (-1) * 96.7)}
+                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star*100)}
                                         </Td>
                                     </>
                                     :

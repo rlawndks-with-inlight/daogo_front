@@ -30,11 +30,12 @@ const RegisterRandomBox = () => {
     const [post, setPost] = useState({});
     useEffect(() => {
         async function fetchPost() {
-            const { data: response } = await axios.get(`/api/getusermoney`);
+            const { data: response } = await axios.get(`/api/getusermoney?type=randomboxregister`);
             if (!response?.data?.user?.payment_pw) {
                 alert("결제 비밀번호 등록 후 사용해 주세요.");
                 navigate('/editmyinfo');
             }
+            console.log(response)
             setPost(response.data);
         }
         fetchPost();
@@ -57,11 +58,11 @@ const RegisterRandomBox = () => {
                 star: parseFloat($('.send_star').val()),
                 payment_pw: parseFloat($('.payment_pw').val()),
             })
-            if(response?.result>0){
+            if (response?.result > 0) {
                 alert("성공적으로 등록되었습니다.");
                 const { data: response } = await axios.get(`/api/getusermoney`);
                 setPost(response?.data);
-            }else{
+            } else {
                 alert(response?.message);
             }
         }
@@ -71,9 +72,13 @@ const RegisterRandomBox = () => {
             <Wrappers>
                 <Title>랜덤박스등록</Title>
                 <Row style={{ margin: '0 0 16px 0' }}>
-                    <OneCard width={96} style={{ background: theme.color.background1, color: "#fff", height: '175px', cursor: 'default', fontSize: theme.size.font2 }}>
+                    <OneCard width={96} style={{ background: theme.color.background1, color: "#fff", height: '175px', cursor: 'default', fontSize: theme.size.font2, position: 'relative' }}>
                         <div style={{ margin: 'auto auto 8px auto' }}>나의 랜덤박스</div>
                         <div style={{ margin: '8px auto auto auto' }}>{commarNumber(post?.randombox) ?? <LoadingText color={"#fff"} width={15} />}</div>
+                        <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', right: '12px', top: '12px' }}>
+                            <div style={{ margin: 'auto auto 4px auto',fontSize:theme.size.font5 }}>총 랜덤박스 전환 스타</div>
+                            <div style={{ margin: '4px auto auto auto',fontSize:theme.size.font5 }}>{commarNumber((post?.star_to_randombox ?? 0) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}</div>
+                        </div>
                     </OneCard>
                 </Row>
                 <Row style={{ margin: '0 0 64px 0' }}>
