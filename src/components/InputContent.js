@@ -1,6 +1,39 @@
+import styled from "styled-components";
 import theme from "../styles/theme";
-import { Input } from "./elements/ManagerTemplete";
 import LoadingText from "./LoadingText";
+
+const Input = styled.input`
+margin:12px auto 6px 24px;
+width:200px;
+padding:8px;
+border:1px solid #dadde6;
+border-radius:4px;
+outline:none;
+::placeholder {
+    color: #cccccc;
+}
+@media screen and (max-width:500px) { 
+    width:40vw;
+    margin-right:25px !important;
+}
+`
+const InputCategory = styled.div`
+width:50px;
+position:absolute;
+right:-54px;
+font-size:${props=>props.theme.size.font4};
+@media screen and (max-width:500px) { 
+    right:-27px;
+    font-size:${props=>props.theme.size.font5};
+}
+`
+const InputTitle = styled.div`
+font-size: ${props=>props.theme.size.font4};
+font-weight: bold;
+@media screen and (max-width:500px) { 
+    font-size:${props=>props.theme.size.font5};
+}
+`
 const InputContent = (props) => {
     let { top_contents, top_contents_margin, bottom_contents, input_type, input_category, input_disabled, placeholder, title, class_name, bottom_contents_margin ,onChange  } = props;
     return (
@@ -22,12 +55,12 @@ const InputContent = (props) => {
                 </>
             }
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '95%', maxWidth: '350px', margin: `${top_contents ? '4px' : 'auto'} auto ${bottom_contents ? '4px' : 'auto'} auto` }}>
-                <div style={{ fontSize: theme.size.font4, fontWeight: 'bold' }}>{title??<LoadingText width={12} />}</div>
+                <InputTitle>{title??<LoadingText width={12} />}</InputTitle>
                 <div style={{display:'flex',alignItems:'center',position:'relative'}}>
                 <Input style={{ margin: '0' }} placeholder={placeholder} type={input_type ?? "text"} className={class_name} disabled={input_disabled} onChange={onChange} autoComplete="new-password" />
                 {input_category?
                 <>
-                <div style={{width:'50px',position:'absolute',right:'-54px',}}>{input_category}</div>
+                <InputCategory>{input_category}</InputCategory>
                 </>
                 :
                 <>
