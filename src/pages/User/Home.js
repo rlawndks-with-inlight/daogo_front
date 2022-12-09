@@ -37,7 +37,7 @@ width:${(props => props.width) ?? "100"}%;
 }
 `
 const BottomMenuText = styled.div`
-font-size: ${theme.size.font6};
+font-size: 11px;
 color: ${theme.color.font2};
 font-weight: bold;
 margin: auto auto auto 2rem; 
@@ -55,6 +55,14 @@ align-items: center;
 display: flex;
 flex-direction: column;
 `
+const ProfileContainer = styled.div`
+display:flex;
+justify-content: space-between;
+margin: auto 0;
+@media screen and (max-width:600px) { 
+    flex-direction:column;
+}
+`
 const WhiteButton = (props) => {
     let { title, content, unit, bottom_content, width, total_occurrence_title, total_occurrence, background, font_color, link } = props;
     const navigate = useNavigate();
@@ -66,10 +74,10 @@ const WhiteButton = (props) => {
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
                 </div>
                 <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 50% 0.15rem auto'}`, display: 'flex', alignItems: 'center' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
-                <div style={{ fontSize: theme.size.font4, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
+                <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
-                            <div>{total_occurrence_title}</div>
+                            <div style={{ color: theme.color.font3}}>{total_occurrence_title}</div>
                             <div style={{ marginLeft: '12px' }}>{total_occurrence >= 0 ? commarNumber(total_occurrence) : <LoadingText width={12} />}</div>
                         </>
                         :
@@ -163,16 +171,16 @@ const Home = () => {
                     :
                     <>
                         <Content style={{ marginBottom: '12px' }}>
-                            <Row style={{ justifyContent: 'flex-start', justifyContent: 'space-between' }}>
+                            <ProfileContainer>
                                 <Row>
-                                    <img src={post?.auth?.profile_img ? backUrl + post?.auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
-                                    <Col style={{ marginLeft: '8px', textAlign: 'left', height: '20px',marginTop:'auto' }}>
+                                    {/* <img src={post?.auth?.profile_img ? backUrl + post?.auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} /> */}
+                                    <Col style={{ textAlign: 'left', height: '20px',marginTop:'auto' }}>
                                         <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold',display:'flex',alignItems:'center' }}>{post?.sell_outlet?.sell_outlet>0?<GiLaurelsTrophy style={{marginRight:'4px',marginTop:'2px',color:theme.color.gold}}/>:''}<div>Hi, {post?.auth?.name}</div></div>
                                     </Col>
                                 </Row>
 
-                                <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: 'auto' }}>{`다오고 그린슈머스 소비경제 플랫폼  / ${getTierByUserTier(post?.user?.tier)} / ${post?.auth?.id}`}</div>
-                            </Row>
+                                <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼  / ${getTierByUserTier(post?.user?.tier)} / ${post?.auth?.id}`}</div>
+                            </ProfileContainer>
                         </Content>
                         <Content>
                             <OneTopCard style={{ marginBottom: '12px' }} background={theme.color.background1}>
@@ -185,12 +193,12 @@ const Home = () => {
                                         <HeaderContent><div>{getIntroducePercentByUserTier(post?.user?.tier) ?? <LoadingText color={"#fff"} width={15} />}%</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"소개 수익 / 할인"}</div>
                                     </Col>
-                                    <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff' }}>
+                                    <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/randomboxrolling/history')}>
                                         <HeaderContent><div>{getRollUpBonusByUserTier(post?.user?.tier) ?? <LoadingText color={"#fff"} width={15} />}%</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"이벤트 보너스"}</div>
                                     </Col>
                                     <Col style={{ margin: '0 auto', width: '25%', borderLeft: '1px solid #fff', cursor: 'pointer' }} onClick={() => navigate('/recommendgenealogy')}>
-                                        <HeaderContent><div>{(post?.genealogy_score?.loss) ?? <LoadingText color={"#fff"} width={15} />} / {(post?.genealogy_score?.great) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
+                                        <HeaderContent><div>{commarNumber(post?.genealogy_score?.loss) ?? <LoadingText color={"#fff"} width={15} />} / {commarNumber(post?.genealogy_score?.great) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
                                         <div style={{ fontSize: theme.size.font6, margin: 'auto auto 0 auto' }}>{"내 파트너"}</div>
                                     </Col>
                                 </Row>
@@ -198,8 +206,8 @@ const Home = () => {
                         </Content>
                         <Content>
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
-                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={(post?.star?.star - (post?.star_gift?.star_gift ?? 0))} unit={`STAR`} link={'/star/history'} />
+                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw?.esgw} unit={`ESGW`} link={'/esgw/history'} />
                                 <GreenButton width={45} img={logoWhite} link={'/shoppingmall/outlet'} />

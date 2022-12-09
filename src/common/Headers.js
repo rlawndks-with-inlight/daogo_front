@@ -15,7 +15,7 @@ import share from '../assets/images/icon/home/share.svg';
 import hamburger from '../assets/images/icon/home/hamburger.svg';
 import axios from 'axios';
 import { Col, Row } from '../components/elements/UserContentTemplete';
-import { commarNumber } from '../functions/utils';
+import { commarNumber, getTierByUserTier } from '../functions/utils';
 import defaultProfile from '../assets/images/icon/default-profile.png'
 import logoutIcon from '../assets/images/icon/logout.svg'
 const Header = styled.header`
@@ -233,7 +233,7 @@ const Headers = () => {
                 <img src={auth?.profile_img ? backUrl + auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
                 <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>
                   <div style={{ fontSize: theme.size.font3, fontWeight: 'bold' }}>Hi, {auth?.name}</div>
-                  <div style={{ fontSize: theme.size.font6, marginTop: '4px' }}>{`민들레플랫폼 / 회원 / 입금코드 ${commarNumber(13741)}`}</div>
+                  <div style={{ fontSize: theme.size.font6, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼 `}<br/>{` ${getTierByUserTier(auth?.tier)} / ${auth?.id}`}</div>
                 </Col>
               </Row>
             </div>

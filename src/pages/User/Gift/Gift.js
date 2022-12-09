@@ -49,7 +49,7 @@ const Gift = () => {
         fetchPost();
     }, [])
     const onGift = async () => {
-        if (!$('.receiver_id').val() || !$('.receiver_phone').val() || (!$('.send_star').val() && !$('.send_point').val()) || !$('.payment_pw').val()) {
+        if (!$('.receiver_id').val() || !$('.receiver_phone').val() || (!$('.send_star').val() && !$('.send_point').val() && !$('.send_esgw').val()) || !$('.payment_pw').val()) {
             alert("필수값이 비어 있습니다.");
             return;
         }
@@ -61,12 +61,17 @@ const Gift = () => {
             alert("포인트 부분에 숫자 이외의 값이 감지되었습니다.");
             return;
         }
+        if (isNaN(parseFloat($('.send_esgw').val())) && $('.send_esgw').val()) {
+            alert("포인트 부분에 숫자 이외의 값이 감지되었습니다.");
+            return;
+        }
         if (window.confirm("저장 하시겠습니까?")) {
             let obj = {
                 receiver_id: $('.receiver_id').val(),
                 receiver_phone: $('.receiver_phone').val(),
                 send_star: parseFloat($('.send_star').val()),
                 send_point: parseFloat($('.send_point').val()),
+                send_esgw: parseFloat($('.send_esgw').val()),
                 payment_pw: $('.payment_pw').val(),
             }
             const { data: response } = await axios.post('/api/ongift', obj);
@@ -95,7 +100,7 @@ const Gift = () => {
                     </OneCard>
                 </Row>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                    <OneCard width={96} style={{ height: '240px', cursor: 'default' }}>
+                    <OneCard width={96} style={{ height: '270px', cursor: 'default' }}>
                         <CardTitle title="내 정보" icon={profileImg} />
                         <InputContent title="스타" placeholder="보낼 스타" class_name="send_star" bottom_contents={[
                             <div>{commarNumber(post?.star) ?? <LoadingText width={10} />}</div>,
@@ -103,6 +108,10 @@ const Gift = () => {
                         ]} />
                         <InputContent title="포인트" placeholder="보낼 포인트" class_name="send_point" bottom_contents={[
                             <div>{commarNumber(post?.point) ?? <LoadingText width={10} />}</div>,
+                            <div style={{ marginRight: '4px' }}>잔액</div>
+                        ]} />
+                         <InputContent title="포인트" placeholder="보낼 ESGW 포인트" class_name="send_esgw" bottom_contents={[
+                            <div>{commarNumber(post?.esgw) ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
                         <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
