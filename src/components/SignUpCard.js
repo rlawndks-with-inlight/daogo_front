@@ -8,6 +8,7 @@ import { Title } from './elements/UserContentTemplete';
 import { formatPhoneNumber, regExp } from '../functions/utils';
 import { WrapperForm, CategoryName, Input, Button, FlexBox, SnsLogo, RegularNotice } from './elements/AuthContentTemplete';
 import { regularExpression } from '../data/ContentData';
+import theme from '../styles/theme';
 
 const is_test = true;
 const SignUpCard = () => {
@@ -118,7 +119,7 @@ const SignUpCard = () => {
             alert('필수값을 입력해주세요.');
         } else if (!isCheckId) {
             alert('아이디 중복확인을 해주세요.');
-        }  else {
+        } else {
             if (window.confirm('회원가입 하시겠습니까?')) {
                 const { data: response } = await axios.post('/api/adduser', {
                     id: $('.id').val(),
@@ -170,7 +171,9 @@ const SignUpCard = () => {
         <>
             <WrapperForm onSubmit={onSignUp} id='login_form'>
                 <Title>회원가입</Title>
-
+                <RegularNotice style={{ height: 'auto', color: theme.color.font1 }}> 1.목적:회원제 서비스 이용/본인확인</RegularNotice>
+                <RegularNotice style={{ height: 'auto', color: theme.color.font1 }}>2.항목:이름,ID,전화번호,주민등록번호,계좌번호,이메일</RegularNotice>
+                <RegularNotice style={{ height: 'auto', color: theme.color.font1 }}>3.보유기간:탈퇴 즉시 <br /> 개인정보 수집·이용 귀하께서는 플랫폼에서 위와 같이 수집하는 개인정보에 대해, 동의하지 않거나 개인정보를 기재하지 않음으로써 거부할 수 있습니다. 다만, 이때 회원에게 제공되는 서비스가 제한될 수 있습니다.</RegularNotice>
                 <CategoryName>아이디</CategoryName>
                 <Input placeholder='아이디를 입력해주세요.' type={'text'} className='id' disabled={isCheckId} onKeyPress={onKeyPressId} />
                 <RegularNotice>5~20자 내의 영문, 숫자 조합만 가능합니다.</RegularNotice>

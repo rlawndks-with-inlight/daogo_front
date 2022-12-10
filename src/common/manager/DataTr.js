@@ -417,7 +417,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'money' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star*100)}
+                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star * 100)}
                                         </Td>
                                     </>
                                     :
@@ -426,7 +426,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'moneycommission' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star*(JSON.parse(data[`explain_obj`])?.withdraw_commission_percent/100))}
+                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star * (JSON.parse(data[`explain_obj`])?.withdraw_commission_percent / 100))}
                                         </Td>
                                     </>
                                     :
@@ -435,7 +435,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'moneypayment' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star*100)}
+                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star * 100)}
                                         </Td>
                                     </>
                                     :
@@ -533,6 +533,10 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                                 <></>}
                                             {JSON?.parse(data['explain_obj'])?.status == 1 ?
                                                 <>주문확인</>
+                                                :
+                                                <></>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                                <>배달완료</>
                                                 :
                                                 <></>}
                                         </Td>

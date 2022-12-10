@@ -5,20 +5,19 @@ import { Table, Tr, Td } from "./elements/UserContentTemplete";
 const ContentTable = (props) => {
     const navigate = useNavigate();
     const { columns, data, is_not_display_thead, schema, onClick } = props;
-    
+
     const getHistoryByObj = (obj_, width) => {
         let obj = { ...obj_ };
         let result = "";
         if (obj?.type == 0) {//아울렛구매
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `아울렛쇼핑 ${obj['explain_obj']?.item_name??""} 구매로 인해 사용 되었습니다.`;
+            result = `아울렛쇼핑 ${obj['explain_obj']?.item_name ?? ""} 구매로 인해 사용 되었습니다.`;
         } else if (obj?.type == 1) {//쿠폰 구매
             result = "";
         } else if (obj?.type == 2) {//랜덤박스 등록
-            console.log(obj)
-            if (schema == 'star' || obj?.category=='star') {
+            if (schema == 'star' || obj?.category == 'star') {
                 result = "랜덤박스로 전환 하였습니다.";
-            } else if (schema == 'randombox' || obj?.category=='randombox' ) {
+            } else if (schema == 'randombox' || obj?.category == 'randombox') {
                 result = ` ${commarNumber(obj?.price / 3)} 스타에서 랜덤박스로 전환 하였습니다.`;
             } else {
                 result = "";
@@ -31,7 +30,7 @@ const ContentTable = (props) => {
             } else if (schema == 'point') {
                 sche = "포인트";
             }
-            if(schema=='gift'){
+            if (schema == 'gift') {
                 sche = obj?.category;
             }
             if (obj?.price > 0) {
@@ -52,13 +51,11 @@ const ContentTable = (props) => {
             result += ')';
         } else if (obj?.type == 5) {//관리자가 수정
             result = obj?.note;
-            console.log(result)
-
         } else if (obj?.type == 6) {//데일리자동지급
             result = "";
         } else if (obj?.type == 7) {//데일리수동지급
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} ${obj?.category?obj?.category:''} ${obj?.price>=0?'지급 되었습니다.':'차감 되었습니다.'}`;
+            result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} ${obj?.category ? obj?.category : ''} ${obj?.price >= 0 ? '지급 되었습니다.' : '차감 되었습니다.'}`;
         } else if (obj?.type == 8) {//청약예치금등록
             if (schema == 'star' || schema == 'point' || schema == 'esgw') {
                 result = `청약예치금에 등록 하였습니다.`;
@@ -71,22 +68,50 @@ const ContentTable = (props) => {
             } else if (schema == 'esgw') {
                 result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
             }
-        }else if (obj?.type == 10) {//매출등록
+        } else if (obj?.type == 10) {//매출등록
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            if (schema == 'point'||schema == 'star') {
+            if (schema == 'point' || schema == 'star') {
                 result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
             } else if (schema == 'randombox') {
                 result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
             }
-        }else if (obj?.type == 11) {//이벤트 랜덤수익
+        } else if (obj?.type == 11) {//이벤트 랜덤수익
             result = "이벤트 랜덤수익 발생하였습니다.";
-        }else if (obj?.type == 12) {//이벤트 랜덤수익
+        } else if (obj?.type == 12) {//이벤트 랜덤수익
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
             result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
         } else {
             result = "---";
         }
-        return <Td style={{ width: `${width}%`, whiteSpace:'pre-line' }}>{result}</Td>;
+        return <Td style={{ width: `${width}%`, whiteSpace: 'pre-line' }}>{result}</Td>;
+    }
+    const getOutletHistoryByObj = (obj_, column_, width) => {
+        let obj = { ...obj_ };
+        let column = column_;
+        let result = "";
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        if (column == 'item_count') {
+            result = obj['explain_obj']?.count;
+        } else if (column == 'use_star') {
+            result = commarNumber(obj?.price * (-1));
+        } else if (column == 'use_point') {
+            result = commarNumber(obj['explain_obj']?.point);
+        } else if (column == 'status') {
+            if (obj['explain_obj']?.status == -1) {
+                result = "반품처리";
+            } else if (obj['explain_obj']?.status == 0) {
+                result = "확인대기";
+            } else if (obj['explain_obj']?.status == 1) {
+                result = "주문확인";
+            } else if (obj['explain_obj']?.status == 2) {
+                result = "배달완료";
+            } else {
+                result = "---";
+            }
+        } else {
+            result = "---";
+        }
+        return <Td style={{ width: `${width}%`, whiteSpace: 'pre-line' }}>{result}</Td>;
     }
     return (
         <>
@@ -147,7 +172,15 @@ const ContentTable = (props) => {
                                             </>}
                                         {column.type === 'history' ?
                                             <>
-                                            {getHistoryByObj(item, column.width)}
+                                                {getHistoryByObj(item, column.width)}
+                                            </>
+                                            :
+                                            <>
+                                            </>}
+                                        {column.type === 'outlet_order' ?
+                                            <>
+
+                                                {getOutletHistoryByObj(item, column.column, column.width)}
                                             </>
                                             :
                                             <>

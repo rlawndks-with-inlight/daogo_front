@@ -120,7 +120,7 @@ const OutletOrder = () => {
             const { data: response } = await axios.post('/api/onoutletorder', obj);
             if (response?.result > 0) {
                 alert("성공적으로 저장되었습니다.");
-                navigate(-1)
+                navigate('/shoppingmall/outlet',{state:{type_num:1}});
             } else {
                 alert(response?.message);
             }

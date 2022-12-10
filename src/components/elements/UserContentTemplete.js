@@ -70,16 +70,17 @@ cursor:pointer;
 `
 export const Title = (props) => {
     const navigate = useNavigate();
+    const {textIconLink,textIcon, not_arrow, texttextIconClick } = props;
     return (
         <>
             <TitleContainer className="title" onClick={() => { navigate(props.link) }}>
                 <TitleStyle>
                     {props?.children ?? ""}
                 </TitleStyle>
-                {props.not_arrow ?
+                {not_arrow ?
                     <>
-                        {props.textIcon ?
-                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1, fontWeight: 'bold',cursor:`${props?.textIconLink?'pointer':''}` }} onClick={()=>{navigate(props?.textIconLink??"")}}>{props.textIcon}</div>
+                        {textIcon ?
+                            <div style={{ fontSize: theme.size.font4, color: theme.color.background1, fontWeight: 'bold',cursor:`${textIconLink?'pointer':''}` }} onClick={texttextIconClick}>{textIcon}</div>
                             :
                             <>
                             </>
@@ -90,9 +91,7 @@ export const Title = (props) => {
                         <MdNavigateNext style={{ fontSize: `25px` }} />
                     </>
                 }
-
                 {/* <hr className="bar"/> */}
-
             </TitleContainer>
 
         </>

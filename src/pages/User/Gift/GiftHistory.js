@@ -17,6 +17,7 @@ const GiftHistory = () => {
         }
         fetchPosts();
     }, [])
+    
     return (
         <>
             <Wrappers className='wrappers'>

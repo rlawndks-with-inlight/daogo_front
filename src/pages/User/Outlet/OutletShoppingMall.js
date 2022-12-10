@@ -7,7 +7,7 @@ import { commarNumber, getSelectButtonColor, range } from "../../../functions/ut
 import styled from "styled-components";
 import $ from 'jquery'
 import { backUrl, historyContent } from "../../../data/ContentData";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import ContentTable from "../../../components/ContentTable";
 const Select = styled.select`
@@ -43,12 +43,18 @@ cursor:pointer;
 `
 const OutletShoppingMall = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [typeNum, setTypeNum] = useState(0);
     const [brandList, setBrandList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [itemList, setItemList] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [outletHistory, setOutletHistory] = useState([]);
     useEffect(() => {
+        if(location?.state){
+            setTypeNum(location?.state?.type_num);
+            onChangeTypeNum(location?.state?.type_num)
+        }
         async function fetchPosts() {
             setLoading(true);
             const { data: response } = await axios.post('/api/getalldatabytables', {
@@ -62,8 +68,13 @@ const OutletShoppingMall = () => {
         }
         fetchPosts();
     }, [])
-    const onChangeTypeNum = (num) => {
+    const onChangeTypeNum =  async(num) => {
         setTypeNum(num)
+        if(num==1){
+            const {data:response} = await axios.get('/api/items?table=outlet_order')
+            setOutletHistory(response?.data);
+            console.log(response)
+        }
     }
     const onSearch = async () => {
         setLoading(true);
@@ -145,7 +156,7 @@ const OutletShoppingMall = () => {
                     :
                     <>
                     <ContentTable columns={historyContent['outlet_order'].columns}
-                    data={[]}
+                    data={outletHistory}
                     schema={'outlet_order'} />
                     </>}
 

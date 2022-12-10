@@ -87,7 +87,7 @@ const Gift = () => {
     return (
         <>
             <Wrappers>
-                <Title not_arrow={true} textIcon={'선물한 내역'} textIconLink={'/gift/history'}>선물하기</Title>
+                <Title not_arrow={true} textIcon={'선물한 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/gift/history')}}>선물하기</Title>
                 <Row style={{ margin: '0 0 16px 0' }}>
                     <OneCard width={96} style={{ height: '180px', cursor: 'default' }}>
                         <CardTitle title="받는사람 정보" icon={peoplesImg} />

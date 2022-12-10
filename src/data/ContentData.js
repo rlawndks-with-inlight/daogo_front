@@ -40,7 +40,7 @@ export const zBottomMenu = [
 export const zSidebarMenu = [
     { name: '아울렛 쇼핑', link: '/shoppingmall/outlet' },
     { name: '쿠폰 이벤트', link: '/shoppingmall/coupon' },
-    { name: '이벤트 게임', link: '/eventgame' },
+    { name: '이벤트 게임', link: '/randombox/lottery' },
     { name: '랜덤박스 등록', link: '/randombox/register' },
     { name: '선물하기', link: '/gift' },
     { name: '출금신청', link: '/withdrawrequest' },
@@ -123,9 +123,12 @@ export const historyContent = {
     outlet_order: {
         title: "아울렛 주문 내역",
         columns: [
-            columnObjFormat('상품명', 50, 'text', 'name'),
-            columnObjFormat('날짜', 25, 'date', 'date'),
-            columnObjFormat('비고', 25, 'status', 'status'),
+            columnObjFormat('상품명', 25, 'text', 'item_name'),
+            columnObjFormat('수량', 15, 'outlet_order', 'item_count'),
+            columnObjFormat('사용스타', 15, 'outlet_order', 'use_star'),
+            columnObjFormat('사용포인트', 15, 'outlet_order', 'use_point'),
+            columnObjFormat('날짜', 15, 'date', 'date'),
+            columnObjFormat('배달현황', 15, 'outlet_order', 'status'),
         ]
     },
 };

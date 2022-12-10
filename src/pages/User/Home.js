@@ -242,7 +242,7 @@ const Home = () => {
                             ))}
                         </Content>
                         <Content>
-                            <Title not_arrow={true} textIcon={'Read more'} textIconLink={'/noticelist'}>공지사항</Title>
+                            <Title not_arrow={true} textIcon={'Read more'} textIconLink={'true'} texttextIconClick={()=>{navigate('/noticelist')}}>공지사항</Title>
                             {post?.notice && post?.notice?.map((item, index) => (
                                 <>
                                     <OneCard style={{ marginBottom: '12px' }} is_hover={true} onClick={() => { navigate(`/post/notice/${item.pk}`) }}>

@@ -73,7 +73,7 @@ const GiftBoxAnimation = () => {
                     src={boxLid}
                     alt="box-lid"
                 />
-                <img src={logoSrc} style={{ width: '84px' }} onClick={() => { rotated === "rotated" ? navigate('/home') : console.log("") }} />
+                <img src={logoSrc} style={{ width: '84px' }} onClick={() => { navigate('/home') }} />
             </div>
 
         </div>
