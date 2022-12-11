@@ -52,6 +52,7 @@ import MUserMarketingEdit from '../pages/Manager/User/MUserMarketingEdit';
 import GiftHistory from '../pages/User/Gift/GiftHistory';
 import RandomboxRollingHistory from '../pages/User/RandomBox/RandomboxRollingHistory';
 import MWithdrawSetting from '../pages/Manager/Setting/MWithdrawSetting';
+import WithdrawRequestHistory from '../pages/User/Auth/WithdrawRequestHistory';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -70,12 +71,15 @@ const zUserRoute = [
     { link: '/buyesgwpoint', element: <BuyESGWPoint />, title: "ESGW 구매" },
     { link: '/gift', element: <Gift />, title: "선물하기" },
     { link: '/gift/history', element: <GiftHistory />, title: "선물한 내역" },
+    { link: '/withdrawrequest', element: <WithdrawRequest />, title: "출금신청" },
+    { link: '/gift/withdrawrequest', element: <WithdrawRequestHistory />, title: "선물한 내역" },
     { link: '/recommendgenealogy', element: <RecommendGenealogy />, title: "추천계보" },
     { link: '/eventgame', element: <EventGame />, title: "이벤트게임" },
     { link: '/randombox_rolling/history', element: <RandomboxRollingHistory />, title: "랜덤박스 롤링 내역" },
     { link: '/:schema/history', element: <History />, title: "리스트" },
     { link: '/qrcode', element: <QrCode />, title: "QR코드" },
-    { link: '/withdrawrequest', element: <WithdrawRequest />, title: "출금신청" },
+    
+
     { link: '/noticelist', element: <NoticeList />, title: "공지사항" },
     { link: '/subscriptiondeposit', element: <SubscriptionDeposit />, title: "청약예치금 등록" },
     { link: '/item/outlet/:pk', element: <Outlet />, title: "아울렛쇼핑" },
@@ -114,4 +118,5 @@ const zManagerRoute = [
     { link: '/manager/list/:table/:pk', element: <MItemList />, title: "" },
     { link: '/manager/list/:table', element: <MItemList />, title: "" },
 ]
+
 export { zUserRoute, zManagerRoute }

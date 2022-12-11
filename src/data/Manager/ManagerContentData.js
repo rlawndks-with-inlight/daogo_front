@@ -286,15 +286,16 @@ export const objManagerListContent = {
             columnObjFormat('입금은행', '', 'text', 'bank_name'),
             columnObjFormat('입금계좌', '', 'text', 'account_number'),
             columnObjFormat('계좌소유자명', '', 'text', 'account_name'),
-            columnObjFormat('진행상황', '', 'text', 'nickname'),
-            columnObjFormat('담당자명', '', 'text', 'nickname'),
-            columnObjFormat('담당자팀', '', 'text', 'nickname'),
-            columnObjFormat('진행완료일', '', 'text', 'nickname'),
-            columnObjFormat('관리', '', 'text', 'nickname'),
+            columnObjFormat('진행상황', '', 'exchange_status', 'status'),
+            columnObjFormat('담당자ID', '', 'text', 'manager_id'),
+            columnObjFormat('담당자이름', '', 'text', 'manager_name'),
+            columnObjFormat('진행완료일', '', 'exchange_date', 'exchange_date'),
+            columnObjFormat('관리', '', 'exchange_edit', 'exchange_edit'),
         ],
         [],
         false,
-        false
+        false,
+        '150%'
     ),
     month_settle: sidebarObjFormat(
         '월 결산 리스트',

@@ -131,6 +131,17 @@ export const historyContent = {
             columnObjFormat('배달현황', 15, 'outlet_order', 'status'),
         ]
     },
+    withdraw_request: {
+        title: "출금 내역",
+        columns: [
+            columnObjFormat('진행상태', 15, 'withdraw_request', 'status'),
+            columnObjFormat('접수일자', 20, 'date', 'date'),
+            columnObjFormat('진행일자', 20, 'withdraw_request', 'date'),
+            columnObjFormat('스타', 15, 'number', 'price'),
+            columnObjFormat('수수료', 15, 'withdraw_request', 'commission'),
+            columnObjFormat('실지급액', 15, 'withdraw_request', 'payout'),
+        ]
+    },
 };
 
 export const cardDefaultColor = {

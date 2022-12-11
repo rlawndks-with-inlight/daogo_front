@@ -236,7 +236,8 @@ const MItemList = () => {
                         :
                         <>
 
-                            <DataTable width={objManagerListContent[`${params.table}`]?.width} data={posts} column={zColumn} schema={params.table} opTheTopItem={opTheTopItem} changeItemSequence={changeItemSequence} deleteItem={deleteItem} changeStatus={changeStatus}/>
+                            <DataTable width={objManagerListContent[`${params.table}`]?.width} data={posts} column={zColumn} schema={params.table} 
+                            opTheTopItem={opTheTopItem} changeItemSequence={changeItemSequence} deleteItem={deleteItem} changeStatus={changeStatus} changePage={changePage} page={page}/>
                         </>}
 
                     <MBottomContent>

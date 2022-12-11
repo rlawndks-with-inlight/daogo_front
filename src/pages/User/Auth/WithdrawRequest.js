@@ -86,7 +86,7 @@ const WithdrawRequest = () => {
     return (
         <>
             <Wrappers>
-                <Title>출금신청</Title>
+                <Title  not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/gift/withdrawrequest')}}>출금신청</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
                     <OneCard width={96} style={{ height: '350px', cursor: 'default' }}>
                         <InputContent title="스타" placeholder="신청 스타" class_name="send_star" onChange={onChangeSendStar}

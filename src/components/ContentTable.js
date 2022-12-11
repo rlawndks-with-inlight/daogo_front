@@ -113,6 +113,33 @@ const ContentTable = (props) => {
         }
         return <Td style={{ width: `${width}%`, whiteSpace: 'pre-line' }}>{result}</Td>;
     }
+    const getWithdrawRequest = (obj_, column_, width) => {
+        let obj = { ...obj_ };
+        let column = column_;
+        let result = "";
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        console.log(column)
+        if (column == 'status') {
+            if (obj['explain_obj']?.status == -1) {
+                result = "반송";
+            } else if (obj['explain_obj']?.status == 0) {
+                result = "접수대기";
+            } else if (obj['explain_obj']?.status == 1) {
+                result = "접수완료";
+            } else if (obj['explain_obj']?.status == 2) {
+                result = "지급완료";
+            }
+        } else if (column == 'date') {
+            result = dateFormat(obj['explain_obj']?.date);
+        } else if (column == 'commission') {
+            result = commarNumber(obj['explain_obj']?.star * (obj['explain_obj']?.withdraw_commission_percent / 100))
+        } else if (column == 'payout') {
+            result = commarNumber(obj['explain_obj']?.receipt_won)
+        } else {
+            result = "---";
+        }
+        return <Td style={{ width: `${width}%`, whiteSpace: 'pre-line' }}>{result}</Td>;
+    }
     return (
         <>
             <div className='subtype-container' style={{ overflowX: 'auto', display: 'flex', flexDirection: 'column', width: '100%', margin: '0 auto' }} >
@@ -181,6 +208,14 @@ const ContentTable = (props) => {
                                             <>
 
                                                 {getOutletHistoryByObj(item, column.column, column.width)}
+                                            </>
+                                            :
+                                            <>
+                                            </>}
+                                        {column.type === 'withdraw_request' ?
+                                            <>
+
+                                                {getWithdrawRequest(item, column.column, column.width)}
                                             </>
                                             :
                                             <>

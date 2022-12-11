@@ -14,6 +14,9 @@ import { GrLinkTop } from 'react-icons/gr'
 import { commarNumber, dateFormat, getTierByUserTier, numberToCategory } from '../../functions/utils'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import { RiMoneyDollarBoxFill } from 'react-icons/ri'
+import { Button } from '../../components/elements/AuthContentTemplete'
+import AddButton from '../../components/elements/button/AddButton'
+import $ from 'jquery';
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -28,7 +31,7 @@ margin-bottom:6px;
 `
 const ItemTypes = { CARD: 'card' }
 
-const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus }) => {
+const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus, changePage, page }) => {
     const navigate = useNavigate();
     const ref = useRef(null)
     const [status, setStatus] = useState(data?.status);
@@ -195,6 +198,38 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
     }
     const outletOrderFormat = (column) => {
         return "---";
+    }
+    const onClickExchangeStatus = async (num, item) => {
+        let confirm_str = "";
+        let manager_note = "";
+        if(num==-1){
+            confirm_str = "정말 반송 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 출금신청을 반송 하였습니다.`;
+        }else if(num==1){
+            confirm_str = "접수완료 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 출금신청을 접수완료 하였습니다.`;
+        }else if(num==2){
+            confirm_str = "지급완료 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 출금신청을 지급완료 하였습니다.`;
+        }else{
+            alert("잘못된 값입니다.");
+            return;
+        }
+        if(window.confirm(confirm_str)){
+            const {data:response} = await axios.post('/api/onchangeexchangestatus',{
+                status:num,
+                pk:item?.pk,
+                manager_note:manager_note
+            })
+            if(response?.result<0){
+                alert(response?.message);
+            }else{
+                alert("성공적으로 저장되었습니다.");
+                changePage(page);
+                await new Promise((r) => setTimeout(r, 500));
+                $('.scroll-table').scrollLeft(100000);
+            }
+        }
     }
     return (
         <>
@@ -408,7 +443,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'star' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star)}
+                                            {JSON.parse(data[`explain_obj`])?.star ?
+                                                <>
+                                                    {commarNumber(JSON.parse(data[`explain_obj`])?.star)}
+                                                </>
+                                                :
+                                                <>
+                                                    ---
+                                                </>}
                                         </Td>
                                     </>
                                     :
@@ -417,7 +459,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'money' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star * 100)}
+                                            {JSON.parse(data[`explain_obj`])?.star ?
+                                                <>
+                                                    {commarNumber(JSON.parse(data[`explain_obj`])?.star * 100)}
+                                                </>
+                                                :
+                                                <>
+                                                    ---
+                                                </>}
                                         </Td>
                                     </>
                                     :
@@ -426,7 +475,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'moneycommission' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star * (JSON.parse(data[`explain_obj`])?.withdraw_commission_percent / 100))}
+                                            {JSON.parse(data[`explain_obj`])?.star ?
+                                                <>
+                                                    {commarNumber(JSON.parse(data[`explain_obj`])?.star * (JSON.parse(data[`explain_obj`])?.withdraw_commission_percent / 100))}
+                                                </>
+                                                :
+                                                <>
+                                                    ---
+                                                </>}
                                         </Td>
                                     </>
                                     :
@@ -435,7 +491,92 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'moneypayment' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {commarNumber(JSON.parse(data[`explain_obj`])?.star * 100)}
+                                            {JSON.parse(data[`explain_obj`])?.star ?
+                                                <>
+                                                    {commarNumber(JSON.parse(data[`explain_obj`])?.star * 100)}
+                                                </>
+                                                :
+                                                <>
+                                                    ---
+                                                </>}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('_')[1] == 'status' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }} onCL>
+                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                                <>반송</>
+                                                :
+                                                <></>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                                <>접수대기</>
+                                                :
+                                                <></>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                                <>접수완료</>
+                                                :
+                                                <></>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                                <>지급완료</>
+                                                :
+                                                <></>}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('_')[1] == 'date' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {JSON?.parse(data['explain_obj'])?.date?
+                                            <>
+                                            {JSON?.parse(data['explain_obj'])?.date}
+                                            </>
+                                            :
+                                            <>
+                                            ---
+                                            </>}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+
+                                {col.type.split('_')[1] == 'edit' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%`}}>
+                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                                <>
+                                                   반송완료
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                                <>
+                                                <AddButton style={{width:'84px',marginRight:'4px',background:theme.color.blue}} onClick={()=>{onClickExchangeStatus(1,data)}}>접수완료</AddButton>
+                                                <AddButton style={{background:theme.color.red}} onClick={()=>{onClickExchangeStatus(-1,data)}}>반송</AddButton>
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                                {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                                <>
+                                                <AddButton style={{width:'84px',marginRight:'4px',background:theme.color.blue}} onClick={()=>{onClickExchangeStatus(2,data)}}>지급완료</AddButton>
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                                {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                                <>
+                                                지급완료
+                                                </>
+                                                :
+                                                <>
+                                                </>}
                                         </Td>
                                     </>
                                     :

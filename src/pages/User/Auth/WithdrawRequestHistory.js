@@ -5,14 +5,14 @@ import ContentTable from "../../../components/ContentTable";
 import { Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 import { historyContent } from "../../../data/ContentData";
 
-const GiftHistory = () => {
+const WithdrawRequestHistory = () => {
     const params = useParams();
     const { pathname } = useLocation();
     const point_data = [{ note: '데일리포인트에서 발생', date: '2022-11-25', point: -3000 }, { note: '데일리', date: '2022-11-25 17:03:00', point: 2000 }, { note: '데일리포인트에서 발생', date: '2022-11-25', point: 1000 }];
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         async function fetchPosts() {
-            const { data: response } = await axios.get(`/api/gifthistory`)
+            const { data: response } = await axios.get(`/api/items?table=exchange`)
             setPosts(response?.data)
         }
         fetchPosts();
@@ -21,12 +21,12 @@ const GiftHistory = () => {
     return (
         <>
             <Wrappers className='wrappers'>
-                <Title not_arrow={true}>{'선물한 내역'}</Title>
-                <ContentTable columns={historyContent['gift'].columns}
+                <Title not_arrow={true}>{'출금 내역'}</Title>
+                <ContentTable columns={historyContent['withdraw_request'].columns}
                     data={posts}
-                    schema={'gift'} />
+                    schema={'withdraw_request'} />
             </Wrappers>
         </>
     )
 }
-export default GiftHistory;
+export default WithdrawRequestHistory;
