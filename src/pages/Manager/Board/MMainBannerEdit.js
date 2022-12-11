@@ -71,7 +71,7 @@ const MMainBannerEdit = () => {
 
                 <Row>
                     <Col>
-                        <Title>이미지</Title>
+                        <Title>이미지 (권장: 이미지에 빈값이 없는 사각형 1000 x 200)</Title>
                         <ImageContainer for="file1">
 
                             {url ?

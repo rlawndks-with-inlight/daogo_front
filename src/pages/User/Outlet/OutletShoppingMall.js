@@ -73,7 +73,6 @@ const OutletShoppingMall = () => {
         if(num==1){
             const {data:response} = await axios.get('/api/items?table=outlet_order')
             setOutletHistory(response?.data);
-            console.log(response)
         }
     }
     const onSearch = async () => {

@@ -19,6 +19,7 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { SiMicrosoftexcel } from 'react-icons/si'
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import { returnColumn } from '../../common/manager/ColumnType';
 const OptionCardWrappers = styled.div`
 width:95%;
 margin:0.5rem auto;
@@ -48,7 +49,7 @@ const MItemList = () => {
     const [page, setPage] = useState(1)
     const [pageList, setPageList] = useState([])
     const [loading, setLoading] = useState(false)
-    const [isUseLoading, setIsUseLoading] = useState(true)
+    const [loadingText, setLoadingText] = useState("")
     const notAddList = [
         'comment'
     ]
@@ -62,17 +63,17 @@ const MItemList = () => {
             obj['page'] = 1;
             obj['table'] = objManagerListContent[`${params.table}`].schema;
             obj['page_cut'] = 10;
-            if(objManagerListContent[`${params.table}`].is_move){
+            if (objManagerListContent[`${params.table}`].is_move) {
                 obj['order'] = 'sort';
             }
             for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
                 obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
             }
-            console.log(obj)
-            const { data: response } = await axios.post('/api/items',obj);
+            const { data: response } = await axios.post('/api/items', obj);
             setPosts(response.data.data)
             setPageList(range(1, response.data.maxPage));
             setLoading(false)
+
         }
         fetchPost();
     }, [pathname])
@@ -84,13 +85,13 @@ const MItemList = () => {
         obj['table'] = objManagerListContent[`${params.table}`].schema;
         obj['page_cut'] = $('.page-cut').val();
         obj['keyword'] = $('.search').val();
-        if(objManagerListContent[`${params.table}`].is_move){
+        if (objManagerListContent[`${params.table}`].is_move) {
             obj['order'] = 'sort';
         }
         for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
             obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
         }
-        const { data: response } = await axios.post('/api/items',obj);
+        const { data: response } = await axios.post('/api/items', obj);
         setPosts(response.data.data)
         setPageList(range(1, response.data.maxPage));
         setLoading(false)
@@ -144,38 +145,40 @@ const MItemList = () => {
             alert('error')
         }
     })
-    const changeStatus = useCallback(async  (num, pk, column) => {
+    const changeStatus = useCallback(async (num, pk, column) => {
         const { data: response } = await axios.post('/api/updatestatus', {
             table: objManagerListContent[params.table].schema,
-            column:column,
+            column: column,
             pk: pk,
             num: num,
         })
         changePage(page)
     });
     const exportExcel = async () => {
-        let str = '';
-
-        str = `/api/items?table=${params.table}`
-
-        const { data: response } = await axios.get(str)
-        excelDownload(response.data);
-
+        let obj = {};
+        obj['table'] = objManagerListContent[`${params.table}`].schema;
+        obj['keyword'] = $('.search').val();
+        if (objManagerListContent[`${params.table}`].is_move) {
+            obj['order'] = 'sort';
+        }
+        for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
+            obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
+        }
+        const { data: response } = await axios.post('/api/items', obj);
+        setPosts(response?.data);
+        excelDownload(response.data ?? []);
     }
     const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const excelFileExtension = '.xlsx';
     const excelFileName = params.table;
-
-    const excelDownload = (excelData) => {
-        let ignore_name_list = ['맨위로', '수정', '삭제'];
-        let ignore_column_list = ['', 'edit', 'delete'];
-
+    const excelDownload = async (excelData) => {
+        let ignore_name_list = ['맨위로', '수정', '삭제', '관리'];
         let name_list = [];
         let column_list = [];
         for (var i = 0; i < objManagerListContent[`${params.table}`].zColumn.length; i++) {
             if (!ignore_name_list.includes(objManagerListContent[`${params.table}`].zColumn[i].name)) {
                 name_list.push(objManagerListContent[`${params.table}`].zColumn[i].name)
-                column_list.push(objManagerListContent[`${params.table}`].zColumn[i].column)
+                column_list.push(objManagerListContent[`${params.table}`].zColumn[i])
             }
         }
         const ws = XLSX.utils.aoa_to_sheet([
@@ -183,19 +186,27 @@ const MItemList = () => {
             , []
             , name_list
         ]);
-        excelData.map((data) => {
+
+        let result = [...excelData];
+        let excel_list = []; 
+        for(var i =0;i<result.length;i++){
+            excel_list[i] = [];
+            for(var j = 0;j<column_list.length;j++){
+                let data = await returnColumn(result[i], column_list[j]?.type, column_list[j]?.column, objManagerListContent[`${params.table}`].schema);;
+                await excel_list[i].push(data);
+            }
+        }
+        await excel_list.map(async (data, idx) => {
             XLSX.utils.sheet_add_aoa(
                 ws,
                 [
-                    column_list.map(item => {
-                        return data[`${item}`]
-                    })
+                    data
                 ],
                 { origin: -1 }
             );
             ws['!cols'] = [
-                { wpx: 200 },
-                { wpx: 200 }
+                { wpx: 50 },
+                { wpx: 50 }
             ]
             return false;
         });
@@ -207,67 +218,65 @@ const MItemList = () => {
     return (
         <>
             <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb}`} nickname={``} />
-           
-                    <div style={{ overflowX: 'auto' }}>
-                        {/* 옵션카드 */}
-                        <OptionCardWrappers>
-                            <Row>
-                                <SearchContainer>
-                                    <Input style={{ margin: '12px 0 12px 24px', border: 'none' }} className='search' placeholder='두 글자 이상 입력해주세요.' onKeyPress={(e) => { e.key == 'Enter' ? changePage(1) : console.log("") }} />
-                                    <AiOutlineSearch className='search-button' style={{ padding: '14px', cursor: 'pointer' }} onClick={() => changePage(1)} />
-                                </SearchContainer>
-                                <Select className='page-cut' style={{ margin: '12px 24px 12px 24px' }} onChange={onchangeSelectPageCut}>
-                                    <option value={10}>10개</option>
-                                    <option value={20}>20개</option>
-                                    <option value={50}>50개</option>
-                                    <option value={100}>100개</option>
-                                </Select>
+            <div style={{ overflowX: 'auto' }}>
+                {/* 옵션카드 */}
+                <OptionCardWrappers>
+                    <Row>
+                        <SearchContainer>
+                            <Input style={{ margin: '12px 0 12px 24px', border: 'none' }} className='search' placeholder='두 글자 이상 입력해주세요.' onKeyPress={(e) => { e.key == 'Enter' ? changePage(1) : console.log("") }} />
+                            <AiOutlineSearch className='search-button' style={{ padding: '14px', cursor: 'pointer' }} onClick={() => changePage(1)} />
+                        </SearchContainer>
+                        <Select className='page-cut' style={{ margin: '12px 24px 12px 24px' }} onChange={onchangeSelectPageCut}>
+                            <option value={10}>10개</option>
+                            <option value={20}>20개</option>
+                            <option value={50}>50개</option>
+                            <option value={100}>100개</option>
+                        </Select>
 
-                                <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>
+                        <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>
 
-                            </Row>
+                    </Row>
 
-                        </OptionCardWrappers>
-                    </div>
-                    {loading ?
+                </OptionCardWrappers>
+            </div>
+            {loading ?
+                <>
+                    <Loading text={loadingText} />
+                </>
+                :
+                <>
+                    <DataTable width={objManagerListContent[`${params.table}`]?.width} data={posts} column={zColumn} schema={params.table}
+                        opTheTopItem={opTheTopItem} changeItemSequence={changeItemSequence} deleteItem={deleteItem} changeStatus={changeStatus} changePage={changePage} page={page} />
+                </>}
+
+            <MBottomContent>
+                <div />
+                <PageContainer>
+                    <PageButton onClick={() => changePage(1)}>
+                        처음
+                    </PageButton>
+                    {pageList.map((item, index) => (
                         <>
-                            <Loading />
+                            <PageButton onClick={() => changePage(item)} style={{ color: `${page == item ? '#fff' : ''}`, background: `${page == item ? theme.color.background1 : ''}`, display: `${Math.abs(index + 1 - page) > 4 ? 'none' : ''}` }}>
+                                {item}
+                            </PageButton>
                         </>
-                        :
-                        <>
-
-                            <DataTable width={objManagerListContent[`${params.table}`]?.width} data={posts} column={zColumn} schema={params.table} 
-                            opTheTopItem={opTheTopItem} changeItemSequence={changeItemSequence} deleteItem={deleteItem} changeStatus={changeStatus} changePage={changePage} page={page}/>
-                        </>}
-
-                    <MBottomContent>
+                    ))}
+                    <PageButton onClick={() => changePage(pageList.length ?? 1)}>
+                        마지막
+                    </PageButton>
+                </PageContainer>
+                {objManagerListContent[`${params.table}`].is_edit ?
+                    <>
+                        <AddButton onClick={() => navigate(`/manager/edit/${params.table}/0`)}>+ 추가</AddButton>
+                    </>
+                    :
+                    <>
                         <div />
-                        <PageContainer>
-                            <PageButton onClick={() => changePage(1)}>
-                                처음
-                            </PageButton>
-                            {pageList.map((item, index) => (
-                                <>
-                                    <PageButton onClick={() => changePage(item)} style={{ color: `${page == item ? '#fff' : ''}`, background: `${page == item ? theme.color.background1 : ''}`, display: `${Math.abs(index + 1 - page) > 4 ? 'none' : ''}` }}>
-                                        {item}
-                                    </PageButton>
-                                </>
-                            ))}
-                            <PageButton onClick={() => changePage(pageList.length ?? 1)}>
-                                마지막
-                            </PageButton>
-                        </PageContainer>
-                        {objManagerListContent[`${params.table}`].is_edit ?
-                            <>
-                                <AddButton onClick={() => navigate(`/manager/edit/${params.table}/0`)}>+ 추가</AddButton>
-                            </>
-                            :
-                            <>
-                                <div />
-                            </>
-                        }
-                    </MBottomContent>
-                
+                    </>
+                }
+            </MBottomContent>
+
         </>
     )
 }

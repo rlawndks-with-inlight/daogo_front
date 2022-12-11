@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { MdEdit } from 'react-icons/md';
 import theme from "../../../styles/theme";
 import { CgToggleOn, CgToggleOff } from 'react-icons/cg'
+import { commarNumber, dateFormat } from "../../../functions/utils";
 
 const MyCard = styled.div`
 display:flex;
@@ -43,7 +44,7 @@ width:100%;
 display:flex;
 `
 const Category = styled.div`
-width:100px;
+width:120px;
 padding:16px 0;
 height:18px;
 padding-left:16px;
@@ -73,13 +74,28 @@ const MyPage = () => {
 
     useEffect(() => {
         async function isAdmin() {
-            const { data: response } = await axios.get('/api/auth')
-            if (response.pk > 0) {
-                await localStorage.setItem('auth', JSON.stringify(response))
-                let obj = response;
+            const { data: response } = await axios.get('/api/getmypagecontent')
+            let get_score_by_tier = { 0: 0, 5: 36, 10: 120, 15: 360, 20: 600, 25: 1200 };
+            if (response.result > 0) {
+                let obj = { ...response.data };
+                let marketing_price = 0;
+                for(var i = 0;i<obj?.marketing?.length;i++){
+                    let explain_obj = JSON.parse(obj?.marketing[i]?.explain_obj);
+                    marketing_price += get_score_by_tier[explain_obj?.tier];
+                }
+                obj['marketing_price'] = marketing_price;
+                let withdraw_won = 0;
+                for(var i = 0;i<obj?.withdraw?.length;i++){
+                    let explain_obj = JSON.parse(obj?.withdraw[i]?.explain_obj);
+                    console.log(explain_obj)
+                    if(explain_obj['receipt_won'] && explain_obj['status']==2){
+                        withdraw_won += explain_obj['receipt_won'];
+                    }
+                }
+                obj['withdraw_won'] = withdraw_won;
                 setAuth(obj);
             } else {
-                localStorage.removeItem('auth');
+                alert(response.message);
                 navigate('/login')
             }
         }
@@ -104,20 +120,17 @@ const MyPage = () => {
                 <MdEdit style={{ margin: '2rem 0 1rem auto', color: `${theme.color.font2}`, fontSize: '24px', cursor: 'pointer' }} onClick={() => navigate('/editmyinfo')} />
 
                 <MyCard>
-                    <ProfileContainer>
-                        <img src={auth?.profile_img ? auth?.profile_img.substring(0, 4) == "http" ? auth?.profile_img : backUrl + auth?.profile_img : defaultImg} alt="#" style={{ height: '125px', width: '125px', borderRadius: '50%', background: '#fff', margin: 'auto' }} />
-                    </ProfileContainer>
                     <Container>
                         <Content>
                             <Category>이름</Category>
                             <Result>
-                                {auth?.name ?? "---"}
+                                {auth?.user?.name ?? "---"}
                             </Result>
                         </Content>
                         <Content>
                             <Category>아이디</Category>
                             <Result>
-                                {auth?.type != 0 ? "---" : auth.id}
+                                {auth?.user?.id ?? "---"}
                             </Result>
                         </Content>
                         <Content>
@@ -126,7 +139,34 @@ const MyPage = () => {
                         </Content>
                         <Content>
                             <Category>전화번호</Category>
-                            <Result>{auth?.phone ?? "---"}</Result>
+                            <Result>{auth?.user?.phone ?? "---"}</Result>
+                        </Content>
+                        <Content>
+                            <Category>가입일</Category>
+                            <Result>{auth?.user?.date ? auth?.user?.date?.substring(0, 10) : "---"}</Result>
+                        </Content>
+
+                    </Container>
+                    <Container>
+                        <Content>
+                            <Category>가입기간</Category>
+                            <Result>
+                                {dateFormat(auth?.user?.date, true)}
+                            </Result>
+                        </Content>
+                        <Content>
+                            <Category>총 매출액</Category>
+                            <Result>
+                                {commarNumber(auth?.marketing_price*10000??0)} 원
+                            </Result>
+                        </Content>
+                        <Content>
+                            <Category>총 출금액</Category>
+                            <Result> {commarNumber(auth?.withdraw_won??0)} 원</Result>
+                        </Content>
+                        <Content>
+                            <Category>총 쇼핑 사용 금액</Category>
+                            <Result>{auth?.purchase?.purchase ? commarNumber(auth?.purchase?.purchase * (-1)) : "---"} 스타</Result>
                         </Content>
                         <Content>
                             <Category>개인정보동의</Category>
@@ -138,7 +178,7 @@ const MyPage = () => {
                 <LogoutButton onClick={onLogout}>
                     로그아웃
                 </LogoutButton>
-{/* 
+                {/* 
                 <LogoutButton onClick={() => navigate('/appsetting')}>
                     설정
                 </LogoutButton> */}

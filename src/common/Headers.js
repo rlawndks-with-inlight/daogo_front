@@ -8,16 +8,19 @@ import { AiOutlineBell, AiOutlineSearch, AiOutlineSetting } from 'react-icons/ai
 import { zBottomMenu } from '../data/ContentData';
 import theme from '../styles/theme';
 import $ from 'jquery';
-import { GiHamburgerMenu } from 'react-icons/gi'
+import { GiHamburgerMenu, GiLaurelsTrophy } from 'react-icons/gi'
 import { CSSTransition } from "react-transition-group";
 import { zSidebar } from '../data/Manager/ManagerContentData';
 import share from '../assets/images/icon/home/share.svg';
 import hamburger from '../assets/images/icon/home/hamburger.svg';
 import axios from 'axios';
-import { Col, Row } from '../components/elements/UserContentTemplete';
-import { commarNumber, getTierByUserTier } from '../functions/utils';
+import { Col, Row, ViewerContainer } from '../components/elements/UserContentTemplete';
+import { commarNumber, getTierByUserTier, returnMoment } from '../functions/utils';
 import defaultProfile from '../assets/images/icon/default-profile.png'
 import logoutIcon from '../assets/images/icon/logout.svg'
+import { Viewer } from '@toast-ui/react-editor';
+import { IoMdClose } from 'react-icons/io'
+import { IoCloseCircleOutline, IoCloseCircleSharp } from 'react-icons/io5'
 const Header = styled.header`
 position:fixed;
 height:6rem;
@@ -77,6 +80,7 @@ const OpenSideBarBackground = styled.div`
     top: 0;
     left: 0;
     height: 100%;
+    z-index:11;
 `
 const SideBarContainer = styled.div`
   display: flex;
@@ -130,17 +134,36 @@ height: 5rem;
 }
 
 `
-
+const PopupContainer = styled.div`
+position:absolute;
+top:16px;
+left:0px;
+display:flex;
+flex-wrap:wrap;
+`
+const PopupContent = styled.div`
+background:#fff;
+margin-right:16px;
+margin-bottom:16px;
+padding:24px 24px 48px 24px;
+box-shadow:${props => props.theme.boxShadow};
+border-radius:8px;
+width:300px;
+min-height:450px;
+position:relative;
+opacity:0.95;
+z-index:10;
+@media screen and (max-width:400px) { 
+width:78vw;
+}
+`
 const Headers = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [type, setType] = useState(1);
-  const [isModal, setIsModal] = useState(false);
   const [display, setDisplay] = useState('flex');
-  const [isPost, setIsPost] = useState(false);
   const [menuDisplay, setMenuDisplay] = useState('none');
-  const [isAlarm, setIsAlarm] = useState(false);
   const [auth, setAuth] = useState({})
+  const [popupList, setPopupList] = useState([])
   useEffect(() => {
 
     async function isAuth() {
@@ -173,6 +196,15 @@ const Headers = () => {
     } else {
 
     }
+    async function fetchPopup() {
+      const { data: response } = await axios.get('/api/items?table=notice&status=1&is_popup=1')
+      setPopupList(response?.data ?? []);
+    }
+    if (location.pathname == '/home') {
+      fetchPopup();
+    } else {
+      setPopupList([]);
+    }
   }, [location])
   const onChangeMenuDisplay = async () => {
     if (menuDisplay == 'flex') {
@@ -188,11 +220,7 @@ const Headers = () => {
     setMenuDisplay(menuDisplay == 'flex' ? 'none' : 'flex');
 
   }
-  setInterval(() => {
-    if (localStorage.getItem('is_alarm') == '1') {
-      setIsAlarm(true);
-    }
-  }, 1500);
+
   const onClickLink = (link) => {
     navigate(link);
     onChangeMenuDisplay();
@@ -206,20 +234,64 @@ const Headers = () => {
   }
   const onLogout = async () => {
     if (window.confirm('정말 로그아웃 하시겠습니까?')) {
-        const { data: response } = await axios.post('/api/logout');
-        if (response.result > 0) {
-            localStorage.removeItem('auth');
-            navigate('/login');
-        } else {
-            alert('error');
-        }
+      const { data: response } = await axios.post('/api/logout');
+      if (response.result > 0) {
+        localStorage.removeItem('auth');
+        navigate('/login');
+      } else {
+        alert('error');
+      }
     }
-}
+  }
+  const onClosePopup = async (pk, is_not_see) => {
+    if (is_not_see) {
+      await localStorage.setItem(`not_see_popup_${pk}_${returnMoment().substring(0, 10).replaceAll('-', '_')}`, '1');
+    }
+    let popup_list = [];
+    for (var i = 0; i < popupList.length; i++) {
+      if (pk == popupList[i]?.pk) {
+      } else {
+        popup_list.push(popupList[i]);
+      }
+    }
+    setPopupList(popup_list);
+  }
   return (
     <>
 
       <Header style={{ display: `${display}` }} className='header'>
         <HeaderMenuContainer>{/* pc */}
+
+          {popupList.length > 0 ?
+            <>
+              <PopupContainer>
+
+                {popupList && popupList.map((item, idx) => (
+                  <>
+                    {localStorage.getItem(`not_see_popup_${item?.pk}_${returnMoment().substring(0, 10).replaceAll('-', '_')}`) ?
+                      <>
+
+                      </>
+                      :
+                      <>
+                        <PopupContent>
+                          <IoMdClose style={{ color: theme.color.background1, position: 'absolute', right: '8px', top: '8px', fontSize: theme.size.font3, cursor: 'pointer' }} onClick={() => { onClosePopup(item?.pk) }} />
+                          <Viewer initialValue={item?.note ?? `<body></body>`} />
+                          <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', left: '8px', bottom: '8px' }}>
+                            <IoCloseCircleOutline style={{ color: theme.color.background1, fontSize: theme.size.font3, marginRight: '4px', cursor: 'pointer' }} onClick={() => { onClosePopup(item?.pk, true) }} />
+                            <div style={{ fontSize: theme.size.font5 }}>오늘 하루 보지않기</div>
+                          </div>
+                        </PopupContent>
+                      </>
+                    }
+                  </>
+                ))}
+              </PopupContainer>
+
+            </>
+            :
+            <>
+            </>}
 
           <img src={share} style={{ width: '2rem', height: '1.5rem', cursor: 'pointer' }} onClick={shareCopy} />
           <input type="text" style={{ display: 'none' }} id='share-link' value={`http://daogo.co.kr/signup/${JSON.parse(localStorage.getItem('auth'))?.id ?? ""}`} />
@@ -227,13 +299,16 @@ const Headers = () => {
           <img src={hamburger} className='hamburgur' onClick={onChangeMenuDisplay} />
           <OpenSideBarBackground className='sidebar-open-background' onClick={onChangeMenuDisplay} />
           <SideBarContainer className="sidebar-menu-list">
-            <img src={logoutIcon} className='hamburgur' style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }} onClick={onLogout}/>
+            <img src={logoutIcon} className='hamburgur' style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }} onClick={onLogout} />
             <div style={{ width: '100%', background: theme.color.background1, margin: '0', height: '18vh', color: '#fff', display: 'flex' }}>
               <Row style={{ justifyContent: 'flex-start', margin: 'auto' }}>
-                <img src={auth?.profile_img ? backUrl + auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} />
+                {/* <img src={auth?.profile_img ? backUrl + auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} /> */}
                 <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>
+                  <div style={{display:'flex',alignItems:'center'}}>
+                  <div>{auth?.sell_outlet?.sell_outlet > 0 ? <GiLaurelsTrophy style={{ marginRight: '4px',  color: theme.color.gold }} /> : ''}</div>
                   <div style={{ fontSize: theme.size.font3, fontWeight: 'bold' }}>Hi, {auth?.name}</div>
-                  <div style={{ fontSize: theme.size.font6, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼 `}<br/>{` ${getTierByUserTier(auth?.tier)} / ${auth?.id}`}</div>
+                  </div>
+                  <div style={{ fontSize: theme.size.font6, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼 `}<br />{` ${getTierByUserTier(auth?.tier)} / ${auth?.id}`}</div>
                 </Col>
               </Row>
             </div>

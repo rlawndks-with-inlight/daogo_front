@@ -15,11 +15,13 @@ margin: 15vw auto;
     margin: 30vh auto;
 }
 `
-const Loading = () => {
+const Loading = (props) => {
+    const { text } = props;
     return (
         <>
             <LoadingContainer>
                 <img src={loadingGif} style={{width:'100px'}}/>
+                <div style={{ marginTop: '16px' }}>{text}</div>
             </LoadingContainer>
         </>
     )

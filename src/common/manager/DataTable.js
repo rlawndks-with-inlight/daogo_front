@@ -31,16 +31,20 @@ padding:14px 0;
 margin-bottom:6px;
 `
 const DataTable = (props) => {
-    const { column, data, schema, opTheTopItem, changeItemSequence, deleteItem, changeStatus, width, changePage, page } = props;
+    const { column, data, schema, opTheTopItem, changeItemSequence, deleteItem, changeStatus, width, changePage, page, display } = props;
     const navigate = useNavigate();
     const [zStatus, setZStatus] = useState([]);
     const [posts, setPosts] = useState([]);
     const [firstPosts, setFirstPosts] = useState([])
     const [isChange, setIsChange] = useState(false)
+    const [tableColumn, setTableColumn] = useState([])
+    const [tableSchema, setTableSchema] = useState("")
     useEffect(() => {
-        setPosts(data)
-        setFirstPosts(data)
-    }, [])
+        setPosts(data);
+        setFirstPosts(data);
+        setTableColumn(column);
+        setTableSchema(schema);
+    }, [data])
 
     useEffect(() => {
         if (!isChange) {
@@ -48,7 +52,7 @@ const DataTable = (props) => {
         } else {
         }
     }, [posts])
-
+    
     const moveCard = useCallback((dragIndex, hoverIndex, itemPk) => {
         setPosts((prevCards) =>
             update(prevCards, {
@@ -69,12 +73,12 @@ const DataTable = (props) => {
                 data={card}
                 moveCard={moveCard}
                 column={column}
-                schema={objManagerListContent[`${schema}`].schema}
+                schema={objManagerListContent[`${tableSchema || schema}`].schema}
                 list={list}
                 opTheTopItem={opTheTopItem}
                 deleteItem={deleteItem}
                 changeItemSequence={changeItemSequence}
-                obj={objManagerListContent[`${schema}`]}
+                obj={objManagerListContent[`${tableSchema || schema}`]}
                 changeStatus={changeStatus}
                 changePage={changePage}
                 page={page}
@@ -84,10 +88,10 @@ const DataTable = (props) => {
 
     return (
         <>
-            <div style={{ marginBottom: '16px', overflowX: 'auto',width:`${width?'95%':'100%'}`,margin:'0 auto' }} className='scroll-table'>
+            <div style={{ marginBottom: '16px', overflowX: 'auto',width:`${width?'95%':'100%'}`,margin:'0 auto', display:`${display}` }} className='scroll-table'>
                 <Table style={{ width: `${width ? width : ''}` }}>
                     <Tr style={{ fontWeight: 'bold', background: `${theme.color.background1}18` }}>
-                        {column.map((item, index) => (
+                        {tableColumn.map((item, index) => (
                             <>
                                 <Td key={index} style={{ width: `${item.width}%` }}>{item.name}</Td>
                             </>
@@ -95,7 +99,7 @@ const DataTable = (props) => {
                     </Tr>
                     <DndProvider backend={HTML5Backend}>
                         {posts && posts.map((data, idx) =>
-                            renderCard(data, idx, column, posts)
+                            renderCard(data, idx, tableColumn, posts)
                         )}
                     </DndProvider>
                 </Table>

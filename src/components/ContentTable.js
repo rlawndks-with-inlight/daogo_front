@@ -118,7 +118,6 @@ const ContentTable = (props) => {
         let column = column_;
         let result = "";
         obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-        console.log(column)
         if (column == 'status') {
             if (obj['explain_obj']?.status == -1) {
                 result = "반송";

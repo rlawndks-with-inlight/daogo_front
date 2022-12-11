@@ -35,7 +35,6 @@ const RegisterRandomBox = () => {
                 alert("결제 비밀번호 등록 후 사용해 주세요.");
                 navigate('/editmyinfo');
             }
-            console.log(response)
             setPost(response.data);
         }
         fetchPost();

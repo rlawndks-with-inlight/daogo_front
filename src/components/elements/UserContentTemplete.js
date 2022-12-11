@@ -66,7 +66,6 @@ export const TitleStyle = styled.div`
 font-size:${props => props.theme.size.font2};
 font-weight:normal;
 margin-right:16px;
-cursor:pointer;
 `
 export const Title = (props) => {
     const navigate = useNavigate();

@@ -17,6 +17,7 @@ import { RiMoneyDollarBoxFill } from 'react-icons/ri'
 import { Button } from '../../components/elements/AuthContentTemplete'
 import AddButton from '../../components/elements/button/AddButton'
 import $ from 'jquery';
+import { Input } from '../../components/elements/ManagerTemplete'
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -30,7 +31,83 @@ padding:14px 0;
 margin-bottom:6px;
 `
 const ItemTypes = { CARD: 'card' }
+export const getTextByLogType = (obj_, schema) => {
+    let obj = { ...obj_ };
 
+    let result = "";
+    if (obj?.type == 0) {//아울렛구매
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        result = `아울렛쇼핑 ${obj['explain_obj']?.item_name ?? ""} 구매로 인해 사용 되었습니다.`;
+    } else if (obj?.type == 1) {//쿠폰 구매
+        result = "";
+    } else if (obj?.type == 2) {//랜덤박스 등록
+        if (schema == 'log_star') {
+            result = "랜덤박스로 전환 하였습니다.";
+        } else if (schema == 'log_randombox') {
+            result = ` ${commarNumber(obj?.price / 3)} 스타에서 랜덤박스로 전환 하였습니다.`;
+        } else {
+            result = "";
+        }
+    } else if (obj?.type == 3) {//선물하기
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        let sche = "";
+        if (schema == 'log_star') {//쿠폰 구매
+            sche = "스타";
+        } else if (schema == 'log_point') {
+            sche = "포인트";
+        }
+        if (obj?.price > 0) {
+            result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
+        } else {
+            result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
+        }
+    } else if (obj?.type == 4) {//출금
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        result = "출금신청 하였습니다 " + `(`;
+        if (obj['explain_obj']?.status == 0) {
+            result += "접수대기";
+        } else if (obj['explain_obj']?.status == 1) {
+            result += "접수완료";
+        } else if (obj['explain_obj']?.status == 2) {
+            result += "지급완료";
+        }
+        result += ')';
+    } else if (obj?.type == 5) {//관리자가 수정
+        result = "관리자의 수정에 의해 변경 되었습니다.";
+    } else if (obj?.type == 6) {//데일리자동지급
+        result = "";
+    } else if (obj?.type == 7) {//데일리수동지급
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} 발생 하였습니다.`;
+    } else if (obj?.type == 8) {//청약예치금등록
+        if (schema == 'log_star' || schema == 'log_point' || schema == 'log_esgw') {
+            result = `청약예치금에 등록 하였습니다.`;
+        } else {
+            result = "";
+        }
+    } else if (obj?.type == 9) {//esgw포인트구매
+        if (schema == 'log_point') {
+            result = "ESGW포인트로 전환 하였습니다.";
+        } else if (schema == 'log_esgw') {
+            result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
+        }
+    } else if (obj?.type == 10) {//매출등록
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        if (schema == 'log_point' || schema == 'log_star') {
+            result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
+        } else if (schema == 'log_randombox') {
+            result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
+        }
+    } else if (obj?.type == 11) {//이벤트 랜덤수익
+        result = "이벤트 랜덤수익 발생하였습니다.";
+    } else if (obj?.type == 12) {//이벤트 랜덤수익
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
+    } else {
+        result = "";
+    }
+    return result;
+}
 const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus, changePage, page }) => {
     const navigate = useNavigate();
     const ref = useRef(null)
@@ -110,83 +187,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             return "애플";
         }
     }
-    const getTextByLogType = (obj_) => {
-        let obj = { ...obj_ };
-
-        let result = "";
-        if (obj?.type == 0) {//아울렛구매
-            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `아울렛쇼핑 ${obj['explain_obj']?.item_name ?? ""} 구매로 인해 사용 되었습니다.`;
-        } else if (obj?.type == 1) {//쿠폰 구매
-            result = "";
-        } else if (obj?.type == 2) {//랜덤박스 등록
-            if (schema == 'log_star') {
-                result = "랜덤박스로 전환 하였습니다.";
-            } else if (schema == 'log_randombox') {
-                result = ` ${commarNumber(obj?.price / 3)} 스타에서 랜덤박스로 전환 하였습니다.`;
-            } else {
-                result = "";
-            }
-        } else if (obj?.type == 3) {//선물하기
-            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            let sche = "";
-            if (schema == 'log_star') {//쿠폰 구매
-                sche = "스타";
-            } else if (schema == 'log_point') {
-                sche = "포인트";
-            }
-            if (obj?.price > 0) {
-                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
-            } else {
-                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
-            }
-        } else if (obj?.type == 4) {//출금
-            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = "출금신청 하였습니다 " + `(`;
-            if (obj['explain_obj']?.status == 0) {
-                result += "접수대기";
-            } else if (obj['explain_obj']?.status == 1) {
-                result += "접수완료";
-            } else if (obj['explain_obj']?.status == 2) {
-                result += "지급완료";
-            }
-            result += ')';
-        } else if (obj?.type == 5) {//관리자가 수정
-            result = "관리자의 수정에 의해 변경 되었습니다.";
-        } else if (obj?.type == 6) {//데일리자동지급
-            result = "";
-        } else if (obj?.type == 7) {//데일리수동지급
-            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} 발생 하였습니다.`;
-        } else if (obj?.type == 8) {//청약예치금등록
-            if (schema == 'log_star' || schema == 'log_point' || schema == 'log_esgw') {
-                result = `청약예치금에 등록 하였습니다.`;
-            } else {
-                result = "";
-            }
-        } else if (obj?.type == 9) {//esgw포인트구매
-            if (schema == 'log_point') {
-                result = "ESGW포인트로 전환 하였습니다.";
-            } else if (schema == 'log_esgw') {
-                result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
-            }
-        } else if (obj?.type == 10) {//매출등록
-            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            if (schema == 'log_point' || schema == 'log_star') {
-                result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
-            } else if (schema == 'log_randombox') {
-                result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
-            }
-        } else if (obj?.type == 11) {//이벤트 랜덤수익
-            result = "이벤트 랜덤수익 발생하였습니다.";
-        } else if (obj?.type == 12) {//이벤트 랜덤수익
-            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
-        } else {
-            result = "";
-        }
-        return result;
-    }
+    
     const getMarketingTier = (obj_) => {
         let obj = { ...obj_ };
         obj['explain_obj'] = JSON.parse(obj['explain_obj']);
@@ -202,28 +203,70 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
     const onClickExchangeStatus = async (num, item) => {
         let confirm_str = "";
         let manager_note = "";
-        if(num==-1){
+        if (num == -1) {
             confirm_str = "정말 반송 하시겠습니까?";
             manager_note = `${item['user_id']}(${item['user_name']}) 회원의 출금신청을 반송 하였습니다.`;
-        }else if(num==1){
+        } else if (num == 1) {
             confirm_str = "접수완료 하시겠습니까?";
             manager_note = `${item['user_id']}(${item['user_name']}) 회원의 출금신청을 접수완료 하였습니다.`;
-        }else if(num==2){
+        } else if (num == 2) {
             confirm_str = "지급완료 하시겠습니까?";
             manager_note = `${item['user_id']}(${item['user_name']}) 회원의 출금신청을 지급완료 하였습니다.`;
-        }else{
+        } else {
             alert("잘못된 값입니다.");
             return;
         }
-        if(window.confirm(confirm_str)){
-            const {data:response} = await axios.post('/api/onchangeexchangestatus',{
-                status:num,
-                pk:item?.pk,
-                manager_note:manager_note
+        if (window.confirm(confirm_str)) {
+            const { data: response } = await axios.post('/api/onchangeexchangestatus', {
+                status: num,
+                pk: item?.pk,
+                manager_note: manager_note
             })
-            if(response?.result<0){
+            if (response?.result < 0) {
                 alert(response?.message);
-            }else{
+            } else {
+                alert("성공적으로 저장되었습니다.");
+                changePage(page);
+                await new Promise((r) => setTimeout(r, 500));
+                $('.scroll-table').scrollLeft(100000);
+            }
+        }
+    }
+    const onChangeOutletOrderStatus = async (num, item) => {
+        let confirm_str = "";
+        let manager_note = "";
+        if (num == -1) {
+            if (!$(`.invoice-${item?.pk}`).val()) {
+                alert("반송사유를 입력해 주세요.");
+                return;
+            }
+            confirm_str = "주문취소 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 주문을 취소 하였습니다.`;
+        } else if (num == 1) {
+            if (!$(`.invoice-${item?.pk}`).val()) {
+                alert("송장을 입력해 주세요.");
+                return;
+            }
+            confirm_str = "주문확인 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 주문을 확인 하였습니다.`;
+        } else if (num == 2) {
+            confirm_str = "배송완료 처리 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 배송을 완료처리 하였습니다.`;
+        } else {
+            alert("잘못된 값입니다.");
+            return;
+        }
+        if (window.confirm(confirm_str)) {
+            const { data: response } = await axios.post('/api/onchangeoutletorderstatus', {
+                status: num,
+                pk: item?.pk,
+                manager_note: manager_note,
+                invoice: $(`.invoice-${item?.pk}`).val(),
+                return_reason: $(`.invoice-${item?.pk}`).val(),
+            })
+            if (response?.result < 0) {
+                alert(response?.message);
+            } else {
                 alert("성공적으로 저장되었습니다.");
                 changePage(page);
                 await new Promise((r) => setTimeout(r, 500));
@@ -354,7 +397,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                         {col.type == 'type_note' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>
-                                    {getTextByLogType(data)}
+                                    {getTextByLogType(data, schema)}
                                 </Td>
                             </>
                             :
@@ -506,7 +549,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                     </>}
                                 {col.type.split('_')[1] == 'status' ?
                                     <>
-                                        <Td style={{ width: `${col.width}%` }} onCL>
+                                        <Td style={{ width: `${col.width}%` }}>
                                             {JSON?.parse(data['explain_obj'])?.status == -1 ?
                                                 <>반송</>
                                                 :
@@ -531,14 +574,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'date' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {JSON?.parse(data['explain_obj'])?.date?
-                                            <>
-                                            {JSON?.parse(data['explain_obj'])?.date}
-                                            </>
-                                            :
-                                            <>
-                                            ---
-                                            </>}
+                                            {JSON?.parse(data['explain_obj'])?.date ?
+                                                <>
+                                                    {JSON?.parse(data['explain_obj'])?.date}
+                                                </>
+                                                :
+                                                <>
+                                                    ---
+                                                </>}
                                         </Td>
                                     </>
                                     :
@@ -547,32 +590,32 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
 
                                 {col.type.split('_')[1] == 'edit' ?
                                     <>
-                                        <Td style={{ width: `${col.width}%`}}>
+                                        <Td style={{ width: `${col.width}%` }}>
                                             {JSON?.parse(data['explain_obj'])?.status == -1 ?
                                                 <>
-                                                   반송완료
+                                                    반송완료
                                                 </>
                                                 :
                                                 <>
                                                 </>}
                                             {JSON?.parse(data['explain_obj'])?.status == 0 ?
                                                 <>
-                                                <AddButton style={{width:'84px',marginRight:'4px',background:theme.color.blue}} onClick={()=>{onClickExchangeStatus(1,data)}}>접수완료</AddButton>
-                                                <AddButton style={{background:theme.color.red}} onClick={()=>{onClickExchangeStatus(-1,data)}}>반송</AddButton>
+                                                    <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onClickExchangeStatus(1, data) }}>접수완료</AddButton>
+                                                    <AddButton style={{ background: theme.color.red }} onClick={() => { onClickExchangeStatus(-1, data) }}>반송</AddButton>
                                                 </>
                                                 :
                                                 <>
                                                 </>}
-                                                {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
                                                 <>
-                                                <AddButton style={{width:'84px',marginRight:'4px',background:theme.color.blue}} onClick={()=>{onClickExchangeStatus(2,data)}}>지급완료</AddButton>
+                                                    <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onClickExchangeStatus(2, data) }}>지급완료</AddButton>
                                                 </>
                                                 :
                                                 <>
                                                 </>}
-                                                {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
                                                 <>
-                                                지급완료
+                                                    지급완료
                                                 </>
                                                 :
                                                 <>
@@ -685,10 +728,75 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                     :
                                     <>
                                     </>}
+                                {col.type.split('order_')[1] == 'date' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {JSON?.parse(data['explain_obj'])?.date ?
+                                                <>
+                                                    {JSON?.parse(data['explain_obj'])?.date}
+                                                </>
+                                                :
+                                                <>
+                                                    ---
+                                                </>}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'invoice' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>{JSON?.parse(data['explain_obj'])?.invoice ?? "---"}</Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }
+                                {col.type.split('order_')[1] == 'return_reason' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>{JSON?.parse(data['explain_obj'])?.return_reason ?? "---"}</Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }
                                 {col.type.split('order_')[1] == 'edit' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            { }
+                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                                <>
+                                                    취소완료
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                                <>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                        <Input style={{ width: '156px', margin: '4px auto' }} placeholder="송장 또는 반송사유" className={`invoice-${data['pk']}`} />
+                                                        <div>
+                                                            <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onChangeOutletOrderStatus(1, data) }}>주문확인</AddButton>
+                                                            <AddButton style={{ width: '84px', background: theme.color.red }} onClick={() => { onChangeOutletOrderStatus(-1, data) }}>주문취소</AddButton>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                                <>
+                                                    <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onChangeOutletOrderStatus(2, data) }}>배송완료</AddButton>
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                                <>
+                                                    배송완료
+                                                </>
+                                                :
+                                                <>
+                                                </>}
                                         </Td>
                                     </>
                                     :

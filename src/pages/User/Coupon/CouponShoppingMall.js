@@ -35,7 +35,6 @@ margin-bottom: 16px;
 font-size: ${props => props.theme.size.font5};
 font-weight:bold;
 cursor:pointer;
-
 `
 const CouponShoppingMall = () => {
     const navigate = useNavigate();

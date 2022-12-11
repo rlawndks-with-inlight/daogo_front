@@ -49,7 +49,6 @@ const MDailyPaymentProbabilityEdit = () => {
                 alert('지급금과 지급금 확률의 갯수가 같아야 합니다.');
                 return;
             }
-            console.log(money_percent_list.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0))
             if (money_percent_list.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0) != 100) {
                 alert('지급금 확률은 합이 100이 되어야 합니다.');
                 return;

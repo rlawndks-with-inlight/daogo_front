@@ -137,7 +137,6 @@ const MOutletEdit = () => {
                 alert("판매자 아이디에 비정상적인 변경이 감지되었습니다.");
                 return;
             }
-            console.log($('.point_percent').val()??0)
             if (window.confirm('저장 하시겠습니까?')) {
                 
                 if (content) formData.append('outlet', content);

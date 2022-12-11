@@ -218,7 +218,7 @@ export const getTierByUserTier = (num,id) =>{
         return "잘못된 레벨";
     }
 }
-export const dateFormat = (date) => {//두날짜의 시간차
+export const dateFormat = (date, is_minus) => {//두날짜의 시간차
     if(!date){
         return "---";
     }
@@ -230,13 +230,29 @@ export const dateFormat = (date) => {//두날짜의 시간차
     if (minute <= 1) {
         return "방금 전";
     } else if (hour < 1) {
-        return `${parseInt(minute)}분 전`;
+        if(is_minus){
+            return `${parseInt(minute)}분`;
+        }else{
+            return `${parseInt(minute)}분 전`;
+        }
     } else if (hour < 24) {
-        return `${parseInt(hour)}시간 전`;
+        if(is_minus){
+            return `${parseInt(hour)}시간`;
+        }else{
+            return `${parseInt(hour)}시간 전`;
+        }
     } else if (day < 7) {
-        return `${parseInt(day)}일 전`;
+        if(is_minus){
+            return `${parseInt(day)} Days`;
+        }else{
+            return `${parseInt(day)}일 전`;
+        }
     } else {
-        return date.substring(0, 10);
+        if(is_minus){
+            return `${parseInt(day)} Days`;
+        }else{
+            return date.substring(0, 10);
+        }
     }
 }
 export const getIntroducePercentByUserTier = (tier, is_use_point, point_percent) =>{

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, Row, Col, OneCard, OneThirdCard, OneCardImg } from '../../components/elements/UserContentTemplete';
+import { Wrappers, Title, Content, Img, WrapDiv, SliderDiv, Row, Col, OneCard, OneThirdCard, OneCardImg, ViewerContainer } from '../../components/elements/UserContentTemplete';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
 import { commarNumber, getIntroducePercentByUserTier, getRollUpBonusByUserTier, getTierByUserTier } from '../../functions/utils';
@@ -22,6 +22,7 @@ import axios from 'axios';
 import LoadingText from '../../components/LoadingText';
 import { backUrl } from '../../data/ContentData';
 import { GiLaurelsTrophy } from 'react-icons/gi';
+import { Viewer } from '@toast-ui/react-editor';
 const OneTopCard = styled.div`
 background:${(props => props.background) ?? ""};
 color:${(props => props.color) ?? ""};
@@ -72,6 +73,19 @@ margin: auto;
     height: auto;
 }
 `
+const BannerImg = styled.img`
+box-shadow:${props => props.theme.boxShadow};
+border-radius:8px;
+${(props=>props.is_hover?('cursor:pointer'):'')};
+height:180px;
+width:100%;
+transition-duration: 0.3s;
+border:none;
+
+@media screen and (max-width:1000px) { 
+    height:18vw;
+}
+`
 const WhiteButton = (props) => {
     let { title, content, unit, bottom_content, width, total_occurrence_title, total_occurrence, background, font_color, link } = props;
     const navigate = useNavigate();
@@ -111,11 +125,8 @@ const GreenButton = (props) => {
 
 const Home = () => {
     const navigate = useNavigate();
-    const [bottomMenuList, setBottomMenuList] = useState([]);
-    const [noticeList, setNoticeList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState({});
-
     let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "선물하기", link: "/gift", icon: downloadOutline }],
     [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "shoppingmall", icon: cart }],
     [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: 'kakaotalk', icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
@@ -123,7 +134,6 @@ const Home = () => {
     useEffect(() => {
         async function fetchPosts() {
             const { data: response } = await axios.get('/api/gethomecontent');
-            console.log(response)
             if (response?.result > 0) {
                 setPost(response?.data);
             } else {
@@ -149,7 +159,6 @@ const Home = () => {
     }
     const getPurchasePackageByList = (list_) => {
         let list = [...list_];
-        console.log(list)
         let sum = 0;
         for (var i = 0; i < list.length; i++) {
             if (list[i]?.price == 9000) {
@@ -261,14 +270,14 @@ const Home = () => {
                             <Title not_arrow={true}>메인배너 콘텐츠</Title>
                             {post?.main_banner && post?.main_banner?.map((item, index) => (
                                 <>
-                                    <OneCardImg style={{ marginBottom: '12px' }} src={backUrl + item?.img_src} is_hover={true} onClick={() => {
+                                    <BannerImg style={{ marginBottom: '12px' }} src={backUrl + item?.img_src} is_hover={true} onClick={() => {
                                         if (item?.target === 0) {
                                             window.location.href = (item?.link.includes('http') ? '' : 'http://') + item?.link;
                                         } else {
                                             window.open((item?.link.includes('http') ? '' : 'http://') + item?.link);
                                         }
                                     }}>
-                                    </OneCardImg>
+                                    </BannerImg>
                                 </>
                             ))}
                         </Content>
