@@ -9,7 +9,7 @@ import CancelButton from '../../../components/elements/button/CancelButton';
 import $ from 'jquery';
 import { addItem, updateItem } from '../../../functions/utils';
 import { Card, Title, Input, Row, Col, ImageContainer, Select, Explain } from '../../../components/elements/ManagerTemplete';
-import { managerNoteObj, objManagerListContent } from '../../../data/Manager/ManagerContentData';
+import { backUrl, managerNoteObj, objManagerListContent } from '../../../data/Manager/ManagerContentData';
 import Breadcrumb from '../../../common/manager/Breadcrumb';
 import { AiFillFileImage } from 'react-icons/ai';
 import theme from '../../../styles/theme';
@@ -24,29 +24,32 @@ const MUserEdit = () => {
     const [content, setContent] = useState(undefined)
     const [formData] = useState(new FormData())
     const [addressList, setAddressList] = useState([])
-
+    const [user, setUser] = useState({});
     useEffect(() => {
 
-        async function fetchPost() {
-            if (params.pk > 0) {
-                const { data: response } = await axios.get(`/api/item?table=user&pk=${params.pk}`)
-                $('.id').val(response.data.id)
-                $('.pw').val("")
-                $('.name').val(response.data.name)
-                $('.nickname').val(response.data.nickname)
-                $('.phone').val(response.data.phone)
-                $('.level').val(response.data.user_level)
-                $('.parent-id').val(response.data.parent_id);
-                $('.zip_code').val(response.data.zip_code)
-                $('.address').val(response.data.address)
-                $('.address_detail').val(response.data.address_detail)
-                $('.bank_name').val(response.data.bank_name)
-                $('.account_number').val(response.data.account_number)
-                $('.account_name').val(response.data.account_name)
-            }
-        }
+        
         fetchPost();
     }, [])
+    async function fetchPost() {
+        if (params.pk > 0) {
+            const { data: response } = await axios.get(`/api/item?table=user&pk=${params.pk}`)
+            $('.id').val(response.data.id)
+            $('.pw').val("")
+            $('.name').val(response.data.name)
+            $('.nickname').val(response.data.nickname)
+            $('.phone').val(response.data.phone)
+            $('.level').val(response.data.user_level)
+            $('.parent-id').val(response.data.parent_id);
+            $('.zip_code').val(response.data.zip_code)
+            $('.address').val(response.data.address)
+            $('.address_detail').val(response.data.address_detail)
+            $('.bank_name').val(response.data.bank_name)
+            $('.account_number').val(response.data.account_number)
+            $('.account_name').val(response.data.account_name)
+            setUrl(response?.data?.profile_img ? (backUrl + response?.data?.profile_img) : "");
+            setUser(response?.data);
+        }
+    }
     const geocoding = async () => {
         const { data: response } = await axios.post('/api/getaddressbytext', {
             text: $('.place').val()
@@ -54,7 +57,7 @@ const MUserEdit = () => {
         setAddressList(response.data ?? []);
     }
     const editUser = async () => {
-        if (!$(`.id`).val() || !$(`.name`).val() ||  !$(`.phone`).val()) {
+        if (!$(`.id`).val() || !$(`.name`).val() || !$(`.phone`).val()) {
             alert('필요값이 비어있습니다.');
         } else {
             if (window.confirm(`${params.pk == 0 ? '추가하시겠습니까?' : '수정하시겠습니까?'}`)) {
@@ -87,7 +90,7 @@ const MUserEdit = () => {
                     obj['pk'] = params.pk;
                     obj['reason_correction'] = $('.reason-correction').val();
                 }
-                obj['manager_note'] = `${$(`.id`).val()} ${params.pk>0?(managerNoteObj.UPDATE_USER):managerNoteObj.ADD_USER}`
+                obj['manager_note'] = `${$(`.id`).val()} ${params.pk > 0 ? (managerNoteObj.UPDATE_USER) : managerNoteObj.ADD_USER}`
                 let api_str = '';
                 params.pk == 0 ? api_str = '/api/adduser' : api_str = '/api/updateitem'
                 const { data: response } = await axios.post(api_str, obj);
@@ -108,6 +111,20 @@ const MUserEdit = () => {
             setUrl(URL.createObjectURL(e.target.files[0]))
         }
     };
+    const initializationIdCard = async() =>{
+        if(window.confirm("정말 신분증 사진을 초기화 하시겠습니까?")){
+            const {data:response} = await axios.post('/api/initializationidcard',{
+                pk:params?.pk,
+                manager_note:`${user?.id}(${user?.name})의 프로필 사진을 초기화 하였습니다.`
+            })
+            if(response?.result>0){
+                alert("성공적으로 저장 되었습니다.");
+                fetchPost();
+            }else{
+                alert(response?.message);
+            }
+        }
+    }
     return (
         <>
             <Breadcrumb title={`회원 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
@@ -203,6 +220,32 @@ const MUserEdit = () => {
                             <Col>
                                 <Title>계좌소유자명</Title>
                                 <Input className='account_name' />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Title>신분증 이미지</Title>
+                                <ImageContainer for="file1">
+
+                                    {url ?
+                                        <>
+                                            <img src={url} alt="#"
+                                                style={{
+                                                    width: '12rem', height: '6rem',
+                                                    margin: '3rem'
+                                                }} />
+                                        </>
+                                        :
+                                        <>
+                                            <AiFillFileImage style={{ margin: '4rem', fontSize: '4rem', color: `${theme.color.manager.font3}` }} />
+                                        </>}
+                                </ImageContainer>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Title>신분증 이미지 초기화</Title>
+                                <AddButton style={{ margin: '12px auto 6px 24px' }} onClick={initializationIdCard}>초기화</AddButton>
                             </Col>
                         </Row>
                         <Row>
