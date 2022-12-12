@@ -1,7 +1,7 @@
 import { logoSrc, backUrl } from "../ContentData";
 import { EditorState } from "draft-js"
 import { columnObjFormat, editContentFormat, sidebarContentFormat, sidebarObjFormat, sidebarObjListFormat } from "./ManagerContentFormat";
-
+import $ from 'jquery'
 export const editorState = {
     editorState: EditorState.createEmpty()
 }
@@ -292,7 +292,7 @@ export const objManagerListContent = {
             columnObjFormat('진행완료일', '', 'exchange_date', 'exchange_date'),
             columnObjFormat('관리', '', 'exchange_edit', 'exchange_edit'),
         ],
-        [],
+        [`status=`],
         false,
         false,
         '150%'
@@ -496,7 +496,7 @@ export const objManagerListContent = {
             columnObjFormat('진행완료일', '', 'outlet_order_date', ''),
             columnObjFormat('관리', '', 'outlet_order_edit', ''),
         ],
-        [],
+        [`status=`],
         false,
         false,
         '200%'

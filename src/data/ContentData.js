@@ -123,12 +123,13 @@ export const historyContent = {
     outlet_order: {
         title: "아울렛 주문 내역",
         columns: [
-            columnObjFormat('상품명', 25, 'text', 'item_name'),
-            columnObjFormat('수량', 15, 'outlet_order', 'item_count'),
+            columnObjFormat('상품명', 10, 'text', 'item_name'),
+            columnObjFormat('수량', 5, 'outlet_order', 'item_count'),
             columnObjFormat('사용스타', 15, 'outlet_order', 'use_star'),
             columnObjFormat('사용포인트', 15, 'outlet_order', 'use_point'),
             columnObjFormat('날짜', 15, 'date', 'date'),
-            columnObjFormat('배달현황', 15, 'outlet_order', 'status'),
+            columnObjFormat('배송현황', 10, 'outlet_order', 'status'),
+            columnObjFormat('반송사유', 25, 'outlet_order', 'return_reason'),
         ]
     },
     withdraw_request: {

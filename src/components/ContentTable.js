@@ -41,11 +41,11 @@ const ContentTable = (props) => {
         } else if (obj?.type == 4) {//출금
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
             result = "출금신청 하였습니다 " + `(`;
-            if (obj['explain_obj']?.status == 0) {
+            if (obj?.status == 0) {
                 result += "접수대기";
-            } else if (obj['explain_obj']?.status == 1) {
+            } else if (obj?.status == 1) {
                 result += "접수완료";
-            } else if (obj['explain_obj']?.status == 2) {
+            } else if (obj?.status == 2) {
                 result += "지급완료";
             }
             result += ')';
@@ -97,17 +97,19 @@ const ContentTable = (props) => {
         } else if (column == 'use_point') {
             result = commarNumber(obj['explain_obj']?.point);
         } else if (column == 'status') {
-            if (obj['explain_obj']?.status == -1) {
+            if (obj?.status == -1) {
                 result = "반품처리";
-            } else if (obj['explain_obj']?.status == 0) {
+            } else if (obj?.status == 0) {
                 result = "확인대기";
-            } else if (obj['explain_obj']?.status == 1) {
+            } else if (obj?.status == 1) {
                 result = "주문확인";
-            } else if (obj['explain_obj']?.status == 2) {
-                result = "배달완료";
+            } else if (obj?.status == 2) {
+                result = "배송완료";
             } else {
                 result = "---";
             }
+        }else if (column == 'return_reason'){
+            result = obj['explain_obj']?.return_reason;
         } else {
             result = "---";
         }
@@ -119,13 +121,13 @@ const ContentTable = (props) => {
         let result = "";
         obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
         if (column == 'status') {
-            if (obj['explain_obj']?.status == -1) {
+            if (obj?.status == -1) {
                 result = "반송";
-            } else if (obj['explain_obj']?.status == 0) {
+            } else if (obj?.status == 0) {
                 result = "접수대기";
-            } else if (obj['explain_obj']?.status == 1) {
+            } else if (obj?.status == 1) {
                 result = "접수완료";
-            } else if (obj['explain_obj']?.status == 2) {
+            } else if (obj?.status == 2) {
                 result = "지급완료";
             }
         } else if (column == 'date') {

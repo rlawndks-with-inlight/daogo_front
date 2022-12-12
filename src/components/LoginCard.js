@@ -40,11 +40,12 @@ const LoginCard = () => {
         alert(response.message);
         if (response.result > 0) {
             await localStorage.setItem('auth', JSON.stringify(response?.data?.user));
-            if(response?.data?.is_user_lottery_today){
-                navigate('/home');
-            }else{
-                navigate('/randombox/lottery');
-            }
+            navigate('/home');
+            // if(response?.data?.is_user_lottery_today){
+            //     navigate('/home');
+            // }else{
+            //     navigate('/randombox/lottery');
+            // }
         }
     }
     const onKeyPressId = (e) => {

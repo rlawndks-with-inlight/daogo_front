@@ -64,11 +64,11 @@ export const getTextByLogType = (obj_, schema) => {
     } else if (obj?.type == 4) {//출금
         obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
         result = "출금신청 하였습니다 " + `(`;
-        if (obj['explain_obj']?.status == 0) {
+        if (obj?.status == 0) {
             result += "접수대기";
-        } else if (obj['explain_obj']?.status == 1) {
+        } else if (obj?.status == 1) {
             result += "접수완료";
-        } else if (obj['explain_obj']?.status == 2) {
+        } else if (obj?.status == 2) {
             result += "지급완료";
         }
         result += ')';
@@ -187,7 +187,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             return "애플";
         }
     }
-    
+
     const getMarketingTier = (obj_) => {
         let obj = { ...obj_ };
         obj['explain_obj'] = JSON.parse(obj['explain_obj']);
@@ -550,19 +550,19 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'status' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                            {data?.status == -1 ?
                                                 <>반송</>
                                                 :
                                                 <></>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                            {data?.status == 0 ?
                                                 <>접수대기</>
                                                 :
                                                 <></>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                            {data?.status == 1 ?
                                                 <>접수완료</>
                                                 :
                                                 <></>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                            {data?.status == 2 ?
                                                 <>지급완료</>
                                                 :
                                                 <></>}
@@ -591,14 +591,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('_')[1] == 'edit' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                            {data?.status == -1 ?
                                                 <>
                                                     반송완료
                                                 </>
                                                 :
                                                 <>
                                                 </>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                            {data?.status == 0 ?
                                                 <>
                                                     <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onClickExchangeStatus(1, data) }}>접수완료</AddButton>
                                                     <AddButton style={{ background: theme.color.red }} onClick={() => { onClickExchangeStatus(-1, data) }}>반송</AddButton>
@@ -606,14 +606,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                                 :
                                                 <>
                                                 </>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                            {data?.status == 1 ?
                                                 <>
                                                     <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onClickExchangeStatus(2, data) }}>지급완료</AddButton>
                                                 </>
                                                 :
                                                 <>
                                                 </>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                            {data?.status == 2 ?
                                                 <>
                                                     지급완료
                                                 </>
@@ -707,20 +707,20 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('order_')[1] == 'status' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                            {data?.status == -1 ?
                                                 <>반품처리</>
                                                 :
                                                 <></>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                            {data?.status == 0 ?
                                                 <>확인대기</>
                                                 :
                                                 <></>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                            {data?.status == 1 ?
                                                 <>주문확인</>
                                                 :
                                                 <></>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
-                                                <>배달완료</>
+                                            {data?.status == 2 ?
+                                                <>배송완료</>
                                                 :
                                                 <></>}
                                         </Td>
@@ -763,14 +763,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('order_')[1] == 'edit' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {JSON?.parse(data['explain_obj'])?.status == -1 ?
+                                            {data?.status == -1 ?
                                                 <>
                                                     취소완료
                                                 </>
                                                 :
                                                 <>
                                                 </>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 0 ?
+                                            {data?.status == 0 ?
                                                 <>
                                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                                         <Input style={{ width: '156px', margin: '4px auto' }} placeholder="송장 또는 반송사유" className={`invoice-${data['pk']}`} />
@@ -783,14 +783,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                                 :
                                                 <>
                                                 </>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 1 ?
+                                            {data?.status == 1 ?
                                                 <>
                                                     <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onChangeOutletOrderStatus(2, data) }}>배송완료</AddButton>
                                                 </>
                                                 :
                                                 <>
                                                 </>}
-                                            {JSON?.parse(data['explain_obj'])?.status == 2 ?
+                                            {data?.status == 2 ?
                                                 <>
                                                     배송완료
                                                 </>

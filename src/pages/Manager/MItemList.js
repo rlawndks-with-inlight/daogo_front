@@ -89,7 +89,13 @@ const MItemList = () => {
             obj['order'] = 'sort';
         }
         for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
-            obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
+            if(objManagerListContent[`${params.table}`].queries[i].split("=")[1]){
+                obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
+            }else{
+                if($(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val()!='all'){
+                    obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = $(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val();
+                }
+            }
         }
         const { data: response } = await axios.post('/api/items', obj);
         setPosts(response.data.data)
@@ -162,7 +168,13 @@ const MItemList = () => {
             obj['order'] = 'sort';
         }
         for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
-            obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
+            if(objManagerListContent[`${params.table}`].queries[i].split("=")[1]){
+                obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
+            }else{
+                if($(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val()!='all'){
+                    obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = $(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val();
+                }
+            }
         }
         const { data: response } = await axios.post('/api/items', obj);
         setPosts(response?.data);
@@ -188,10 +200,10 @@ const MItemList = () => {
         ]);
 
         let result = [...excelData];
-        let excel_list = []; 
-        for(var i =0;i<result.length;i++){
+        let excel_list = [];
+        for (var i = 0; i < result.length; i++) {
             excel_list[i] = [];
-            for(var j = 0;j<column_list.length;j++){
+            for (var j = 0; j < column_list.length; j++) {
                 let data = await returnColumn(result[i], column_list[j]?.type, column_list[j]?.column, objManagerListContent[`${params.table}`].schema);;
                 await excel_list[i].push(data);
             }
@@ -215,6 +227,9 @@ const MItemList = () => {
         const excelFile = new Blob([excelButter], { type: excelFileType });
         FileSaver.saveAs(excelFile, excelFileName + excelFileExtension);
     }
+    const onChangeType = (e) =>{
+        changePage(1);
+    }
     return (
         <>
             <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb}`} nickname={``} />
@@ -222,6 +237,32 @@ const MItemList = () => {
                 {/* 옵션카드 */}
                 <OptionCardWrappers>
                     <Row>
+                        {objManagerListContent[`${params.table}`].schema == 'exchange' ?
+                            <>
+                                <Select className='status' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
+                                    <option value={'all'}>전체</option>
+                                    <option value={-1}>반송</option>
+                                    <option value={0}>접수대기</option>
+                                    <option value={1}>접수완료</option>
+                                    <option value={2}>지급완료</option>
+                                </Select>
+                            </>
+                            :
+                            <>
+                            </>}
+                            {objManagerListContent[`${params.table}`].schema == 'outlet_order' ?
+                            <>
+                                <Select className='status' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
+                                    <option value={'all'}>전체</option>
+                                    <option value={-1}>반품처리</option>
+                                    <option value={0}>확인대기</option>
+                                    <option value={1}>주문확인</option>
+                                    <option value={2}>배송완료</option>
+                                </Select>
+                            </>
+                            :
+                            <>
+                            </>}
                         <SearchContainer>
                             <Input style={{ margin: '12px 0 12px 24px', border: 'none' }} className='search' placeholder='두 글자 이상 입력해주세요.' onKeyPress={(e) => { e.key == 'Enter' ? changePage(1) : console.log("") }} />
                             <AiOutlineSearch className='search-button' style={{ padding: '14px', cursor: 'pointer' }} onClick={() => changePage(1)} />

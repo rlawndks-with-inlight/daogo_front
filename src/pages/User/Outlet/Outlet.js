@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { backUrl } from "../../../data/ContentData";
 import theme from "../../../styles/theme";
 import { Viewer } from '@toast-ui/react-editor';
-import { commarNumber, getIntroducePercentByUserTier, range } from "../../../functions/utils";
+import { commarNumber, getDiscountPoint, getIntroducePercentByUserTier, range } from "../../../functions/utils";
 import AddButton from "../../../components/elements/button/AddButton";
 import playFillIcon from '../../../assets/images/icon/play-fill.svg';
 import $ from 'jquery';
@@ -46,7 +46,7 @@ line-height: 30px;
 `
 const SelectCountList = styled.div`
     position: absolute;
-    display: ${props=>props.display};
+    display: ${props => props.display};
     flex-direction: column;
     background: rgb(255, 255, 255);
     bottom: -201px;
@@ -54,7 +54,7 @@ const SelectCountList = styled.div`
     width: 150px;
     left: 0;
     text-align: center;
-    box-shadow:${props=>props.theme.boxShadow};
+    box-shadow:${props => props.theme.boxShadow};
     border-radius:8px;
 `
 const SelectCountIndex = styled.div`
@@ -72,6 +72,7 @@ const Outlet = () => {
     const [count, setCount] = useState(1);
     const [display, setDisplay] = useState('none')
     const [auth, setAuth] = useState({});
+    let introduce_percent_list = [0,6,7,8,9,10];
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/item?table=outlet&pk=${params?.pk}`);
@@ -83,7 +84,7 @@ const Outlet = () => {
     }, [pathname])
     useEffect(() => {
         $('body').on('click', function () {
-            
+
         })
     }, [])
     useEffect(() => {
@@ -95,6 +96,7 @@ const Outlet = () => {
         });
 
     }, [])
+
     return (
         <>
             <Wrappers>
@@ -104,9 +106,9 @@ const Outlet = () => {
                         <ItemImg src={backUrl + post?.img_src} />
                         <ExplainContainer>
                             <div>{post?.name} {post?.randombox_point ? `- ${commarNumber(post?.randombox_point)}P (랜덤박스 적립)` : ''}</div>
-                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: theme.color.red, fontSize: theme.size.font5 }}>{(getIntroducePercentByUserTier(auth?.user?.tier??0, post?.is_use_point, post?.point_percent) / 100) * post?.sell_star}포인트 ({getIntroducePercentByUserTier(auth?.user?.tier??0, post?.is_use_point, post?.point_percent)}%)</strong>사용가능</div>
+                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: theme.color.red, fontSize: theme.size.font5 }}>{getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0)}포인트 {post?.is_use_point==2?`(${introduce_percent_list[auth?.user?.tier/5]}%)`:''}</strong>사용가능</div>
                             <div style={{ fontSize: theme.size.font4, color: theme.color.background1 }}>
-                                {commarNumber(post?.sell_star * (100 - getIntroducePercentByUserTier(auth?.user?.tier??0, post?.is_use_point, post?.point_percent)) / 100)} 스타 <strong style={{ fontSize: theme.size.font5 }}>판매가(포인트사용 시)</strong></div>
+                                {commarNumber(post?.sell_star - getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0))} 스타 <strong style={{ fontSize: theme.size.font5 }}>판매가(포인트사용 시)</strong></div>
                             {post?.randombox_point > 0 ?
                                 <>
                                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -123,24 +125,24 @@ const Outlet = () => {
                                 , alignItems: 'center', fontSize: theme.size.font6, color: theme.color.background1, lineHeight: '10px', position: 'relative'
                             }}
                                 className='select-count'
-                                onClick={() => {setDisplay(display=='none'?'flex':'none')}}>
+                                onClick={() => { setDisplay(display == 'none' ? 'flex' : 'none') }}>
                                 <div style={{ lineHeight: '10px' }}>구매수량선택</div>
                                 <div>{count}</div>
                                 <SelectCountList className='select-count-list' display={display}>
                                     {range(1, 10).map((item, idx) => (
                                         <>
-                                            <SelectCountIndex onClick={()=>{setCount(item);setDisplay('none')}}>{item}</SelectCountIndex>
+                                            <SelectCountIndex onClick={() => { setCount(item); setDisplay('none') }}>{item}</SelectCountIndex>
                                         </>
                                     ))}
                                 </SelectCountList>
                                 <img src={playFillIcon} />
                             </div>
-                            <AddButton style={{ width: '105px', marginTop: '16px' }} onClick={()=>{navigate(`/item/outlet/order/${post?.pk}`,{state:{count:count,is_use_point:post?.is_use_point,point_percent:post?.point_percent}})}}>주문하기</AddButton>
+                            <AddButton style={{ width: '105px', marginTop: '16px' }} onClick={() => { navigate(`/item/outlet/order/${post?.pk}`, { state: { count: count, is_use_point: post?.is_use_point, point_percent: post?.point_percent } }) }}>주문하기</AddButton>
                         </ExplainContainer>
                     </Row>
                 </OneCard>
                 <OneCard width={96} style={{ cursor: 'default', height: 'auto' }}>
-                <div style={{ textAlign: 'center', borderBottom: `1px solid ${theme.color.font3}`, width: '90%', margin: '0 auto', paddingBottom: '2%', fontSize: theme.size.font4, fontWeight: 'bold' }}>상품상세정보</div>
+                    <div style={{ textAlign: 'center', borderBottom: `1px solid ${theme.color.font3}`, width: '90%', margin: '0 auto', paddingBottom: '2%', fontSize: theme.size.font4, fontWeight: 'bold' }}>상품상세정보</div>
                     <ViewerContainer className="viewer" style={{ margin: `0 auto` }}>
                         <Viewer initialValue={post?.note ?? `<body></body>`} />
                     </ViewerContainer>

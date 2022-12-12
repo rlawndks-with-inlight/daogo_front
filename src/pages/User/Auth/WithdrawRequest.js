@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { OneCard, OneThirdCard, Row, Title, Wrappers } from "../../../components/elements/UserContentTemplete";
+import {  Row, Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 import axios from "axios";
 import theme from "../../../styles/theme";
 import styled from "styled-components";
@@ -19,6 +19,26 @@ font-size: ${props => props.theme.size.font5};
 font-weight:bold;
 cursor:pointer;
 
+`
+const OneCard = styled.div`
+background:#fff;
+background:${props=>props.background};
+color:${props=>props.theme.font1};
+color:${(props=>props.color)};
+box-shadow:${props => props.theme.boxShadow};
+padding:2%;
+border-radius:8px;
+display:flex;
+flex-direction:column;
+height:320px;
+width:${(props => props.width) ?? "100"}%;
+transition-duration: 0.3s;
+&:hover{  
+    background : ${(props=>props.is_hover?(props=>props.theme.color.background1+'29'):'')};
+}
+@media screen and (max-width:400px) { 
+    height:56px;
+}
 `
 const WithdrawRequest = () => {
     const navigate = useNavigate();
@@ -87,7 +107,7 @@ const WithdrawRequest = () => {
             <Wrappers>
                 <Title  not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/gift/withdrawrequest')}}>출금신청</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                    <OneCard width={96} style={{ height: '350px', cursor: 'default' }}>
+                    <OneCard width={96}>
                         <InputContent title="스타" placeholder="신청 스타" class_name="send_star" onChange={onChangeSendStar}
                             top_contents_margin="auto auto 0 auto"
                             input_category={'STAR'}

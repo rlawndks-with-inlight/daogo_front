@@ -106,6 +106,16 @@ export const returnColumn = (data_, type_, column_, schema) => {
             } else {
                 result = "---";
             }
+        } else if (type.split('_')[1] == 'status') {
+            if (data?.status == -1) {
+                result = "반송";
+            } else if (data?.status == 0) {
+                result = "접수대기";
+            } else if (data?.status == 1) {
+                result = "접수완료";
+            } else if (data?.status == 2) {
+                result = "지급완료";
+            }
         } else if (type.split('_')[1] == 'date') {
             if (data[`explain_obj`]?.date) {
                 result = data['explain_obj']?.date;
@@ -133,14 +143,14 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (type.split('order_')[1] == 'sell_user_price') {
             result = commarNumber(data['sell_revenue_percent'] / 100 * data['item_price']);
         } else if (type.split('order_')[1] == 'status') {
-            if (data['explain_obj']?.status == -1) {
+            if (data?.status == -1) {
                 result = "반품처리";
-            } else if (data['explain_obj']?.status == 0) {
+            } else if (data?.status == 0) {
                 result = "확인대기";
-            } else if (data['explain_obj']?.status == 1) {
+            } else if (data?.status == 1) {
                 result = "주문확인";
-            } else if (data['explain_obj']?.status == 2) {
-                result = "배달완료";
+            } else if (data?.status == 2) {
+                result = "배송완료";
             }
         } else if (type.split('order_')[1] == 'date') {
             if (data[`explain_obj`]?.date) {

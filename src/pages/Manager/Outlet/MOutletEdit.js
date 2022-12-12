@@ -244,7 +244,7 @@ const MOutletEdit = () => {
                         </Select>
                     </Col>
                     <Col>
-                        <Title>사용가능포인트 %</Title>
+                        <Title>사용가능포인트</Title>
                         <Input className="point_percent" placeholder="5.5"  disabled={!isInputPoint} />
                     </Col>
                 </Row>

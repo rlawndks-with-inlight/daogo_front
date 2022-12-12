@@ -268,6 +268,21 @@ export const getIntroducePercentByUserTier = (tier, is_use_point, point_percent)
     }
     
 }
+export const getDiscountPoint = (item_price, is_use_point,point_percent,tier) =>{
+    console.log(item_price)
+    console.log(is_use_point)
+    console.log(tier)
+    let introduce_percent_list = [0,6,7,8,9,10];
+    if(is_use_point==0){
+        return 0;
+    }else if(is_use_point==1){
+        return point_percent;
+    }else if(is_use_point==2){
+        return item_price*(introduce_percent_list[tier/5]/100);
+    }else{
+        return 0;
+    }
+}
 export const getRollUpBonusByUserTier = (num) =>{
     let introduce_percent_list = [0,0.5,1,1.5,2,2.5];
     if(!(num>=0&&num<=25)){

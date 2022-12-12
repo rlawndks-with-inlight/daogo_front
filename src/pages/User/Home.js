@@ -96,8 +96,8 @@ const WhiteButton = (props) => {
                     <img src={yellowDot} />
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
                 </div>
-                <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 50% 0.15rem auto'}`, display: 'flex', alignItems: 'center' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
-                <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px' }}>
+                <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 50% 0.15rem auto'}`, display: 'flex', alignItems: 'center',fontWeight:'bold' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
+                <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px',fontWeight:'bold' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
                             <div style={{ color: theme.color.font3 }}>{total_occurrence_title}</div>

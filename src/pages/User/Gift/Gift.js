@@ -87,7 +87,7 @@ const Gift = () => {
     return (
         <>
             <Wrappers>
-                <Title not_arrow={true} textIcon={'선물한 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/gift/history')}}>선물하기</Title>
+                <Title not_arrow={true} textIcon={'선물한 내역'} textIconLink={'true'} texttextIconClick={() => { navigate('/gift/history') }}>선물하기</Title>
                 <Row style={{ margin: '0 0 16px 0' }}>
                     <OneCard width={96} style={{ height: '180px', cursor: 'default' }}>
                         <CardTitle title="받는사람 정보" icon={peoplesImg} />
@@ -100,7 +100,7 @@ const Gift = () => {
                     </OneCard>
                 </Row>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                    <OneCard width={96} style={{ height: '270px', cursor: 'default' }}>
+                    <OneCard width={96} style={{ height: '320px', cursor: 'default' }}>
                         <CardTitle title="내 정보" icon={profileImg} />
                         <InputContent title="스타" placeholder="보낼 스타" class_name="send_star" bottom_contents={[
                             <div>{commarNumber(post?.star) ?? <LoadingText width={10} />}</div>,
@@ -110,11 +110,15 @@ const Gift = () => {
                             <div>{commarNumber(post?.point) ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
-                         <InputContent title="포인트" placeholder="보낼 ESGW 포인트" class_name="send_esgw" bottom_contents={[
+                        <InputContent title="ESGW 포인트" placeholder="보낼 ESGW 포인트" class_name="send_esgw" bottom_contents={[
                             <div>{commarNumber(post?.esgw) ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
-                        <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
+                        <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요."
+                            bottom_contents={[
+                                <div style={{ marginLeft: '4px', color: theme.color.red }}>*이체 수수료는 3%이며 보내시는 금액에서 차감됩니다.</div>,
+                            ]}
+                            bottom_contents_margin={"0 auto auto auto"} />
                     </OneCard>
                 </Row>
                 <Button onClick={onGift}>선물하기</Button>
