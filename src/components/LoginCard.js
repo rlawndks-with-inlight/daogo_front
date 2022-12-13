@@ -41,11 +41,11 @@ const LoginCard = () => {
         if (response.result > 0) {
             await localStorage.setItem('auth', JSON.stringify(response?.data?.user));
             navigate('/home');
-            // if(response?.data?.is_user_lottery_today){
-            //     navigate('/home');
-            // }else{
-            //     navigate('/randombox/lottery');
-            // }
+             if(response?.data?.is_user_lottery_today){
+                 navigate('/home');
+             }else{
+                 navigate('/randombox/lottery');
+         }
         }
     }
     const onKeyPressId = (e) => {

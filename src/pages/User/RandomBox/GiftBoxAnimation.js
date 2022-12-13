@@ -33,11 +33,11 @@ const GiftBoxAnimation = () => {
         let isDone = rotated === "rotated" ? true : false;
         if (!isDone) {
             const { data: response } = await axios.post('/api/lotterydailypoint');
-            
-            if(response?.result<0){
+
+            if (response?.result < 0) {
                 alert(response.message);
                 navigate('/home')
-            }else{
+            } else {
                 setState({ rotating: "rotating" });
                 setTimeout(() => {
                     setState({ jump: "jump" });
@@ -46,14 +46,12 @@ const GiftBoxAnimation = () => {
                     setState({ rotated: "rotated" });
                 }, 1000);
                 await new Promise((r) => setTimeout(r, 3000));
-                if (pathname === '/randombox/lottery') {
-                    if (window.confirm(response?.data?.percent + '% 당첨되었습니다. 홈으로 이동하시겠습니까?')) {
-                        navigate('/home');
-                        return;
-                    }
-                }
+                alert(response?.data?.percent + '% 당첨되었습니다.');
+                navigate('/home');
+                return;
+
             }
-            
+
         } else {
 
         }
