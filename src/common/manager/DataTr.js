@@ -36,8 +36,10 @@ export const getTextByLogType = (obj_, schema) => {
 
     let result = "";
     if (obj?.type == 0) {//아울렛구매
-        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-        result = `아울렛쇼핑 ${obj['explain_obj']?.item_name ?? ""} 구매로 인해 사용 되었습니다.`;
+        result = `아울렛쇼핑 구매로 인해 사용 되었습니다.`;
+        if(obj?.price>0){
+            result = "아울렛 반환된 건 지급되었습니다."
+        }
     } else if (obj?.type == 1) {//쿠폰 구매
         result = "";
     } else if (obj?.type == 2) {//랜덤박스 등록
@@ -62,16 +64,20 @@ export const getTextByLogType = (obj_, schema) => {
             result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
         }
     } else if (obj?.type == 4) {//출금
-        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
         result = "출금신청 하였습니다 " + `(`;
         if (obj?.status == 0) {
             result += "접수대기";
-        } else if (obj?.status == 1) {
+        } else if (obj?.status == -1) {
+            result += "반송";
+        }else if (obj?.status == 1) {
             result += "접수완료";
         } else if (obj?.status == 2) {
             result += "지급완료";
         }
         result += ')';
+        if(obj?.price>0){
+            result = "출금 반송된 건 지급되었습니다."
+        }
     } else if (obj?.type == 5) {//관리자가 수정
         result = "관리자의 수정에 의해 변경 되었습니다.";
     } else if (obj?.type == 6) {//데일리자동지급
@@ -200,7 +206,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
     const outletOrderFormat = (column) => {
         return "---";
     }
-    const onClickExchangeStatus = async (num, item) => {
+    const onClickExchangeStatus = async (num, item) => {//출금 상태관리
         let confirm_str = "";
         let manager_note = "";
         if (num == -1) {
@@ -232,7 +238,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
             }
         }
     }
-    const onChangeOutletOrderStatus = async (num, item) => {
+    const onChangeOutletOrderStatus = async (num, item) => {//아울렛 주문 상태관리
         let confirm_str = "";
         let manager_note = "";
         if (num == -1) {

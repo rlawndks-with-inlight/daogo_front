@@ -3,7 +3,7 @@ import { OneCard, OneThirdCard, Row, Title, Wrappers } from "../../../components
 import axios from "axios";
 import SearchComponent from "../../../components/SearchComponent";
 import theme from "../../../styles/theme";
-import { commarNumber, getSelectButtonColor, range } from "../../../functions/utils";
+import { commarNumber, getSelectButtonColor, range, untilReady } from "../../../functions/utils";
 import styled from "styled-components";
 import $ from 'jquery'
 import { backUrl } from "../../../data/ContentData";
@@ -44,6 +44,7 @@ const CouponShoppingMall = () => {
     const [itemList, setItemList] = useState([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
+        untilReady();
         async function fetchPosts() {
             setLoading(true);
             const { data: response } = await axios.post('/api/getalldatabytables', {

@@ -11,7 +11,11 @@ const ContentTable = (props) => {
         let result = "";
         if (obj?.type == 0) {//아울렛구매
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `아울렛쇼핑 ${obj['explain_obj']?.item_name ?? ""} 구매로 인해 사용 되었습니다.`;
+            if(obj?.price>0){
+                result = `아울렛쇼핑 반환 금액 지급 되었습니다.`;
+            }else{
+                result = `아울렛쇼핑 ${obj['explain_obj']?.item_name ?? ""} 구매로 인해 사용 되었습니다.`;
+            }
         } else if (obj?.type == 1) {//쿠폰 구매
             result = "";
         } else if (obj?.type == 2) {//랜덤박스 등록
@@ -43,12 +47,17 @@ const ContentTable = (props) => {
             result = "출금신청 하였습니다 " + `(`;
             if (obj?.status == 0) {
                 result += "접수대기";
+            } else if (obj?.status == -1) {
+                result += "반송";
             } else if (obj?.status == 1) {
                 result += "접수완료";
             } else if (obj?.status == 2) {
                 result += "지급완료";
             }
             result += ')';
+            if (obj?.price > 0) {
+                result = "출금 반송된 건 지급되었습니다."
+            }
         } else if (obj?.type == 5) {//관리자가 수정
             result = obj?.note;
         } else if (obj?.type == 6) {//데일리자동지급
@@ -108,7 +117,7 @@ const ContentTable = (props) => {
             } else {
                 result = "---";
             }
-        }else if (column == 'return_reason'){
+        } else if (column == 'return_reason') {
             result = obj['explain_obj']?.return_reason;
         } else {
             result = "---";
@@ -122,7 +131,11 @@ const ContentTable = (props) => {
         obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
         if (column == 'status') {
             if (obj?.status == -1) {
-                result = "반송";
+                if (obj?.price > 0) {
+                    result = "반송지급";
+                } else {
+                    result = "반송";
+                }
             } else if (obj?.status == 0) {
                 result = "접수대기";
             } else if (obj?.status == 1) {

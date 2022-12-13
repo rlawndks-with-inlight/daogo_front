@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import LoadingText from '../components/LoadingText';
 import theme from '../styles/theme';
 // 웹뷰에서 RN으로 데이터를 보낼때 사용합니다.
@@ -41,6 +42,7 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
+    console.log(num)
     if (!num && num != 0) {
         return undefined;
     }
@@ -50,6 +52,7 @@ export const commarNumber = (num) => {
     } else {
         str = num.toString();
     }
+    console.log(str)
     let decimal = "";
     if (str.includes(".")) {
         decimal = "." + str.split(".")[1].substring(0, 2);
@@ -58,7 +61,7 @@ export const commarNumber = (num) => {
         decimal = "";
     }
     if (str?.length <= 3) {
-        return str;
+        return str + decimal;
     }
     let result = "";
     let count = 0;
@@ -290,4 +293,8 @@ export const getRollUpBonusByUserTier = (num) =>{
     }else{
         return introduce_percent_list[num/5];
     }
+}
+export const untilReady = () =>{
+    alert("준비중입니다.");
+    window.history.back();
 }

@@ -177,7 +177,7 @@ const MItemList = () => {
             }
         }
         const { data: response } = await axios.post('/api/items', obj);
-        setPosts(response?.data);
+        //setPosts(response?.data);
         excelDownload(response.data ?? []);
     }
     const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';

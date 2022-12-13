@@ -37,7 +37,7 @@ transition-duration: 0.3s;
     background : ${(props=>props.is_hover?(props=>props.theme.color.background1+'29'):'')};
 }
 @media screen and (max-width:400px) { 
-    height:56px;
+    height:420px;
 }
 `
 const WithdrawRequest = () => {
@@ -46,7 +46,6 @@ const WithdrawRequest = () => {
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/getusermoney?type=withdrawrequest`);
-
             if (!response?.data?.user?.payment_pw) {
                 alert("결제 비밀번호 등록 후 사용해 주세요.");
                 navigate('/editmyinfo');
@@ -92,8 +91,8 @@ const WithdrawRequest = () => {
             $('.send_star').val($('.send_star').val().substring(0,$('.send_star').val().length-1))
         }else{
             price = parseInt(price);
-            $('.commission').val(commarNumber(price*post?.withdraw_commission_percent/100));
-            $('.deduction_star').val(commarNumber(price+price*post?.withdraw_commission_percent/100));
+            $('.commission').val(commarNumber(price*post?.withdraw_setting?.withdraw_commission_percent/100));
+            $('.deduction_star').val(commarNumber(price+price*post?.withdraw_setting?.withdraw_commission_percent/100));
             $('.receipt_won').val(commarNumber(price*100));
         }
         if(!e.target.value){
@@ -107,7 +106,17 @@ const WithdrawRequest = () => {
             <Wrappers>
                 <Title  not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/gift/withdrawrequest')}}>출금신청</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                    <OneCard width={96}>
+                    <OneCard width={96} style={{position:'relative'}}>
+                        {window.innerWidth>400?
+                        <>
+                        </>
+                        :
+                        <>
+                        <div>
+                            <div style={{ margin: 'auto auto 4px auto',fontSize:theme.size.font5,whiteSpace:'pre-line' }}>{post?.withdraw_setting?.withdraw_note}</div>
+                        </div>
+                        </>
+                        }
                         <InputContent title="스타" placeholder="신청 스타" class_name="send_star" onChange={onChangeSendStar}
                             top_contents_margin="auto auto 0 auto"
                             input_category={'STAR'}
@@ -122,6 +131,16 @@ const WithdrawRequest = () => {
                         <InputContent title="총 차감스타"  class_name="deduction_star" input_category={'STAR'} input_disabled={true} />
                         <InputContent title="실 수령액"  class_name="receipt_won" input_category={'￦'} input_disabled={true} />
                         <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
+                        {window.innerWidth>400?
+                        <>
+                        <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', left: '12px', top: '12px' }}>
+                            <div style={{ margin: 'auto auto 4px auto',fontSize:theme.size.font5,whiteSpace:'pre-line' }}>{post?.withdraw_setting?.withdraw_note}</div>
+                        </div>
+                        </>
+                        :
+                        <>
+                        </>}
+                        
                     </OneCard>
                 </Row>
                 <Button onClick={requestWithdraw}>출금신청하기</Button>

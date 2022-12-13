@@ -5,7 +5,6 @@ export const returnColumn = (data_, type_, column_, schema) => {
     let data = { ...data_ };
     let type = type_;
     let column = column_;
-    data['explain_obj'] = JSON.parse(data['explain_obj'] ?? "{}");
     let result = "---";
     if (type == 'text') {
         result = data[`${column}`] ?? "---";

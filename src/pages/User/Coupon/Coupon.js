@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { backUrl } from "../../../data/ContentData";
 import theme from "../../../styles/theme";
 import { Viewer } from '@toast-ui/react-editor';
-import { commarNumber } from "../../../functions/utils";
+import { commarNumber, untilReady } from "../../../functions/utils";
 import AddButton from "../../../components/elements/button/AddButton";
 const ItemImg = styled.img`
 margin-bottom: 8px;
@@ -29,6 +29,7 @@ const Coupon = () => {
     const { pathname } = useLocation();
     const [post, setPost] = useState({})
     useEffect(() => {
+        untilReady();
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/item?table=coupon&pk=${params?.pk}`);
             setPost(response?.data);

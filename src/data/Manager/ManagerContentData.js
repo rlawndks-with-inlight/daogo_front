@@ -459,7 +459,6 @@ export const objManagerListContent = {
         [
             columnObjFormat('카테고리명', '', 'text', 'category_name'),
             columnObjFormat('브랜드명', '', 'text', 'brand_name'),
-            columnObjFormat('등록코드', '', '---', 'none'),
             columnObjFormat('상품명', '', 'text', 'name'),
             columnObjFormat('대표이미지', '', 'img', 'img_src'),
             columnObjFormat('판매가', '', 'text', 'sell_star'),
@@ -467,7 +466,6 @@ export const objManagerListContent = {
             columnObjFormat('판매자아이디', '', 'text', 'sell_user_id'),
             columnObjFormat('판매자수익 %', '', 'text', 'sell_revenue_percent'),
             columnObjFormat('상담링크', '', 'text', 'link'),
-            columnObjFormat('배송여부', '', '---', 'none'),
             columnObjFormat('수정', '', 'edit', 'edit'),
             columnObjFormat('삭제', '', 'delete', 'delete'),
         ],
