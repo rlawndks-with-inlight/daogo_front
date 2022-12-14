@@ -89,7 +89,7 @@ const MyPage = () => {
                     let explain_obj = JSON.parse(obj?.withdraw[i]?.explain_obj);
                     console.log(explain_obj)
                     if(explain_obj['receipt_won'] && explain_obj['status']==2){
-                        withdraw_won += explain_obj['receipt_won'];
+                        withdraw_won += obj?.withdraw[i]?.price*(-100);
                     }
                 }
                 obj['withdraw_won'] = withdraw_won;

@@ -91,11 +91,11 @@ export const getTextByLogType = (obj_, schema) => {
         } else {
             result = "";
         }
-    } else if (obj?.type == 9) {//esgw포인트구매
+    } else if (obj?.type == 9) {//ESGWP구매
         if (schema == 'log_point') {
-            result = "ESGW포인트로 전환 하였습니다.";
+            result = "ESGWP로 전환 하였습니다.";
         } else if (schema == 'log_esgw') {
-            result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGW포인트로 전환 하였습니다.`;
+            result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGWP로 전환 하였습니다.`;
         }
     } else if (obj?.type == 10) {//매출등록
         obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
@@ -460,6 +460,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
                                     <AiOutlineDollar style={{ cursor: 'pointer', color: theme.color.background1 }} onClick={() => navigate(`/manager/usermoneyedit/${data.pk}`)} />
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                            {col.type == 'user_subscriptiondeposit_edit' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
+                                    <AiOutlineDollar style={{ cursor: 'pointer', color: theme.color.background1 }} onClick={() => navigate(`/manager/usersubscriptiondepositedit/${data.pk}`)} />
                                 </Td>
                             </>
                             :

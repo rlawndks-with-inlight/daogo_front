@@ -66,10 +66,10 @@ const BuyESGWPoint = () => {
     return (
         <>
             <Wrappers>
-                <Title>ESGW Point 구매</Title>
+                <Title>ESGWP 구매</Title>
                 <Row style={{ margin: '0 0 16px 0' }}>
                     <OneCard width={96} style={{ background: theme.color.background1, color: "#fff", height: '175px', cursor: 'default', fontSize: theme.size.font2,position:'relative' }}>
-                        <div style={{ margin: 'auto auto 8px auto' }}>나의 ESGW Point</div>
+                        <div style={{ margin: 'auto auto 8px auto' }}>나의 ESGWP</div>
                         <div style={{ margin: '8px auto auto auto' }}>{commarNumber(post?.esgw) ?? <LoadingText color={"#fff"} width={15} />}</div>
                         
                     </OneCard>
@@ -80,7 +80,7 @@ const BuyESGWPoint = () => {
                         <InputContent title="포인트" placeholder="등록할 포인트 수량" class_name="point" 
                         top_contents_margin="auto auto 0 auto"
                         top_contents={[
-                            <div style={{color:theme.color.red}}>10 Point 당 1 ESGW Point</div>
+                            <div style={{color:theme.color.red}}>5 Point 당 1 ESGWP</div>
                         ]}
                         bottom_contents={[
                             <div>{commarNumber(post?.point) ?? <LoadingText width={10} />}</div>,
@@ -90,7 +90,7 @@ const BuyESGWPoint = () => {
 
                     </OneCard>
                 </Row>
-                <Button onClick={buyESGWPoint}>ESGW Point 구매하기</Button>
+                <Button onClick={buyESGWPoint}>ESGWP 구매하기</Button>
             </Wrappers>
         </>
     )

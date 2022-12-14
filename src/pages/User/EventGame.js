@@ -1,6 +1,21 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { OneCard, Row, Title, Wrappers } from "../../components/elements/UserContentTemplete";
+import { untilReady } from "../../functions/utils";
 
 const EventGame = () => {
+    const params = useParams();
+    const { pathname } = useLocation();
+    const [post, setPost] = useState({})
+    useEffect(() => {
+        untilReady();
+        async function fetchPost() {
+            const { data: response } = await axios.get(`/api/item?table=coupon&pk=${params?.pk}`);
+            setPost(response?.data);
+        }
+        fetchPost();
+    }, [pathname])
     return (
         <>
             <Wrappers>

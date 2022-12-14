@@ -40,14 +40,14 @@ export const zBottomMenu = [
 export const zSidebarMenu = [
     { name: '아울렛 쇼핑', link: '/shoppingmall/outlet' },
     { name: '쿠폰 이벤트', link: '/shoppingmall/coupon' },
-    { name: '이벤트 게임', link: '/randombox/lottery' },
+    { name: '이벤트 게임', link: '/eventgame' },
     { name: '랜덤박스 등록', link: '/randombox/register' },
     { name: '선물하기', link: '/gift' },
     { name: '출금신청', link: '/withdrawrequest' },
     { name: '스타 변동내역', link: '/star/history' },
     { name: '포인트 변동내역', link: '/point/history' },
     { name: '랜덤박스 변동내역', link: '/randombox/history' },
-    { name: 'ESGW포인트 변동내역', link: '/esgw/history' },
+    { name: 'ESGWP 변동내역', link: '/esgw/history' },
     { name: '출금신청내역', link: '/withdraw/history' },
     { name: '공유코드', link: '/sharecode/history' },
     { name: '추천계보', link: '/recommendgenealogy' },
@@ -98,7 +98,7 @@ export const historyContent = {
         ]
     },
     esgw: {
-        title: "ESGW포인트 변동내역",
+        title: "ESGWP 변동내역",
         columns: [
             columnObjFormat('History', 50, 'history', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),

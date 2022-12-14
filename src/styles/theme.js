@@ -16,6 +16,7 @@ const theme = {
     third: "#cd84f1",
     strong: "#1a1a1a",
     light: "#ababab",
+    background0: "#2F8321",
     background1: "#67AC5B",
     background2: "#74ad2c",
     background3: "#A0CA3D",

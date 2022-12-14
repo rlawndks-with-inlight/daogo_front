@@ -17,7 +17,7 @@ import pigBank from '../../assets/images/icon/home/pig-bank.svg';
 import point from '../../assets/images/icon/home/point.svg';
 import withdrawRequest from '../../assets/images/icon/home/withdraw-request.svg';
 import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
-import logoOutlet from '../../assets/images/icon/logo-outlet.png';
+import logoOutlet from '../../assets/images/icon/logo-white.svg';
 import axios from 'axios';
 import LoadingText from '../../components/LoadingText';
 import { backUrl } from '../../data/ContentData';
@@ -65,11 +65,11 @@ margin: auto 0;
 }
 `
 const OutletImg = styled.img`
-height: 100%;
+height: 60%;
 width: auto; 
 margin: auto;
 @media screen and (max-width:500px) { 
-    width: 90%;
+    width: 40%;
     height: auto;
 }
 `
@@ -113,11 +113,12 @@ const WhiteButton = (props) => {
 }
 const GreenButton = (props) => {
     const navigate = useNavigate();
-    let { title, content, bottom_content, width, img, link } = props;
+    let { title, content, bottom_content, width, img, link, background } = props;
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} background={theme.color.background1} is_hover={true} onClick={() => navigate(link)}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`,display:'flex',flexDirection:'column',textAlign:'center',justifyContent:'space-between' }} background={theme.color.background0} is_hover={true} onClick={() => navigate(link)}>
                 <OutletImg src={img}/>
+                <div style={{color:'#fff',fontSize:theme.size.font4,marginTop:'6px'}}>이벤트게임</div>
             </OneCard>
         </>
     )
@@ -128,7 +129,7 @@ const Home = () => {
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState({});
     let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "선물하기", link: "/gift", icon: downloadOutline }],
-    [{ title: "ESGW POINT 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "shoppingmall", icon: cart }],
+    [{ title: "ESGWP 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "shoppingmall", icon: cart }],
     [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: 'kakaotalk', icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
 
     useEffect(() => {
@@ -201,7 +202,7 @@ const Home = () => {
                             </ProfileContainer>
                         </Content>
                         <Content>
-                            <OneTopCard style={{ marginBottom: '12px' }} background={theme.color.background1}>
+                            <OneTopCard style={{ marginBottom: '12px' }} background={theme.color.background0}>
                                 <Row style={{ margin: 'auto 0', height: '85%', color: '#fff' }}>
                                     <Col style={{ margin: '0 auto', width: '25%', display: 'flex', flexDirection: 'column' }}>
                                         <HeaderContent><div>{commarNumber(getPurchasePackageByList(post?.purchase_package ?? [])) ?? <LoadingText color={"#fff"} width={15} />}</div></HeaderContent>
@@ -227,8 +228,8 @@ const Home = () => {
                             <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={(post?.star?.star - (post?.star_gift?.star_gift ?? 0))} unit={`STAR`} link={'/star/history'} />
                             <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <Row>
-                                <WhiteButton width={45} title={'보유 ESGW POINT'} content={post?.esgw?.esgw} unit={`ESGW`} link={'/esgw/history'} />
-                                <GreenButton width={45} img={logoOutlet} link={'/shoppingmall/outlet'} />
+                                <WhiteButton width={45} title={'보유 ESGWP'} content={post?.esgw?.esgw} unit={`ESGWP`} link={'/esgw/history'} />
+                                <GreenButton width={45} img={logoOutlet} link={'/shoppingmall/outlet'} background={theme.color.background0}/>
                             </Row>
                         </Content>
                         <Content style={{ borderBottom: `1px solid #dddddd`, width: '86%' }} />

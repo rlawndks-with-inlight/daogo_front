@@ -75,6 +75,16 @@ const MWithdrawSetting = () => {
                 </Row>
                 <Row>
                     <Col>
+                        <Title>출금 가능 시작시간</Title>
+                        <Input className='withdraw_start_time' type={'time'}  defaultValue={post?.withdraw_start_time} />
+                    </Col>
+                    <Col>
+                        <Title>출금 가능 종료시간</Title>
+                        <Input className='withdraw_end_time' type={'time'} defaultValue={post?.withdraw_end_time} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
                         <Title>일반 출금제한 금액 (스타)</Title>
                         <Input className='withdraw_0' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_0} />
                     </Col>

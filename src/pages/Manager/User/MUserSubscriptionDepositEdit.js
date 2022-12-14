@@ -17,7 +17,7 @@ import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi'
 import { FaMoneyBillWave } from 'react-icons/fa'
 import theme from '../../../styles/theme';
 import { SiHiveBlockchain } from 'react-icons/si';
-const MUserMoneyEdit = () => {
+const MUserSubscriptionDepositEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
     const [post, setPost] = useState({})
@@ -30,7 +30,8 @@ const MUserMoneyEdit = () => {
     useEffect(() => {
         async function fetchPost() {
             if (params.pk > 0) {
-                const { data: response } = await axios.get(`/api/getusermoney?pk=${params.pk}`);
+                const { data: response } = await axios.get(`/api/getusermoney?pk=${params.pk}&type=subscriptiondeposit`);
+                console.log(response)
                 setPost(response?.data);
             } else {
                 navigate(-1);
@@ -46,26 +47,26 @@ const MUserMoneyEdit = () => {
             let obj = {};
             if (params.pk > 0) {
                 let manager_note = "";
-                manager_note += `${post?.user?.id}(${post.user?.id}) 회원 `
-                let money_categories = [{en:"star",kor:"스타",column:"star"},{en:"point",kor:"포인트",column:"point"},{en:"randombox",kor:"랜덤박스포인트",column:"randombox"},{en:"esgw",kor:"ESGWP",column:"esgw"},];
+                manager_note += `${post?.user?.id}(${post.user?.id}) 회원 청약예치금 `
+                let money_categories = [{ en: "star", kor: "스타", column: "star" }, { en: "point", kor: "포인트", column: "point" }, { en: "randombox", kor: "랜덤박스포인트", column: "randombox" }, { en: "esgw", kor: "ESGWP", column: "esgw" },];
                 let edit_list = [];
-                for(var i = 0;i<money_categories.length;i++){
+                for (var i = 0; i < money_categories.length; i++) {
                     if ($(`.${money_categories[i].en}`).val()) {
-                        if(isNaN(parseFloat($(`.${money_categories[i].en}`).val()))){
+                        if (isNaN(parseFloat($(`.${money_categories[i].en}`).val()))) {
                             alert(`${money_categories[i].kor}에 숫자 이외의 값이 감지되었습니다.`);
                             return;
                         }
                         let price = 0;
-                        if($(`.${money_categories[i].en}-increase`).val()==1){
+                        if ($(`.${money_categories[i].en}-increase`).val() == 1) {
                             price = price + (parseFloat($(`.${money_categories[i].en}`).val()));
-                        }else{
+                        } else {
                             price = price - (parseFloat($(`.${money_categories[i].en}`).val()));
                         }
                         manager_note += `${money_categories[i].kor},`;
                         edit_list.push({
-                            price:price,
-                            type:money_categories[i].en,
-                            note:$(`.${money_categories[i].en}-note`).val()
+                            price: price,
+                            type: money_categories[i].en,
+                            note: $(`.${money_categories[i].en}-note`).val()
                         })
                     }
                 }
@@ -77,7 +78,7 @@ const MUserMoneyEdit = () => {
                 obj.manager_note = manager_note;
             }
             if (window.confirm('수정하시겠습니까?')) {
-                const { data: response } = await axios.post('/api/updateusermoneybymanager', obj);
+                const { data: response } = await axios.post('/api/updateusersubscriptiondepositbymanager', obj);
                 if (response.result > 0) {
                     alert('성공적으로 저장되었습니다.');
                     navigate(-1);
@@ -89,7 +90,7 @@ const MUserMoneyEdit = () => {
     }
     return (
         <>
-            <Breadcrumb title={`회원 머니 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
+            <Breadcrumb title={`회원 청약예치금 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
 
             <Card>
                 <Row>
@@ -110,7 +111,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>스타</div><AiFillStar style={{ color: theme.color.background1 }} /></Title>
                         <Input className='star' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.star) ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.star_subscription_deposit * (-1)) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -128,7 +129,7 @@ const MUserMoneyEdit = () => {
                     <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>포인트</div><FaMoneyBillWave style={{ color: theme.color.background1 }} /></Title>
                         <Input className='point' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.point) ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.point_subscription_deposit * (-1)) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -144,27 +145,9 @@ const MUserMoneyEdit = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>랜덤박스</div><GiPerspectiveDiceSixFacesRandom style={{ color: theme.color.background1 }} /></Title>
-                        <Input className='randombox' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.randombox) ?? <LoadingText width={13} />}</div></Explain>
-                    </Col>
-                    <Col>
-                        <Title>증감</Title>
-                        <Select className='randombox-increase'>
-                            <option value={1}>+</option>
-                            <option value={0}>-</option>
-                        </Select>
-                    </Col>
-                    <Col>
-                        <Title>변동사유</Title>
-                        <Input className='randombox-note long-input' placeholder='랜덤박스 변동사유를 적어주세요.' />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
                         <Title style={{ display: 'flex', alignItems: 'center' }}><div style={{ marginRight: '4px' }}>ESGWP</div><SiHiveBlockchain style={{ color: theme.color.background1 }} /></Title>
                         <Input className='esgw' placeholder='숫자만 입력해 주세요.' />
-                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.esgw) ?? <LoadingText width={13} />}</div></Explain>
+                        <Explain style={{ display: 'flex', alignItems: 'center' }}><div>NOW:&nbsp;</div><div>{commarNumber(post?.esgw_subscription_deposit * (-1)) ?? <LoadingText width={13} />}</div></Explain>
                     </Col>
                     <Col>
                         <Title>증감</Title>
@@ -193,4 +176,4 @@ const MUserMoneyEdit = () => {
         </>
     )
 }
-export default MUserMoneyEdit;
+export default MUserSubscriptionDepositEdit;

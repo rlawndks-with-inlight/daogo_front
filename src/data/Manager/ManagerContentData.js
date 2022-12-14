@@ -29,7 +29,8 @@ export const zSidebar = [
         sidebarObjListFormat('스타 변동 LOG', '/manager/list/log_star', 40, ['/manager/list/log_star']),//list
         sidebarObjListFormat('포인트 변동 LOG', '/manager/list/log_point', 40, ['/manager/list/log_point']),//list
         sidebarObjListFormat('랜덤박스 변동 LOG', '/manager/list/log_randombox', 40, ['/manager/list/log_randombox']),//list
-        sidebarObjListFormat('ESGW 포인트 변동 LOG', '/manager/list/log_esgw', 40, ['/manager/list/log_esgw']),//list
+        sidebarObjListFormat('ESGWP 변동 LOG', '/manager/list/log_esgw', 40, ['/manager/list/log_esgw']),//list
+        sidebarObjListFormat('청약예치금 LOG', '/manager/list/log_subscriptiondeposit', 40, ['/manager/list/log_subscriptiondeposit']),//list
     ]),
     sidebarContentFormat('게시판관리', [
         sidebarObjListFormat('메인배너', '/manager/list/main_banner', 40, ['/manager/list/main_banner']),//list
@@ -99,6 +100,7 @@ export const objManagerListContent = {
             columnObjFormat('포인트', '', 'minus_number', 'point'),
             columnObjFormat('ESGW', '', 'minus_number', 'esgw'),
             columnObjFormat('티어', '', 'tier', 'tier'),
+            columnObjFormat('머니수정', '', 'user_subscriptiondeposit_edit', 'user_subscriptiondeposit_edit'),
         ],
         [],
         false,
@@ -181,8 +183,24 @@ export const objManagerListContent = {
         false
     ),
     log_esgw: sidebarObjFormat(
-        'ESGW 포인트 변동 LOG',
+        'ESGWP 변동 LOG',
         'log_esgw',
+        [
+            columnObjFormat('아이디', '', 'text', 'user_id'),
+            columnObjFormat('회원명', '', 'text', 'user_name'),
+            columnObjFormat('증감', '', 'increase', 'price'),
+            columnObjFormat('금액', '', 'abs', 'price'),
+            columnObjFormat('메모', '', 'type_note', 'type_note'),
+            columnObjFormat('관리자메모', '', 'text', 'note'),
+            columnObjFormat('등록일', '', 'text', 'date'),
+        ],
+        [],
+        false,
+        false
+    ),
+    log_subscriptiondeposit: sidebarObjFormat(
+        '청약예치금 LOG',
+        'log_subscriptiondeposit',
         [
             columnObjFormat('아이디', '', 'text', 'user_id'),
             columnObjFormat('회원명', '', 'text', 'user_name'),
@@ -276,11 +294,11 @@ export const objManagerListContent = {
         '출금신청 리스트',
         'exchange',
         [
-            columnObjFormat('지갑아이디', '', 'text', 'user_id'),
-            columnObjFormat('회원명', '', 'text', 'user_name'),
-            columnObjFormat('신청스타', '', 'exchange_star', 'price'),
-            columnObjFormat('신청금(원)', '', 'exchange_money', 'price'),
-            columnObjFormat('환전수수료(스타)', '', 'exchange_moneycommission', 'price'),
+            columnObjFormat('지갑아이디', 5, 'text', 'user_id'),
+            columnObjFormat('회원명',  5, 'text', 'user_name'),
+            columnObjFormat('신청스타',  5, 'exchange_star', 'price'),
+            columnObjFormat('신청금(원)',  5, 'exchange_money', 'price'),
+            columnObjFormat('환전수수료(스타)',  5, 'exchange_moneycommission', 'price'),
             columnObjFormat('실지급금(원)', '', 'exchange_moneypayment', 'price'),
             columnObjFormat('신청일', '', 'text', 'date'),
             columnObjFormat('입금은행', '', 'text', 'bank_name'),
@@ -288,7 +306,7 @@ export const objManagerListContent = {
             columnObjFormat('계좌소유자명', '', 'text', 'account_name'),
             columnObjFormat('진행상황', '', 'exchange_status', 'status'),
             columnObjFormat('담당자ID', '', 'text', 'manager_id'),
-            columnObjFormat('담당자이름', '', 'text', 'manager_name'),
+           // columnObjFormat('담당자이름', '', 'text', 'manager_name'),
             columnObjFormat('진행완료일', '', 'exchange_date', 'exchange_date'),
             columnObjFormat('관리', '', 'exchange_edit', 'exchange_edit'),
         ],

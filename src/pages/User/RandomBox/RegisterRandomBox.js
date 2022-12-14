@@ -59,7 +59,7 @@ const RegisterRandomBox = () => {
             })
             if (response?.result > 0) {
                 alert("성공적으로 등록되었습니다.");
-                const { data: response } = await axios.get(`/api/getusermoney`);
+                const { data: response } = await axios.get(`/api/getusermoney?type=randomboxregister`);
                 setPost(response?.data);
             } else {
                 alert(response?.message);

@@ -83,6 +83,7 @@ const MNoticeEdit = () => {
             let obj = {
                 user_pk: auth.pk,
                 title: $('.title').val(),
+                table: 'notice',
                 note_align: $('.note-align').val(),
                 note: editorRef.current.getInstance().getHTML(),
                 manager_note: `${params.pk>0?managerNoteObj.UPDATE_NOTICE:managerNoteObj.ADD_NOTICE}`
@@ -95,9 +96,9 @@ const MNoticeEdit = () => {
             if (window.confirm(`저장하시겠습니까?`)) {
 
                 if (params.pk > 0) {
-                    updateItem('notice', obj);
+                    updateItem('item', obj);
                 } else {
-                    addItem('notice', obj);
+                    addItem('item', obj);
                 }
 
 

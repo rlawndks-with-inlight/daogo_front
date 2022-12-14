@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { OneCard, OneThirdCard, Row, Title, Wrappers } from "../../../components/elements/UserContentTemplete";
+import { OneCard, Row, Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,42 @@ font-size: ${props => props.theme.size.font5};
 font-weight:bold;
 cursor:pointer;
 `
+const TopOneCard = styled.div`
+background:${props => props.background};
+color:${(props => props.color)};
+box-shadow:${props => props.theme.boxShadow};
+padding:2%;
+border-radius:8px;
+display:flex;
+width:${(props => props.width) ?? "100"}%;
+height:200px;
+@media screen and (max-width:600px) { 
+    height:350px;
+    flex-direction:column;
+}
+`
+const SubscriptionDepositContainer1 = styled.div`
+margin:auto 16px auto auto;
+@media screen and (max-width:600px) { 
+    margin:auto;
+}
+`
+const SubscriptionDepositContainer2 = styled.div`
+margin:auto auto auto 16px;
+@media screen and (max-width:600px) { 
+    margin:auto;
+}
+`
+const MoneyContent = styled.div`
+margin: 16px auto auto auto;
+display: flex;
+align-items: center ;
+justify-content: space-between;
+width: 200px;
+@media screen and (max-width:1000px) { 
 
+}
+`
 const SubscriptionDeposit = () => {
     const navigate = useNavigate();
     const [post, setPost] = useState({});
@@ -48,7 +83,7 @@ const SubscriptionDeposit = () => {
             return;
         }
         if (isNaN(parseFloat($('.esgw').val())) && $('.esgw').val()) {
-            alert("ESGW포인트 부분에 숫자 이외의 값이 감지되었습니다.");
+            alert("ESGWP 부분에 숫자 이외의 값이 감지되었습니다.");
             return;
         }
         if (window.confirm("저장 하시겠습니까?")) {
@@ -73,18 +108,20 @@ const SubscriptionDeposit = () => {
             <Wrappers>
                 <Title>청약예치금 등록</Title>
                 <Row style={{ margin: '0 0 16px 0' }}>
-                    <OneCard width={96} style={{ background: theme.color.background1, color: "#fff", height: '200px', cursor: 'default', fontSize: theme.size.font4, position: 'relative' }}>
-                        <div style={{ margin: 'auto auto 8px auto', fontSize: theme.size.font2 }}>등록한 청약예치금</div>
-                        <div style={{ margin: '8px auto auto auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '220px' }}>{commarNumber((post?.star_subscription_deposit)*(-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>스타</div></div>
-                        <div style={{ margin: '8px auto auto auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '220px' }}>{commarNumber((post?.point_subscription_deposit)*(-1))?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></div>
-                        <div style={{ margin: '8px auto auto auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '220px' }}>{commarNumber((post?.esgw_subscription_deposit)*(-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>ESGW 포인트</div></div>
-                        <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', right: '12px', top: '12px' }}>
-                            <div style={{ margin: 'auto auto 4px auto', fontSize: theme.size.font5 }}>부족한 청약예치금</div>
-                            <div style={{ margin: '4px auto auto 4px', fontSize: theme.size.font5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '150px' }}><div>{commarNumber(60000 + post?.star_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}</div> <div>스타</div></div>
-                            <div style={{ margin: '4px auto auto 4px', fontSize: theme.size.font5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '150px' }}><div>{commarNumber(30000 + post?.point_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}</div><div>ESGW 포인트</div></div>
-                            <div style={{ margin: '4px auto auto 4px', fontSize: theme.size.font5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '150px' }}><div>{commarNumber(10000 + post?.esgw_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}</div> <div>포인트</div></div>
-                        </div>
-                    </OneCard>
+                    <TopOneCard width={96} color={'#fff'} background={theme.color.background1}>
+                        <SubscriptionDepositContainer1>
+                            <div style={{ margin: 'auto', textAlign: 'center', fontSize: theme.size.font2 }}>등록한 청약예치금</div>
+                            <MoneyContent>{commarNumber((post?.star_subscription_deposit) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>스타</div></MoneyContent>
+                            <MoneyContent>{commarNumber((post?.point_subscription_deposit) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></MoneyContent>
+                            <MoneyContent>{commarNumber((post?.esgw_subscription_deposit) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>ESGWP</div></MoneyContent>
+                        </SubscriptionDepositContainer1>
+                        <SubscriptionDepositContainer2>
+                            <div style={{ margin: 'auto', textAlign: 'center', fontSize: theme.size.font2 }}>남은 청약예치금</div>
+                            <MoneyContent>{commarNumber(60000 + post?.star_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>스타</div></MoneyContent>
+                            <MoneyContent>{commarNumber(30000 + post?.point_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></MoneyContent>
+                            <MoneyContent>{commarNumber(10000 + post?.esgw_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>ESGWP</div></MoneyContent>
+                        </SubscriptionDepositContainer2>
+                    </TopOneCard>
                 </Row>
                 <Row style={{ margin: '0 0 64px 0' }}>
                     <OneCard width={96} style={{ height: '300px', cursor: 'default' }}>
@@ -96,7 +133,7 @@ const SubscriptionDeposit = () => {
                             <div>{commarNumber(post?.point) ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
-                        <InputContent title="ESGW 포인트" placeholder="등록할 ESGW 포인트" class_name="esgw" bottom_contents={[
+                        <InputContent title="ESGWP" placeholder="등록할 ESGWP" class_name="esgw" bottom_contents={[
                             <div>{commarNumber(post?.esgw) ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />

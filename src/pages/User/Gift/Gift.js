@@ -110,7 +110,7 @@ const Gift = () => {
                             <div>{commarNumber(post?.point) ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
-                        <InputContent title="ESGW 포인트" placeholder="보낼 ESGW 포인트" class_name="send_esgw" bottom_contents={[
+                        <InputContent title="ESGWP" placeholder="보낼 ESGWP" class_name="send_esgw" bottom_contents={[
                             <div>{commarNumber(post?.esgw) ?? <LoadingText width={10} />}</div>,
                             <div style={{ marginRight: '4px' }}>잔액</div>
                         ]} />
