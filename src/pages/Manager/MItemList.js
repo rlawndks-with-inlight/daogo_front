@@ -50,12 +50,22 @@ const MItemList = () => {
     const [pageList, setPageList] = useState([])
     const [loading, setLoading] = useState(false)
     const [loadingText, setLoadingText] = useState("")
+    const [apiStr, setApiStr] = useState("/api/items");
     const notAddList = [
         'comment'
     ]
     useEffect(() => {
         setZColumn(objManagerListContent[`${params.table}`].zColumn ?? {})
         async function fetchPost() {
+            console.log(objManagerListContent[`${params.table}`])
+            let api_str = "/api/items";
+            if(objManagerListContent[`${params.table}`]?.api_str){
+                setApiStr(objManagerListContent[`${params.table}`]?.api_str);
+                api_str = objManagerListContent[`${params.table}`]?.api_str;
+            }else{
+                setApiStr("/api/items");
+                api_str = "/api/items";
+            }
             setLoading(true)
             $('.page-cut').val(10);
             setPage(1)
@@ -69,7 +79,8 @@ const MItemList = () => {
             for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
                 obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
             }
-            const { data: response } = await axios.post('/api/items', obj);
+            const { data: response } = await axios.post(api_str, obj);
+            console.log(response)
             setPosts(response.data.data)
             setPageList(range(1, response.data.maxPage));
             setLoading(false)
@@ -97,7 +108,7 @@ const MItemList = () => {
                 }
             }
         }
-        const { data: response } = await axios.post('/api/items', obj);
+        const { data: response } = await axios.post(apiStr, obj);
         setPosts(response.data.data)
         setPageList(range(1, response.data.maxPage));
         setLoading(false)
@@ -176,7 +187,7 @@ const MItemList = () => {
                 }
             }
         }
-        const { data: response } = await axios.post('/api/items', obj);
+        const { data: response } = await axios.post(apiStr, obj);
         //setPosts(response?.data);
         excelDownload(response.data ?? []);
     }

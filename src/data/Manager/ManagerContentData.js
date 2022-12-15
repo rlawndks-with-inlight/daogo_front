@@ -104,7 +104,8 @@ export const objManagerListContent = {
         ],
         [],
         false,
-        false),
+        false,
+        ),
     extra_pay: sidebarObjFormat(
         '수당지급 리스트',
         'extra_pay',
@@ -204,15 +205,17 @@ export const objManagerListContent = {
         [
             columnObjFormat('아이디', '', 'text', 'user_id'),
             columnObjFormat('회원명', '', 'text', 'user_name'),
-            columnObjFormat('증감', '', 'increase', 'price'),
+            columnObjFormat('카테고리', '', 'text', 'category'),
             columnObjFormat('금액', '', 'abs', 'price'),
-            columnObjFormat('메모', '', 'type_note', 'type_note'),
-            columnObjFormat('관리자메모', '', 'text', 'note'),
-            columnObjFormat('등록일', '', 'text', 'date'),
+            columnObjFormat('증감', '', 'minus_increase', 'price'),
+            columnObjFormat('금액', '', 'abs', 'price'),
+            columnObjFormat('발생일', '', 'text', 'date'),
         ],
         [],
         false,
-        false
+        false,
+        "100%",
+        "/api/getsubscriptiondeposithistory"
     ),
     main_banner: sidebarObjFormat(
         '메인 배너 리스트',

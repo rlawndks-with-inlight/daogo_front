@@ -37,6 +37,8 @@ const MWithdrawSetting = () => {
             const { data: response } = await axios.post('/api/updatesetting', {
                 withdraw_commission_percent: $('.withdraw_commission_percent').val(),
                 pk: post.pk,
+                withdraw_start_time: $('.withdraw_start_time').val(),
+                withdraw_end_time: $('.withdraw_end_time').val(),
                 withdraw_0: $('.withdraw_0').val(),
                 withdraw_5: $('.withdraw_5').val(),
                 withdraw_10: $('.withdraw_10').val(),

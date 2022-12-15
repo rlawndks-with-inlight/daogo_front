@@ -77,7 +77,7 @@ const MNoticeEdit = () => {
     };
 
     const editItem = async () => {
-        if (!$(`.title`).val()||(params.pk > 0 && !$('.reason-correction').val())) {
+        if (!$(`.title`).val() || (params.pk > 0 && !$('.reason-correction').val())) {
             alert('필요값이 비어있습니다.');
         } else {
             let obj = {
@@ -86,7 +86,7 @@ const MNoticeEdit = () => {
                 table: 'notice',
                 note_align: $('.note-align').val(),
                 note: editorRef.current.getInstance().getHTML(),
-                manager_note: `${params.pk>0?managerNoteObj.UPDATE_NOTICE:managerNoteObj.ADD_NOTICE}`
+                manager_note: `${params.pk > 0 ? managerNoteObj.UPDATE_NOTICE : managerNoteObj.ADD_NOTICE}`
             }
             if (params.pk > 0) {
                 obj.pk = params.pk;

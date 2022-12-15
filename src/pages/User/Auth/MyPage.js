@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { Title, Wrappers } from "../../../components/elements/UserContentTemplete";
+import { Title, ViewerContainer, Wrappers } from "../../../components/elements/UserContentTemplete";
 import { backUrl } from "../../../data/Manager/ManagerContentData";
 import defaultImg from '../../../assets/images/icon/default-profile.png'
 import axios from "axios";
@@ -10,6 +10,7 @@ import { MdEdit } from 'react-icons/md';
 import theme from "../../../styles/theme";
 import { CgToggleOn, CgToggleOff } from 'react-icons/cg'
 import { commarNumber, dateFormat } from "../../../functions/utils";
+import { Viewer } from "@toast-ui/react-editor";
 
 const MyCard = styled.div`
 display:flex;
@@ -79,17 +80,17 @@ const MyPage = () => {
             if (response.result > 0) {
                 let obj = { ...response.data };
                 let marketing_price = 0;
-                for(var i = 0;i<obj?.marketing?.length;i++){
+                for (var i = 0; i < obj?.marketing?.length; i++) {
                     let explain_obj = JSON.parse(obj?.marketing[i]?.explain_obj);
                     marketing_price += get_score_by_tier[explain_obj?.tier];
                 }
                 obj['marketing_price'] = marketing_price;
                 let withdraw_won = 0;
-                for(var i = 0;i<obj?.withdraw?.length;i++){
+                for (var i = 0; i < obj?.withdraw?.length; i++) {
                     let explain_obj = JSON.parse(obj?.withdraw[i]?.explain_obj);
                     console.log(explain_obj)
-                    if(explain_obj['receipt_won'] && explain_obj['status']==2){
-                        withdraw_won += obj?.withdraw[i]?.price*(-100);
+                    if (explain_obj['receipt_won'] && explain_obj['status'] == 2) {
+                        withdraw_won += obj?.withdraw[i]?.price * (-100);
                     }
                 }
                 obj['withdraw_won'] = withdraw_won;
@@ -116,7 +117,7 @@ const MyPage = () => {
     return (
         <>
             <Wrappers className="wrapper" style={{ maxWidth: '900px' }}>
-                <Title>마이페이지</Title>
+                <Title not_arrow={true}>마이페이지</Title>
                 <MdEdit style={{ margin: '2rem 0 1rem auto', color: `${theme.color.font2}`, fontSize: '24px', cursor: 'pointer' }} onClick={() => navigate('/editmyinfo')} />
 
                 <MyCard>
@@ -157,12 +158,12 @@ const MyPage = () => {
                         <Content>
                             <Category>총 매출액</Category>
                             <Result>
-                                {commarNumber(auth?.marketing_price*10000??0)} 원
+                                {commarNumber(auth?.marketing_price * 10000 ?? 0)} 원
                             </Result>
                         </Content>
                         <Content>
                             <Category>총 출금액</Category>
-                            <Result> {commarNumber(auth?.withdraw_won??0)} 원</Result>
+                            <Result> {commarNumber(auth?.withdraw_won ?? 0)} 원</Result>
                         </Content>
                         <Content>
                             <Category>총 쇼핑 사용 금액</Category>
@@ -175,6 +176,10 @@ const MyPage = () => {
 
                     </Container>
                 </MyCard>
+                <Title not_arrow={true}>관리자 메모</Title>
+                <ViewerContainer className="viewer" >
+                    <Viewer initialValue={auth?.user?.note ?? `<body>관리자 메모 없음.</body>`} />
+                </ViewerContainer>
                 <LogoutButton onClick={onLogout}>
                     로그아웃
                 </LogoutButton>

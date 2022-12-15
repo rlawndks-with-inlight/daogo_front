@@ -35,6 +35,7 @@ export const getTextByLogType = (obj_, schema) => {
     let obj = { ...obj_ };
 
     let result = "";
+    
     if (obj?.type == 0) {//아울렛구매
         result = `아울렛쇼핑 구매로 인해 사용 되었습니다.`;
         if(obj?.price>0){
@@ -51,7 +52,6 @@ export const getTextByLogType = (obj_, schema) => {
             result = "";
         }
     } else if (obj?.type == 3) {//선물하기
-        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
         let sche = "";
         if (schema == 'log_star') {//쿠폰 구매
             sche = "스타";
@@ -83,7 +83,6 @@ export const getTextByLogType = (obj_, schema) => {
     } else if (obj?.type == 6) {//데일리자동지급
         result = "";
     } else if (obj?.type == 7) {//데일리수동지급
-        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
         result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} 발생 하였습니다.`;
     } else if (obj?.type == 8) {//청약예치금등록
         if (schema == 'log_star' || schema == 'log_point' || schema == 'log_esgw') {
@@ -98,7 +97,6 @@ export const getTextByLogType = (obj_, schema) => {
             result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGWP로 전환 하였습니다.`;
         }
     } else if (obj?.type == 10) {//매출등록
-        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
         if (schema == 'log_point' || schema == 'log_star') {
             result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
         } else if (schema == 'log_randombox') {
@@ -107,8 +105,18 @@ export const getTextByLogType = (obj_, schema) => {
     } else if (obj?.type == 11) {//이벤트 랜덤수익
         result = "이벤트 랜덤수익 발생하였습니다.";
     } else if (obj?.type == 12) {//이벤트 랜덤수익
-        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-        result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
+        obj['explain_obj'] = JSON.parse(obj['explain_obj']??"{}");
+        if(obj?.price>0){
+            result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
+        }else{
+            result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매 반환에 대해 차감되었습니다.`;
+        }
+    }else if (obj?.type == 13) {//상품구매시 랜덤박스 포인트 받기
+        if(obj?.price>0){
+            result = `아울렛 상품 구매 후 랜덤박스 포인트 혜택 지급 받았습니다.`;
+        }else{
+            result = `아울렛 상품 구매 반환에 대해 차감되었습니다.`;
+        }
     } else {
         result = "";
     }
@@ -442,6 +450,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             <>
                                 <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] > 0 ? theme.color.blue : theme.color.red}` }}>
                                     {data[`${col.column}`] > 0 ? <AiOutlinePlus /> : <AiOutlineMinus />}
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                            {col.type == 'minus_increase' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] < 0 ? theme.color.blue : theme.color.red}` }}>
+                                    {data[`${col.column}`] < 0 ? <AiOutlinePlus /> : <AiOutlineMinus />}
                                 </Td>
                             </>
                             :

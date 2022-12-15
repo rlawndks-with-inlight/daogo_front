@@ -24,7 +24,7 @@ export const sidebarObjListFormat = (name, link, level, allow_list) => {
         allow_list: allow_list,
     }
 }
-export const sidebarObjFormat = (breadcrumb, schema, zColumn, queries, is_edit, is_move, width) => {
+export const sidebarObjFormat = (breadcrumb, schema, zColumn, queries, is_edit, is_move, width, api_str) => {
     return {
         breadcrumb: breadcrumb,
         schema: schema,
@@ -32,7 +32,8 @@ export const sidebarObjFormat = (breadcrumb, schema, zColumn, queries, is_edit, 
         queries: queries,
         is_edit: is_edit,
         is_move: is_move,
-        width: width
+        width: width,
+        api_str:api_str
     }
 }
 export const editContentFormat = (columns) => {

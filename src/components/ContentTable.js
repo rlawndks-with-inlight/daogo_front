@@ -87,8 +87,18 @@ const ContentTable = (props) => {
         } else if (obj?.type == 11) {//이벤트 랜덤수익
             result = "이벤트 랜덤수익 발생하였습니다.";
         } else if (obj?.type == 12) {//이벤트 랜덤수익
-            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
-            result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
+            obj['explain_obj'] = JSON.parse(obj['explain_obj']??"{}");
+            if(obj?.price>0){
+                result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생 하였습니다.`;
+            }else{
+                result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매 반환에 대해 차감 되었습니다.`;
+            }
+        }else if (obj?.type == 13) {//상품구매시 랜덤박스 포인트 받기
+            if(obj?.price>0){
+                result = `아울렛 상품 구매 후 랜덤박스 포인트 혜택 지급 받았습니다.`;
+            }else{
+                result = `아울렛 상품 구매 반환에 대해 회수 되었습니다.`;
+            }
         } else {
             result = "---";
         }

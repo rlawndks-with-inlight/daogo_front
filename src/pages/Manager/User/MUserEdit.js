@@ -14,21 +14,51 @@ import Breadcrumb from '../../../common/manager/Breadcrumb';
 import { AiFillFileImage } from 'react-icons/ai';
 import theme from '../../../styles/theme';
 import defaultImg from '../../../assets/images/icon/default-profile.png';
-
+import { Editor } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import '@toast-ui/editor/dist/i18n/ko-kr';
+import Picker from 'emoji-picker-react';
+import fontSize from "tui-editor-plugin-font-size";
+import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
+import { useRef } from 'react';
 
 const MUserEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
+
+    const editorRef = useRef();
+
     const [myNick, setMyNick] = useState("")
     const [url, setUrl] = useState('')
     const [content, setContent] = useState(undefined)
     const [formData] = useState(new FormData())
     const [addressList, setAddressList] = useState([])
     const [user, setUser] = useState({});
+    const [noteFormData] = useState(new FormData());
     useEffect(() => {
 
-        
+
         fetchPost();
+    }, [])
+    useEffect(() => {
+        $('html').on('click', function (e) {
+            if ($(e.target).parents('.emoji-picker-react').length < 1 && $('.emoji-picker-react').css('display') == 'flex' && $(e.target).attr('class') != 'emoji') {
+                $('.emoji-picker-react').attr('style', 'display: none !important')
+            }
+        });
+        $('button.emoji').on('click', function () {
+            if ($('.emoji-picker-react').css('display') == 'none') {
+                $('.emoji-picker-react').attr('style', 'display: flex !important')
+            } else {
+                $('.emoji-picker-react').attr('style', 'display: none !important')
+            }
+        })
+        $('.toastui-editor-toolbar-icons').on('click', function () {
+            $('.emoji-picker-react').attr('style', 'display: none !important')
+        })
     }, [])
     async function fetchPost() {
         if (params.pk > 0) {
@@ -48,8 +78,16 @@ const MUserEdit = () => {
             $('.account_name').val(response.data.account_name)
             setUrl(response?.data?.profile_img ? (backUrl + response?.data?.profile_img) : "");
             setUser(response?.data);
+            editorRef.current.getInstance().setHTML(response.data.note.replaceAll('http://localhost:8001', backUrl));
+            $('div.toastui-editor-defaultUI-toolbar > div:nth-child(4)').append(`<button type="button" class='emoji' aria-label='이모티콘' style='font-size:18px;'>🙂</button>`);
+
         }
     }
+    const [chosenEmoji, setChosenEmoji] = useState(null);
+    const onEmojiClick = (event, emojiObject) => {
+        setChosenEmoji(emojiObject);
+        editorRef.current.getInstance().insertText(emojiObject.emoji)
+    };
     const geocoding = async () => {
         const { data: response } = await axios.post('/api/getaddressbytext', {
             text: $('.place').val()
@@ -89,6 +127,7 @@ const MUserEdit = () => {
                     obj['table'] = "user";
                     obj['pk'] = params.pk;
                     obj['reason_correction'] = $('.reason-correction').val();
+                    obj['note'] = editorRef.current.getInstance().getHTML();
                 }
                 obj['manager_note'] = `${$(`.id`).val()} ${params.pk > 0 ? (managerNoteObj.UPDATE_USER) : managerNoteObj.ADD_USER}`
                 let api_str = '';
@@ -105,22 +144,25 @@ const MUserEdit = () => {
 
 
     }
+    const onChangeEditor = (e) => {
+        const data = editorRef.current.getInstance().getHTML();
+    }
     const addFile = (e) => {
         if (e.target.files[0]) {
             setContent(e.target.files[0]);
             setUrl(URL.createObjectURL(e.target.files[0]))
         }
     };
-    const initializationIdCard = async() =>{
-        if(window.confirm("정말 신분증 사진을 초기화 하시겠습니까?")){
-            const {data:response} = await axios.post('/api/initializationidcard',{
-                pk:params?.pk,
-                manager_note:`${user?.id}(${user?.name})의 프로필 사진을 초기화 하였습니다.`
+    const initializationIdCard = async () => {
+        if (window.confirm("정말 신분증 사진을 초기화 하시겠습니까?")) {
+            const { data: response } = await axios.post('/api/initializationidcard', {
+                pk: params?.pk,
+                manager_note: `${user?.id}(${user?.name})의 프로필 사진을 초기화 하였습니다.`
             })
-            if(response?.result>0){
+            if (response?.result > 0) {
                 alert("성공적으로 저장 되었습니다.");
                 fetchPost();
-            }else{
+            } else {
                 alert(response?.message);
             }
         }
@@ -246,6 +288,41 @@ const MUserEdit = () => {
                             <Col>
                                 <Title>신분증 이미지 초기화</Title>
                                 <AddButton style={{ margin: '12px auto 6px 24px' }} onClick={initializationIdCard}>초기화</AddButton>
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col>
+                                <Title>관리자 메모</Title>
+                                <div id="editor">
+                                    <Picker onEmojiClick={onEmojiClick} />
+                                    <Editor
+                                        placeholder="내용을 입력해주세요."
+                                        previewStyle="vertical"
+                                        height="600px"
+                                        initialEditType="wysiwyg"
+                                        useCommandShortcut={false}
+                                        hideModeSwitch={true}
+                                        plugins={[colorSyntax, fontSize]}
+                                        language="ko-KR"
+                                        ref={editorRef}
+                                        onChange={onChangeEditor}
+                                        hooks={{
+                                            addImageBlobHook: async (blob, callback) => {
+
+                                                noteFormData.append('note', blob);
+                                                const { data: response } = await axios.post('/api/addimage', noteFormData);
+                                                if (response.result > 0) {
+                                                    callback(backUrl + response.data.filename)
+                                                    noteFormData.delete('note');
+                                                } else {
+                                                    noteFormData.delete('note');
+                                                    return;
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </div>
                             </Col>
                         </Row>
                         <Row>

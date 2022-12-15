@@ -46,7 +46,7 @@ const RecommendGenealogy = () => {
             return getChildByUserPk(pk, depth).map((item, idx) => (
                 <>
                     <TreeNode label={<StyledNode>
-                        <div style={{ fontSize: theme.size.font5 }}>{`${item?.id}--${item?.pk}`}</div>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${item?.id}`}</div>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.name}`}</div>
                         <div style={{ fontSize: theme.size.font6 }}>{`${getTierByUserTier(item?.tier)}`}</div>
                     </StyledNode>}>

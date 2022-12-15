@@ -6,6 +6,7 @@ export const returnColumn = (data_, type_, column_, schema) => {
     let type = type_;
     let column = column_;
     let result = "---";
+
     if (type == 'text') {
         result = data[`${column}`] ?? "---";
     } else if (type == 'number') {
@@ -19,6 +20,7 @@ export const returnColumn = (data_, type_, column_, schema) => {
     } else if (type == 'link') {
         result = data[`${column}`];
     } else if (type == 'marketing_tier') {
+        data['explain_obj'] = JSON.parse(data['explain_obj']);
         if (data['explain_obj']?.tier) {
             result = getTierByUserTier(data['explain_obj']?.tier);
         } else {
@@ -74,6 +76,8 @@ export const returnColumn = (data_, type_, column_, schema) => {
         result = "---";
     } else if (type == 'increase') {
         result = data[`${column}`] > 0 ? "+" : "-";
+    } else if (type == 'minus_increase') {
+        result = data[`${column}`] < 0 ? "+" : "-";
     } else if (type == 'edit') {
         result = "---";
     } else if (type == 'user_money_edit') {
@@ -81,6 +85,7 @@ export const returnColumn = (data_, type_, column_, schema) => {
     } else if (type == 'user_marketing') {
         result = "---";
     } else if (type.includes('exchange')) {
+        data['explain_obj'] = JSON.parse(data['explain_obj']);
         if (type.split('_')[1] == 'star') {
             if (data[`explain_obj`]?.star) {
                 result = commarNumber(data[`explain_obj`]?.star);
@@ -125,6 +130,7 @@ export const returnColumn = (data_, type_, column_, schema) => {
             result = "---";
         }
     } else if (type.includes('outlet_order')) {
+        data['explain_obj'] = JSON.parse(data['explain_obj']);
         if (type.split('order_')[1] == 'name') {
             result = `${data['user_id']}(${data['user_name']})`;
         } else if (type.split('order_')[1] == 'point') {
