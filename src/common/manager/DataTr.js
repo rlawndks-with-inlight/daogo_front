@@ -14,6 +14,7 @@ import { GrLinkTop } from 'react-icons/gr'
 import { commarNumber, dateFormat, getTierByUserTier, numberToCategory } from '../../functions/utils'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import { RiMoneyDollarBoxFill } from 'react-icons/ri'
+import { TbReportMoney } from 'react-icons/tb';
 import { Button } from '../../components/elements/AuthContentTemplete'
 import AddButton from '../../components/elements/button/AddButton'
 import $ from 'jquery';
@@ -35,10 +36,10 @@ export const getTextByLogType = (obj_, schema) => {
     let obj = { ...obj_ };
 
     let result = "";
-    
+
     if (obj?.type == 0) {//아울렛구매
         result = `아울렛쇼핑 구매로 인해 사용 되었습니다.`;
-        if(obj?.price>0){
+        if (obj?.price > 0) {
             result = "아울렛 반환된 건 지급되었습니다."
         }
     } else if (obj?.type == 1) {//쿠폰 구매
@@ -69,13 +70,13 @@ export const getTextByLogType = (obj_, schema) => {
             result += "접수대기";
         } else if (obj?.status == -1) {
             result += "반송";
-        }else if (obj?.status == 1) {
+        } else if (obj?.status == 1) {
             result += "접수완료";
         } else if (obj?.status == 2) {
             result += "지급완료";
         }
         result += ')';
-        if(obj?.price>0){
+        if (obj?.price > 0) {
             result = "출금 반송된 건 지급되었습니다."
         }
     } else if (obj?.type == 5) {//관리자가 수정
@@ -97,7 +98,7 @@ export const getTextByLogType = (obj_, schema) => {
             result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGWP로 전환 하였습니다.`;
         }
     } else if (obj?.type == 10) {//매출등록
-        obj['explain_obj'] = JSON.parse(obj['explain_obj']??"{}");
+        obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
         if (schema == 'log_point' || schema == 'log_star') {
             result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
         } else if (schema == 'log_randombox') {
@@ -106,16 +107,16 @@ export const getTextByLogType = (obj_, schema) => {
     } else if (obj?.type == 11) {//이벤트 랜덤수익
         result = "이벤트 랜덤수익 발생하였습니다.";
     } else if (obj?.type == 12) {//이벤트 랜덤수익
-        obj['explain_obj'] = JSON.parse(obj['explain_obj']??"{}");
-        if(obj?.price>0){
+        obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
+        if (obj?.price > 0) {
             result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
-        }else{
+        } else {
             result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매 반환에 대해 차감되었습니다.`;
         }
-    }else if (obj?.type == 13) {//상품구매시 랜덤박스 포인트 받기
-        if(obj?.price>0){
+    } else if (obj?.type == 13) {//상품구매시 랜덤박스 포인트 받기
+        if (obj?.price > 0) {
             result = `아울렛 상품 구매 후 랜덤박스 포인트 혜택 지급 받았습니다.`;
-        }else{
+        } else {
             result = `아울렛 상품 구매 반환에 대해 차감되었습니다.`;
         }
     } else {
@@ -358,6 +359,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                        {col.type == 'prider' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{data[col.column] == 0 ? '없음' : data[col.column] == 1 ? '그린리더' : data[col.column] == 2 ? '프라이더' : '로얄프라이더'}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
                         {col.type == 'tier' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{getTierByUserTier(data[col.column])}</Td>
@@ -456,7 +464,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'minus_increase' ?
+                        {col.type == 'minus_increase' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, color: `${data[`${col.column}`] < 0 ? theme.color.blue : theme.color.red}` }}>
                                     {data[`${col.column}`] < 0 ? <AiOutlinePlus /> : <AiOutlineMinus />}
@@ -483,7 +491,16 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'user_subscriptiondeposit_edit' ?
+                            {col.type == 'user_prider_edit' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
+                                    <TbReportMoney style={{ cursor: 'pointer', color: theme.color.pink }} onClick={() => navigate(`/manager/userprideredit/${data.pk}`)} />
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                        {col.type == 'user_subscriptiondeposit_edit' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
                                     <AiOutlineDollar style={{ cursor: 'pointer', color: theme.color.background1 }} onClick={() => navigate(`/manager/usersubscriptiondepositedit/${data.pk}`)} />
@@ -669,6 +686,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
                                             {data['user_id']}({data['user_name']})
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('order_')[1] == 'count' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {commarNumber(JSON?.parse(data['explain_obj'])?.count ?? 0)}
                                         </Td>
                                     </>
                                     :

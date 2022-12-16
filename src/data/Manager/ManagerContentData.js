@@ -44,8 +44,11 @@ export const zSidebar = [
     sidebarContentFormat('운영관리', [
         sidebarObjListFormat('출금신청리스트', '/manager/list/exchange', 40, ['/manager/list/exchange']),//list
     ]),
-    sidebarContentFormat('결산관리', [
-        sidebarObjListFormat('월결산리스트', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
+    sidebarContentFormat('정산관리', [
+        sidebarObjListFormat('월정산리스트', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
+        sidebarObjListFormat('주정산리스트', '/manager/list/week_settle', 40, ['/manager/list/week_settle']),//list ?
+        sidebarObjListFormat('월결산', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
+        sidebarObjListFormat('주정산', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
     ]),
     sidebarContentFormat('쿠폰이벤트관리', [
         sidebarObjListFormat('카테고리리스트', '/manager/list/coupon_category', 40, ['/manager/list/coupon_category']),//list
@@ -80,13 +83,16 @@ export const objManagerListContent = {
             columnObjFormat('랜덤박스', '', 'number', 'randombox'),
             columnObjFormat('ESGW', '', 'number', 'esgw'),
             columnObjFormat('티어', '', 'tier', 'tier'),
+            columnObjFormat('프라이더', '', 'prider', 'prider'),
+            columnObjFormat('파트너점수', '', 'text', 'partner'),
             columnObjFormat('가입일', '', 'date', 'date'),
             columnObjFormat('로그인시간', '', 'date', 'last_login'),
             columnObjFormat('정보수정', '', 'edit', 'edit'),
             columnObjFormat('머니수정', '', 'user_money_edit', 'user_money_edit'),
             columnObjFormat('매출등록', '', 'user_marketing', 'user_marketing'),
+            columnObjFormat('프라이더등록', '', 'user_prider_edit', 'user_prider_edit'),
         ],
-        [],
+        [`prider=`,`tier=`],
         true,
         false),
     user_subscriptiondeposit: sidebarObjFormat(
@@ -319,8 +325,26 @@ export const objManagerListContent = {
         '150%'
     ),
     month_settle: sidebarObjFormat(
-        '월 결산 리스트',
+        '월 정산 리스트',
         'month_settle',
+        [
+            columnObjFormat('결산일', '', 'text', 'date'),
+            columnObjFormat('총수당건수', '', 'text', 'user_id'),
+            columnObjFormat('총지급수당액', '', 'text', 'price'),
+            columnObjFormat('정산여부(y/n)', '', 'text', 'user_id'),
+            columnObjFormat('정산메모', '', 'text', 'user_id'),
+            columnObjFormat('관리자명', '', 'text', 'user_id'),
+            columnObjFormat('관리자팀명', '', 'text', 'user_id'),
+            columnObjFormat('정산완료일', '', 'text', 'user_id'),
+            columnObjFormat('관리', '', 'text', 'user_id'),
+        ],
+        [],
+        false,
+        false
+    ),
+    week_settle: sidebarObjFormat(
+        '주 정산 리스트',
+        'week_settle',
         [
             columnObjFormat('결산일', '', 'text', 'date'),
             columnObjFormat('총수당건수', '', 'text', 'user_id'),
@@ -502,6 +526,7 @@ export const objManagerListContent = {
             columnObjFormat('UID', '', 'date', 'user_id'),
             columnObjFormat('주문자(이름)', '', 'outlet_order_name', ''),
             columnObjFormat('상품명', '', 'text', 'item_name'),
+            columnObjFormat('상품수량', '', 'outlet_order_count', ''),
             columnObjFormat('사용스타', '', 'minus_number', 'price'),
             columnObjFormat('사용포인트', '', 'outlet_order_point', ''),
             columnObjFormat('수신자명(연락처)', '', 'outlet_order_phone', ''),

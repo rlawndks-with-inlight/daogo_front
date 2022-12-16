@@ -42,7 +42,6 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
-    console.log(num)
     if (!num && num != 0) {
         return undefined;
     }
@@ -52,7 +51,6 @@ export const commarNumber = (num) => {
     } else {
         str = num.toString();
     }
-    console.log(str)
     let decimal = "";
     if (str.includes(".")) {
         decimal = "." + str.split(".")[1].substring(0, 2);
@@ -293,6 +291,18 @@ export const getRollUpBonusByUserTier = (num) =>{
     }else{
         return introduce_percent_list[num/5];
     }
+}
+export const discountOutlet = (price, tier) =>{
+    let discount_percent_list = [5,6,7,8,9,10];
+    let result = parseFloat(price);
+    console.log(result)
+    console.log(tier)
+    result = result*(discount_percent_list[tier/5]/100);
+    return result;
+}
+export const discountOutletList = (tier) =>{
+    let discount_percent_list = [5,6,7,8,9,10];
+    return discount_percent_list[tier/5];
 }
 export const untilReady = () =>{
     alert("준비중입니다.");

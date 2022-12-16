@@ -54,6 +54,7 @@ import RandomboxRollingHistory from '../pages/User/RandomBox/RandomboxRollingHis
 import MWithdrawSetting from '../pages/Manager/Setting/MWithdrawSetting';
 import WithdrawRequestHistory from '../pages/User/Auth/WithdrawRequestHistory';
 import MUserSubscriptionDepositEdit from '../pages/Manager/User/MUserSubscriptionDepositEdit';
+import MUserPriderEdit from '../pages/Manager/User/MUserPriderEdit';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -106,6 +107,7 @@ const zManagerRoute = [
     { link: '/manager/usermoneyedit/:pk', element: <MUserMoneyEdit />, title: "회원머니관리" },
     { link: '/manager/usersubscriptiondepositedit/:pk', element: <MUserSubscriptionDepositEdit />, title: "회원 청약예치금 관리" },
     { link: '/manager/usermarketing/:pk', element: <MUserMarketingEdit />, title: "매출(패키지)" },
+    { link: '/manager/userprideredit/:pk', element: <MUserPriderEdit />, title: "프라이더" },
 
     { link: '/manager/edit/coupon/:pk', element: <MCouponEdit />, title: "쿠폰관리" },
     { link: '/manager/edit/coupon_category/:pk', element: <MCouponCategoryEdit />, title: "쿠폰카테고리관리" },

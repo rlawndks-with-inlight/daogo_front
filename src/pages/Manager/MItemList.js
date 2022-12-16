@@ -248,6 +248,30 @@ const MItemList = () => {
                 {/* 옵션카드 */}
                 <OptionCardWrappers>
                     <Row>
+                        {objManagerListContent[`${params.table}`].schema == 'user' ?
+                            <>
+                                <div style={{ margin: '20px 0px 12px 24px' }}>프라이더 여부</div>
+                                <Select className='prider' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
+                                    <option value={'all'}>전체</option>
+                                    <option value={0}>없음</option>
+                                    <option value={1}>그린리더</option>
+                                    <option value={2}>프라이더</option>
+                                    <option value={3}>로얄프라이더</option>
+                                </Select>
+                                <div style={{ margin: '20px 0px 12px 24px' }}>티어별</div>
+                                <Select className='tier' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
+                                    <option value={'all'}>전체</option>
+                                    <option value={0}>일반회원</option>
+                                    <option value={5}>화이트</option>
+                                    <option value={10}>그린</option>
+                                    <option value={15}>실버</option>
+                                    <option value={20}>골드</option>
+                                    <option value={25}>플레티넘</option>
+                                </Select>
+                            </>
+                            :
+                            <>
+                            </>}
                         {objManagerListContent[`${params.table}`].schema == 'exchange' ?
                             <>
                                 <Select className='status' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>

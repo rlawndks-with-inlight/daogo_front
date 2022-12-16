@@ -240,7 +240,7 @@ const MOutletEdit = () => {
                         <Select className="is_use_point" onChange={onChangeIsUsePoint}>
                             <option value={0}>사용불가</option>
                             <option value={1}>직접입력</option>
-                            <option value={2}>회원 티어별 포인트</option>
+                            {/* <option value={2}>회원 티어별 포인트</option> */}
                         </Select>
                     </Col>
                     <Col>

@@ -44,6 +44,16 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (data[`${column}`] == 50) {
             result = "개발자";
         }
+    }else if (type == 'prider') {
+        if (data[`${column}`] == 0) {
+            result = "없음";
+        } else if (data[`${column}`] == 1) {
+            result = "그린리더";
+        } else if (data[`${column}`] == 2) {
+            result = "프라이더";
+        }else if (data[`${column}`] == 3) {
+            result = "로얄프라이더";
+        }
     } else if (type == 'tier') {
         result = getTierByUserTier(data[`${column}`]);
     } else if (type == 'img') {
@@ -135,6 +145,8 @@ export const returnColumn = (data_, type_, column_, schema) => {
             result = `${data['user_id']}(${data['user_name']})`;
         } else if (type.split('order_')[1] == 'point') {
             result = commarNumber(data['explain_obj']?.point ?? 0);
+        } else if (type.split('order_')[1] == 'count') {
+            result = commarNumber(data['explain_obj']?.count ?? 0);
         } else if (type.split('order_')[1] == 'phone') {
             result = `${data['explain_obj']?.name ?? "---"}${data['explain_obj']?.phone ?? "---"}`;
         } else if (type.split('order_')[1] == 'address') {

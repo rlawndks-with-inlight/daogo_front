@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { backUrl } from "../../../data/ContentData";
 import theme from "../../../styles/theme";
 import { Viewer } from '@toast-ui/react-editor';
-import { commarNumber, getDiscountPoint, getIntroducePercentByUserTier, range } from "../../../functions/utils";
+import { commarNumber, discountOutlet, discountOutletList, getDiscountPoint, getIntroducePercentByUserTier, range } from "../../../functions/utils";
 import AddButton from "../../../components/elements/button/AddButton";
 import playFillIcon from '../../../assets/images/icon/play-fill.svg';
 import $ from 'jquery';
@@ -137,8 +137,8 @@ const OutletOrder = () => {
                         <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'left' }}>상품명: {post?.name}</CategoryName>
                     </div>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: theme.color.red }}>{count}</strong> 개 구매 신청</CategoryName>
-                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>상품가격 <strong style={{ color: theme.color.blue, fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star * count)}</strong> 스타</CategoryName>
-                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>포인트 모두 사용시 <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber((post?.sell_star - getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0)) * count)}</strong> 스타</CategoryName>
+                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>상품가격 <strong style={{ color: theme.color.blue, fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star * count - discountOutlet(post?.sell_star * count, auth?.user?.tier))}</strong> 스타 ({discountOutletList(auth?.user?.tier)}% 할인)</CategoryName>
+                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>포인트 모두 사용시 <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber((post?.sell_star - discountOutlet(post?.sell_star, auth?.user?.tier) - getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0)) * count)}</strong> 스타</CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>잔여 포인트: <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber(auth?.point)}</strong></CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5, display: 'flex', justifyContent: 'space-between' }}>
                         <div />
@@ -155,7 +155,7 @@ const OutletOrder = () => {
                             }
                         </div>
                     </CategoryName>
-                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>결제금액: <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star * count - discountPoint)}</strong> 스타</CategoryName>
+                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>결제금액: <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star * count - discountOutlet(post?.sell_star * count, auth?.user?.tier) - discountPoint)}</strong> 스타</CategoryName>
 
                     <CategoryName style={{ margin: '0.5rem auto 0 auto' }}>주문자 요청사항</CategoryName>
                     <Input className="request" placeholder="주문자 요청사항" onKeyPress={(e) => e.key == 'Enter' ? $('.name').focus() : null} />

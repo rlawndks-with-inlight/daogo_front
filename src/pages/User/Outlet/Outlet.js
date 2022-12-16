@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { backUrl } from "../../../data/ContentData";
 import theme from "../../../styles/theme";
 import { Viewer } from '@toast-ui/react-editor';
-import { commarNumber, getDiscountPoint, getIntroducePercentByUserTier, range } from "../../../functions/utils";
+import { commarNumber, discountOutlet, discountOutletList, getDiscountPoint, getIntroducePercentByUserTier, range } from "../../../functions/utils";
 import AddButton from "../../../components/elements/button/AddButton";
 import playFillIcon from '../../../assets/images/icon/play-fill.svg';
 import $ from 'jquery';
@@ -106,7 +106,7 @@ const Outlet = () => {
                         <ItemImg src={backUrl + post?.img_src} />
                         <ExplainContainer>
                             <div>{post?.name} {post?.randombox_point ? `- ${commarNumber(post?.randombox_point)}P (랜덤박스 적립)` : ''}</div>
-                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: theme.color.red, fontSize: theme.size.font5 }}>{getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0)}포인트 {post?.is_use_point==2?`(${introduce_percent_list[auth?.user?.tier/5]}%)`:''}</strong>사용가능</div>
+                            <div style={{ fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star - discountOutlet(post?.sell_star, auth?.user?.tier ?? 0))} 스타 ({discountOutletList(auth?.user?.tier ?? 0)}% 할인) <strong style={{ color: theme.color.red, fontSize: theme.size.font5 }}>{getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0)}포인트 {post?.is_use_point==2?`(${introduce_percent_list[auth?.user?.tier/5]}%)`:''}</strong>사용가능</div>
                             <div style={{ fontSize: theme.size.font4, color: theme.color.background1 }}>
                                 {commarNumber(post?.sell_star - getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0))} 스타 <strong style={{ fontSize: theme.size.font5 }}>판매가(포인트사용 시)</strong></div>
                             {post?.randombox_point > 0 ?

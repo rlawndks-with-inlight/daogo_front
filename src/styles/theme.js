@@ -28,6 +28,7 @@ const theme = {
     blue: "#546de5",
     red: "#ff0000",
     gold: "#ffd700",
+    pink: "#E91E63",
     cardColor: [
       { font: '#fff', background: '#024643' },
       { font: '#fff', background: '#31125A' },
