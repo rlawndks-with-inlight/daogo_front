@@ -229,7 +229,7 @@ const Home = () => {
                             <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGWP'} content={post?.esgw?.esgw} unit={`ESGWP`} link={'/esgw/history'} />
-                                <GreenButton width={45} img={logoOutlet} link={'/shoppingmall/outlet'} background={theme.color.background0}/>
+                                <GreenButton width={45} img={logoOutlet} link={'/eventgame'} background={theme.color.background0}/>
                             </Row>
                         </Content>
                         <Content style={{ borderBottom: `1px solid #dddddd`, width: '86%' }} />

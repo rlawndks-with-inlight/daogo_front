@@ -97,6 +97,7 @@ export const getTextByLogType = (obj_, schema) => {
             result = `${commarNumber(obj?.price * 10)} 포인트에서 ESGWP로 전환 하였습니다.`;
         }
     } else if (obj?.type == 10) {//매출등록
+        obj['explain_obj'] = JSON.parse(obj['explain_obj']??"{}");
         if (schema == 'log_point' || schema == 'log_star') {
             result = `${obj['explain_obj']?.introduced_id}(${obj['explain_obj']?.introduced_name}) 회원에 의한 소개수익 발생하였습니다.`;
         } else if (schema == 'log_randombox') {
