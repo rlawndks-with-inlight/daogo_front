@@ -48,7 +48,7 @@ export const zSidebar = [
         sidebarObjListFormat('월정산리스트', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
         sidebarObjListFormat('주정산리스트', '/manager/list/week_settle', 40, ['/manager/list/week_settle']),//list ?
         sidebarObjListFormat('월 정산', '/manager/monthsettle', 40, ['/manager/monthsettle']),//list ?
-        sidebarObjListFormat('주 정산', '/manager/weeksettle', 40, ['/manager/weeksettlee']),//list ?
+        sidebarObjListFormat('주 정산', '/manager/weeksettle', 40, ['/manager/weeksettle']),//list ?
     ]),
     sidebarContentFormat('쿠폰이벤트관리', [
         sidebarObjListFormat('카테고리리스트', '/manager/list/coupon_category', 40, ['/manager/list/coupon_category']),//list
@@ -92,7 +92,48 @@ export const objManagerListContent = {
             columnObjFormat('매출등록', '', 'user_marketing', 'user_marketing'),
             columnObjFormat('프라이더등록', '', 'user_prider_edit', 'user_prider_edit'),
         ],
-        [`prider=`,`tier=`],
+        [`prider=`, `tier=`],
+        true,
+        false),
+    prider: sidebarObjFormat(
+        '프라이더 리스트',
+        'prider',
+        [
+            columnObjFormat('아이디', '', 'text', 'id'),
+            columnObjFormat('이름', '', 'text', 'name'),
+            columnObjFormat('폰번호', '', 'text', 'phone'),
+            columnObjFormat('접근권한', '', 'level', 'user_level'),
+            columnObjFormat('스타', '', 'number', 'star'),
+            columnObjFormat('포인트', '', 'number', 'point'),
+            columnObjFormat('랜덤박스', '', 'number', 'randombox'),
+            columnObjFormat('ESGW', '', 'number', 'esgw'),
+            columnObjFormat('티어', '', 'tier', 'tier'),
+            columnObjFormat('프라이더', '', 'prider', 'prider'),
+            columnObjFormat('파트너점수', '', 'text', 'partner'),
+            columnObjFormat('가입일', '', 'date', 'date'),
+        ],
+        [],
+        true,
+        false),
+    week_prider: sidebarObjFormat(
+        '프라이더 리스트',
+        'week_prider',
+        [
+            columnObjFormat('아이디', '', 'text', 'id'),
+            columnObjFormat('이름', '', 'text', 'name'),
+            columnObjFormat('폰번호', '', 'text', 'phone'),
+            columnObjFormat('접근권한', '', 'level', 'user_level'),
+            columnObjFormat('스타', '', 'number', 'star'),
+            columnObjFormat('포인트', '', 'number', 'point'),
+            columnObjFormat('랜덤박스', '', 'number', 'randombox'),
+            columnObjFormat('ESGW', '', 'number', 'esgw'),
+            columnObjFormat('티어', '', 'tier', 'tier'),
+            columnObjFormat('프라이더', '', 'prider', 'prider'),
+            columnObjFormat('파트너점수', '', 'text', 'partner'),
+            columnObjFormat('가입일', '', 'date', 'date'),
+            columnObjFormat('이번주 매출 보기', '', 'week_settle_look', 'week_settle_look'),
+        ],
+        [],
         true,
         false),
     user_subscriptiondeposit: sidebarObjFormat(
@@ -111,7 +152,7 @@ export const objManagerListContent = {
         [],
         false,
         false,
-        ),
+    ),
     extra_pay: sidebarObjFormat(
         '수당지급 리스트',
         'extra_pay',
@@ -304,10 +345,10 @@ export const objManagerListContent = {
         'exchange',
         [
             columnObjFormat('지갑아이디', 5, 'text', 'user_id'),
-            columnObjFormat('회원명',  5, 'text', 'user_name'),
-            columnObjFormat('신청스타',  5, 'exchange_star', 'price'),
-            columnObjFormat('신청금(원)',  5, 'exchange_money', 'price'),
-            columnObjFormat('환전수수료(스타)',  5, 'exchange_moneycommission', 'price'),
+            columnObjFormat('회원명', 5, 'text', 'user_name'),
+            columnObjFormat('신청스타', 5, 'exchange_star', 'price'),
+            columnObjFormat('신청금(원)', 5, 'exchange_money', 'price'),
+            columnObjFormat('환전수수료(스타)', 5, 'exchange_moneycommission', 'price'),
             columnObjFormat('실지급금(원)', '', 'exchange_moneypayment', 'price'),
             columnObjFormat('신청일', '', 'text', 'date'),
             columnObjFormat('입금은행', '', 'text', 'bank_name'),
@@ -315,7 +356,7 @@ export const objManagerListContent = {
             columnObjFormat('계좌소유자명', '', 'text', 'account_name'),
             columnObjFormat('진행상황', '', 'exchange_status', 'status'),
             columnObjFormat('담당자ID', '', 'text', 'manager_id'),
-           // columnObjFormat('담당자이름', '', 'text', 'manager_name'),
+            // columnObjFormat('담당자이름', '', 'text', 'manager_name'),
             columnObjFormat('진행완료일', '', 'exchange_date', 'exchange_date'),
             columnObjFormat('관리', '', 'exchange_edit', 'exchange_edit'),
         ],

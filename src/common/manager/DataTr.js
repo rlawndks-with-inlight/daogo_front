@@ -19,6 +19,7 @@ import { Button } from '../../components/elements/AuthContentTemplete'
 import AddButton from '../../components/elements/button/AddButton'
 import $ from 'jquery';
 import { Input } from '../../components/elements/ManagerTemplete'
+import {AiOutlineOrderedList} from 'react-icons/ai';
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -126,7 +127,7 @@ export const getTextByLogType = (obj_, schema) => {
     }
     return result;
 }
-const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus, changePage, page }) => {
+const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus, changePage, page, lookWeekSettle }) => {
     const navigate = useNavigate();
     const ref = useRef(null)
     const [status, setStatus] = useState(data?.status);
@@ -479,6 +480,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
                                     <BiEditAlt style={{ cursor: 'pointer', color: theme.color.blue }} onClick={() => navigate(`/manager/edit/${schema}/${data.pk}`)} />
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                            {col.type == 'week_settle_look' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
+                                    <AiOutlineOrderedList style={{ cursor: 'pointer', color: theme.color.background1 }} onClick={() => lookWeekSettle(data?.pk, 1)} />
                                 </Td>
                             </>
                             :

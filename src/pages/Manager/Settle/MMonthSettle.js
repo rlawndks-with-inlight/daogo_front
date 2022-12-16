@@ -9,6 +9,8 @@ import CancelButton from "../../../components/elements/button/CancelButton";
 import $ from 'jquery';
 import axios from "axios";
 import { commarNumber } from "../../../functions/utils";
+import DataTable from "../../../common/manager/DataTable";
+import { objManagerListContent } from "../../../data/Manager/ManagerContentData";
 
 const MMonthSettle = () => {
     const params = useParams();
@@ -20,6 +22,12 @@ const MMonthSettle = () => {
         1: 0, 2: 0, 3: 0
     });
     const [allUserCount, setAllUserCount] = useState(0);
+    const [posts, setPosts] = useState([]);
+    
+    async function fetchPosts(num){
+        const {data:response} = await axios.get(`/api/items?table=user&prider=${num}`);
+        setPosts([...posts,...response?.data])
+    }
     useEffect(() => {
         if (params.pk <= 0) {
             navigate(-1);
@@ -108,9 +116,19 @@ const MMonthSettle = () => {
         if(e.target.checked){
             setAllUserCount(allUserCount+userObj[prider]);
             user_count = allUserCount+userObj[prider];
+            fetchPosts(prider);
         }else{
             setAllUserCount(allUserCount-userObj[prider]);
             user_count = allUserCount-userObj[prider];
+            let post_s = [];
+            for(var i = 0;i<posts.length;i++){
+                if(posts[i]?.prider==prider){
+                    
+                }else{
+                    post_s.push(posts[i]);
+                }
+            }
+            setPosts(post_s);
         }
         if(user_count>0){
             $('.all_price').val($('.provider_percent').val()*($('.settle_price').val()/100));
@@ -183,7 +201,13 @@ const MMonthSettle = () => {
                 <CancelButton onClick={() => navigate('/manager/list/month_settle')}>x 취소</CancelButton>
                 <AddButton onClick={addMarketing}>{'저장'}</AddButton>
             </ButtonContainer>
-
+            {posts.length>0?
+            <>
+            <DataTable width={'100%'} data={posts} column={objManagerListContent[`prider`].zColumn ?? {}} schema={'prider'} />
+            </>
+            :
+            <>
+            </>}
         </>
     )
 }
