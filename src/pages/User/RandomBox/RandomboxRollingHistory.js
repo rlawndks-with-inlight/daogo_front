@@ -4,8 +4,11 @@ import { useLocation, useParams } from "react-router-dom";
 import ContentTable from "../../../components/ContentTable";
 import { Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 import { historyContent } from "../../../data/ContentData";
+import { range } from "../../../functions/utils";
 import theme from "../../../styles/theme";
-
+import MBottomContent from "../../../components/elements/MBottomContent";
+import PageButton from "../../../components/elements/pagination/PageButton";
+import PageContainer from "../../../components/elements/pagination/PageContainer";
 const RandomboxRollingHistory = () => {
     const params = useParams();
     const { pathname } = useLocation();
@@ -13,14 +16,19 @@ const RandomboxRollingHistory = () => {
     const [posts, setPosts] = useState([]);
     const [isPlus, setIsPlus] = useState(false);
     const [isMinus, setIsMinus] = useState(false);
+    const [pageList, setPageList] = useState([]);
+    const [page, setPage] = useState(1);
     useEffect(() => {
-        async function fetchPosts() {
-            const { data: response } = await axios.get(`/api/randomboxrollinghistory`)
-            setPosts(response?.data)
-        }
-        fetchPosts();
+        fetchPosts(1);
     }, [])
+    async function fetchPosts(num) {
+        setPage(num)
+        const { data: response } = await axios.get(`/api/randomboxrollinghistory?page=${num}&page_cut=20`)
+        setPosts(response.data.data)
+        setPageList(range(1, response.data.maxPage));
+    }
     const onClickPlusMinus = async (num) => {
+        setPage(1)
         let is_plus = isPlus;
         let is_minus = isMinus;
         if (num == 1) {
@@ -30,18 +38,19 @@ const RandomboxRollingHistory = () => {
             setIsMinus(!isMinus);
             is_minus = !isMinus;
         }
-        let api_str = `/api/randomboxrollinghistory`;
+        let api_str = `/api/randomboxrollinghistory?page=1&page_cut=20`;
         if ((!is_plus && !is_minus) || (is_plus && is_minus)) {
 
         } else {
             if (is_plus) {
-                api_str += '?increase=1';
+                api_str += '&increase=1';
             } else {
-                api_str += '?increase=0';
+                api_str += '&increase=0';
             }
         }
         const { data: response } = await axios.get(api_str);
-        setPosts(response?.data);
+        setPosts(response.data.data)
+        setPageList(range(1, response.data.maxPage));
     }
     return (
         <>
@@ -57,6 +66,25 @@ const RandomboxRollingHistory = () => {
                 <ContentTable columns={historyContent['randombox_rolling'].columns}
                     data={posts}
                     schema={'randombox_rolling'} />
+                     <MBottomContent>
+                    <div />
+                    <PageContainer>
+                        <PageButton onClick={() => fetchPosts(1)}>
+                            처음
+                        </PageButton>
+                        {pageList.map((item, index) => (
+                            <>
+                                <PageButton onClick={() => fetchPosts(item)} style={{ color: `${page == item ? '#fff' : ''}`, background: `${page == item ? theme.color.background1 : ''}`, display: `${Math.abs(index + 1 - page) > 4 ? 'none' : ''}` }}>
+                                    {item}
+                                </PageButton>
+                            </>
+                        ))}
+                        <PageButton onClick={() => fetchPosts(pageList.length ?? 1)}>
+                            마지막
+                        </PageButton>
+                    </PageContainer>
+                    <div />
+                </MBottomContent>
             </Wrappers>
         </>
     )

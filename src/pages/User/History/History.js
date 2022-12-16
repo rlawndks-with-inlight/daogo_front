@@ -2,8 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import ContentTable from "../../../components/ContentTable";
+import MBottomContent from "../../../components/elements/MBottomContent";
+import PageButton from "../../../components/elements/pagination/PageButton";
+import PageContainer from "../../../components/elements/pagination/PageContainer";
 import { Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 import { historyContent } from "../../../data/ContentData";
+import { range } from "../../../functions/utils";
 import theme from "../../../styles/theme";
 
 const History = () => {
@@ -13,14 +17,20 @@ const History = () => {
     const [posts, setPosts] = useState([]);
     const [isPlus, setIsPlus] = useState(false);
     const [isMinus, setIsMinus] = useState(false);
+    const [pageList, setPageList] = useState([]);
+    const [page, setPage] = useState(1);
     useEffect(() => {
-        async function fetchPosts() {
-            const { data: response } = await axios.get(`/api/items?table=log_${params.schema}`)
-            setPosts(response?.data);
-        }
-        fetchPosts();
+        fetchPosts(1);
     }, [pathname])
+    async function fetchPosts(num) {
+        setPage(num)
+        const { data: response } = await axios.get(`/api/items?table=log_${params.schema}&page=${num}&page_cut=20`)
+        setPosts(response.data.data)
+        setPageList(range(1, response.data.maxPage));
+
+    }
     const onClickPlusMinus = async (num) => {
+        setPage(1);
         let is_plus = isPlus;
         let is_minus = isMinus;
         if (num == 1) {
@@ -30,7 +40,7 @@ const History = () => {
             setIsMinus(!isMinus);
             is_minus = !isMinus;
         }
-        let api_str = `/api/items?table=log_${params.schema}`;
+        let api_str = `/api/items?table=log_${params.schema}&page=1&page_cut=20`;
         if ((!is_plus && !is_minus) || (is_plus && is_minus)) {
 
         } else {
@@ -57,6 +67,26 @@ const History = () => {
                 <ContentTable columns={historyContent[params.schema].columns}
                     data={posts}
                     schema={params.schema} />
+                <MBottomContent>
+                    <div />
+                    <PageContainer>
+                        <PageButton onClick={() => fetchPosts(1)}>
+                            처음
+                        </PageButton>
+                        {pageList.map((item, index) => (
+                            <>
+                                <PageButton onClick={() => fetchPosts(item)} style={{ color: `${page == item ? '#fff' : ''}`, background: `${page == item ? theme.color.background1 : ''}`, display: `${Math.abs(index + 1 - page) > 4 ? 'none' : ''}` }}>
+                                    {item}
+                                </PageButton>
+                            </>
+                        ))}
+                        <PageButton onClick={() => fetchPosts(pageList.length ?? 1)}>
+                            마지막
+                        </PageButton>
+                    </PageContainer>
+                    <div />
+                </MBottomContent>
+
             </Wrappers>
         </>
     )
