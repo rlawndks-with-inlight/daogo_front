@@ -73,7 +73,6 @@ const GiftBoxAnimation = () => {
                 />
                 <img src={logoSrc} style={{ width: '84px' }} onClick={() => { navigate('/home') }} />
             </div>
-
         </div>
     );
 }
