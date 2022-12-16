@@ -119,6 +119,8 @@ export const getTextByLogType = (obj_, schema) => {
         } else {
             result = `아울렛 상품 구매 반환에 대해 차감되었습니다.`;
         }
+    }else if (obj?.type == 14) {//상품구매시 랜덤박스 포인트 받기
+        result = `월 정산 지급 되었습니다.`;
     } else {
         result = "";
     }

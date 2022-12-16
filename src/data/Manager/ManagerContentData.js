@@ -47,8 +47,8 @@ export const zSidebar = [
     sidebarContentFormat('정산관리', [
         sidebarObjListFormat('월정산리스트', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
         sidebarObjListFormat('주정산리스트', '/manager/list/week_settle', 40, ['/manager/list/week_settle']),//list ?
-        sidebarObjListFormat('월결산', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
-        sidebarObjListFormat('주정산', '/manager/list/month_settle', 40, ['/manager/list/month_settle']),//list ?
+        sidebarObjListFormat('월 정산', '/manager/monthsettle', 40, ['/manager/monthsettle']),//list ?
+        sidebarObjListFormat('주 정산', '/manager/weeksettle', 40, ['/manager/weeksettlee']),//list ?
     ]),
     sidebarContentFormat('쿠폰이벤트관리', [
         sidebarObjListFormat('카테고리리스트', '/manager/list/coupon_category', 40, ['/manager/list/coupon_category']),//list

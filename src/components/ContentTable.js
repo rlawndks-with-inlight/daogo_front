@@ -99,7 +99,9 @@ const ContentTable = (props) => {
             }else{
                 result = `아울렛 상품 구매 반환에 대해 회수 되었습니다.`;
             }
-        } else {
+        } else if (obj?.type == 14) {//상품구매시 랜덤박스 포인트 받기
+            result = `월 정산 지급 되었습니다.`;
+        }else {
             result = "---";
         }
         return <Td style={{ width: `${width}%`, whiteSpace: 'pre-line' }}>{result}</Td>;

@@ -55,6 +55,8 @@ import MWithdrawSetting from '../pages/Manager/Setting/MWithdrawSetting';
 import WithdrawRequestHistory from '../pages/User/Auth/WithdrawRequestHistory';
 import MUserSubscriptionDepositEdit from '../pages/Manager/User/MUserSubscriptionDepositEdit';
 import MUserPriderEdit from '../pages/Manager/User/MUserPriderEdit';
+import MMonthSettle from '../pages/Manager/Settle/MMonthSettle';
+import MWeekSettle from '../pages/Manager/Settle/MWeekSettle';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -108,6 +110,10 @@ const zManagerRoute = [
     { link: '/manager/usersubscriptiondepositedit/:pk', element: <MUserSubscriptionDepositEdit />, title: "회원 청약예치금 관리" },
     { link: '/manager/usermarketing/:pk', element: <MUserMarketingEdit />, title: "매출(패키지)" },
     { link: '/manager/userprideredit/:pk', element: <MUserPriderEdit />, title: "프라이더" },
+
+    { link: '/manager/monthsettle', element: <MMonthSettle />, title: "월정산" },
+    { link: '/manager/weeksettle', element: <MWeekSettle />, title: "주정산" },
+
 
     { link: '/manager/edit/coupon/:pk', element: <MCouponEdit />, title: "쿠폰관리" },
     { link: '/manager/edit/coupon_category/:pk', element: <MCouponCategoryEdit />, title: "쿠폰카테고리관리" },
