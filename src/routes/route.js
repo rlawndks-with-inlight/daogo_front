@@ -73,7 +73,7 @@ const zUserRoute = [
     { link: '/gift', element: <Gift />, title: "선물하기" },
     { link: '/gift/history', element: <GiftHistory />, title: "선물한 내역" },
     { link: '/withdrawrequest', element: <WithdrawRequest />, title: "출금신청" },
-    { link: '/gift/withdrawrequest', element: <WithdrawRequestHistory />, title: "선물한 내역" },
+    { link: '/exchange/history', element: <WithdrawRequestHistory />, title: "선물한 내역" },
     { link: '/recommendgenealogy', element: <RecommendGenealogy />, title: "추천계보" },
     { link: '/eventgame', element: <EventGame />, title: "이벤트게임" },
     { link: '/randombox_rolling/history', element: <RandomboxRollingHistory />, title: "랜덤박스 롤링 내역" },

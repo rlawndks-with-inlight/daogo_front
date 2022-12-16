@@ -48,7 +48,7 @@ export const zSidebarMenu = [
     { name: '포인트 변동내역', link: '/point/history' },
     { name: '랜덤박스 변동내역', link: '/randombox/history' },
     { name: 'ESGWP 변동내역', link: '/esgw/history' },
-    { name: '출금신청내역', link: '/withdraw/history' },
+    { name: '출금신청내역', link: '/exchange/history' },
     { name: '공유코드', link: '/sharecode/history' },
     { name: '추천계보', link: '/recommendgenealogy' },
     { name: 'QR CODE', link: '/qrcode' },
@@ -105,7 +105,7 @@ export const historyContent = {
             columnObjFormat('Point', 25, 'number', 'price'),
         ]
     },
-    withdraw: {
+    exchange: {
         title: "출금신청내역",
         columns: [
             columnObjFormat('History', 50, 'history', 'note'),

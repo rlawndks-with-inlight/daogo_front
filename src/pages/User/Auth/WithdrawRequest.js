@@ -104,7 +104,7 @@ const WithdrawRequest = () => {
     return (
         <>
             <Wrappers>
-                <Title  not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/gift/withdrawrequest')}}>출금신청</Title>
+                <Title  not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/exchange/history')}}>출금신청</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
                     <OneCard width={96} style={{position:'relative'}}>
                         {window.innerWidth>400?
