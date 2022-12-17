@@ -225,8 +225,8 @@ const Home = () => {
                         </Content>
                         <Content>
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
-                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={(post?.star?.star - (post?.star_gift?.star_gift ?? 0))} unit={`STAR`} link={'/star/history'} />
-                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.point?.point - (post?.point_gift?.point_gift ?? 0)} unit={`POINT`} link={'/point/history'} />
+                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={post?.generation_star?.generation_star??0} unit={`STAR`} link={'/star/history'} />
+                            <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.generation_point?.generation_point} unit={`POINT`} link={'/point/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGWP'} content={post?.esgw?.esgw} unit={`ESGWP`} link={'/esgw/history'} />
                                 <GreenButton width={45} img={logoOutlet} link={'/eventgame'} background={theme.color.background0}/>

@@ -57,6 +57,7 @@ import MUserSubscriptionDepositEdit from '../pages/Manager/User/MUserSubscriptio
 import MUserPriderEdit from '../pages/Manager/User/MUserPriderEdit';
 import MMonthSettle from '../pages/Manager/Settle/MMonthSettle';
 import MWeekSettle from '../pages/Manager/Settle/MWeekSettle';
+import CircleCanvas from '../pages/User/CircleCanvas';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -85,6 +86,7 @@ const zUserRoute = [
     
 
     { link: '/noticelist', element: <NoticeList />, title: "공지사항" },
+    { link: '/circlecanvas', element: <CircleCanvas />, title: "공지사항" },
     { link: '/subscriptiondeposit', element: <SubscriptionDeposit />, title: "청약예치금 등록" },
     { link: '/item/outlet/:pk', element: <Outlet />, title: "아울렛쇼핑" },
     { link: '/item/outlet/order/:pk', element: <OutletOrder />, title: "아울렛쇼핑" },

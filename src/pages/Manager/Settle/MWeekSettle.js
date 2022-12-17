@@ -6,7 +6,7 @@ import ManagerWrappers from "../../../components/elements/ManagerWrappers";
 import { Card, Title, Input, Row, Col, ImageContainer, Select } from '../../../components/elements/ManagerTemplete';
 import ButtonContainer from "../../../components/elements/button/ButtonContainer";
 import AddButton from "../../../components/elements/button/AddButton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { objManagerListContent } from "../../../data/Manager/ManagerContentData";
 import DataTable from "../../../common/manager/DataTable";
 import { useEffect, useState } from "react";
@@ -19,6 +19,7 @@ import { range } from "../../../functions/utils";
 
 const MWeekSettle = () => {
     const params = useParams();
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [settleList, setSettleList] = useState([]);
     const [selectUser, setSelectUser] = useState({});
@@ -45,8 +46,15 @@ const MWeekSettle = () => {
     }
     const onWeekSettle =  async () =>{
         if(window.confirm('이번 주 정산을 진행합니다.')){
-            const {data:response} = await axios.post('/api/onweeksettle');
-            console.log(response)
+            const {data:response} = await axios.post('/api/onweeksettle',{
+                manager_note: `주 정산을 완료 하였습니다.`
+            });
+            if (response.result > 0) {
+                alert("성공적으로 저장되었습니다.");
+                navigate(-1);
+            } else {
+                alert(response.message);
+            }
         }
     }
     return (

@@ -38,7 +38,8 @@ const DataTable = (props) => {
     const [firstPosts, setFirstPosts] = useState([])
     const [isChange, setIsChange] = useState(false)
     const [tableColumn, setTableColumn] = useState([])
-    const [tableSchema, setTableSchema] = useState("")
+    const [tableSchema, setTableSchema] = useState("");
+    
     useEffect(() => {
         setPosts(data);
         setFirstPosts(data);
