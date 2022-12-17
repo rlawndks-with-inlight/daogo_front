@@ -58,6 +58,7 @@ import MUserPriderEdit from '../pages/Manager/User/MUserPriderEdit';
 import MMonthSettle from '../pages/Manager/Settle/MMonthSettle';
 import MWeekSettle from '../pages/Manager/Settle/MWeekSettle';
 import CircleCanvas from '../pages/User/CircleCanvas';
+import MUserMoneyEditByExcel from '../pages/Manager/User/MUserMoneyEditByExcel';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -109,6 +110,7 @@ const zManagerRoute = [
 
     { link: '/manager/edit/user/:pk', element: <MUserEdit />, title: "회원관리" },
     { link: '/manager/usermoneyedit/:pk', element: <MUserMoneyEdit />, title: "회원머니관리" },
+    { link: '/manager/usermoneyeditbyexcel', element: <MUserMoneyEditByExcel />, title: "회원머니 엑셀 업로드" },
     { link: '/manager/usersubscriptiondepositedit/:pk', element: <MUserSubscriptionDepositEdit />, title: "회원 청약예치금 관리" },
     { link: '/manager/usermarketing/:pk', element: <MUserMarketingEdit />, title: "매출(패키지)" },
     { link: '/manager/userprideredit/:pk', element: <MUserPriderEdit />, title: "프라이더" },

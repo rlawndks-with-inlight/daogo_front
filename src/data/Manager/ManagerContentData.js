@@ -21,6 +21,7 @@ export const zSidebar = [
     ]),
     sidebarContentFormat('회원관리', [
         sidebarObjListFormat('회원리스트', '/manager/list/user', 40, ['/manager/list/user']),//list
+        sidebarObjListFormat('회원 엑셀 머니수정 ', '/manager/usermoneyeditbyexcel', 40, ['/manager/usermoneyeditbyexcel']),//list
         sidebarObjListFormat('회원 청약예치금 리스트', '/manager/list/user_subscriptiondeposit', 40, ['/manager/list/user_subscriptiondeposit']),//list
         sidebarObjListFormat('회원조직도(레벨별)', '/manager/user_organization_chart', 40, ['/manager/user_organization_chart']),
     ]),
