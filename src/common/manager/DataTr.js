@@ -310,7 +310,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             </>}
                         {col.type == 'number' ?
                             <>
-                                <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`] ?? 0)}</Td>
+                                <Td style={{ width: `${col.width}%` }} onClick={()=>{
+                                    if(schema=='user' && (col.column == 'star' ||col.column == 'point' ||col.column == 'randombox' ||col.column == 'esgw')){
+                                        navigate(`/manager/list/log_${col.column}/${data?.pk}`)
+                                    }else{
+                                        console.log(2);
+                                    }
+                                }}>{commarNumber(data[`${col.column}`] ?? 0)}</Td>
                             </>
                             :
                             <>

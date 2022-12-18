@@ -73,6 +73,9 @@ const MItemList = () => {
             obj['page'] = 1;
             obj['table'] = objManagerListContent[`${params.table}`].schema;
             obj['page_cut'] = 10;
+            if(params?.pk && ( params.table=='log_star' || params.table=='log_point' || params.table=='log_randombox' || params.table=='log_esgw' )){
+                obj['user_pk'] = params?.pk;
+            }
             if (objManagerListContent[`${params.table}`].is_move) {
                 obj['order'] = 'sort';
             }
@@ -96,6 +99,9 @@ const MItemList = () => {
         obj['table'] = objManagerListContent[`${params.table}`].schema;
         obj['page_cut'] = $('.page-cut').val();
         obj['keyword'] = $('.search').val();
+        if(params?.pk && ( params.table=='log_star' || params.table=='log_point' || params.table=='log_randombox' || params.table=='log_esgw' )){
+            obj['user_pk'] = params?.pk;
+        }
         if (objManagerListContent[`${params.table}`].is_move) {
             obj['order'] = 'sort';
         }
@@ -175,6 +181,9 @@ const MItemList = () => {
         let obj = {};
         obj['table'] = objManagerListContent[`${params.table}`].schema;
         obj['keyword'] = $('.search').val();
+        if(params?.pk && ( params.table=='log_star' || params.table=='log_point' || params.table=='log_randombox' || params.table=='log_esgw' )){
+            obj['user_pk'] = params?.pk;
+        }
         if (objManagerListContent[`${params.table}`].is_move) {
             obj['order'] = 'sort';
         }
