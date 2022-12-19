@@ -157,7 +157,16 @@ div.note>p>img {
     /* Chrome, Safari, Opera*/
     background: rgba(103, 172, 91, 0.094);
 }
-
+.scroll-table-green::-webkit-scrollbar{
+    display: none;
+    
+}
+.scroll-table-green::-webkit-scrollbar-thumb {
+    /* Chrome, Safari, Opera*/
+    background: rgba(103, 172, 91);
+    position: fixed;
+    bottom: 0;
+}
   .App {
     font-family: sans-serif;
     text-align: center;

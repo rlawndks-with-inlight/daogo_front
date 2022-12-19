@@ -22,6 +22,7 @@ const MUserOrganizationChart = () => {
     const [treeList, setTreeList] = useState([]);
     const [rangeList, setRangeList] = useState([]);
     const [tree, setTree] = useState(undefined);
+    const [userCount, setUserCount] = useState(0);
     useEffect(() => {
         async function fetchPosts() {
             setRangeList(range(0, max_child_depth));
@@ -58,15 +59,15 @@ const MUserOrganizationChart = () => {
     useEffect(() => {
         if (treeList && treeList.length > 0) {
             setTree(
-                returnChildTree(1, 0)
+                returnChildTree(74, 0)
             )
         }
     }, [treeList])
     return (
         <>
             <Breadcrumb title={`회원 조직도`} nickname={``} />
-            <Card>
-                <Tree
+            <div style={{width:'100%',overflowX:'scroll'}} className='scroll-table-green'>
+            <Tree
                     lineWidth={'2px'}
                     lineColor={'green'}
                     lineBorderRadius={'10px'}
@@ -74,7 +75,7 @@ const MUserOrganizationChart = () => {
                 >
                     {tree}
                 </Tree>
-            </Card>
+            </div>
         </>
     )
 }
