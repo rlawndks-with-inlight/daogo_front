@@ -30,7 +30,7 @@ const MWeekSettle = () => {
         fetchPosts();
     },[])
     async function fetchPosts(){
-        const {data:response} = await axios.get('/api/items?table=user&prider=2');
+        const {data:response} = await axios.get('/api/items?table=user&prider=true');
         setPosts(response?.data);
     }
     //감가는 아래의 프라이더 유저까지는 감가 안당함
