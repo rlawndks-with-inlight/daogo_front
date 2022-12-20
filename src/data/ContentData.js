@@ -50,7 +50,7 @@ export const zSidebarMenu = [
     { name: '랜덤박스 변동내역', link: '/randombox/history' },
     { name: 'ESGWP 변동내역', link: '/esgw/history' },
     { name: '출금신청내역', link: '/exchange/history' },
-    { name: '공유코드', link: '/sharecode/history' },
+   // { name: '공유코드', link: '/sharecode/history' },
     { name: '추천계보', link: '/recommendgenealogy' },
     { name: 'QR CODE', link: '/qrcode' },
     { name: '개인정보 수정', link: '/editmyinfo' },

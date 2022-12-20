@@ -61,7 +61,8 @@ const ContentTable = (props) => {
         } else if (obj?.type == 5) {//관리자가 수정
             result = obj?.note;
         } else if (obj?.type == 6) {//데일리자동지급
-            result = "";
+            obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+            result = `데일리 자동 차감 랜덤박스 포인트 -${obj['explain_obj'].percent}% 되었습니다.`;
         } else if (obj?.type == 7) {//데일리수동지급
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
             result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} ${obj?.category ? obj?.category : ''} ${obj?.price >= 0 ? '지급 되었습니다.' : '차감 되었습니다.'}`;
@@ -85,8 +86,12 @@ const ContentTable = (props) => {
                 result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
             }
         } else if (obj?.type == 11) {//이벤트 랜덤수익
-            result = "이벤트 랜덤수익 발생하였습니다.";
-        } else if (obj?.type == 12) {//이벤트 랜덤수익
+            if(obj['explain_obj'].length==0){
+                obj['explain_obj'] = "{}";
+            }
+            obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
+            result = ` ${obj['explain_obj']?.user_id} 회원으로 인한 이벤트 롤링수익 발생하였습니다.`;
+        } else if (obj?.type == 12) {//산하유저 아울렛 구매
             obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
             if (obj?.price > 0) {
                 result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생 하였습니다.`;

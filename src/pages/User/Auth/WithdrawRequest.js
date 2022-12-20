@@ -69,7 +69,7 @@ const WithdrawRequest = () => {
         if (window.confirm("저장 하시겠습니까?")) {
             let obj = {
                 star: parseFloat($('.send_star').val()),
-                payment_pw: $('.payment_pw').val(),
+                payment_pw: $('.payment_pw').val().toString(),
             }
             const { data: response } = await axios.post('/api/requestwithdraw', obj);
             if (response?.result > 0) {

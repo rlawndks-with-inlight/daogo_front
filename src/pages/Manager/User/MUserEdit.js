@@ -111,7 +111,7 @@ const MUserEdit = () => {
                     let hash_list = [];
                     if ($('.payment_pw').val()) {
                         hash_list.push('payment_pw');
-                        obj['payment_pw'] = $(`.payment_pw`).val()
+                        obj['payment_pw'] = $(`.payment_pw`).val().toString()
                     }
                     if ($('.pw').val()) {
                         hash_list.push('pw');

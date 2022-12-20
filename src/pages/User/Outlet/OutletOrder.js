@@ -111,7 +111,7 @@ const OutletOrder = () => {
             address: $('.address').val(),
             address_detail: $('.address_detail').val(),
             refer: $('.refer').val(),
-            payment_pw: $('.payment_pw').val(),
+            payment_pw: $('.payment_pw').val().toString(),
             item_pk: params?.pk,
             use_point: isUsePoint,
             item_count: count

@@ -37,6 +37,8 @@ const CardTitle = (props) => {
 const Gift = () => {
     const navigate = useNavigate();
     const [post, setPost] = useState({});
+    const [isExistUser, setIsExistUser] = useState(false);
+    const [existUser, setExistUser] = useState({});
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/getusermoney`);
@@ -72,7 +74,7 @@ const Gift = () => {
                 send_star: parseFloat($('.send_star').val()),
                 send_point: parseFloat($('.send_point').val()),
                 send_esgw: parseFloat($('.send_esgw').val()),
-                payment_pw: $('.payment_pw').val(),
+                payment_pw: $('.payment_pw').val().toString(),
             }
             const { data: response } = await axios.post('/api/ongift', obj);
             if (response?.result > 0) {
@@ -84,6 +86,19 @@ const Gift = () => {
             }
         }
     }
+    const onChangeExistUser = async (e) => {
+        const { data: response } = await axios.post('/api/checkexistid', {
+            id: e.target.value,
+            is_get_user_info: true
+        })
+        if (response?.result > 0) {
+            setIsExistUser(true);
+            setExistUser(response?.data)
+        } else {
+            setIsExistUser(false);
+            setExistUser({})
+        }
+    }
     return (
         <>
             <Wrappers>
@@ -91,7 +106,14 @@ const Gift = () => {
                 <Row style={{ margin: '0 0 16px 0' }}>
                     <OneCard width={96} style={{ height: '180px', cursor: 'default' }}>
                         <CardTitle title="받는사람 정보" icon={peoplesImg} />
-                        <InputContent title="아이디" class_name="receiver_id" placeholder="받는사람 아이디" />
+                        <InputContent title="아이디" class_name="receiver_id" placeholder="받는사람 아이디" onChange={onChangeExistUser}
+                            bottom_contents={isExistUser ?
+                                [<div style={{ marginLeft: '4px' }}>회원 '{existUser?.name}'님을 아이디로 지정했습니다.</div>]
+                                :
+                                $('.receiver_id').val() ?
+                                    [<div style={{ marginLeft: '4px', color: theme.color.red }}>존재하지 않는 회원입니다.</div>]
+                                    :
+                                    []} />
                         <InputContent title="휴대폰" class_name="receiver_phone" placeholder="받는사람 휴대폰 마지막 4자리" bottom_contents={[
                             <div style={{ marginLeft: '4px' }}>받는 사람 아이디와 휴대폰 번호를 꼼꼼히 확인해 주세요</div>,
                             <img src={infoCircle} style={{ width: '10px', height: '10px' }} />

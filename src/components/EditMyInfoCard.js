@@ -111,7 +111,7 @@ const EditMyInfoCard = () => {
                 return;
             }
             formData.append('pw', $('.pw').val());
-            formData.append('payment_pw', $('.payment-pw').val());
+            formData.append('payment_pw', $('.payment-pw').val().toString());
         } else if (num == 3) {
             if (!$('.phone').val() || !$('.pw').val()) {
                 alert("필요값이 비어있습니다.");

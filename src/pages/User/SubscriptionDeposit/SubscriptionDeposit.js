@@ -91,7 +91,7 @@ const SubscriptionDeposit = () => {
                 star: parseFloat($('.star').val()),
                 point: parseFloat($('.point').val()),
                 esgw: parseFloat($('.esgw').val()),
-                payment_pw: $('.payment_pw').val(),
+                payment_pw: $('.payment_pw').val().toString(),
             }
             const { data: response } = await axios.post('/api/subscriptiondeposit', obj);
             if (response?.result > 0) {

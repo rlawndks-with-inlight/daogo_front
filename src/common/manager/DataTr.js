@@ -19,7 +19,7 @@ import { Button } from '../../components/elements/AuthContentTemplete'
 import AddButton from '../../components/elements/button/AddButton'
 import $ from 'jquery';
 import { Input } from '../../components/elements/ManagerTemplete'
-import {AiOutlineOrderedList} from 'react-icons/ai';
+import { AiOutlineOrderedList } from 'react-icons/ai';
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:11px;
@@ -84,7 +84,8 @@ export const getTextByLogType = (obj_, schema) => {
     } else if (obj?.type == 5) {//관리자가 수정
         result = "관리자의 수정에 의해 변경 되었습니다.";
     } else if (obj?.type == 6) {//데일리자동지급
-        result = "";
+        obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
+        result = `데일리 자동 차감 랜덤박스 포인트 -${obj['explain_obj'].percent}% 되었습니다.`;
     } else if (obj?.type == 7) {//데일리수동지급
         result = `출석 데일리포인트 ${obj['explain_obj']?.percent ? (obj['explain_obj']?.percent + '%') : ""} 발생 하였습니다.`;
     } else if (obj?.type == 8) {//청약예치금등록
@@ -107,8 +108,12 @@ export const getTextByLogType = (obj_, schema) => {
             result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
         }
     } else if (obj?.type == 11) {//이벤트 랜덤수익
-        result = "이벤트 랜덤수익 발생하였습니다.";
-    } else if (obj?.type == 12) {//이벤트 랜덤수익
+        if (obj['explain_obj'].length == 0) {
+            obj['explain_obj'] = "{}";
+        }
+        obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
+        result = ` ${obj['explain_obj']?.user_id} 회원으로 인한 이벤트 롤링수익 발생하였습니다.`;
+    } else if (obj?.type == 12) {//산하유저 아울렛 구매
         obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
         if (obj?.price > 0) {
             result = `직대 ${obj['explain_obj']?.user_id}회원의 아울렛 구매에 대한 수익이 발생하였습니다.`;
@@ -121,9 +126,9 @@ export const getTextByLogType = (obj_, schema) => {
         } else {
             result = `아울렛 상품 구매 반환에 대해 차감되었습니다.`;
         }
-    }else if (obj?.type == 14) {//상품구매시 랜덤박스 포인트 받기
+    } else if (obj?.type == 14) {//월정산
         result = `월 정산 지급 되었습니다.`;
-    }else if (obj?.type == 15) {//상품구매시 랜덤박스 포인트 받기
+    } else if (obj?.type == 15) {//주정산
         result = `주 정산 지급 되었습니다.`;
     } else {
         result = "";
@@ -311,10 +316,10 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             </>}
                         {col.type == 'number' ?
                             <>
-                                <Td style={{ width: `${col.width}%` }} onClick={()=>{
-                                    if(schema=='user' && (col.column == 'star' ||col.column == 'point' ||col.column == 'randombox' ||col.column == 'esgw')){
+                                <Td style={{ width: `${col.width}%` }} onClick={() => {
+                                    if (schema == 'user' && (col.column == 'star' || col.column == 'point' || col.column == 'randombox' || col.column == 'esgw')) {
                                         navigate(`/manager/list/log_${col.column}/${data?.pk}`)
-                                    }else{
+                                    } else {
                                         console.log(2);
                                     }
                                 }}>{commarNumber(data[`${col.column}`] ?? 0)}</Td>
@@ -494,7 +499,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'week_settle_look' ?
+                        {col.type == 'week_settle_look' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
                                     <AiOutlineOrderedList style={{ cursor: 'pointer', color: theme.color.background1 }} onClick={() => lookWeekSettle(data?.pk, 1)} />
@@ -512,7 +517,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
-                            {col.type == 'user_prider_edit' ?
+                        {col.type == 'user_prider_edit' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
                                     <TbReportMoney style={{ cursor: 'pointer', color: theme.color.pink }} onClick={() => navigate(`/manager/userprideredit/${data.pk}`)} />

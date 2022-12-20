@@ -51,7 +51,7 @@ const BuyESGWPoint = () => {
         if (window.confirm("저장 하시겠습니까?")) {
             let obj = {
                 point: parseFloat($('.point').val()),
-                payment_pw: $('.payment_pw').val(),
+                payment_pw: $('.payment_pw').val().toString(),
             }
             const { data: response } = await axios.post('/api/buyesgwpoint', obj);
             if (response?.result > 0) {

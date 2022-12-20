@@ -55,7 +55,7 @@ const RegisterRandomBox = () => {
         if (window.confirm("정말 등록하시겠습니까?")) {
             const { data: response } = await axios.post('/api/registerrandomBox', {
                 star: parseFloat($('.send_star').val()),
-                payment_pw: parseFloat($('.payment_pw').val()),
+                payment_pw: $('.payment_pw').val().toString(),
             })
             if (response?.result > 0) {
                 alert("성공적으로 등록되었습니다.");
