@@ -10,7 +10,7 @@ import { Tree, TreeNode } from 'react-organizational-chart';
 import styled from "styled-components";
 import { getTierByUserTier, range } from "../../../functions/utils";
 import theme from "../../../styles/theme";
-import { max_child_depth } from "../../../data/ContentData";
+import { admin_pk, max_child_depth } from "../../../data/ContentData";
 const StyledNode = styled.div`
   padding: 5px;
   border-radius: 8px;
@@ -59,7 +59,7 @@ const MUserOrganizationChart = () => {
     useEffect(() => {
         if (treeList && treeList.length > 0) {
             setTree(
-                returnChildTree(74, 0)
+                returnChildTree(admin_pk, 0)
             )
         }
     }, [treeList])

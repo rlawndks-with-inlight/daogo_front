@@ -94,6 +94,7 @@ const MLoginCard = () => {
 
     }, [])
     const onLogin = async () => {
+        console.log(1)
         const { data: response } = await axios.post('/api/loginbyid', {
             id: $('.id').val(),
             pw: $('.pw').val(),

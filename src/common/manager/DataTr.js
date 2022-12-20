@@ -54,6 +54,7 @@ export const getTextByLogType = (obj_, schema) => {
             result = "";
         }
     } else if (obj?.type == 3) {//선물하기
+        obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
         let sche = "";
         if (schema == 'log_star') {//쿠폰 구매
             sche = "스타";

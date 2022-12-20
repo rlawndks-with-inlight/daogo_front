@@ -25,6 +25,7 @@ export const logoSrc = logoImg;
 export const confirmAsk = "저장 하시겠습니까?";
 export const deleteAsk = "정말 삭제 하시겠습니까?";
 export const max_child_depth = 100;//깊이
+export const admin_pk = 74;//admin pk
 //http://weare-first.com:8001
 export const editorState = {
     editorState: EditorState.createEmpty()
