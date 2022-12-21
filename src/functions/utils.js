@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { returnColumn } from '../common/manager/ColumnType';
 import LoadingText from '../components/LoadingText';
 import theme from '../styles/theme';
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 // 웹뷰에서 RN으로 데이터를 보낼때 사용합니다.
 export function sendToRN(num) {
     if (window.ReactNativeWebView) {
@@ -196,31 +199,54 @@ export const getSelectButtonColor = (bool) => {
 }
 export const makeManagerNote = (key) => {
 }
-export const getTierByUserTier = (num,id) =>{
-    if(num==0){
+export const getTierByUserTier = (num, id) => {
+    if (num == 0) {
         return "일반유저";
 
-    }else if(num==5){
+    } else if (num == 5) {
         return "화이트";
 
-    }else if(num==10){
+    } else if (num == 10) {
         return "그린";
 
-    }else if(num==15){
+    } else if (num == 15) {
         return "실버";
 
-    }else if(num==20){
+    } else if (num == 20) {
         return "골드";
 
-    }else if(num==25){
+    } else if (num == 25) {
         return "플레티넘";
 
-    }else{
+    } else {
         return "잘못된 레벨";
     }
 }
+export const getScoreByUserTier = (num, id) => {
+    if (num == 0) {
+        return 0;
+
+    } else if (num == 5) {
+        return 36;
+
+    } else if (num == 10) {
+        return 120;
+
+    } else if (num == 15) {
+        return 360;
+
+    } else if (num == 20) {
+        return 600;
+
+    } else if (num == 25) {
+        return 1200;
+
+    } else {
+        return 0;
+    }
+}
 export const dateFormat = (date, is_minus) => {//두날짜의 시간차
-    if(!date){
+    if (!date) {
         return "---";
     }
     let f_d = new Date(returnMoment()).getTime();
@@ -231,80 +257,128 @@ export const dateFormat = (date, is_minus) => {//두날짜의 시간차
     if (minute <= 1) {
         return "방금 전";
     } else if (hour < 1) {
-        if(is_minus){
+        if (is_minus) {
             return `${parseInt(minute)}분`;
-        }else{
+        } else {
             return `${parseInt(minute)}분 전`;
         }
     } else if (hour < 24) {
-        if(is_minus){
+        if (is_minus) {
             return `${parseInt(hour)}시간`;
-        }else{
+        } else {
             return `${parseInt(hour)}시간 전`;
         }
     } else if (day < 7) {
-        if(is_minus){
+        if (is_minus) {
             return `${parseInt(day)} Days`;
-        }else{
+        } else {
             return `${parseInt(day)}일 전`;
         }
     } else {
-        if(is_minus){
+        if (is_minus) {
             return `${parseInt(day)} Days`;
-        }else{
+        } else {
             return date.substring(0, 10);
         }
     }
 }
-export const getIntroducePercentByUserTier = (tier, is_use_point, point_percent) =>{
-    let introduce_percent_list = [0,6,7,8,9,10];
-    if(is_use_point==0){
+export const getIntroducePercentByUserTier = (tier, is_use_point, point_percent) => {
+    let introduce_percent_list = [0, 6, 7, 8, 9, 10];
+    if (is_use_point == 0) {
         return 0;
-    }else if(is_use_point==1){
+    } else if (is_use_point == 1) {
         return point_percent;
-    }else if(is_use_point==2 || !is_use_point){
-        return introduce_percent_list[tier/5];
-    }else{
+    } else if (is_use_point == 2 || !is_use_point) {
+        return introduce_percent_list[tier / 5];
+    } else {
         return 0;
     }
-    
+
 }
-export const getDiscountPoint = (item_price, is_use_point,point_percent,tier) =>{
+export const getDiscountPoint = (item_price, is_use_point, point_percent, tier) => {
     console.log(item_price)
     console.log(is_use_point)
     console.log(tier)
-    let introduce_percent_list = [0,6,7,8,9,10];
-    if(is_use_point==0){
+    let introduce_percent_list = [0, 6, 7, 8, 9, 10];
+    if (is_use_point == 0) {
         return 0;
-    }else if(is_use_point==1){
+    } else if (is_use_point == 1) {
         return point_percent;
-    }else if(is_use_point==2){
-        return item_price*(introduce_percent_list[tier/5]/100);
-    }else{
+    } else if (is_use_point == 2) {
+        return item_price * (introduce_percent_list[tier / 5] / 100);
+    } else {
         return 0;
     }
 }
-export const getRollUpBonusByUserTier = (num) =>{
-    let introduce_percent_list = [0,0.5,1,1.5,2,2.5];
-    if(!(num>=0&&num<=25)){
+export const getRollUpBonusByUserTier = (num) => {
+    let introduce_percent_list = [0, 0.5, 1, 1.5, 2, 2.5];
+    if (!(num >= 0 && num <= 25)) {
         return "---";
-    }else{
-        return introduce_percent_list[num/5];
+    } else {
+        return introduce_percent_list[num / 5];
     }
 }
-export const discountOutlet = (price, tier) =>{
-    let discount_percent_list = [5,6,7,8,9,10];
+export const discountOutlet = (price, tier) => {
+    let discount_percent_list = [5, 6, 7, 8, 9, 10];
     let result = parseFloat(price);
     console.log(result)
     console.log(tier)
-    result = result*(discount_percent_list[tier/5]/100);
+    result = result * (discount_percent_list[tier / 5] / 100);
     return result;
 }
-export const discountOutletList = (tier) =>{
-    let discount_percent_list = [5,6,7,8,9,10];
-    return discount_percent_list[tier/5];
+export const discountOutletList = (tier) => {
+    let discount_percent_list = [5, 6, 7, 8, 9, 10];
+    return discount_percent_list[tier / 5];
 }
-export const untilReady = () =>{
+export const untilReady = () => {
     alert("준비중입니다.");
     window.history.back();
+}
+
+export const excelDownload = async (excelData, objManagerListContent, schema) => {
+    const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const excelFileExtension = '.xlsx';
+    const excelFileName = schema;
+    let ignore_name_list = ['맨위로', '수정', '삭제', '관리'];
+    let name_list = [];
+    let column_list = [];
+    for (var i = 0; i < objManagerListContent[schema].zColumn.length; i++) {
+        if (!ignore_name_list.includes(objManagerListContent[schema].zColumn[i].name)) {
+            name_list.push(objManagerListContent[schema].zColumn[i].name)
+            column_list.push(objManagerListContent[schema].zColumn[i])
+        }
+    }
+    const ws = XLSX.utils.aoa_to_sheet([
+        ['daogo - 다오고']
+        , []
+        , name_list
+    ]);
+
+    let result = [...excelData];
+    let excel_list = [];
+    for (var i = 0; i < result.length; i++) {
+        excel_list[i] = [];
+        for (var j = 0; j < column_list.length; j++) {
+            let data = await returnColumn(result[i], column_list[j]?.type, column_list[j]?.column, objManagerListContent[schema].schema);;
+            await excel_list[i].push(data);
+        }
+    }
+    await excel_list.map(async (data, idx) => {
+        XLSX.utils.sheet_add_aoa(
+            ws,
+            [
+                data
+            ],
+            { origin: -1 }
+        );
+        ws['!cols'] = [
+            { wpx: 50 },
+            { wpx: 50 }
+        ]
+        return false;
+    });
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelButter = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const excelFile = new Blob([excelButter], { type: excelFileType });
+    FileSaver.saveAs(excelFile, excelFileName + excelFileExtension);
 }

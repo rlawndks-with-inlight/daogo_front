@@ -15,7 +15,8 @@ import MBottomContent from "../../../components/elements/MBottomContent";
 import PageContainer from "../../../components/elements/pagination/PageContainer";
 import PageButton from "../../../components/elements/pagination/PageButton";
 import theme from "../../../styles/theme";
-import { range } from "../../../functions/utils";
+import { excelDownload, range } from "../../../functions/utils";
+import { SiMicrosoftexcel } from "react-icons/si";
 
 const MWeekSettle = () => {
     const params = useParams();
@@ -57,6 +58,11 @@ const MWeekSettle = () => {
             }
         }
     }
+    const exportExcel = async () =>{
+        const {data:response} = await axios.get(`/api/getweeksettlechild?pk=${selectUserPk}`);
+        console.log(response)
+        await excelDownload(response?.data?.data, objManagerListContent, 'week_marketing');
+    }
     return (
         <>
             <Breadcrumb title={`주 정산`} nickname={``} />
@@ -69,8 +75,11 @@ const MWeekSettle = () => {
             <DataTable width={'100%'} data={posts} column={objManagerListContent[`week_prider`].zColumn ?? {}} schema={'week_prider'} lookWeekSettle={lookWeekSettle} />
             {settleList?.length>0?
             <>
-            <Title style={{margin:'8px auto',width:'95%'}}>이번주 {selectUser?.id} 회원 산하 매출 리스트</Title>
-            <DataTable width={'100%'} data={settleList} column={objManagerListContent[`marketing`].zColumn ?? {}} schema={'marketing'} />
+            <Title style={{margin:'8px auto',width:'95%',display:'flex',justifyContent:'space-between'}}>
+            <div style={{margin:'auto 0'}}>이번주 {selectUser?.id} 회원 산하 매출 리스트</div>
+            <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>
+            </Title>
+            <DataTable width={'100%'} data={settleList} column={objManagerListContent[`week_marketing`].zColumn ?? {}} schema={'week_marketing'} />
             <MBottomContent>
                 <div />
                 <PageContainer>

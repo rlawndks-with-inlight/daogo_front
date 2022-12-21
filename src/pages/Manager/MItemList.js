@@ -8,7 +8,7 @@ import DataTable from '../../common/manager/DataTable';
 import MBottomContent from '../../components/elements/MBottomContent';
 import PageContainer from '../../components/elements/pagination/PageContainer';
 import PageButton from '../../components/elements/pagination/PageButton';
-import { range } from '../../functions/utils';
+import { excelDownload, range } from '../../functions/utils';
 import AddButton from '../../components/elements/button/AddButton';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
@@ -198,55 +198,9 @@ const MItemList = () => {
         }
         const { data: response } = await axios.post(apiStr, obj);
         //setPosts(response?.data);
-        excelDownload(response.data ?? []);
+        await excelDownload(response.data ?? [], objManagerListContent, params.table);
     }
-    const excelFileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const excelFileExtension = '.xlsx';
-    const excelFileName = params.table;
-    const excelDownload = async (excelData) => {
-        let ignore_name_list = ['맨위로', '수정', '삭제', '관리'];
-        let name_list = [];
-        let column_list = [];
-        for (var i = 0; i < objManagerListContent[`${params.table}`].zColumn.length; i++) {
-            if (!ignore_name_list.includes(objManagerListContent[`${params.table}`].zColumn[i].name)) {
-                name_list.push(objManagerListContent[`${params.table}`].zColumn[i].name)
-                column_list.push(objManagerListContent[`${params.table}`].zColumn[i])
-            }
-        }
-        const ws = XLSX.utils.aoa_to_sheet([
-            ['daogo - 다오고']
-            , []
-            , name_list
-        ]);
-
-        let result = [...excelData];
-        let excel_list = [];
-        for (var i = 0; i < result.length; i++) {
-            excel_list[i] = [];
-            for (var j = 0; j < column_list.length; j++) {
-                let data = await returnColumn(result[i], column_list[j]?.type, column_list[j]?.column, objManagerListContent[`${params.table}`].schema);;
-                await excel_list[i].push(data);
-            }
-        }
-        await excel_list.map(async (data, idx) => {
-            XLSX.utils.sheet_add_aoa(
-                ws,
-                [
-                    data
-                ],
-                { origin: -1 }
-            );
-            ws['!cols'] = [
-                { wpx: 50 },
-                { wpx: 50 }
-            ]
-            return false;
-        });
-        const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
-        const excelButter = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const excelFile = new Blob([excelButter], { type: excelFileType });
-        FileSaver.saveAs(excelFile, excelFileName + excelFileExtension);
-    }
+    
     const onChangeType = (e) =>{
         changePage(1);
     }

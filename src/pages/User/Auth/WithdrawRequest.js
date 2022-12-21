@@ -36,7 +36,7 @@ transition-duration: 0.3s;
 &:hover{  
     background : ${(props=>props.is_hover?(props=>props.theme.color.background1+'29'):'')};
 }
-@media screen and (max-width:400px) { 
+@media screen and (max-width:700px) { 
     height:420px;
 }
 `
@@ -107,7 +107,7 @@ const WithdrawRequest = () => {
                 <Title  not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/exchange/history')}}>출금신청</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
                     <OneCard width={96} style={{position:'relative'}}>
-                        {window.innerWidth>400?
+                        {window.innerWidth>700?
                         <>
                         </>
                         :
@@ -131,7 +131,7 @@ const WithdrawRequest = () => {
                         <InputContent title="총 차감스타"  class_name="deduction_star" input_category={'STAR'} input_disabled={true} />
                         <InputContent title="실 수령액"  class_name="receipt_won" input_category={'￦'} input_disabled={true} />
                         <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
-                        {window.innerWidth>400?
+                        {window.innerWidth>700?
                         <>
                         <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', left: '12px', top: '12px' }}>
                             <div style={{ margin: 'auto auto 4px auto',fontSize:theme.size.font5,whiteSpace:'pre-line' }}>{post?.withdraw_setting?.withdraw_note}</div>

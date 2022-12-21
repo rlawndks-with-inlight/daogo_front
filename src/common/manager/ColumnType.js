@@ -1,4 +1,4 @@
-import { commarNumber, dateFormat, getTierByUserTier, numberToCategory } from "../../functions/utils";
+import { commarNumber, dateFormat, getScoreByUserTier, getTierByUserTier, numberToCategory } from "../../functions/utils";
 import { getTextByLogType } from "./DataTr";
 
 export const returnColumn = (data_, type_, column_, schema) => {
@@ -44,14 +44,14 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (data[`${column}`] == 50) {
             result = "개발자";
         }
-    }else if (type == 'prider') {
+    } else if (type == 'prider') {
         if (data[`${column}`] == 0) {
             result = "없음";
         } else if (data[`${column}`] == 1) {
             result = "그린리더";
         } else if (data[`${column}`] == 2) {
             result = "프라이더";
-        }else if (data[`${column}`] == 3) {
+        } else if (data[`${column}`] == 3) {
             result = "로얄프라이더";
         }
     } else if (type == 'tier') {
@@ -180,6 +180,23 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (type.split('order_')[1] == 'return_reason') {
             result = data['explain_obj']?.return_reason ?? "---";
         } else if (type.split('order_')[1] == 'edit') {
+            result = "---";
+        }
+    } else if (type.includes('week_marketing')) {
+        data['explain_obj'] = JSON.parse(data['explain_obj']);
+        if (type.split('marketing_')[1] == 'tier') {
+            result = getTierByUserTier(data['explain_obj']?.tier) + '(' + commarNumber(getScoreByUserTier(data['explain_obj']?.tier)) + ')';
+        } else if (type.split('marketing_')[1] == 'percent') {
+            if (data?.prider_count == 0) {
+                result = "3%";
+            } else if (data?.prider_count == 1) {
+                result = "0.5%";
+            } else {
+                result = "0%";
+            }
+        } else if (type.split('marketing_')[1] == 'star') {
+            result = commarNumber(getScoreByUserTier(data['explain_obj']?.tier) * (data?.prider_count == 0 ? (3) : (data?.prider_count == 1 ? (0.5) : (0))));
+        } else if (type.split('marketing_')[1] == 'reason') {
             result = "---";
         }
     }

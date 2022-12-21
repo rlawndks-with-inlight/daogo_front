@@ -4,7 +4,7 @@ import { OneCard, Row, Title, Wrappers } from "../../../components/elements/User
 import { AnimatedTree } from 'react-tree-graph';
 import 'react-tree-graph/dist/style.css'
 import { useParams } from "react-router-dom";
-import { getTierByUserTier, range } from "../../../functions/utils";
+import { commarNumber, getTierByUserTier, range } from "../../../functions/utils";
 import { Tree, TreeNode } from 'react-organizational-chart';
 import styled from "styled-components";
 import theme from "../../../styles/theme";
@@ -26,6 +26,7 @@ const RecommendGenealogy = () => {
         async function fetchPosts() {
             setRangeList(range(0, max_child_depth));
             const { data: response } = await axios.post('/api/getgenealogy');
+            console.log(response)
             setTreeList([...response?.data?.data]);
             setAuth({ ...response?.data?.mine });
         }
@@ -48,6 +49,7 @@ const RecommendGenealogy = () => {
                     <TreeNode label={<StyledNode>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.id}`}</div>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.name}`}</div>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${commarNumber(item?.marketing_score??0)} PV`}</div>
                         <div style={{ fontSize: theme.size.font6 }}>{`${getTierByUserTier(item?.tier)}`}</div>
                     </StyledNode>}>
                         {returnChildTree(item?.pk, item?.depth)}
@@ -65,10 +67,12 @@ const RecommendGenealogy = () => {
     }, [treeList])
     return (
         <>
-            <Wrappers>
+            <div style={{marginTop:'8rem'}}>
+
                 <Title>추천계보</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                    <OneCard width={96} style={{ height: '1000px', cursor: 'default' }}>
+                <div style={{width:'100%',overflowX:'scroll'}} className='scroll-table-green'>
+
                         <Tree
                             lineWidth={'2px'}
                             lineColor={'green'}
@@ -79,9 +83,10 @@ const RecommendGenealogy = () => {
                         >
                             {tree}
                         </Tree>
-                    </OneCard>
+                </div>
+
                 </Row>
-            </Wrappers>
+            </div>
         </>
     )
 }

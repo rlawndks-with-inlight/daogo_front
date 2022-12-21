@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
 import { GrLinkTop } from 'react-icons/gr'
-import { commarNumber, dateFormat, getTierByUserTier, numberToCategory } from '../../functions/utils'
+import { commarNumber, dateFormat, getScoreByUserTier, getTierByUserTier, numberToCategory } from '../../functions/utils'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import { RiMoneyDollarBoxFill } from 'react-icons/ri'
 import { TbReportMoney } from 'react-icons/tb';
@@ -882,6 +882,46 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                                 :
                                                 <>
                                                 </>}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                            </>
+                            :
+                            <>
+                            </>}
+                            {col.type.includes('week_marketing') ?
+                            <>
+                                {col.type.split('marketing_')[1] == 'tier' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>{getTierByUserTier(JSON.parse(data?.explain_obj??"{}")?.tier)} ({commarNumber(getScoreByUserTier(JSON.parse(data?.explain_obj??"{}")?.tier))})</Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('marketing_')[1] == 'percent' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {data?.prider_count==0?('3'):(data?.prider_count==1?('0.5'):('0'))}%
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('marketing_')[1] == 'star' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                           {commarNumber(getScoreByUserTier(JSON.parse(data?.explain_obj??"{}")?.tier)*(data?.prider_count==0?(3):(data?.prider_count==1?(0.5):(0))))}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
+                                {col.type.split('marketing_')[1] == 'reason' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {'---'}
                                         </Td>
                                     </>
                                     :

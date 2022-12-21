@@ -279,7 +279,7 @@ const Headers = () => {
                           <Viewer initialValue={item?.note ?? `<body></body>`} />
                           <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', left: '8px', bottom: '8px' }}>
                             <IoCloseCircleOutline style={{ color: theme.color.background1, fontSize: theme.size.font3, marginRight: '4px', cursor: 'pointer' }} onClick={() => { onClosePopup(item?.pk, true) }} />
-                            <div style={{ fontSize: theme.size.font5 }}>오늘 하루 보지않기</div>
+                            <div style={{ fontSize: theme.size.font5,cursor:'pointer' }} onClick={() => { onClosePopup(item?.pk, true) }}>오늘 하루 보지않기</div>
                           </div>
                         </PopupContent>
                       </>

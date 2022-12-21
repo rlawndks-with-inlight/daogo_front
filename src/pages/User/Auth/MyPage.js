@@ -167,7 +167,7 @@ const MyPage = () => {
                         </Content>
                         <Content>
                             <Category>총 쇼핑 사용 금액</Category>
-                            <Result>{auth?.purchase?.purchase ? commarNumber(auth?.purchase?.purchase * (-1)) : "---"} 스타</Result>
+                            <Result>{(auth?.purchase_star?.purchase_star ? commarNumber(auth?.purchase_star?.purchase_star * (-1)) : "---")} 스타 / {(auth?.purchase_point?.purchase_point ? commarNumber(auth?.purchase_point?.purchase_point * (-1)) : "---")} 포인트</Result>
                         </Content>
                         <Content>
                             <Category>개인정보동의</Category>

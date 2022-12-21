@@ -183,6 +183,24 @@ export const objManagerListContent = {
         false,
         false
     ),
+    week_marketing: sidebarObjFormat(
+        '주정산 리스트',
+        'week_marketing',
+        [
+            columnObjFormat('아이디', '', 'text', 'user_id'),
+            columnObjFormat('회원명', '', 'text', 'user_name'),
+            columnObjFormat('매출등록일', '', 'text', 'date'),
+            columnObjFormat('매출등급', '', 'week_marketing_tier', 'week_marketing_tier'),
+            columnObjFormat('수당%', '', 'week_marketing_percent', 'week_marketing_percent'),
+            columnObjFormat('지급될스타', '', 'week_marketing_star', 'week_marketing_star'),
+            columnObjFormat('발생사유', '', 'week_marketing_reason', 'week_marketing_reason'),
+            columnObjFormat('처리자아이디', '', 'text', 'manager_id'),
+            columnObjFormat('처리자이름', '', 'text', 'manager_name'),
+        ],
+        [],
+        false,
+        false
+    ),
     log_star: sidebarObjFormat(
         '스타 변동 LOG',
         'log_star',

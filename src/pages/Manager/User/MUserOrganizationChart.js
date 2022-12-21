@@ -8,7 +8,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Tree, TreeNode } from 'react-organizational-chart';
 import styled from "styled-components";
-import { getTierByUserTier, range } from "../../../functions/utils";
+import { commarNumber, getTierByUserTier, range } from "../../../functions/utils";
 import theme from "../../../styles/theme";
 import { admin_pk, max_child_depth } from "../../../data/ContentData";
 const StyledNode = styled.div`
@@ -48,6 +48,7 @@ const MUserOrganizationChart = () => {
                     <TreeNode label={<StyledNode>
                         <div style={{fontSize:theme.size.font5}}>{`${item?.id}`}</div>
                         <div style={{fontSize:theme.size.font5}}>{`${item?.name}`}</div>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${commarNumber(item?.marketing_score??0)} PV`}</div>
                         <div style={{fontSize:theme.size.font6}}>{`${getTierByUserTier(item?.tier)}`}</div>
                         </StyledNode>}>
                         {returnChildTree(item?.pk, item?.depth)}
