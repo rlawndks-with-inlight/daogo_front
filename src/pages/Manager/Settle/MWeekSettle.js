@@ -72,7 +72,7 @@ const MWeekSettle = () => {
             </Card>
             <Title style={{margin:'8px auto',width:'95%'}}>프라이더 리스트</Title>
             <DataTable width={'100%'} data={posts} column={objManagerListContent[`week_prider`].zColumn ?? {}} schema={'week_prider'} lookWeekSettle={lookWeekSettle} />
-            {settleList?.length>0?
+            {selectUserPk>0?
             <>
             <Title style={{margin:'8px auto',width:'95%',display:'flex',justifyContent:'space-between'}}>
             <div style={{margin:'auto 0'}}>이번주 {selectUser?.id} 회원 산하 매출 리스트</div>
