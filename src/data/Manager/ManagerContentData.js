@@ -371,6 +371,8 @@ export const objManagerListContent = {
         'month_settle',
         [
             columnObjFormat('정산일', '', 'date', 'date'),
+            columnObjFormat('UID', '', 'text', 'user_id'),
+            columnObjFormat('유저명', '', 'text', 'user_name'),
             columnObjFormat('총지급수당스타', '', 'number', 'price'),
             columnObjFormat('관리자명', '', 'text', 'manager_id'),
         ],
@@ -383,6 +385,8 @@ export const objManagerListContent = {
         'week_settle',
         [
             columnObjFormat('정산일', '', 'date', 'date'),
+            columnObjFormat('UID', '', 'text', 'user_id'),
+            columnObjFormat('유저명', '', 'text', 'user_name'),
             columnObjFormat('총지급수당스타', '', 'number', 'price'),
             columnObjFormat('관리자명', '', 'text', 'manager_id'),
         ],
