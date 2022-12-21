@@ -60,7 +60,6 @@ const MWeekSettle = () => {
     }
     const exportExcel = async () =>{
         const {data:response} = await axios.get(`/api/getweeksettlechild?pk=${selectUserPk}`);
-        console.log(response)
         await excelDownload(response?.data?.data, objManagerListContent, 'week_marketing');
     }
     return (
