@@ -38,7 +38,12 @@ const EditMyInfoCard = () => {
     const [formData] = useState(new FormData())
     const [isExistIdCard, setIsExistIdCard] = useState(false)
 
-    const zType = [{ title: "프로필 변경" }, { title: "비밀번호 변경" }, { title: "결제 비밀번호 변경" }, { title: "휴대폰 번호 변경" }];
+    const zType = [
+        { title: "프로필 변경" },
+        { title: "비밀번호 변경" },
+        { title: "결제 비밀번호 변경" },
+        //{ title: "휴대폰 번호 변경" }
+    ];
     useEffect(() => {
         async function isAuth() {
             const { data: response } = await axios.get('/api/auth');
@@ -193,19 +198,19 @@ const EditMyInfoCard = () => {
                         }
 
                         <CategoryName>우편번호</CategoryName>
-                        <Input className="zip-code" placeholder="예) 12345" onKeyPress={(e) => e.key == 'Enter' ? $('.address').focus() : null} />
+                        <Input className="zip-code" placeholder="예) 12345" onKeyPress={(e) => e.key == 'Enter' ? $('.address').focus() : null}  disabled={true} />
                         <CategoryName>주소</CategoryName>
-                        <Input className="address" placeholder="예) XX시 YY구 ZZ동 111-11" onKeyPress={(e) => e.key == 'Enter' ? $('.address-detail').focus() : null} />
+                        <Input className="address" placeholder="예) XX시 YY구 ZZ동 111-11" onKeyPress={(e) => e.key == 'Enter' ? $('.address-detail').focus() : null}  disabled={true} />
                         <CategoryName>상세주소</CategoryName>
-                        <Input className="address-detail" placeholder="예) XX동 YY호" onKeyPress={(e) => e.key == 'Enter' ? $('.bank-name').focus() : null} />
+                        <Input className="address-detail" placeholder="예) XX동 YY호" onKeyPress={(e) => e.key == 'Enter' ? $('.bank-name').focus() : null}  disabled={true} />
                         <CategoryName>입금은행명</CategoryName>
-                        <Input className="bank-name" placeholder="예) 농협" onKeyPress={(e) => e.key == 'Enter' ? $('.account-number').focus() : null} />
+                        <Input className="bank-name" placeholder="예) 농협" onKeyPress={(e) => e.key == 'Enter' ? $('.account-number').focus() : null} disabled={true} />
                         <CategoryName>입금계좌번호</CategoryName>
-                        <Input className="account-number" placeholder="예) 1234567890" onKeyPress={(e) => e.key == 'Enter' ? $('.account-name').focus() : null} />
+                        <Input className="account-number" placeholder="예) 1234567890" onKeyPress={(e) => e.key == 'Enter' ? $('.account-name').focus() : null}  disabled={true}  />
                         <CategoryName>계좌소유자명</CategoryName>
-                        <Input className="account-name" placeholder="홍길동" onKeyPress={(e) => e.key == 'Enter' ? $('.pw').focus() : null} />
+                        <Input className="account-name" placeholder="홍길동" onKeyPress={(e) => e.key == 'Enter' ? $('.pw').focus() : null}  disabled={true} />
                         <CategoryName>비밀번호</CategoryName>
-                        <Input className="pw" type={'password'} placeholder="확인을 위하여 입력해주세요." onKeyPress={(e) => e.key == 'Enter' ? onSave(typeNum) : null} />
+                        <Input className="pw" type={'password'} placeholder="확인을 위하여 입력해주세요." onKeyPress={(e) => e.key == 'Enter' ? onSave(typeNum) : null}  />
                     </>
                     :
                     <>
@@ -234,7 +239,7 @@ const EditMyInfoCard = () => {
                     :
                     <>
                     </>}
-                {typeNum === 3 ?
+                {/* {typeNum === 3 ?
                     <>
                         <CategoryName>휴대폰번호</CategoryName>
                         <Input className="phone" placeholder="확인을 위하여 입력해주세요." onKeyPress={(e) => e.key == 'Enter' ? $('.pw').focus() : null} />
@@ -243,7 +248,7 @@ const EditMyInfoCard = () => {
                     </>
                     :
                     <>
-                    </>}
+                    </>} */}
 
                 <Button style={{ marginTop: '36px' }} onClick={() => onSave(typeNum)}>저장</Button>
 
