@@ -30,6 +30,7 @@ const WithdrawRequestHistory = () => {
     return (
         <>
             <Wrappers className='wrappers'>
+                
                 <Title not_arrow={true}>{'출금 내역'}</Title>
                 <ContentTable columns={historyContent['exchange'].columns}
                     data={posts}

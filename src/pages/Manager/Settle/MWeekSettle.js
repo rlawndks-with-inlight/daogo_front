@@ -17,6 +17,7 @@ import PageButton from "../../../components/elements/pagination/PageButton";
 import theme from "../../../styles/theme";
 import { excelDownload, range } from "../../../functions/utils";
 import { SiMicrosoftexcel } from "react-icons/si";
+import Loading from "../../../components/Loading";
 
 const MWeekSettle = () => {
     const params = useParams();
@@ -27,12 +28,15 @@ const MWeekSettle = () => {
     const [selectUserPk, setSelectUserPk] = useState(0);
     const [page, setPage] = useState(1);
     const [pageList, setPageList] = useState([]);
+    const [loading, setLoading] = useState(false);
     useEffect(()=>{
         fetchPosts();
     },[])
     async function fetchPosts(){
+        setLoading(true)
         const {data:response} = await axios.get('/api/items?table=user&prider=true');
         setPosts(response?.data);
+        setLoading(false)
     }
     //감가는 아래의 프라이더 유저까지는 감가 안당함
 
@@ -71,7 +75,15 @@ const MWeekSettle = () => {
                 </Title>
             </Card>
             <Title style={{margin:'8px auto',width:'95%'}}>프라이더 리스트</Title>
+            {loading?
+            <>
+            <Loading/>
+            </>
+            :
+            <>
             <DataTable width={'100%'} data={posts} column={objManagerListContent[`week_prider`].zColumn ?? {}} schema={'week_prider'} lookWeekSettle={lookWeekSettle} />
+            </>
+            }
             {selectUserPk>0?
             <>
             <Title style={{margin:'8px auto',width:'95%',display:'flex',justifyContent:'space-between'}}>

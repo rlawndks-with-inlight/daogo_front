@@ -112,14 +112,16 @@ const SubscriptionDeposit = () => {
                         <SubscriptionDepositContainer1>
                             <div style={{ margin: 'auto', textAlign: 'center', fontSize: theme.size.font2 }}>등록한 청약예치금</div>
                             <MoneyContent>{commarNumber((post?.star_subscription_deposit) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>스타</div></MoneyContent>
-                            <MoneyContent>{commarNumber((post?.point_subscription_deposit) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></MoneyContent>
                             <MoneyContent>{commarNumber((post?.esgw_subscription_deposit) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>ESGWP</div></MoneyContent>
+                            <MoneyContent>{commarNumber((post?.point_subscription_deposit) * (-1)) ?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></MoneyContent>
+                        
                         </SubscriptionDepositContainer1>
                         <SubscriptionDepositContainer2>
                             <div style={{ margin: 'auto', textAlign: 'center', fontSize: theme.size.font2 }}>남은 청약예치금</div>
                             <MoneyContent>{commarNumber(60000 + post?.star_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>스타</div></MoneyContent>
-                            <MoneyContent>{commarNumber(30000 + post?.point_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></MoneyContent>
-                            <MoneyContent>{commarNumber(10000 + post?.esgw_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>ESGWP</div></MoneyContent>
+                            <MoneyContent>{commarNumber(15000 + post?.esgw_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>ESGWP</div></MoneyContent>
+                            <MoneyContent>{commarNumber(10000 + post?.point_subscription_deposit) ?? <LoadingText color={"#fff"} width={15} />}<div>포인트</div></MoneyContent>
+                        
                         </SubscriptionDepositContainer2>
                     </TopOneCard>
                 </Row>

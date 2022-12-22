@@ -921,7 +921,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('marketing_')[1] == 'reason' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
-                                            {'---'}
+                                            {data?.prider_count<=1?
+                                            <>
+                                            {`프라이더 ${data?.prider_id} 하부 매출`}
+                                            </>
+                                            :
+                                            <>
+                                            ---
+                                            </>}
                                         </Td>
                                     </>
                                     :
