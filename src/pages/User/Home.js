@@ -162,18 +162,19 @@ const Home = () => {
         let list = [...list_];
         let sum = 0;
         for (var i = 0; i < list.length; i++) {
-            if (list[i]?.price == 9000) {
+            list[i].explain_obj = JSON.parse(list[i].explain_obj??"{}")
+            if (list[i].explain_obj?.tier == 5) {
                 sum += 360000;
-            } else if (list[i]?.price == 30000) {
+            } else if (list[i].explain_obj?.tier == 10) {
                 sum += 1200000;
 
-            } else if (list[i]?.price == 90000) {
+            } else if (list[i].explain_obj?.tier == 15) {
                 sum += 3600000;
 
-            } else if (list[i]?.price == 150000) {
+            } else if (list[i].explain_obj?.tier == 20) {
                 sum += 6000000;
 
-            } else if (list[i]?.price == 300000) {
+            } else if (list[i].explain_obj?.tier == 25) {
                 sum += 12000000;
 
             }
