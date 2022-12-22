@@ -197,7 +197,7 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (type.split('marketing_')[1] == 'star') {
             result = commarNumber(getScoreByUserTier(data['explain_obj']?.tier) * (data?.prider_count == 0 ? (3) : (data?.prider_count == 1 ? (0.5) : (0))));
         } else if (type.split('marketing_')[1] == 'reason') {
-            result = "---";
+            result = `프라이더 ${data?.prider_id} 하부 매출`;
         }
     }
     return result;
