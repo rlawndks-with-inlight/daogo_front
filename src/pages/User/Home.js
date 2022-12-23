@@ -199,7 +199,7 @@ const Home = () => {
                                     </Col>
                                 </Row>
 
-                                <div style={{ fontSize: theme.size.font6, color: theme.color.background1, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼  / ${getTierByUserTier(post?.user?.tier)} / ${post?.auth?.id}`}</div>
+                                <div style={{ fontSize: theme.size.font4, color: theme.color.background0, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼  / ${getTierByUserTier(post?.user?.tier)} / ${post?.auth?.id}`}</div>
                             </ProfileContainer>
                         </Content>
                         <Content>

@@ -24,6 +24,7 @@ import Picker from 'emoji-picker-react';
 import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import { useRef } from 'react';
+import { Table, Td, Tr } from '../../../components/elements/UserContentTemplete';
 
 const MUserEdit = () => {
     const params = useParams();
@@ -36,6 +37,7 @@ const MUserEdit = () => {
     const [content, setContent] = useState(undefined)
     const [formData] = useState(new FormData())
     const [addressList, setAddressList] = useState([])
+    const [isSelectAddress, setIsSelectAddress] = useState(false);
     const [user, setUser] = useState({});
     const [noteFormData] = useState(new FormData());
     useEffect(() => {
@@ -88,12 +90,7 @@ const MUserEdit = () => {
         setChosenEmoji(emojiObject);
         editorRef.current.getInstance().insertText(emojiObject.emoji)
     };
-    const geocoding = async () => {
-        const { data: response } = await axios.post('/api/getaddressbytext', {
-            text: $('.place').val()
-        });
-        setAddressList(response.data ?? []);
-    }
+
     const editUser = async () => {
         if (!$(`.id`).val() || !$(`.name`).val() || !$(`.phone`).val()) {
             alert('필요값이 비어있습니다.');
@@ -167,6 +164,20 @@ const MUserEdit = () => {
             }
         }
     }
+    const getAddressByText = async () => {
+        const { data: response } = await axios.post('/api/getaddressbytext', {
+            text: $('.address').val()
+        })
+        setIsSelectAddress(false);
+        setAddressList(response?.data);
+    }
+    const onSelectAddress = (idx) =>{
+        setIsSelectAddress(true);
+        let address_obj = addressList[idx];
+        $('.address').val(address_obj?.address);
+        $('.zip_code').val(address_obj?.zip_code);
+        $('.address_detail').focus();
+    }
     return (
         <>
             <Breadcrumb title={`회원 ${params.pk == 0 ? '추가' : '수정'}`} nickname={``} />
@@ -233,21 +244,42 @@ const MUserEdit = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <Title>우편번호</Title>
+                                <Title>주소</Title>
                                 <div style={{ display: 'flex' }}>
-                                    <Input className='zip_code' />
-                                    <AddButton style={{ margin: '12px auto 6px 12px' }}>검색</AddButton>
+                                    <Input className='address' onKeyPress={(e)=>{e.key=='Enter'?getAddressByText():console.log(null)}}/>
+                                    <AddButton style={{ margin: '12px auto 6px 12px' }} onClick={getAddressByText}>검색</AddButton>
                                 </div>
                             </Col>
                         </Row>
+                        {addressList.length > 0 && !isSelectAddress ?
+                            <>
+                                <Table style={{ maxWidth: '700px', margin: '12px auto 12px 24px', width: '90%' }}>
+                                    <Tr>
+                                        <Td style={{ width: '30%' }}>우편번호</Td>
+                                        <Td style={{ width: '70%' }}>주소</Td>
+                                    </Tr>
+                                    {addressList.map((item, idx) => (
+                                        <>
+                                            <Tr style={{ cursor: 'pointer' }} onClick={()=>{onSelectAddress(idx)}}>
+                                                <Td style={{ width: '30%', padding: '8px 0' }}>{item.zip_code ?? "---"}</Td>
+                                                <Td style={{ width: '70%', padding: '8px 0' }}>{item.address ?? "---"}</Td>
+                                            </Tr>
+                                        </>
+                                    ))}
+                                </Table>
+                            </>
+                            :
+                            <>
+                            </>
+                        }
                         <Row>
-                            <Col>
-                                <Title>주소</Title>
-                                <Input className='address' />
-                            </Col>
                             <Col>
                                 <Title>상세주소</Title>
                                 <Input className='address_detail' />
+                            </Col>
+                            <Col>
+                                <Title>우편번호</Title>
+                                <Input className='zip_code' />
                             </Col>
                         </Row>
                         <Row>
