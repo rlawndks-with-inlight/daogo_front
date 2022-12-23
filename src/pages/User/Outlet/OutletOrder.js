@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { OneCard, Title, Wrappers, ViewerContainer } from "../../../components/elements/UserContentTemplete";
+import { OneCard, Title, Wrappers, ViewerContainer, Tr, Table, Td } from "../../../components/elements/UserContentTemplete";
 import styled from "styled-components";
 import { backUrl } from "../../../data/ContentData";
 import theme from "../../../styles/theme";
@@ -77,6 +77,8 @@ const OutletOrder = () => {
     const [auth, setAuth] = useState({});
     const [discountPoint, setDiscountPoint] = useState(0);
     const [isUsePoint, setIsUsePoint] = useState(false);
+    const [addressList, setAddressList] = useState([])
+    const [isSelectAddress, setIsSelectAddress] = useState(false);
     useEffect(() => {
         async function fetchPost() {
             if (!location?.state) {
@@ -126,6 +128,20 @@ const OutletOrder = () => {
             }
         }
     }
+    const getAddressByText = async () => {
+        const { data: response } = await axios.post('/api/getaddressbytext', {
+            text: $('.address').val()
+        })
+        setIsSelectAddress(false);
+        setAddressList(response?.data);
+    }
+    const onSelectAddress = (idx) =>{
+        setIsSelectAddress(true);
+        let address_obj = addressList[idx];
+        $('.address').val(address_obj?.address);
+        $('.zip_code').val(address_obj?.zip_code);
+        $('.address_detail').focus();
+    }
     return (
         <>
             <Wrappers>
@@ -162,15 +178,37 @@ const OutletOrder = () => {
                     <CategoryName>받는사람 이름(필수)</CategoryName>
                     <Input className="name" placeholder="받는사람 이름(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.phone').focus() : null} />
                     <CategoryName>받는사람 연락처(필수)	</CategoryName>
-                    <Input className="phone" placeholder="받는사람 연락처(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.zip_code').focus() : null} />
-                    <CategoryName>우편번호(필수)</CategoryName>
-                    <Input className="zip_code" placeholder="우편번호(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.address').focus() : null} />
+                    <Input className="phone" placeholder="받는사람 연락처(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.address').focus() : null} />
                     <CategoryName>주소(필수)</CategoryName>
-                    <Input className="address" placeholder="주소(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.address_detail').focus() : null} />
+                    <Input className="address" placeholder="주소(필수)" onKeyPress={(e) => e.key == 'Enter' ? getAddressByText() : null} />
+                    <Button style={{ margin: '36px auto' }} onClick={getAddressByText}>검색</Button>
+                    {addressList.length > 0 && !isSelectAddress ?
+                            <>
+                                <Table style={{maxWidth:'400px'}}>
+                                    <Tr>
+                                        <Td style={{ width: '30%' }}>우편번호</Td>
+                                        <Td style={{ width: '70%' }}>주소</Td>
+                                    </Tr>
+                                    {addressList.map((item, idx) => (
+                                        <>
+                                            <Tr style={{ cursor: 'pointer' }} onClick={()=>{onSelectAddress(idx)}}>
+                                                <Td style={{ width: '30%', padding: '8px 0' }}>{item.zip_code ?? "---"}</Td>
+                                                <Td style={{ width: '70%', padding: '8px 0' }}>{item.address ?? "---"}</Td>
+                                            </Tr>
+                                        </>
+                                    ))}
+                                </Table>
+                            </>
+                            :
+                            <>
+                            </>
+                        }
                     <CategoryName>상세주소(필수)</CategoryName>
-                    <Input className="address_detail" placeholder="상세주소(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.refer').focus() : null} />
+                    <Input className="address_detail" placeholder="상세주소(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.zip_code').focus() : null} />
+                    <CategoryName>우편번호(필수)</CategoryName>
+                    <Input className="zip_code" placeholder="우편번호(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.refer').focus() : null} />
                     <CategoryName>참고항목</CategoryName>
-                    <Input className="refer" placeholder="참고항목" onKeyPress={(e) => e.key == 'Enter' ? $('.payment_pw').focus() : null} />
+                    <Input className="refer" placeholder="참고항목" onKeyPress={(e) => e.key == 'Enter' ? $('.payment_pw').focus() : null} autoComplete={'new-password'} />
                     <CategoryName>결제비밀번호</CategoryName>
                     <Input className="payment_pw" placeholder="결제 비밀번호를 입력하세요." type={'password'} onKeyPress={(e) => e.key == 'Enter' ? onOutletOrder() : null} />
                     <Button style={{ margin: '36px auto' }} onClick={onOutletOrder}>주문하기</Button>
