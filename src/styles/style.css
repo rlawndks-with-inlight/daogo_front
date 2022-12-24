@@ -180,13 +180,12 @@ div.note>p>img {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
-    bottom: 0;
+    bottom: -120px;
     cursor: pointer;
     outline: none;
   }
   
   .box img {
-    margin: -120px;
   }
   
   .kuku {
