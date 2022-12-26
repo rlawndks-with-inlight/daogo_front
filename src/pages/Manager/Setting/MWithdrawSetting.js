@@ -12,15 +12,26 @@ import { confirmAsk } from "../../../data/ContentData";
 import $ from 'jquery';
 import { dateFormat, returnMoment } from '../../../functions/utils';
 import { useParams } from "react-router-dom";
-import { managerNoteObj, objManagerListContent } from "../../../data/Manager/ManagerContentData";
+import theme from "../../../styles/theme";
 const MWithdrawSetting = () => {
     const params = useParams();
-
+    const [selectDaysList, setSelectDaysList] = useState([]);
+    const zDays = [
+        { name: '일', val: 0 },
+        { name: '월', val: 1 },
+        { name: '화', val: 2 },
+        { name: '수', val: 3 },
+        { name: '목', val: 4 },
+        { name: '금', val: 5 },
+        { name: '토', val: 6 }
+    ]
     const [post, setPost] = useState({});
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get('/api/getsetting');
             setPost(response.data);
+            console.log(response)
+            setSelectDaysList(JSON.parse(response.data.withdraw_days));
         }
         fetchPost();
     }, [])
@@ -46,6 +57,7 @@ const MWithdrawSetting = () => {
                 withdraw_20: $('.withdraw_20').val(),
                 withdraw_25: $('.withdraw_25').val(),
                 withdraw_note: $('.withdraw_note').val(),
+                withdraw_days: JSON.stringify(selectDaysList),
                 manager_note: "출금 환경설정을 수정 하였습니다."
             });
             if (response.result > 0) {
@@ -78,11 +90,41 @@ const MWithdrawSetting = () => {
                 <Row>
                     <Col>
                         <Title>출금 가능 시작시간</Title>
-                        <Input className='withdraw_start_time' type={'time'}  defaultValue={post?.withdraw_start_time} />
+                        <Input className='withdraw_start_time' type={'time'} defaultValue={post?.withdraw_start_time} />
                     </Col>
                     <Col>
                         <Title>출금 가능 종료시간</Title>
                         <Input className='withdraw_end_time' type={'time'} defaultValue={post?.withdraw_end_time} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>출금 가능 요일</Title>
+                        <div style={{ margin: '12px auto 6px 24px', display: 'flex' }}>
+                            {zDays.map((item, idx) => (
+                                <>
+                                    <div style={{
+                                        background: `${selectDaysList.includes(idx) ? theme.color.background1 : theme.color.font3}`,
+                                        color: `${selectDaysList.includes(idx) ? '#fff' : theme.color.font1}`, fontSize: theme.size.font4, padding: '8px',
+                                        borderRadius: '4px', marginRight: '4px', cursor: 'pointer'
+                                    }}
+                                        onClick={() => {
+                                            let list = [...selectDaysList];
+                                            for (var i = 0; i < list.length; i++) {
+                                                if (list[i] == idx) {
+                                                    break;
+                                                }
+                                            }
+                                            if (i == list.length) {
+                                                list.push(idx);
+                                            } else {
+                                                list.splice(i, 1);
+                                            }
+                                            setSelectDaysList(list);
+                                        }}>{item.name}</div>
+                                </>
+                            ))}
+                        </div>
                     </Col>
                 </Row>
                 <Row>
