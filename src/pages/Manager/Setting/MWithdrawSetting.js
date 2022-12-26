@@ -30,7 +30,6 @@ const MWithdrawSetting = () => {
         async function fetchPost() {
             const { data: response } = await axios.get('/api/getsetting');
             setPost(response.data);
-            console.log(response)
             setSelectDaysList(JSON.parse(response.data.withdraw_days));
         }
         fetchPost();
