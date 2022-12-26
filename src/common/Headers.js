@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
 import '../styles/style.css'
-import { backUrl, logoSrc, zSidebarMenu } from '../data/ContentData';
+import { backUrl, badgeSrc, logoSrc, zSidebarMenu } from '../data/ContentData';
 import { AiOutlineBell, AiOutlineSearch, AiOutlineSetting } from 'react-icons/ai'
 import { zBottomMenu } from '../data/ContentData';
 import theme from '../styles/theme';
@@ -279,7 +279,7 @@ const Headers = () => {
                           <Viewer initialValue={item?.note ?? `<body></body>`} />
                           <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', left: '8px', bottom: '8px' }}>
                             <IoCloseCircleOutline style={{ color: theme.color.background1, fontSize: theme.size.font3, marginRight: '4px', cursor: 'pointer' }} onClick={() => { onClosePopup(item?.pk, true) }} />
-                            <div style={{ fontSize: theme.size.font5,cursor:'pointer' }} onClick={() => { onClosePopup(item?.pk, true) }}>오늘 하루 보지않기</div>
+                            <div style={{ fontSize: theme.size.font5, cursor: 'pointer' }} onClick={() => { onClosePopup(item?.pk, true) }}>오늘 하루 보지않기</div>
                           </div>
                         </PopupContent>
                       </>
@@ -304,9 +304,9 @@ const Headers = () => {
               <Row style={{ justifyContent: 'flex-start', margin: 'auto' }}>
                 {/* <img src={auth?.profile_img ? backUrl + auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} /> */}
                 <Col style={{ marginLeft: '8px', textAlign: 'left', height: '34px' }}>
-                  <div style={{display:'flex',alignItems:'center'}}>
-                  <div>{auth?.sell_outlet?.sell_outlet > 0 ? <GiLaurelsTrophy style={{ marginRight: '4px',  color: theme.color.gold }} /> : ''}</div>
-                  <div style={{ fontSize: theme.size.font3, fontWeight: 'bold' }}>Hi, {auth?.name}</div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div>{auth?.sell_outlet?.sell_outlet > 0 ? <img src={badgeSrc} style={{ width: '17px', height: 'auto', marginRight: '4px', color: theme.color.gold }} /> : ''}</div>
+                    <div style={{ fontSize: theme.size.font3, fontWeight: 'bold' }}>Hi, {auth?.name}</div>
                   </div>
                   <div style={{ fontSize: theme.size.font6, marginTop: '4px' }}>{`다오고 그린슈머스 소비경제 플랫폼 `}<br />{` ${getTierByUserTier(auth?.tier)} / ${auth?.id}`}</div>
                 </Col>

@@ -20,7 +20,7 @@ import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
 import logoOutlet from '../../assets/images/icon/logo-white.svg';
 import axios from 'axios';
 import LoadingText from '../../components/LoadingText';
-import { backUrl } from '../../data/ContentData';
+import { backUrl, badgeSrc } from '../../data/ContentData';
 import { GiLaurelsTrophy } from 'react-icons/gi';
 import { Viewer } from '@toast-ui/react-editor';
 const OneTopCard = styled.div`
@@ -76,7 +76,7 @@ margin: auto;
 const BannerImg = styled.img`
 box-shadow:${props => props.theme.boxShadow};
 border-radius:8px;
-${(props=>props.is_hover?('cursor:pointer'):'')};
+${(props => props.is_hover ? ('cursor:pointer') : '')};
 height:180px;
 width:100%;
 transition-duration: 0.3s;
@@ -96,8 +96,8 @@ const WhiteButton = (props) => {
                     <img src={yellowDot} />
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
                 </div>
-                <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 43% 0.15rem auto'}`, display: 'flex', alignItems: 'center',fontWeight:'bold' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
-                <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px',fontWeight:'bold' }}>
+                <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 43% 0.15rem auto'}`, display: 'flex', alignItems: 'center', fontWeight: 'bold' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
+                <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px', fontWeight: 'bold' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
                             <div style={{ color: theme.color.font3 }}>{total_occurrence_title}</div>
@@ -116,9 +116,9 @@ const GreenButton = (props) => {
     let { title, content, bottom_content, width, img, link, background } = props;
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`,display:'flex',flexDirection:'column',textAlign:'center',justifyContent:'space-between' }} background={theme.color.background0} is_hover={true} onClick={() => navigate(link)}>
-                <OutletImg src={img}/>
-                <div style={{color:'#fff',fontSize:theme.size.font4,marginTop:'6px'}}>이벤트게임</div>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`, display: 'flex', flexDirection: 'column', textAlign: 'center', justifyContent: 'space-between' }} background={theme.color.background0} is_hover={true} onClick={() => navigate(link)}>
+                <OutletImg src={img} />
+                <div style={{ color: '#fff', fontSize: theme.size.font4, marginTop: '6px' }}>이벤트게임</div>
             </OneCard>
         </>
     )
@@ -162,7 +162,7 @@ const Home = () => {
         let list = [...list_];
         let sum = 0;
         for (var i = 0; i < list.length; i++) {
-            list[i].explain_obj = JSON.parse(list[i].explain_obj??"{}")
+            list[i].explain_obj = JSON.parse(list[i].explain_obj ?? "{}")
             if (list[i].explain_obj?.tier == 5) {
                 sum += 360000;
             } else if (list[i].explain_obj?.tier == 10) {
@@ -195,7 +195,7 @@ const Home = () => {
                                 <Row>
                                     {/* <img src={post?.auth?.profile_img ? backUrl + post?.auth?.profile_img : defaultProfile} style={{ width: '34px', height: '34px', borderRadius: '50%' }} /> */}
                                     <Col style={{ textAlign: 'left', height: '20px', marginTop: 'auto' }}>
-                                        <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>{post?.sell_outlet?.sell_outlet > 0 ? <GiLaurelsTrophy style={{ marginRight: '4px', marginTop: '2px', color: theme.color.gold }} /> : ''}<div>Hi, {post?.auth?.name}</div></div>
+                                        <div style={{ fontSize: theme.size.font3, color: theme.color.font1, fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>{post?.sell_outlet?.sell_outlet > 0 ? <img src={badgeSrc} style={{ width: '17px', height: 'auto', marginRight: '4px', marginTop: '2px', color: theme.color.gold }} /> : ''}<div>Hi, {post?.auth?.name}</div></div>
                                     </Col>
                                 </Row>
 
@@ -226,11 +226,11 @@ const Home = () => {
                         </Content>
                         <Content>
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
-                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={post?.generation_star?.generation_star??0} unit={`STAR`} link={'/star/history'} />
+                            <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={post?.generation_star?.generation_star ?? 0} unit={`STAR`} link={'/star/history'} />
                             <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.generation_point?.generation_point} unit={`POINT`} link={'/point/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGWP'} content={post?.esgw?.esgw} unit={`ESGWP`} link={'/esgw/history'} />
-                                <GreenButton width={45} img={logoOutlet} link={'/eventgame'} background={theme.color.background0}/>
+                                <GreenButton width={45} img={logoOutlet} link={'/eventgame'} background={theme.color.background0} />
                             </Row>
                         </Content>
                         <Content style={{ borderBottom: `1px solid #dddddd`, width: '86%' }} />
@@ -253,7 +253,7 @@ const Home = () => {
                             ))}
                         </Content>
                         <Content>
-                            <Title not_arrow={true} textIcon={'Read more'} textIconLink={'true'} texttextIconClick={()=>{navigate('/noticelist')}}>공지사항</Title>
+                            <Title not_arrow={true} textIcon={'Read more'} textIconLink={'true'} texttextIconClick={() => { navigate('/noticelist') }}>공지사항</Title>
                             {post?.notice && post?.notice?.map((item, index) => (
                                 <>
                                     <OneCard style={{ marginBottom: '12px' }} is_hover={true} onClick={() => { navigate(`/post/notice/${item.pk}`) }}>

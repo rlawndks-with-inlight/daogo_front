@@ -86,6 +86,7 @@ export const objManagerListContent = {
             columnObjFormat('티어', '', 'tier', 'tier'),
             columnObjFormat('프라이더', '', 'prider', 'prider'),
             columnObjFormat('파트너점수', '', 'text', 'partner'),
+            columnObjFormat('추천인', '', 'text', 'parent_id'),
             columnObjFormat('가입일', '', 'date', 'date'),
             columnObjFormat('로그인시간', '', 'date', 'last_login'),
             columnObjFormat('정보수정', '', 'edit', 'edit'),

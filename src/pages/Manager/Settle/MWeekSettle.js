@@ -34,7 +34,7 @@ const MWeekSettle = () => {
     },[])
     async function fetchPosts(){
         setLoading(true)
-        const {data:response} = await axios.get('/api/items?table=user&prider=true');
+        const {data:response} = await axios.get('/api/items?table=user&over_prider=2');
         setPosts(response?.data);
         setLoading(false)
     }
