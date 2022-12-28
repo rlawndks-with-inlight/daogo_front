@@ -130,9 +130,9 @@ const EditMyInfoCard = () => {
         if (response?.result < 0) {
             alert(response.message);
             formData.delete('profile');
-            formData.delete('zip_code');
-            formData.delete('address');
-            formData.delete('address_detail');
+            //formData.delete('zip_code');
+            //formData.delete('address');
+            //formData.delete('address_detail');
             formData.delete('bank_name');
             formData.delete('account_number');
             formData.delete('account_name');
@@ -197,12 +197,12 @@ const EditMyInfoCard = () => {
                             </>
                         }
 
-                        <CategoryName>우편번호</CategoryName>
+                        {/* <CategoryName>우편번호</CategoryName>
                         <Input className="zip-code" placeholder="예) 12345" onKeyPress={(e) => e.key == 'Enter' ? $('.address').focus() : null}  disabled={true} />
                         <CategoryName>주소</CategoryName>
                         <Input className="address" placeholder="예) XX시 YY구 ZZ동 111-11" onKeyPress={(e) => e.key == 'Enter' ? $('.address-detail').focus() : null}  disabled={true} />
                         <CategoryName>상세주소</CategoryName>
-                        <Input className="address-detail" placeholder="예) XX동 YY호" onKeyPress={(e) => e.key == 'Enter' ? $('.bank-name').focus() : null}  disabled={true} />
+                        <Input className="address-detail" placeholder="예) XX동 YY호" onKeyPress={(e) => e.key == 'Enter' ? $('.bank-name').focus() : null}  disabled={true} /> */}
                         <CategoryName>입금은행명</CategoryName>
                         <Input className="bank-name" placeholder="예) 농협" onKeyPress={(e) => e.key == 'Enter' ? $('.account-number').focus() : null} disabled={true} />
                         <CategoryName>입금계좌번호</CategoryName>

@@ -64,7 +64,7 @@ const MUserMoneyEdit = () => {
                         manager_note += `${money_categories[i].kor},`;
                         edit_list.push({
                             price:price,
-                            type:money_categories[i].en,
+                            table:money_categories[i].en,
                             note:$(`.${money_categories[i].en}-note`).val()
                         })
                     }

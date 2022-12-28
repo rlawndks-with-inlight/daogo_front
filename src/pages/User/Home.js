@@ -15,6 +15,7 @@ import kakaoTalk from '../../assets/images/icon/home/kakao-talk.svg';
 import myPage from '../../assets/images/icon/home/my-page.svg';
 import pigBank from '../../assets/images/icon/home/pig-bank.svg';
 import point from '../../assets/images/icon/home/point.svg';
+import event_game from '../../assets/images/icon/home/event_game.png';
 import withdrawRequest from '../../assets/images/icon/home/withdraw-request.svg';
 import yellowDot from '../../assets/images/icon/home/yellow-dot.svg';
 import logoOutlet from '../../assets/images/icon/logo-white.svg';
@@ -65,12 +66,11 @@ margin: auto 0;
 }
 `
 const OutletImg = styled.img`
-height: 60%;
+height: 54px;
 width: auto; 
 margin: auto;
 @media screen and (max-width:500px) { 
-    width: 40%;
-    height: auto;
+    height: 42px;
 }
 `
 const BannerImg = styled.img`
@@ -91,12 +91,15 @@ const WhiteButton = (props) => {
     const navigate = useNavigate();
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%` }} color={font_color} background={background ?? '#fff'} is_hover={true} onClick={() => navigate(link)}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`,height:'auto' }} color={font_color} background={background ?? '#fff'} is_hover={true} onClick={() => navigate(link)}>
                 <div style={{ display: 'flex' }}>
                     <img src={yellowDot} />
-                    <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font3, fontWeight: 'bold' }}>{title}</div>
+                    <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font5, fontWeight: 'bold' }}>{title}</div>
                 </div>
-                <div style={{ fontSize: theme.size.font4, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 43% 0.15rem auto'}`, display: 'flex', alignItems: 'center', fontWeight: 'bold' }}><div>{commarNumber(content)}</div><div style={{ marginLeft: '8px' }}>{unit}</div></div>
+                <div style={{ fontSize: theme.size.font2, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 43% 0.15rem auto'}`, display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>
+                    <div>{commarNumber(content??0)}</div>
+                    {/* <div style={{ marginLeft: '8px' }}>{unit}</div> */}
+                </div>
                 <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px', fontWeight: 'bold' }}>
                     {typeof total_occurrence == 'number' ?
                         <>
@@ -116,9 +119,8 @@ const GreenButton = (props) => {
     let { title, content, bottom_content, width, img, link, background } = props;
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`, display: 'flex', flexDirection: 'column', textAlign: 'center', justifyContent: 'space-between' }} background={theme.color.background0} is_hover={true} onClick={() => navigate(link)}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`,height:'auto', display: 'flex', flexDirection: 'column', textAlign: 'center', justifyContent: 'space-between' }} background={theme.color.background0} is_hover={true} onClick={() => navigate(link)}>
                 <OutletImg src={img} />
-                <div style={{ color: '#fff', fontSize: theme.size.font4, marginTop: '6px' }}>이벤트게임</div>
             </OneCard>
         </>
     )
@@ -230,7 +232,7 @@ const Home = () => {
                             <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.generation_point?.generation_point} unit={`POINT`} link={'/point/history'} />
                             <Row>
                                 <WhiteButton width={45} title={'보유 ESGWP'} content={post?.esgw?.esgw} unit={`ESGWP`} link={'/esgw/history'} />
-                                <GreenButton width={45} img={logoOutlet} link={'/eventgame'} background={theme.color.background0} />
+                                <GreenButton width={45} img={event_game} link={'/eventgame'} background={theme.color.background0} />
                             </Row>
                         </Content>
                         <Content style={{ borderBottom: `1px solid #dddddd`, width: '86%' }} />

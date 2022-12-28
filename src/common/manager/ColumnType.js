@@ -14,7 +14,7 @@ export const returnColumn = (data_, type_, column_, schema) => {
     } else if (type == 'minus_number') {
         result = commarNumber((data[`${column}`] ?? 0) * (-1));
     } else if (type == 'date') {
-        result = dateFormat(data[`${column}`]);
+        result = data[`${column}`];
     } else if (type == 'abs') {
         result = commarNumber(Math.abs(data[`${column}`]));
     } else if (type == 'link') {
