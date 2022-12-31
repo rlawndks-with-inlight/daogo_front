@@ -167,6 +167,9 @@ div.note>p>img {
     position: fixed;
     bottom: 0;
 }
+.l-m{/* little margin*/
+    margin: 0 2px;
+}
   .App {
     font-family: sans-serif;
     text-align: center;

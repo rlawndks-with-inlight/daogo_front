@@ -164,7 +164,11 @@ const Home = () => {
         let list = [...list_];
         let sum = 0;
         for (var i = 0; i < list.length; i++) {
-            list[i].explain_obj = JSON.parse(list[i].explain_obj ?? "{}")
+            if(list[i].explain_obj && list[i].explain_obj.length>2){
+                list[i].explain_obj = JSON.parse(list[i].explain_obj ?? "{}")
+            }else{
+                list[i].explain_obj = {};
+            }
             if (list[i].explain_obj?.tier == 5) {
                 sum += 360000;
             } else if (list[i].explain_obj?.tier == 10) {
