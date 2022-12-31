@@ -26,7 +26,6 @@ const RecommendGenealogy = () => {
         async function fetchPosts() {
             setRangeList(range(0, max_child_depth));
             const { data: response } = await axios.post('/api/getgenealogy');
-            console.log(response)
             setTreeList([...response?.data?.data]);
             setAuth({ ...response?.data?.mine });
         }

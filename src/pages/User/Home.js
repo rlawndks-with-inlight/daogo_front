@@ -130,7 +130,7 @@ const Home = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState({});
-    let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/withdraw/history", icon: albumsOutline }, { title: "선물하기", link: "/gift", icon: downloadOutline }],
+    let bottom_menu_list = [[{ title: "출금신청", link: "/withdrawrequest", icon: withdrawRequest }, { title: "출금내역", link: "/exchange/history", icon: albumsOutline }, { title: "선물하기", link: "/gift", icon: downloadOutline }],
     [{ title: "ESGWP 구매", link: "/buyesgwpoint", icon: point }, { title: "청약예치금", link: "/subscriptiondeposit", icon: pigBank }, { title: "쇼핑몰", link: "shoppingmall", icon: cart }],
     [{ title: "랜덤박스변환", link: "/randombox/register", icon: box }, { title: "문의하기", link: 'kakaotalk', icon: kakaoTalk }, { title: "마이페이지", link: "/mypage", icon: myPage }]];
 

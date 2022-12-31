@@ -58,7 +58,6 @@ const MUserMoneyEditByExcel = () => {
             readXlsxFile(e.target.files[0]).then(async(rows) => {
                 rows.shift();
                 setSectorList(rows)
-                console.log(rows)
                 await new Promise((r) => setTimeout(r, 500));
                 for (var i = 0; i < 5000; i++) {
                     if (i == rows.length) {

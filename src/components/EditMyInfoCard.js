@@ -68,7 +68,6 @@ const EditMyInfoCard = () => {
         if (num != typeNum) {
             if (num == 0 || num == 3) {
                 await new Promise((r) => setTimeout(r, 300));
-                console.log(auth)
                 $('.zip-code').val(auth?.zip_code)
                 $('.address').val(auth?.address)
                 $('.address-detail').val(auth?.address_detail)

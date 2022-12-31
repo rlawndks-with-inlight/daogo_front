@@ -146,7 +146,6 @@ const LogMoneyHistory = () => {
                 }
             }
         }
-        console.log(list)
         setPosts([...list]);
         setPageList(range(1, response.data.maxPage));
     }

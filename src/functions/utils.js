@@ -295,10 +295,14 @@ export const getIntroducePercentByUserTier = (tier, is_use_point, point_percent)
     }
 
 }
+export const makeMaxPage = (num, page_cut) => {
+    if (num % page_cut == 0) {
+        return num / page_cut;
+    } else {
+        return parseInt(num / page_cut) + 1;
+    }
+}
 export const getDiscountPoint = (item_price, is_use_point, point_percent, tier) => {
-    console.log(item_price)
-    console.log(is_use_point)
-    console.log(tier)
     let introduce_percent_list = [0, 6, 7, 8, 9, 10];
     if (is_use_point == 0) {
         return 0;
@@ -321,8 +325,6 @@ export const getRollUpBonusByUserTier = (num) => {
 export const discountOutlet = (price, tier) => {
     let discount_percent_list = [5, 6, 7, 8, 9, 10];
     let result = parseFloat(price);
-    console.log(result)
-    console.log(tier)
     result = result * (discount_percent_list[tier / 5] / 100);
     return result;
 }

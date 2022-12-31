@@ -88,7 +88,6 @@ const MyPage = () => {
                 let withdraw_won = 0;
                 for (var i = 0; i < obj?.withdraw?.length; i++) {
                     let explain_obj = JSON.parse(obj?.withdraw[i]?.explain_obj);
-                    console.log(explain_obj)
                     if (explain_obj['receipt_won'] && explain_obj['status'] == 2) {
                         withdraw_won += obj?.withdraw[i]?.price * (-100);
                     }

@@ -57,7 +57,6 @@ const MItemList = () => {
     useEffect(() => {
         setZColumn(objManagerListContent[`${params.table}`].zColumn ?? {})
         async function fetchPost() {
-            console.log(objManagerListContent[`${params.table}`])
             let api_str = "/api/items";
             if(objManagerListContent[`${params.table}`]?.api_str){
                 setApiStr(objManagerListContent[`${params.table}`]?.api_str);
@@ -83,7 +82,6 @@ const MItemList = () => {
                 obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
             }
             const { data: response } = await axios.post(api_str, obj);
-            console.log(response)
             setPosts(response.data.data)
             setPageList(range(1, response.data.maxPage));
             setLoading(false)

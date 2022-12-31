@@ -44,7 +44,6 @@ const MWeekSettle = () => {
         setSelectUserPk(pk);
         setPage(num);
         const {data:response} = await axios.get(`/api/getweeksettlechild?pk=${pk}&page=${num}`);
-        console.log(response)
         setSettleList(response?.data?.data);
         setSelectUser(response?.data?.user);
         setPageList(range(1, response.data.maxPage));

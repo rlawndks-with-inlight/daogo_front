@@ -31,7 +31,6 @@ const MUserSubscriptionDepositEdit = () => {
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/getusermoney?pk=${params.pk}&type=subscriptiondeposit`);
-                console.log(response)
                 setPost(response?.data);
             } else {
                 navigate(-1);
