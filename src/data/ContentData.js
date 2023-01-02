@@ -133,6 +133,7 @@ export const historyContent = {
             columnObjFormat('사용포인트', 15, 'outlet_order', 'use_point'),
             columnObjFormat('날짜', 15, 'date', 'date'),
             columnObjFormat('배송현황', 10, 'outlet_order', 'status'),
+            columnObjFormat('비고', 10, 'outlet_order_cancel', 'outlet_order_cancel'),
             columnObjFormat('반송사유', 25, 'outlet_order', 'return_reason'),
         ]
     },

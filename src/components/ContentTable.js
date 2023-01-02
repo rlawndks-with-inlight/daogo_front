@@ -1,10 +1,12 @@
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { commarNumber, returnMoment, dateFormat } from "../functions/utils";
 import theme from "../styles/theme";
+import AddButton from "./elements/button/AddButton";
 import { Table, Tr, Td } from "./elements/UserContentTemplete";
 const ContentTable = (props) => {
     const navigate = useNavigate();
-    const { columns, data, is_not_display_thead, schema, onClick } = props;
+    const { columns, data, is_not_display_thead, schema, onClick, onChangeTypeNum } = props;
 
     const getHistoryByObj = (obj_, width) => {
         let obj = { ...obj_ };
@@ -40,7 +42,7 @@ const ContentTable = (props) => {
             if (obj?.price > 0) {
                 result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
             } else {
-                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
+                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber((obj?.price*(100/(100+(obj['explain_obj']?.commission??0))))* (-1))} ${sche}를 선물 했습니다.`;
             }
         } else if (obj?.type == 4) {//출금
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
@@ -125,7 +127,9 @@ const ContentTable = (props) => {
         } else if (column == 'use_point') {
             result = commarNumber(obj['explain_obj']?.point);
         } else if (column == 'status') {
-            if (obj?.status == -1) {
+            if (obj?.status == -2) {
+                result = "주문취소";
+            }else if (obj?.status == -1) {
                 result = "반품처리";
             } else if (obj?.status == 0) {
                 result = "확인대기";
@@ -172,6 +176,27 @@ const ContentTable = (props) => {
             result = "---";
         }
         return <Td style={{ width: `${width}%`, whiteSpace: 'pre-line' }}>{result}</Td>;
+    }
+    const onChangeOutletOrderStatus = async (num, item) => {//아울렛 주문 상태관리
+        let confirm_str = "";
+        if (num == -2) {
+            confirm_str = "주문취소 하시겠습니까?";
+        }else{
+            return;
+        }
+        if (window.confirm(confirm_str)) {
+            const { data: response } = await axios.post('/api/onchangeoutletorderstatus', {
+                status: num,
+                pk: item?.pk,
+            })
+            if (response?.result < 0) {
+                alert(response?.message);
+            } else {
+                alert("성공적으로 저장되었습니다.");
+                await onChangeTypeNum(1);
+                await new Promise((r) => setTimeout(r, 500));
+            }
+        }
     }
     return (
         <>
@@ -241,6 +266,23 @@ const ContentTable = (props) => {
                                             <>
 
                                                 {getOutletHistoryByObj(item, column.column, column.width)}
+                                            </>
+                                            :
+                                            <>
+                                            </>}
+                                            {column.type === 'outlet_order_cancel' ?
+                                            <>
+                                                {item?.status==0?
+                                                <>
+                                                <Td>
+                                                    <AddButton style={{width:'72px'}} onClick={()=>{onChangeOutletOrderStatus(-2,item)}}>주문취소</AddButton>
+                                                </Td>
+                                                </>
+                                                :
+                                                <>
+                                                <Td>---</Td>
+                                                </>
+                                                }
                                             </>
                                             :
                                             <>

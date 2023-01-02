@@ -38,8 +38,8 @@ margin-left: auto;
     margin-left: 0;
 }
 `
-const MItemList = () => {
-
+const MItemList = (props) => {
+    const { bottomContent } = props;
     const { pathname } = useLocation();
     const params = useParams();
     const navigate = useNavigate();
@@ -58,10 +58,10 @@ const MItemList = () => {
         setZColumn(objManagerListContent[`${params.table}`].zColumn ?? {})
         async function fetchPost() {
             let api_str = "/api/items";
-            if(objManagerListContent[`${params.table}`]?.api_str){
+            if (objManagerListContent[`${params.table}`]?.api_str) {
                 setApiStr(objManagerListContent[`${params.table}`]?.api_str);
                 api_str = objManagerListContent[`${params.table}`]?.api_str;
-            }else{
+            } else {
                 setApiStr("/api/items");
                 api_str = "/api/items";
             }
@@ -72,7 +72,7 @@ const MItemList = () => {
             obj['page'] = 1;
             obj['table'] = objManagerListContent[`${params.table}`].schema;
             obj['page_cut'] = 10;
-            if(params?.pk && ( params.table=='log_star' || params.table=='log_point' || params.table=='log_randombox' || params.table=='log_esgw' )){
+            if (params?.pk && (params.table == 'log_star' || params.table == 'log_point' || params.table == 'log_randombox' || params.table == 'log_esgw')) {
                 obj['user_pk'] = params?.pk;
             }
             if (objManagerListContent[`${params.table}`].is_move) {
@@ -97,17 +97,17 @@ const MItemList = () => {
         obj['table'] = objManagerListContent[`${params.table}`].schema;
         obj['page_cut'] = $('.page-cut').val();
         obj['keyword'] = $('.search').val();
-        if(params?.pk && ( params.table=='log_star' || params.table=='log_point' || params.table=='log_randombox' || params.table=='log_esgw' )){
+        if (params?.pk && (params.table == 'log_star' || params.table == 'log_point' || params.table == 'log_randombox' || params.table == 'log_esgw')) {
             obj['user_pk'] = params?.pk;
         }
         if (objManagerListContent[`${params.table}`].is_move) {
             obj['order'] = 'sort';
         }
         for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
-            if(objManagerListContent[`${params.table}`].queries[i].split("=")[1]){
+            if (objManagerListContent[`${params.table}`].queries[i].split("=")[1]) {
                 obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
-            }else{
-                if($(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val()!='all'){
+            } else {
+                if ($(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val() != 'all') {
                     obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = $(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val();
                 }
             }
@@ -179,17 +179,17 @@ const MItemList = () => {
         let obj = {};
         obj['table'] = objManagerListContent[`${params.table}`].schema;
         obj['keyword'] = $('.search').val();
-        if(params?.pk && ( params.table=='log_star' || params.table=='log_point' || params.table=='log_randombox' || params.table=='log_esgw' )){
+        if (params?.pk && (params.table == 'log_star' || params.table == 'log_point' || params.table == 'log_randombox' || params.table == 'log_esgw')) {
             obj['user_pk'] = params?.pk;
         }
         if (objManagerListContent[`${params.table}`].is_move) {
             obj['order'] = 'sort';
         }
         for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
-            if(objManagerListContent[`${params.table}`].queries[i].split("=")[1]){
+            if (objManagerListContent[`${params.table}`].queries[i].split("=")[1]) {
                 obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
-            }else{
-                if($(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val()!='all'){
+            } else {
+                if ($(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val() != 'all') {
                     obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = $(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val();
                 }
             }
@@ -198,9 +198,46 @@ const MItemList = () => {
         //setPosts(response?.data);
         await excelDownload(response.data ?? [], objManagerListContent, params.table);
     }
-    
-    const onChangeType = (e) =>{
+
+    const onChangeType = (e) => {
         changePage(1);
+    }
+    const onChangeExchangeBatch = async(num) =>{
+        let must_number = 0;
+        let must_number_str = "";
+        if(num==-1 || num==1){
+            must_number = 0;
+            must_number_str = "접수대기 상태가 아닌 곳에 체크가 되어 있습니다.";
+        }else if(num==2){
+            must_number = 1;
+            must_number_str = "접수완료 상태가 아닌 곳에 체크가 되어 있습니다.";
+
+        }else{
+            alert("잘못된 값입니다.");
+            return;
+        }
+        let join_list = [];
+        for(var i =0;i<posts.length;i++){
+            if($(`.check-${posts[i].pk}`).is(':checked')){
+                if(must_number!=posts[i].status){
+                    alert(must_number_str);
+                    return;
+                }else{
+                    join_list.push(posts[i].pk)
+                }
+            }
+        }
+        const {data:response} = await axios.post('/api/onchangeexchangebatch',{
+            join_list:join_list,
+            status:num,
+            manager_note:"유저 출금 일괄 수정 하였습니다.",
+        })
+        if(response?.result>0){
+            alert("성공적으로 저장되었습니다.");
+        }else{
+            alert(response.message);
+        }
+        changePage(page);
     }
     return (
         <>
@@ -235,21 +272,25 @@ const MItemList = () => {
                             </>}
                         {objManagerListContent[`${params.table}`].schema == 'exchange' ?
                             <>
-                                <Select className='status' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
+                                <Select className='status' style={{ margin: '12px 0px 12px 24px' }} onChange={onChangeType}>
                                     <option value={'all'}>전체</option>
                                     <option value={-1}>반송</option>
                                     <option value={0}>접수대기</option>
                                     <option value={1}>접수완료</option>
                                     <option value={2}>지급완료</option>
                                 </Select>
+                                <AddButton style={{ margin: '12px 0 12px 24px', width: '72px' }} onClick={()=>{onChangeExchangeBatch(1)}}>접수완료</AddButton>
+                                <AddButton style={{ margin: '12px 0 12px 24px', width: '72px', background: theme.color.blue }} onClick={()=>{onChangeExchangeBatch(2)}}>지급완료</AddButton>
+                                <AddButton style={{ margin: '12px 0 12px 24px', background: theme.color.red }} onClick={()=>{onChangeExchangeBatch(-1)}}>반송</AddButton>
                             </>
                             :
                             <>
                             </>}
-                            {objManagerListContent[`${params.table}`].schema == 'outlet_order' ?
+                        {objManagerListContent[`${params.table}`].schema == 'outlet_order' ?
                             <>
                                 <Select className='status' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
                                     <option value={'all'}>전체</option>
+                                    <option value={-2}>주문취소</option>
                                     <option value={-1}>반품처리</option>
                                     <option value={0}>확인대기</option>
                                     <option value={1}>주문확인</option>

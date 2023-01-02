@@ -156,7 +156,8 @@ const OutletShoppingMall = () => {
                     <>
                     <ContentTable columns={historyContent['outlet_order'].columns}
                     data={outletHistory}
-                    schema={'outlet_order'} />
+                    schema={'outlet_order'}
+                    onChangeTypeNum={onChangeTypeNum} />
                     </>}
 
 

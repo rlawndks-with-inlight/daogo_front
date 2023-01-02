@@ -61,6 +61,7 @@ import CircleCanvas from '../pages/User/CircleCanvas';
 import MUserMoneyEditByExcel from '../pages/Manager/User/MUserMoneyEditByExcel';
 import LogMoneyHistory from '../pages/User/History/LogMoneyHistory';
 import LogExchangeHistory from '../pages/User/History/LogExchangeHistory';
+import MGiftSetting from '../pages/Manager/Setting/MGiftSetting';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -107,6 +108,7 @@ const zManagerRoute = [
     { link: '/manager/user_organization_chart', element: <MUserOrganizationChart />, title: "" },
     { link: '/manager/edit/daily_payment_probability', element: <MDailyPaymentProbabilityEdit />, title: "" },
     { link: '/manager/edit/withdraw_setting', element: <MWithdrawSetting />, title: "" },
+    { link: '/manager/edit/gift_setting', element: <MGiftSetting />, title: "" },
     { link: '/manager/daily_manual_payment', element: <MDailyManualPayment />, title: "" },
     { link: '/manager/edit/main_banner/:pk', element: <MMainBannerEdit />, title: "메인배너" },
     { link: '/manager/edit/notice/:pk', element: <MNoticeEdit />, title: "공지사항관리" },

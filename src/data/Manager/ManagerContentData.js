@@ -16,6 +16,7 @@ export const needTwoImage = ['issue', 'theme', 'feature'];
 export const zSidebar = [
     sidebarContentFormat('기본설정', [
         sidebarObjListFormat('출금 환경설정', '/manager/edit/withdraw_setting', 40, ['/manager/edit/withdraw_setting']),//edit
+        sidebarObjListFormat('선물 환경설정', '/manager/edit/gift_setting', 40, ['/manager/edit/gift_setting']),//edit
         sidebarObjListFormat('데일리지급확률', '/manager/edit/daily_payment_probability', 40, ['/manager/edit/daily_payment_probability']),//edit
         sidebarObjListFormat('데일리수동지급', '/manager/daily_manual_payment', 40, ['/manager/daily_manual_payment'])
     ]),
@@ -364,6 +365,7 @@ export const objManagerListContent = {
         '출금신청 리스트',
         'exchange',
         [
+            columnObjFormat('체크', 5, 'check', 'check'),
             columnObjFormat('지갑아이디', 5, 'text', 'user_id'),
             columnObjFormat('회원명', 5, 'text', 'user_name'),
             columnObjFormat('신청스타', 5, 'exchange_star', 'price'),
@@ -407,6 +409,7 @@ export const objManagerListContent = {
             columnObjFormat('UID', '', 'text', 'user_id'),
             columnObjFormat('유저명', '', 'text', 'user_name'),
             columnObjFormat('총지급수당스타', '', 'number', 'price'),
+            columnObjFormat('상세', '', 'week_settle_detail', 'week_settle_detail'),
             columnObjFormat('관리자명', '', 'text', 'manager_id'),
         ],
         [],

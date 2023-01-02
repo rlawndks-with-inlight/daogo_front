@@ -100,9 +100,6 @@ const MNoticeEdit = () => {
                 } else {
                     addItem('item', obj);
                 }
-
-
-
             }
         }
     }

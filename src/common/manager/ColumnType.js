@@ -1,7 +1,7 @@
 import { commarNumber, dateFormat, getScoreByUserTier, getTierByUserTier, numberToCategory } from "../../functions/utils";
-import { getTextByLogType } from "./DataTr";
+import { getTextByLogType, getWeekSettleDetail } from "./DataTr";
 
-export const returnColumn = (data_, type_, column_, schema) => {
+export const returnColumn = async(data_, type_, column_, schema) => {
     let data = { ...data_ };
     let type = type_;
     let column = column_;
@@ -142,7 +142,7 @@ export const returnColumn = (data_, type_, column_, schema) => {
     } else if (type.includes('outlet_order')) {
         data['explain_obj'] = JSON.parse(data['explain_obj']);
         if (type.split('order_')[1] == 'name') {
-            result = `${data['user_id']}(${data['user_name']})`;
+            result = `${data['user_name']}`;
         } else if (type.split('order_')[1] == 'point') {
             result = commarNumber(data['explain_obj']?.point ?? 0);
         } else if (type.split('order_')[1] == 'count') {
@@ -160,7 +160,9 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (type.split('order_')[1] == 'sell_user_price') {
             result = commarNumber(data['sell_revenue_percent'] / 100 * data['item_price']);
         } else if (type.split('order_')[1] == 'status') {
-            if (data?.status == -1) {
+            if (data?.status == -2) {
+                result = "주문취소";
+            }else if (data?.status == -1) {
                 result = "반품처리";
             } else if (data?.status == 0) {
                 result = "확인대기";
@@ -199,6 +201,8 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (type.split('marketing_')[1] == 'reason') {
             result = `프라이더 ${data?.prider_id} 하부 매출`;
         }
+    } else if(type == 'week_settle_detail'){
+        result = await getWeekSettleDetail(data['explain_obj']);
     }
     return result;
 }

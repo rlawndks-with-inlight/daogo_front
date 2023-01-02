@@ -64,7 +64,7 @@ export const getTextByLogType = (obj_, schema) => {
         if (obj?.price > 0) {
             result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
         } else {
-            result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber(obj?.price * (-1))} ${sche}를 선물 했습니다.`;
+            result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber((obj?.price*(100/(100+(obj['explain_obj']?.commission??0)))) * (-1))} ${sche}를 선물 했습니다.`;
         }
     } else if (obj?.type == 4) {//출금
         result = "출금신청 하였습니다 " + `(`;
@@ -134,6 +134,19 @@ export const getTextByLogType = (obj_, schema) => {
         result = "";
     }
     return result;
+}
+export const getWeekSettleDetail = (obj_) => {
+    let obj = JSON.parse(obj_);
+    let list = obj?.list??[];
+    let str = "";
+    for(var i = 0;i<list.length;i++){
+        str += `UID:${list[i].user_id},퍼센트:${list[i].percent}%,스타:${commarNumber(list[i].star)}\n`;
+    }
+    if(list.length>0){
+        return str;
+    }else{
+        return "---";
+    }
 }
 const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTopItem, changeItemSequence, deleteItem, obj, changeStatus, changePage, page, lookWeekSettle }) => {
     const navigate = useNavigate();
@@ -543,6 +556,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                            {col.type == 'check' ?
+                            <>
+                                <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
+                                    <input type={'checkbox'} className={`check-${data?.pk}`} />
+                                </Td>
+                            </>
+                            :
+                            <>
+                            </>}
                         {col.type == 'delete' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
@@ -791,6 +813,10 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('order_')[1] == 'status' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
+                                            {data?.status == -2 ?
+                                                <>주문취소</>
+                                                :
+                                                <></>}
                                             {data?.status == -1 ?
                                                 <>반품처리</>
                                                 :
@@ -847,6 +873,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                 {col.type.split('order_')[1] == 'edit' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>
+                                            {data?.status == -2 ?
+                                                <>
+                                                    주문취소
+                                                </>
+                                                :
+                                                <>
+                                                </>}
                                             {data?.status == -1 ?
                                                 <>
                                                     취소완료
@@ -926,6 +959,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                     :
                                     <>
                                     </>}
+                            </>
+                            :
+                            <>
+                            </>}
+                            {col.type == 'week_settle_detail' ?
+                            <>
+                            <Td style={{ width: `320px`,whiteSpace:'pre-line' }}>
+                                {getWeekSettleDetail(data?.explain_obj)}
+                            </Td>
                             </>
                             :
                             <>

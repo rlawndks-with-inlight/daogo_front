@@ -91,13 +91,13 @@ const WhiteButton = (props) => {
     const navigate = useNavigate();
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`,height:'auto' }} color={font_color} background={background ?? '#fff'} is_hover={true} onClick={() => navigate(link)}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`, height: 'auto' }} color={font_color} background={background ?? '#fff'} is_hover={true} onClick={() => navigate(link)}>
                 <div style={{ display: 'flex' }}>
                     <img src={yellowDot} />
                     <div style={{ marginLeft: '10px', fontSize: theme.size.font5, color: theme.color.font5, fontWeight: 'bold' }}>{title}</div>
                 </div>
                 <div style={{ fontSize: theme.size.font2, margin: `${width ? '0.15rem 1rem 0.15rem auto' : '0.15rem 43% 0.15rem auto'}`, display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>
-                    <div>{commarNumber(content??0)}</div>
+                    <div>{commarNumber(content ?? 0)}</div>
                     {/* <div style={{ marginLeft: '8px' }}>{unit}</div> */}
                 </div>
                 <div style={{ fontSize: theme.size.font5, margin: '0 2rem 0 auto', display: 'flex', alignItems: 'center', height: '12px', fontWeight: 'bold' }}>
@@ -119,8 +119,16 @@ const GreenButton = (props) => {
     let { title, content, bottom_content, width, img, link, background } = props;
     return (
         <>
-            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`,height:'auto', display: 'flex', flexDirection: 'column', textAlign: 'center', justifyContent: 'space-between' }} background={theme.color.background0} is_hover={true} onClick={() => navigate(link)}>
+            <OneCard style={{ marginBottom: '12px', width: `${width ? width : ''}%`, height: 'auto', display: 'flex', flexDirection: 'column', textAlign: 'center', justifyContent: 'space-between' }} background={background} is_hover={true} onClick={() => navigate(link)}>
+                {content?
+                <>
+                {content}
+                </>
+                :
+                <>
                 <OutletImg src={img} />
+
+                </>}
             </OneCard>
         </>
     )
@@ -164,9 +172,9 @@ const Home = () => {
         let list = [...list_];
         let sum = 0;
         for (var i = 0; i < list.length; i++) {
-            if(list[i].explain_obj && list[i].explain_obj.length>2){
+            if (list[i].explain_obj && list[i].explain_obj.length > 2) {
                 list[i].explain_obj = JSON.parse(list[i].explain_obj ?? "{}")
-            }else{
+            } else {
                 list[i].explain_obj = {};
             }
             if (list[i].explain_obj?.tier == 5) {
@@ -234,9 +242,10 @@ const Home = () => {
                             <WhiteButton title={'보유 RANDOM BOX POINT'} content={post?.randombox?.randombox} unit={`POINT`} link={'/randombox/history'} />
                             <WhiteButton title={'보유 STAR'} content={post?.star?.star} total_occurrence_title={'총 발생 스타'} total_occurrence={post?.generation_star?.generation_star ?? 0} unit={`STAR`} link={'/star/history'} />
                             <WhiteButton title={'보유 POINT'} content={post?.point?.point} total_occurrence_title={'총 발생 포인트'} total_occurrence={post?.generation_point?.generation_point} unit={`POINT`} link={'/point/history'} />
+                            <WhiteButton title={'보유 ESGWP'} content={post?.esgw?.esgw} unit={`ESGWP`} link={'/esgw/history'} />
                             <Row>
-                                <WhiteButton width={45} title={'보유 ESGWP'} content={post?.esgw?.esgw} unit={`ESGWP`} link={'/esgw/history'} />
-                                <GreenButton width={45} img={event_game} link={'/eventgame'} background={theme.color.background0} />
+                            <GreenButton width={45} img={event_game} link={'/eventgame'} background={theme.color.background0} />
+                            <GreenButton width={45} content={<div style={{ fontSize: theme.size.font3, display: 'flex',margin:'auto', alignItems: 'center', fontWeight: 'bold' }}>보유자산 변동내역</div>} link={'/user_money/history'} background={"#fff"} />
                             </Row>
                         </Content>
                         <Content style={{ borderBottom: `1px solid #dddddd`, width: '86%' }} />
