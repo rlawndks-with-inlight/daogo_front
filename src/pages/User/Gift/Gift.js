@@ -138,7 +138,6 @@ const Gift = () => {
                         ]} />
                         <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요."
                             bottom_contents={[
-                                <div style={{ marginLeft: '4px', color: theme.color.red }}>*이체 수수료는 3%이며 보내시는 금액에서 차감됩니다.</div>,
                             ]}
                             bottom_contents_margin={"0 auto auto auto"} />
                     </OneCard>
