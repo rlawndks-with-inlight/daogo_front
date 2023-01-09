@@ -78,6 +78,7 @@ const MyPage = () => {
             const { data: response } = await axios.get('/api/getmypagecontent')
             let get_score_by_tier = { 0: 0, 5: 36, 10: 120, 15: 360, 20: 600, 25: 1200 };
             if (response.result > 0) {
+                console.log(response)
                 let obj = { ...response.data };
                 let marketing_price = 0;
                 for (var i = 0; i < obj?.marketing?.length; i++) {
@@ -85,14 +86,6 @@ const MyPage = () => {
                     marketing_price += get_score_by_tier[explain_obj?.tier];
                 }
                 obj['marketing_price'] = marketing_price;
-                let withdraw_won = 0;
-                for (var i = 0; i < obj?.withdraw?.length; i++) {
-                    let explain_obj = JSON.parse(obj?.withdraw[i]?.explain_obj);
-                    if (explain_obj['receipt_won'] && explain_obj['status'] == 2) {
-                        withdraw_won += obj?.withdraw[i]?.price * (-100);
-                    }
-                }
-                obj['withdraw_won'] = withdraw_won;
                 setAuth(obj);
             } else {
                 alert(response.message);
@@ -162,7 +155,7 @@ const MyPage = () => {
                         </Content>
                         <Content>
                             <Category>총 출금액</Category>
-                            <Result> {commarNumber(auth?.withdraw_won ?? 0)} 원</Result>
+                            <Result> {commarNumber((auth?.withdraw_won?.withdraw_won ?? 0)*(-100))} 원</Result>
                         </Content>
                         <Content>
                             <Category>총 쇼핑 사용 금액</Category>
