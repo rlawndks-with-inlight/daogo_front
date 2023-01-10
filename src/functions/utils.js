@@ -45,6 +45,9 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
+    if(num>0 && num < 0.000001){
+        return "0.00";
+    }
     if (!num && num != 0) {
         return undefined;
     }
