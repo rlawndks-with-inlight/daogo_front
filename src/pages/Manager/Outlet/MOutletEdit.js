@@ -77,7 +77,6 @@ const MOutletEdit = () => {
                     name: response?.data?.sell_user_name
                 })
                 editorRef.current.getInstance().setHTML(response.data.note.replaceAll('http://localhost:8001', backUrl));
-                console.log(response.data.option_obj)
                 let option_list = [...JSON.parse(response.data.option_obj)];
 
                 let option_obj = [];
@@ -246,7 +245,6 @@ const MOutletEdit = () => {
     const returnMenuHeader = (list_) => {
         let list = [...list_];
         let max_row = 0;
-        console.log(list)
         for (var i = 0; i < list.length; i++) {
             let row = list[i]?.list;
             if (row.length > max_row) {
