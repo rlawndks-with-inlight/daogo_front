@@ -331,7 +331,20 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             <>
                                 <Td style={{ width: `${col.width}%` }} onClick={() => {
                                     if (schema == 'user' && (col.column == 'star' || col.column == 'point' || col.column == 'randombox' || col.column == 'esgw')) {
-                                        navigate(`/manager/list/log_${col.column}/${data?.pk}`)
+                                        let schema_kr = "";
+                                        if(col.column == 'star'){
+                                            schema_kr = "스타";
+                                        }
+                                        if(col.column == 'point'){
+                                            schema_kr = "포인트";
+                                        }
+                                        if(col.column == 'randombox'){
+                                            schema_kr = "랜덤박스";
+                                        }
+                                        if(col.column == 'esgw'){
+                                            schema_kr = "ESGWP";
+                                        }
+                                        navigate(`/manager/list/log_${col.column}/${data?.pk}`,{state:{breadcrumb:`${data?.id} 유저 ${schema_kr} 변동내역`}})
                                     } else {
                                     }
                                 }}>{commarNumber(data[`${col.column}`] ?? 0)}</Td>

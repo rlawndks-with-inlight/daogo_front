@@ -45,7 +45,7 @@ const MUserOrganizationChart = () => {
         } else {
             return getChildByUserPk(pk, depth).map((item, idx) => (
                 <>
-                    <TreeNode label={<StyledNode>
+                    <TreeNode label={<StyledNode style={{cursor:'pointer'}}>
                         <div style={{fontSize:theme.size.font5}}>{`${item?.id}`}</div>
                         <div style={{fontSize:theme.size.font5}}>{`${item?.name}`}</div>
                         <div style={{ fontSize: theme.size.font5 }}>{`${commarNumber(item?.marketing_score??0)} PV`}</div>

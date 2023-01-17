@@ -18,7 +18,7 @@ export const zSidebar = [
         sidebarObjListFormat('출금 환경설정', '/manager/edit/withdraw_setting', 40, ['/manager/edit/withdraw_setting']),//edit
         sidebarObjListFormat('선물 환경설정', '/manager/edit/gift_setting', 40, ['/manager/edit/gift_setting']),//edit
         sidebarObjListFormat('데일리지급확률', '/manager/edit/daily_payment_probability', 40, ['/manager/edit/daily_payment_probability']),//edit
-        sidebarObjListFormat('데일리수동지급', '/manager/daily_manual_payment', 40, ['/manager/daily_manual_payment'])
+       // sidebarObjListFormat('데일리수동지급', '/manager/daily_manual_payment', 40, ['/manager/daily_manual_payment'])
     ]),
     sidebarContentFormat('회원관리', [
         sidebarObjListFormat('회원리스트', '/manager/list/user', 40, ['/manager/list/user']),//list

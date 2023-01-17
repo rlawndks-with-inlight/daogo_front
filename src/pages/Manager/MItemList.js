@@ -40,7 +40,7 @@ margin-left: auto;
 `
 const MItemList = (props) => {
     const { bottomContent } = props;
-    const { pathname } = useLocation();
+    const { pathname, state } = useLocation();
     const params = useParams();
     const navigate = useNavigate();
 
@@ -51,10 +51,14 @@ const MItemList = (props) => {
     const [loading, setLoading] = useState(false)
     const [loadingText, setLoadingText] = useState("")
     const [apiStr, setApiStr] = useState("/api/items");
+    const [breadcrumbText, setBreadcrumbText] = useState("");
     const notAddList = [
         'comment'
     ]
     useEffect(() => {
+        if (state?.breadcrumb) {
+            setBreadcrumbText(state?.breadcrumb);
+        }
         setZColumn(objManagerListContent[`${params.table}`].zColumn ?? {})
         async function fetchPost() {
             let api_str = "/api/items";
@@ -202,46 +206,46 @@ const MItemList = (props) => {
     const onChangeType = (e) => {
         changePage(1);
     }
-    const onChangeExchangeBatch = async(num) =>{
+    const onChangeExchangeBatch = async (num) => {
         let must_number = 0;
         let must_number_str = "";
-        if(num==-1 || num==1){
+        if (num == -1 || num == 1) {
             must_number = 0;
             must_number_str = "접수대기 상태가 아닌 곳에 체크가 되어 있습니다.";
-        }else if(num==2){
+        } else if (num == 2) {
             must_number = 1;
             must_number_str = "접수완료 상태가 아닌 곳에 체크가 되어 있습니다.";
 
-        }else{
+        } else {
             alert("잘못된 값입니다.");
             return;
         }
         let join_list = [];
-        for(var i =0;i<posts.length;i++){
-            if($(`.check-${posts[i].pk}`).is(':checked')){
-                if(must_number!=posts[i].status){
+        for (var i = 0; i < posts.length; i++) {
+            if ($(`.check-${posts[i].pk}`).is(':checked')) {
+                if (must_number != posts[i].status) {
                     alert(must_number_str);
                     return;
-                }else{
+                } else {
                     join_list.push(posts[i].pk)
                 }
             }
         }
-        const {data:response} = await axios.post('/api/onchangeexchangebatch',{
-            join_list:join_list,
-            status:num,
-            manager_note:"유저 출금 일괄 수정 하였습니다.",
+        const { data: response } = await axios.post('/api/onchangeexchangebatch', {
+            join_list: join_list,
+            status: num,
+            manager_note: "유저 출금 일괄 수정 하였습니다.",
         })
-        if(response?.result>0){
+        if (response?.result > 0) {
             alert("성공적으로 저장되었습니다.");
-        }else{
+        } else {
             alert(response.message);
         }
         changePage(page);
     }
     return (
         <>
-            <Breadcrumb title={`${objManagerListContent[params.table]?.breadcrumb}`} nickname={``} />
+            <Breadcrumb title={`${breadcrumbText || objManagerListContent[params.table]?.breadcrumb}`} nickname={``} />
             <div style={{ overflowX: 'auto' }}>
                 {/* 옵션카드 */}
                 <OptionCardWrappers>
@@ -279,9 +283,9 @@ const MItemList = (props) => {
                                     <option value={1}>접수완료</option>
                                     <option value={2}>지급완료</option>
                                 </Select>
-                                <AddButton style={{ margin: '12px 0 12px 24px', width: '72px' }} onClick={()=>{onChangeExchangeBatch(1)}}>접수완료</AddButton>
-                                <AddButton style={{ margin: '12px 0 12px 24px', width: '72px', background: theme.color.blue }} onClick={()=>{onChangeExchangeBatch(2)}}>지급완료</AddButton>
-                                <AddButton style={{ margin: '12px 0 12px 24px', background: theme.color.red }} onClick={()=>{onChangeExchangeBatch(-1)}}>반송</AddButton>
+                                <AddButton style={{ margin: '12px 0 12px 24px', width: '72px' }} onClick={() => { onChangeExchangeBatch(1) }}>접수완료</AddButton>
+                                <AddButton style={{ margin: '12px 0 12px 24px', width: '72px', background: theme.color.blue }} onClick={() => { onChangeExchangeBatch(2) }}>지급완료</AddButton>
+                                <AddButton style={{ margin: '12px 0 12px 24px', background: theme.color.red }} onClick={() => { onChangeExchangeBatch(-1) }}>반송</AddButton>
                             </>
                             :
                             <>

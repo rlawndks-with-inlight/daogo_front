@@ -1,6 +1,6 @@
 //쿠폰 등록 및 수정
 import Breadcrumb from "../../../common/manager/Breadcrumb"
-import { Card, Title, Input, Row, Col, ImageContainer, Select, Explain } from '../../../components/elements/ManagerTemplete';
+import { Card, Title, Input, Row, Col, ImageContainer, Select, Explain, Container, Table, Tr, SectorInput } from '../../../components/elements/ManagerTemplete';
 import ButtonContainer from "../../../components/elements/button/ButtonContainer";
 import AddButton from "../../../components/elements/button/AddButton";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,8 +20,14 @@ import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import { backUrl } from '../../../data/Manager/ManagerContentData';
 import $ from 'jquery';
-import { commarNumber } from "../../../functions/utils";
+import { commarNumber, range } from "../../../functions/utils";
+import { RiDeleteBinLine } from "react-icons/ri";
+import styled from "styled-components";
 
+const Td = styled.td`
+border:1px solid ${props => props.theme.color.font3};
+width:100px;
+`
 const MOutletEdit = () => {
     const params = useParams();
     const navigate = useNavigate();
@@ -29,12 +35,12 @@ const MOutletEdit = () => {
     const editorRef = useRef();
     const [url, setUrl] = useState('')
     const [content, setContent] = useState(undefined)
-    const [formData] = useState(new FormData())
     const [noteFormData] = useState(new FormData());
     const [brandList, setBrandList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [sellUserObj, setSellUserObj] = useState({});
     const [isInputPoint, setIsInputPoint] = useState(false);
+    const [optionList, setOptionList] = useState([]);
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.post('/api/getalldatabytables', {
@@ -56,10 +62,10 @@ const MOutletEdit = () => {
                 $('.sell_user_phone').val(response.data.sell_user_phone)
                 $('.sell_revenue_percent').val(response.data.sell_revenue_percent)
                 $('.is_use_point').val(response.data.is_use_point)
-                if(response?.data?.is_use_point!=1){
+                if (response?.data?.is_use_point != 1) {
                     setIsInputPoint(false);
                     $('.point_percent').val(null);
-                }else{
+                } else {
                     setIsInputPoint(true);
                     $('.point_percent').val(response?.data?.point_percent);
                 }
@@ -71,6 +77,37 @@ const MOutletEdit = () => {
                     name: response?.data?.sell_user_name
                 })
                 editorRef.current.getInstance().setHTML(response.data.note.replaceAll('http://localhost:8001', backUrl));
+                console.log(response.data.option_obj)
+                let option_list = [...JSON.parse(response.data.option_obj)];
+
+                let option_obj = [];
+                for(var i = 0;i<option_list.length;i++){
+                    option_obj[option_obj.length] = range(1, 1 + (option_list[0]?.list.length*2??0));
+                }
+                setOptionList(option_obj);
+                await new Promise((r) => setTimeout(r, 500));
+                for(var i=  0;i<option_list.length;i++){
+                    $(`.td-${i}-0`).val(option_list[i]?.option_name);
+                    for(var j=0;j<option_list[i]?.list.length;j++){
+                        $(`.td-${i}-${j*2+1}`).val(option_list[i]?.list[j]?.name);
+                        $(`.td-${i}-${j*2+2}`).val(option_list[i]?.list[j]?.price);
+                    }
+                }
+            } else {
+                let test = false;
+                if (test) {
+                    $('.name').val("테스트상품");
+                    $('.sell_star').val(1000);
+                    //$('.generated_code_count').val(response.data.generated_code_count)
+                    $('.randombox_point').val(200);
+                    $('.is_use_point').val(1)
+                    $('.point_percent').val(200);
+                    $('.sell_user_id').val("admin");
+                    $('.sell_user_name').val("admin");
+                    $('.sell_user_phone').val("admin");
+                    $('.sell_revenue_percent').val(2);
+                    $('.link').val("naver.com");
+                }
             }
         }
         $('div.toastui-editor-defaultUI-toolbar > div:nth-child(4)').append(`<button type="button" class='emoji' aria-label='이모티콘' style='font-size:18px;'>🙂</button>`);
@@ -129,7 +166,7 @@ const MOutletEdit = () => {
         if ((!url && !content) || !$('.name').val() || !$('.sell_star').val() || !$('.sell_user_id').val() || !$('.sell_user_name').val() || !$('.sell_user_phone').val() || !$('.sell_revenue_percent').val()) {
             alert('필수 값이 비어있습니다.');
         } else {
-            if(!$('.reason-correction').val()&&params.pk>0){
+            if (!$('.reason-correction').val() && params.pk > 0) {
                 alert('필수 값이 비어있습니다.');
                 return;
             }
@@ -137,21 +174,41 @@ const MOutletEdit = () => {
                 alert("판매자 아이디에 비정상적인 변경이 감지되었습니다.");
                 return;
             }
-            if (window.confirm('저장 하시겠습니까?')) {
+            let option_obj = [];
+            for (var i = 0; i < optionList.length; i++) {
+                let row = optionList[i];
+                if($(`.td-${i}-0`).val()){
+                    option_obj.push({
+                        option_name: $(`.td-${i}-0`).val(),
+                        list: []
+                    })
+                    for (var j = 1; j < row.length; j += 2) {
+                        if($(`.td-${i}-${j}`).val()){
+                            option_obj[i].list.push({
+                                name: $(`.td-${i}-${j}`).val(),
+                                price: parseInt($(`.td-${i}-${j + 1}`).val()),
+                            })
+                        }
+                    }
+                }
                 
+            }
+            if (window.confirm('저장 하시겠습니까?')) {
+                let formData = new FormData();
                 if (content) formData.append('outlet', content);
                 formData.append('category_pk', $('.category').val());
                 formData.append('brand_pk', $('.brand').val());
                 formData.append('name', $('.name').val());
                 formData.append('sell_star', $('.sell_star').val());
-               // formData.append('generated_code_count', $('.generated_code_count').val());
+                // formData.append('generated_code_count', $('.generated_code_count').val());
                 formData.append('sell_user_pk', sellUserObj?.pk);
                 formData.append('sell_user_id', $('.sell_user_id').val());
                 formData.append('sell_user_name', $('.sell_user_name').val());
                 formData.append('sell_user_phone', $('.sell_user_phone').val());
                 formData.append('is_use_point', $('.is_use_point').val());
-                if($('.point_percent').val()){
-                    formData.append('point_percent', $('.point_percent').val()??0);
+                formData.append('option_obj', JSON.stringify(option_obj));
+                if ($('.point_percent').val()) {
+                    formData.append('point_percent', $('.point_percent').val() ?? 0);
                 }
 
                 formData.append('randombox_point', $('.randombox_point').val());
@@ -185,6 +242,18 @@ const MOutletEdit = () => {
         } else {
             alert("잘못된 값입니다.")
         }
+    }
+    const returnMenuHeader = (list_) => {
+        let list = [...list_];
+        let max_row = 0;
+        console.log(list)
+        for (var i = 0; i < list.length; i++) {
+            let row = list[i]?.list;
+            if (row.length > max_row) {
+                max_row = row.length;
+            }
+        }
+        return range(1, max_row);
     }
     return (
         <>
@@ -223,11 +292,6 @@ const MOutletEdit = () => {
                         <Input className="sell_star" />
                         <Explain>숫자만 입력</Explain>
                     </Col>
-                    {/* <Col>
-                        <Title>구매시 생성코드 수</Title>
-                        <Input className="generated_code_count" />
-                        <Explain>숫자만 입력</Explain>
-                    </Col> */}
                 </Row>
                 <Row>
                     <Col>
@@ -245,7 +309,73 @@ const MOutletEdit = () => {
                     </Col>
                     <Col>
                         <Title>사용가능포인트</Title>
-                        <Input className="point_percent" placeholder="5.5"  disabled={!isInputPoint} />
+                        <Input className="point_percent" placeholder="5.5" disabled={!isInputPoint} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Title>상품옵션</Title>
+                        <Container>
+                            <Table style={{ width: 'auto' }}>
+                                <Tr>
+                                    <Td>옵션명</Td>
+                                    {optionList[0] && optionList[0].map((item, index) => (
+                                        <>
+                                            {index != 0 ?
+                                                <>
+                                                    <Td style={{ fontWeight: 'normal' }}>{index % 2 == 0 ? '가격차이' : '종류'}</Td>
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                        </>
+                                    ))}
+                                    <Td style={{ cursor: 'pointer' }} onClick={async () => {
+                                        let option_list = [...optionList];
+                                        if (option_list.length > 0) {
+                                            for (var i = 0; i < option_list.length; i++) {
+                                                option_list[i] = [...option_list[i], ...[1, 1]];
+                                            }
+                                            setOptionList(option_list);
+                                        }
+                                    }}>+</Td>
+                                </Tr>
+                                {optionList && optionList.map((item, index) => (
+                                    <>
+                                        <Tr>
+                                            {item.map((itm, idx) => (
+                                                <>
+                                                    <Td><SectorInput className={`td-${index}-${idx}`}
+                                                        type={(idx != 0 && idx % 2 == 0) ? 'number' : ''}
+                                                        placeholder={`${(idx != 0 && idx % 2 == 0) ? 'only number' : ''}`}
+                                                    /></Td>
+                                                </>
+                                            ))}
+                                        </Tr>
+                                    </>
+                                ))}
+                                <Tr>
+
+                                    <Td style={{ cursor: 'pointer' }} onClick={() => {
+                                        let option_list = [...optionList];
+                                        if (option_list.length == 0) {
+                                            option_list[option_list.length] = [1];
+                                        } else {
+                                            option_list[option_list.length] = option_list[0];
+                                        }
+                                        setOptionList(option_list);
+                                    }}>+</Td>
+                                </Tr>
+                            </Table>
+                            {/* <SectorAddButton onClick={() => { setSectorList([...sectorList, ...[{}]]) }}>+추가</SectorAddButton> */}
+                        </Container>
+                        <Explain style={{ color: theme.color.red }}>빈값으로 두면 자동 삭제 됩니다.</Explain>
+                        <Explain style={{ color: theme.color.red }}>옵션 자체 삭제시 옵션명 빈값으로, 옵션 내부 종류 삭제시 종류, 가격차이 빈값으로 설정</Explain>
+                        <div style={{ margin: '4px 0' }} />
+                        <Explain style={{ color: theme.color.red }}>가격차이 칸</Explain>
+                        <Explain style={{ color: theme.color.red }}>가격 변동 없으면 0 입력, 300스타 비쌀 시 300, 200스타 저렴할 시 -200 입력</Explain>
+                        <div style={{ margin: '4px 0' }} />
+                        <Explain style={{ color: theme.color.red }}>상품옵션 설정순서 -{">"} 1.엑셀 아래쪽 버튼으로 옵션 추가 2. 오른쪽 버튼으로 옵션 내부 종류 및 가격 설정</Explain>
                     </Col>
                 </Row>
                 <Row>
@@ -319,7 +449,6 @@ const MOutletEdit = () => {
                                 onChange={onChangeEditor}
                                 hooks={{
                                     addImageBlobHook: async (blob, callback) => {
-
                                         noteFormData.append('note', blob);
                                         const { data: response } = await axios.post('/api/addimage', noteFormData);
                                         if (response.result > 0) {
