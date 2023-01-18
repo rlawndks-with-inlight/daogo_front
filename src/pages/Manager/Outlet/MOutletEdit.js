@@ -78,22 +78,14 @@ const MOutletEdit = () => {
                 })
                 editorRef.current.getInstance().setHTML(response.data.note.replaceAll('http://localhost:8001', backUrl));
                 let option_list = [...JSON.parse(response.data.option_obj)];
-
-                let option_obj = [];
-                for(var i = 0;i<option_list.length;i++){
-                    option_obj[option_obj.length] = range(1, 1 + (option_list[0]?.list.length*2??0));
-                }
-                setOptionList(option_obj);
+                setOptionList(option_list);
                 await new Promise((r) => setTimeout(r, 500));
-                for(var i=  0;i<option_list.length;i++){
-                    $(`.td-${i}-0`).val(option_list[i]?.option_name);
-                    for(var j=0;j<option_list[i]?.list.length;j++){
-                        $(`.td-${i}-${j*2+1}`).val(option_list[i]?.list[j]?.name);
-                        $(`.td-${i}-${j*2+2}`).val(option_list[i]?.list[j]?.price);
-                    }
+                for(var i = 0;i<option_list.length;i++){
+                    $(`.td-${i}-0`).val(option_list[i]?.name);
+                    $(`.td-${i}-1`).val(option_list[i]?.price);
                 }
             } else {
-                let test = false;
+                let test = true;
                 if (test) {
                     $('.name').val("테스트상품");
                     $('.sell_star').val(1000);
@@ -175,22 +167,15 @@ const MOutletEdit = () => {
             }
             let option_obj = [];
             for (var i = 0; i < optionList.length; i++) {
-                let row = optionList[i];
-                if($(`.td-${i}-0`).val()){
+                if($(`.tr-${i}`).css('display')=='none'){
+
+                }else{
                     option_obj.push({
-                        option_name: $(`.td-${i}-0`).val(),
-                        list: []
+                        name:$(`.td-${i}-0`).val(),
+                        price:parseInt($(`.td-${i}-1`).val()),
                     })
-                    for (var j = 1; j < row.length; j += 2) {
-                        if($(`.td-${i}-${j}`).val()){
-                            option_obj[i].list.push({
-                                name: $(`.td-${i}-${j}`).val(),
-                                price: parseInt($(`.td-${i}-${j + 1}`).val()),
-                            })
-                        }
-                    }
                 }
-                
+
             }
             if (window.confirm('저장 하시겠습니까?')) {
                 let formData = new FormData();
@@ -317,7 +302,9 @@ const MOutletEdit = () => {
                             <Table style={{ width: 'auto' }}>
                                 <Tr>
                                     <Td>옵션명</Td>
-                                    {optionList[0] && optionList[0].map((item, index) => (
+                                    <Td>가격차이</Td>
+                                    <Td style={{width:'50px'}}>삭제</Td>
+                                    {/* {optionList[0] && optionList[0].map((item, index) => (
                                         <>
                                             {index != 0 ?
                                                 <>
@@ -336,25 +323,24 @@ const MOutletEdit = () => {
                                             }
                                             setOptionList(option_list);
                                         }
-                                    }}>+</Td>
+                                    }}>+</Td> */}
                                 </Tr>
                                 {optionList && optionList.map((item, index) => (
                                     <>
-                                        <Tr>
-                                            {item.map((itm, idx) => (
-                                                <>
-                                                    <Td><SectorInput className={`td-${index}-${idx}`}
-                                                        type={(idx != 0 && idx % 2 == 0) ? 'number' : ''}
-                                                        placeholder={`${(idx != 0 && idx % 2 == 0) ? 'only number' : ''}`}
-                                                    /></Td>
-                                                </>
-                                            ))}
+                                        <Tr className={`tr-${index}`}>
+                                            <Td><SectorInput className={`td-${index}-0`} /></Td>
+                                            <Td><SectorInput className={`td-${index}-1`} type={'number'} placeholder={'only number'} /></Td>
+                                            <Td style={{width:'50px'}}>
+                                                <RiDeleteBinLine style={{cursor:'pointer'}} 
+                                                onClick={()=>{
+                                                    $(`.tr-${index}`).css('display','none');
+                                                }}/>
+                                                </Td>
                                         </Tr>
                                     </>
                                 ))}
                                 <Tr>
-
-                                    <Td style={{ cursor: 'pointer' }} onClick={() => {
+                                    <Td style={{ cursor: 'pointer', width: '257px' }} onClick={() => {
                                         let option_list = [...optionList];
                                         if (option_list.length == 0) {
                                             option_list[option_list.length] = [1];
@@ -367,13 +353,8 @@ const MOutletEdit = () => {
                             </Table>
                             {/* <SectorAddButton onClick={() => { setSectorList([...sectorList, ...[{}]]) }}>+추가</SectorAddButton> */}
                         </Container>
-                        <Explain style={{ color: theme.color.red }}>빈값으로 두면 자동 삭제 됩니다.</Explain>
-                        <Explain style={{ color: theme.color.red }}>옵션 자체 삭제시 옵션명 빈값으로, 옵션 내부 종류 삭제시 종류, 가격차이 빈값으로 설정</Explain>
-                        <div style={{ margin: '4px 0' }} />
                         <Explain style={{ color: theme.color.red }}>가격차이 칸</Explain>
                         <Explain style={{ color: theme.color.red }}>가격 변동 없으면 0 입력, 300스타 비쌀 시 300, 200스타 저렴할 시 -200 입력</Explain>
-                        <div style={{ margin: '4px 0' }} />
-                        <Explain style={{ color: theme.color.red }}>상품옵션 설정순서 -{">"} 1.엑셀 아래쪽 버튼으로 옵션 추가 2. 오른쪽 버튼으로 옵션 내부 종류 및 가격 설정</Explain>
                     </Col>
                 </Row>
                 <Row>
