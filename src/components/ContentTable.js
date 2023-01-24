@@ -1,12 +1,16 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { commarNumber, returnMoment, dateFormat } from "../functions/utils";
+import { commarNumber, returnMoment, dateFormat, range } from "../functions/utils";
 import theme from "../styles/theme";
 import AddButton from "./elements/button/AddButton";
+import { Select } from "./elements/ManagerTemplete";
 import { Table, Tr, Td } from "./elements/UserContentTemplete";
+import { GiBuyCard } from 'react-icons/gi';
+import { RiDeleteBin5Line } from 'react-icons/ri';
+import $ from 'jquery';
 const ContentTable = (props) => {
     const navigate = useNavigate();
-    const { columns, data, is_not_display_thead, schema, onClick, onChangeTypeNum } = props;
+    const { columns, data, is_not_display_thead, schema, onClick, onChangeTypeNum, refreshPage } = props;
 
     const getHistoryByObj = (obj_, width) => {
         let obj = { ...obj_ };
@@ -42,7 +46,7 @@ const ContentTable = (props) => {
             if (obj?.price > 0) {
                 result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 로부터 ${commarNumber(obj?.price)} ${sche}를 선물 받았습니다.`;
             } else {
-                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber((obj?.price*(100/(100+(obj['explain_obj']?.commission??0))))* (-1))} ${sche}를 선물 했습니다.`;
+                result = `${obj['explain_obj']?.user_id}(${obj['explain_obj']?.user_name}) 에게 ${commarNumber((obj?.price * (100 / (100 + (obj['explain_obj']?.commission ?? 0)))) * (-1))} ${sche}를 선물 했습니다.`;
             }
         } else if (obj?.type == 4) {//출금
             obj['explain_obj'] = JSON.parse(obj?.explain_obj ?? "{}");
@@ -88,7 +92,7 @@ const ContentTable = (props) => {
                 result = `매출등록 랜덤박스 포인트 발생 하였습니다.`;
             }
         } else if (obj?.type == 11) {//이벤트 랜덤수익
-            if(obj['explain_obj'].length==0){
+            if (obj['explain_obj'].length == 0) {
                 obj['explain_obj'] = "{}";
             }
             obj['explain_obj'] = JSON.parse(obj['explain_obj'] ?? "{}");
@@ -129,7 +133,7 @@ const ContentTable = (props) => {
         } else if (column == 'status') {
             if (obj?.status == -2) {
                 result = "주문취소";
-            }else if (obj?.status == -1) {
+            } else if (obj?.status == -1) {
                 result = "반품처리";
             } else if (obj?.status == 0) {
                 result = "확인대기";
@@ -181,7 +185,7 @@ const ContentTable = (props) => {
         let confirm_str = "";
         if (num == -2) {
             confirm_str = "주문취소 하시겠습니까?";
-        }else{
+        } else {
             return;
         }
         if (window.confirm(confirm_str)) {
@@ -196,6 +200,15 @@ const ContentTable = (props) => {
                 await onChangeTypeNum(1);
                 await new Promise((r) => setTimeout(r, 500));
             }
+        }
+    }
+    const deleteBag = async (idx) => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+            let bag = await localStorage.getItem('bag');
+            bag = JSON.parse(bag);
+            bag.splice(idx, 1);
+            await localStorage.setItem('bag', JSON.stringify(bag));
+            refreshPage();
         }
     }
     return (
@@ -215,9 +228,9 @@ const ContentTable = (props) => {
                         </div>
                     </>}
 
-                <div style={{ width: '100%', background: '#fff', padding: '12px 0', boxShadow: theme.boxShadow, borderRadius: '8px', minHeight: '50vh', marginBottom: '16px' }}>
+                <div style={{ width: '100%', background: '#fff', boxShadow: theme.boxShadow, borderRadius: '8px', minHeight: '50vh', marginBottom: '16px' }}>
                     <Table>
-                        {data.map((item, idx) => (
+                        {data.map((item, index) => (
                             <Tr style={{ cursor: `${onClick ? 'pointer' : ''}` }} onClick={() => {
                                 if (onClick) {
                                     onClick(item?.pk)
@@ -262,6 +275,41 @@ const ContentTable = (props) => {
                                             :
                                             <>
                                             </>}
+                                        {column.type === 'select_count' ?
+                                            <>
+                                                <Td style={{ width: `${column.width}%` }}>
+                                                    <Select style={{ width: '80%', margin: '6px 0' }} className={`select-count-${index}`}>
+                                                        {range(1, 10).map((item, idx) => (
+                                                            <>
+                                                                <option value={item}>{item}</option>
+                                                            </>
+                                                        ))}
+                                                    </Select>
+                                                </Td>
+
+                                            </>
+                                            :
+                                            <>
+                                            </>}
+                                        {column.type === 'order' ?
+                                            <>
+                                                <Td style={{ width: `${column.width}%`, color: theme.color.background1 }}>
+                                                    <GiBuyCard style={{ fontSize: theme.size.font2, cursor: 'pointer' }}
+                                                        onClick={() => { navigate(`/item/outlet/order/${item?.pk}`, { state: { count: $(`.select-count-${index}`).val(), option: item?.option, index: index } }) }} />
+                                                </Td>
+                                            </>
+                                            :
+                                            <>
+                                            </>}
+                                        {column.type === 'delete_bag' ?
+                                            <>
+                                                <Td style={{ width: `${column.width}%`, color: theme.color.red }}>
+                                                    <RiDeleteBin5Line style={{ fontSize: theme.size.font2, cursor: 'pointer' }} onClick={() => deleteBag(index)} />
+                                                </Td>
+                                            </>
+                                            :
+                                            <>
+                                            </>}
                                         {column.type === 'outlet_order' ?
                                             <>
 
@@ -270,18 +318,18 @@ const ContentTable = (props) => {
                                             :
                                             <>
                                             </>}
-                                            {column.type === 'outlet_order_cancel' ?
+                                        {column.type === 'outlet_order_cancel' ?
                                             <>
-                                                {item?.status==0?
-                                                <>
-                                                <Td>
-                                                    <AddButton style={{width:'72px'}} onClick={()=>{onChangeOutletOrderStatus(-2,item)}}>주문취소</AddButton>
-                                                </Td>
-                                                </>
-                                                :
-                                                <>
-                                                <Td>---</Td>
-                                                </>
+                                                {item?.status == 0 ?
+                                                    <>
+                                                        <Td>
+                                                            <AddButton style={{ width: '72px' }} onClick={() => { onChangeOutletOrderStatus(-2, item) }}>주문취소</AddButton>
+                                                        </Td>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Td>---</Td>
+                                                    </>
                                                 }
                                             </>
                                             :

@@ -61,6 +61,18 @@ export const zSidebarMenu = [
     { name: '마이페이지', link: '/mypage' },
 ]
 export const historyContent = {
+    bag: {
+        title: "장바구니",
+        columns: [
+            columnObjFormat('상품명', 20, 'text', 'name'),
+            columnObjFormat('상품가격', 15, 'text', 'price'),
+            columnObjFormat('옵션명', 15, 'text', 'option_name'),
+            columnObjFormat('수량선택', 15, 'select_count', 'select_count'),
+            columnObjFormat('날짜', 15, 'date', 'date'),
+            columnObjFormat('주문하기', 10, 'order', 'order'),
+            columnObjFormat('삭제', 10, 'delete_bag', 'delete_bag'),
+        ]
+    },
     gift: {
         title: "선물한 내역",
         columns: [

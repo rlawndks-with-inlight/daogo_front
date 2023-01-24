@@ -236,8 +236,7 @@ text-align:center;
 `
 export const Table = styled.table`
 font-size:12px;
-width:95%;
-margin:0 auto;
+width:100%;
 text-align:center;
 border-collapse: collapse;
 color:${props => props.theme.color.font1};

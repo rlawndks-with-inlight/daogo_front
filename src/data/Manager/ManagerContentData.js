@@ -582,6 +582,7 @@ export const objManagerListContent = {
             columnObjFormat('UID', '', 'date', 'user_id'),
             columnObjFormat('주문자(이름)', '', 'outlet_order_name', ''),
             columnObjFormat('상품명', '', 'text', 'item_name'),
+            columnObjFormat('상품옵션', '', 'outlet_order_option', ''),
             columnObjFormat('상품수량', '', 'outlet_order_count', ''),
             columnObjFormat('사용스타', '', 'minus_number', 'price'),
             columnObjFormat('사용포인트', '', 'minus_number', 'point_price'),

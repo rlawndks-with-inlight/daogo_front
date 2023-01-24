@@ -751,6 +751,15 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                     :
                                     <>
                                     </>}
+                                    {col.type.split('order_')[1] == 'option' ?
+                                    <>
+                                        <Td style={{ width: `${col.width}%` }}>
+                                            {JSON?.parse(data['explain_obj'])?.option?.name ?? "---"}
+                                        </Td>
+                                    </>
+                                    :
+                                    <>
+                                    </>}
                                 {col.type.split('order_')[1] == 'count' ?
                                     <>
                                         <Td style={{ width: `${col.width}%` }}>

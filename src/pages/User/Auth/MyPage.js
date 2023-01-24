@@ -11,7 +11,8 @@ import theme from "../../../styles/theme";
 import { CgToggleOn, CgToggleOff } from 'react-icons/cg'
 import { commarNumber, dateFormat } from "../../../functions/utils";
 import { Viewer } from "@toast-ui/react-editor";
-
+import ContentTable from '../../../components/ContentTable';
+import { historyContent } from "../../../data/ContentData";
 const MyCard = styled.div`
 display:flex;
 width:100%;
@@ -72,28 +73,43 @@ const MyPage = () => {
     const navigate = useNavigate();
     const [auth, setAuth] = useState({})
     const [isWebView, setIsWebView] = useState(false);
-
     useEffect(() => {
-        async function isAdmin() {
-            const { data: response } = await axios.get('/api/getmypagecontent')
-            let get_score_by_tier = { 0: 0, 5: 36, 10: 120, 15: 360, 20: 600, 25: 1200 };
-            if (response.result > 0) {
-                console.log(response)
-                let obj = { ...response.data };
-                let marketing_price = 0;
-                for (var i = 0; i < obj?.marketing?.length; i++) {
-                    let explain_obj = JSON.parse(obj?.marketing[i]?.explain_obj);
-                    marketing_price += get_score_by_tier[explain_obj?.tier];
-                }
-                obj['marketing_price'] = marketing_price;
-                setAuth(obj);
-            } else {
-                alert(response.message);
-                navigate('/login')
-            }
-        }
         isAdmin();
     }, [])
+    async function isAdmin() {
+        let bag = await localStorage.getItem('bag');
+        bag = JSON.parse(bag);
+        let bag_pk_list = bag.map(item => {
+            return item?.pk
+        })
+        const { data: response } = await axios.post('/api/getmypagecontent', {
+            bag: bag_pk_list
+        });
+        let get_score_by_tier = { 0: 0, 5: 36, 10: 120, 15: 360, 20: 600, 25: 1200 };
+        if (response.result > 0) {
+            let obj = { ...response.data };
+            let bag_items = [...response?.data?.bag];
+            let bag_list = [];
+            for (var i = 0; i < bag.length; i++) {
+                let item = bag_items.find(e => e?.pk == bag[i]?.pk);
+                bag[i]['name'] = item?.name;
+                bag[i]['price'] = commarNumber(item?.sell_star + bag[i]?.option?.price);
+                bag[i]['option_name'] = bag[i]?.option?.name;
+            }
+            console.log(bag)
+            obj['bag'] = bag;
+            let marketing_price = 0;
+            for (var i = 0; i < obj?.marketing?.length; i++) {
+                let explain_obj = JSON.parse(obj?.marketing[i]?.explain_obj);
+                marketing_price += get_score_by_tier[explain_obj?.tier];
+            }
+            obj['marketing_price'] = marketing_price;
+            setAuth(obj);
+        } else {
+            alert(response.message);
+            navigate('/login')
+        }
+    }
     const onLogout = async () => {
         if (window.confirm('정말 로그아웃 하시겠습니까?')) {
             const { data: response } = await axios.post('/api/logout');
@@ -138,7 +154,6 @@ const MyPage = () => {
                             <Category>가입일</Category>
                             <Result>{auth?.user?.date ? auth?.user?.date?.substring(0, 10) : "---"}</Result>
                         </Content>
-
                     </Container>
                     <Container>
                         <Content>
@@ -155,7 +170,7 @@ const MyPage = () => {
                         </Content>
                         <Content>
                             <Category>총 출금액</Category>
-                            <Result> {commarNumber((auth?.withdraw_won?.withdraw_won ?? 0)*(-100))} 원</Result>
+                            <Result> {commarNumber((auth?.withdraw_won?.withdraw_won ?? 0) * (-100))} 원</Result>
                         </Content>
                         <Content>
                             <Category>총 쇼핑 사용 금액</Category>
@@ -168,6 +183,11 @@ const MyPage = () => {
 
                     </Container>
                 </MyCard>
+                <Title>장바구니 내역</Title>
+                <ContentTable columns={historyContent['bag'].columns}
+                    data={auth?.bag ?? []}
+                    schema={'bag'}
+                    refreshPage={isAdmin} />
                 <Title not_arrow={true}>관리자 메모</Title>
                 <ViewerContainer className="viewer" >
                     <Viewer initialValue={auth?.user?.note ?? `<body>관리자 메모 없음.</body>`} />

@@ -81,6 +81,7 @@ const OutletOrder = () => {
     const [isSelectAddress, setIsSelectAddress] = useState(false);
     useEffect(() => {
         async function fetchPost() {
+            console.log(location)
             if (!location?.state) {
                 alert('잘못된 접근입니다.');
                 navigate(-1);
@@ -96,7 +97,16 @@ const OutletOrder = () => {
                 }
             }
             setAuth(user_response?.data);
-            setPost(response?.data);
+            let item = { ...response?.data };
+            item['option_obj'] = JSON.parse(item['option_obj']);
+            console.log(location?.state?.option)
+            item['option'] = item['option_obj'].find(e => (e?.name == location?.state?.option?.name && e?.price == location?.state?.option?.price));
+            if (!item['option']) {
+                alert("잘못된 옵션정보 입니다. 장바구니 삭제 후 재진행 해주세요.");
+                navigate(-1);
+            }
+            item['sell_star'] = item?.sell_star + (item['option']?.price??0);
+            setPost(item);
         }
         fetchPost();
     }, [pathname])
@@ -116,13 +126,16 @@ const OutletOrder = () => {
             payment_pw: $('.payment_pw').val().toString(),
             item_pk: params?.pk,
             use_point: isUsePoint,
-            item_count: count
+            item_count: count,
+            option:post?.option
         }
         if (window.confirm("정말 구매하시겠습니까?")) {
             const { data: response } = await axios.post('/api/onoutletorder', obj);
             if (response?.result > 0) {
                 alert("성공적으로 저장되었습니다.");
+                deleteBag(location?.state?.index);
                 navigate('/shoppingmall/outlet', { state: { type_num: 1 } });
+
             } else {
                 alert(response?.message);
             }
@@ -135,12 +148,20 @@ const OutletOrder = () => {
         setIsSelectAddress(false);
         setAddressList(response?.data);
     }
-    const onSelectAddress = (idx) =>{
+    const onSelectAddress = (idx) => {
         setIsSelectAddress(true);
         let address_obj = addressList[idx];
         $('.address').val(address_obj?.address);
         $('.zip_code').val(address_obj?.zip_code);
         $('.address_detail').focus();
+    }
+    const deleteBag = async (idx) => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+            let bag = await localStorage.getItem('bag');
+            bag = JSON.parse(bag);
+            bag.splice(idx, 1);
+            await localStorage.setItem('bag', JSON.stringify(bag));
+        }
     }
     return (
         <>
@@ -151,8 +172,9 @@ const OutletOrder = () => {
                         <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'left' }}>브랜드: {post?.brand_name}</CategoryName>
                         <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'left' }}>카테고리: {post?.category_name}</CategoryName>
                         <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'left' }}>상품명: {post?.name}</CategoryName>
+                        <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'left' }}>옵션명: {post?.option?.name??'---'} {post?.option?.name?`( ${post?.option?.price} 스타 )`:''}</CategoryName>
                     </div>
-                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>{commarNumber(post?.sell_star)} 스타 <strong style={{ color: theme.color.red }}>{count}</strong> 개 구매 신청</CategoryName>
+                    <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>{commarNumber((post?.sell_star))} 스타 <strong style={{ color: theme.color.red }}>{count}</strong> 개 구매 신청</CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>상품가격 <strong style={{ color: theme.color.blue, fontSize: theme.size.font4 }}>{commarNumber(post?.sell_star * count - discountOutlet(post?.sell_star * count, auth?.user?.tier))}</strong> 스타 ({discountOutletList(auth?.user?.tier)}% 할인)</CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>포인트 모두 사용시 <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber((post?.sell_star - discountOutlet(post?.sell_star, auth?.user?.tier) - getDiscountPoint(post?.sell_star, post?.is_use_point, post?.point_percent, auth?.user?.tier ?? 0)) * count)}</strong> 스타</CategoryName>
                     <CategoryName style={{ margin: '0 auto 0.5rem auto', textAlign: 'end', fontSize: theme.size.font5 }}>잔여 포인트: <strong style={{ color: theme.color.red, fontSize: theme.size.font4 }}>{commarNumber(auth?.point)}</strong></CategoryName>
@@ -183,26 +205,26 @@ const OutletOrder = () => {
                     <Input className="address" placeholder="주소(필수)" onKeyPress={(e) => e.key == 'Enter' ? getAddressByText() : null} />
                     <Button style={{ margin: '36px auto' }} onClick={getAddressByText}>검색</Button>
                     {addressList.length > 0 && !isSelectAddress ?
-                            <>
-                                <Table style={{maxWidth:'400px'}}>
-                                    <Tr>
-                                        <Td style={{ width: '30%' }}>우편번호</Td>
-                                        <Td style={{ width: '70%' }}>주소</Td>
-                                    </Tr>
-                                    {addressList.map((item, idx) => (
-                                        <>
-                                            <Tr style={{ cursor: 'pointer' }} onClick={()=>{onSelectAddress(idx)}}>
-                                                <Td style={{ width: '30%', padding: '8px 0' }}>{item.zip_code ?? "---"}</Td>
-                                                <Td style={{ width: '70%', padding: '8px 0' }}>{item.address ?? "---"}</Td>
-                                            </Tr>
-                                        </>
-                                    ))}
-                                </Table>
-                            </>
-                            :
-                            <>
-                            </>
-                        }
+                        <>
+                            <Table style={{ maxWidth: '400px' }}>
+                                <Tr>
+                                    <Td style={{ width: '30%' }}>우편번호</Td>
+                                    <Td style={{ width: '70%' }}>주소</Td>
+                                </Tr>
+                                {addressList.map((item, idx) => (
+                                    <>
+                                        <Tr style={{ cursor: 'pointer' }} onClick={() => { onSelectAddress(idx) }}>
+                                            <Td style={{ width: '30%', padding: '8px 0' }}>{item.zip_code ?? "---"}</Td>
+                                            <Td style={{ width: '70%', padding: '8px 0' }}>{item.address ?? "---"}</Td>
+                                        </Tr>
+                                    </>
+                                ))}
+                            </Table>
+                        </>
+                        :
+                        <>
+                        </>
+                    }
                     <CategoryName>상세주소(필수)</CategoryName>
                     <Input className="address_detail" placeholder="상세주소(필수)" onKeyPress={(e) => e.key == 'Enter' ? $('.zip_code').focus() : null} />
                     <CategoryName>우편번호(필수)</CategoryName>
