@@ -20,7 +20,7 @@ const StyledNode = styled.div`
 const RecommendGenealogy = () => {
     const params = useParams();
     const [treeList, setTreeList] = useState([]);
-    const [allTreeList, setAllTreeList] = useState([])
+    const [allTreeList, setAllTreeList] = useState([]);
     const [rangeList, setRangeList] = useState([]);
     const [tree, setTree] = useState(undefined);
     const [auth, setAuth] = useState({});
@@ -73,7 +73,6 @@ const RecommendGenealogy = () => {
                 returnChildTree(auth?.pk, auth?.depth)
             )
         }
-        console.log(allTreeList)
     }, [treeList])
     const onClickUser = (pk, depth) => {
         let tree_list = [...treeList];
