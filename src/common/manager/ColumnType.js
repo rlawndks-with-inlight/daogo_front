@@ -143,7 +143,9 @@ export const returnColumn = async(data_, type_, column_, schema) => {
         data['explain_obj'] = JSON.parse(data['explain_obj']);
         if (type.split('order_')[1] == 'name') {
             result = `${data['user_name']}`;
-        } else if (type.split('order_')[1] == 'point') {
+        } else if (type.split('order_')[1] == 'option') {
+            result = data['explain_obj']?.option?.name ?? "---";
+        }else if (type.split('order_')[1] == 'point') {
             result = commarNumber(data['explain_obj']?.point ?? 0);
         } else if (type.split('order_')[1] == 'count') {
             result = commarNumber(data['explain_obj']?.count ?? 0);
