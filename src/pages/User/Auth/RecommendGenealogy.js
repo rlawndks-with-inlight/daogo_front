@@ -9,24 +9,34 @@ import { Tree, TreeNode } from 'react-organizational-chart';
 import styled from "styled-components";
 import theme from "../../../styles/theme";
 import { max_child_depth } from "../../../data/ContentData";
-
+import $ from 'jquery';
+import { Select } from "../../../components/elements/ManagerTemplete";
 const StyledNode = styled.div`
   padding: 5px;
   border-radius: 8px;
   display: inline-block;
-  border: 1px solid red;
+  border: 1px solid ${props => props.theme.color.background1};
 `;
 const RecommendGenealogy = () => {
     const params = useParams();
     const [treeList, setTreeList] = useState([]);
+    const [allTreeList, setAllTreeList] = useState([])
     const [rangeList, setRangeList] = useState([]);
     const [tree, setTree] = useState(undefined);
     const [auth, setAuth] = useState({});
+    const [downLevel, setDownLevel] = useState(1);
     useEffect(() => {
         async function fetchPosts() {
             setRangeList(range(0, max_child_depth));
             const { data: response } = await axios.post('/api/getgenealogy');
-            setTreeList([...response?.data?.data]);
+            console.log(response?.data);
+            let tree_list = [];
+            for (var i = 0; i < max_child_depth; i++) {
+                tree_list[i] = {};
+            }
+            setTreeList([...tree_list]);
+            setAllTreeList(response?.data?.data ?? []);
+            console.log(response?.data?.data)
             setAuth({ ...response?.data?.mine });
         }
         fetchPosts();
@@ -40,15 +50,15 @@ const RecommendGenealogy = () => {
         }
     }
     const returnChildTree = (pk, depth) => {
-        if (depth > max_child_depth-1) {
+        if (depth > max_child_depth - 1) {
             return;
         } else {
             return getChildByUserPk(pk, depth).map((item, idx) => (
                 <>
-                    <TreeNode label={<StyledNode>
+                    <TreeNode label={<StyledNode style={{ cursor: 'pointer', border: `1px solid ${(allTreeList[item?.depth + 1][item?.pk] && allTreeList[item?.depth + 1][item?.pk].length > 0) ? `${theme.color.background1}` : `${theme.color.red}`}` }} onClick={() => { onClickUser(item?.pk, item?.depth) }}>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.id}`}</div>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.name}`}</div>
-                        <div style={{ fontSize: theme.size.font5 }}>{`${commarNumber(item?.marketing_score??0)} PV`}</div>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${commarNumber(item?.marketing_score ?? 0)} PV`}</div>
                         <div style={{ fontSize: theme.size.font6 }}>{`${getTierByUserTier(item?.tier)}`}</div>
                     </StyledNode>}>
                         {returnChildTree(item?.pk, item?.depth)}
@@ -63,26 +73,67 @@ const RecommendGenealogy = () => {
                 returnChildTree(auth?.pk, auth?.depth)
             )
         }
+        console.log(allTreeList)
     }, [treeList])
+    const onClickUser = (pk, depth) => {
+        let tree_list = [...treeList];
+        if (tree_list[depth + 1][pk] && tree_list[depth + 1][pk].length > 0) {
+            let parent_list = [pk];
+            for (var i = depth + 1; i < max_child_depth; i++) {
+                let last_parent_list = [...parent_list];
+                for (var j = 0; j < last_parent_list.length; j++) {
+                    if (tree_list[i][last_parent_list[j]] && tree_list[i][last_parent_list[j]].length > 0) {
+                        parent_list = [...parent_list, ...tree_list[i][last_parent_list[j]].map((item) => { return item?.pk })];
+                    }
+                    delete tree_list[i][last_parent_list[j]];
+                }
+            }
+        } else {
+            tree_list[depth + 1][pk] = allTreeList[depth + 1][pk] ?? [];
+        }
+        setTreeList([...tree_list]);
+    }
+    const onChangeDownLevel = async (e) => {
+        if (e.target.value == 'all') {
+            await setTreeList([...allTreeList]);
+            $('.down-level').val(downLevel);
+        } else {
+            setDownLevel(parseInt(e.target.value));
+        }
+        console.log(allTreeList)
+    }
     return (
         <>
-            <div style={{marginTop:'8rem'}}>
-
+            {/* <OneCard style={{ position: 'fixed', background: '#fff', zIndex: '10', left: '2rem', top: `${window.innerWidth >= 700 ? '8rem' : '4rem'}`, height: '30px', opacity: '0.8', flexDirection: 'row', alignItems: 'center', width: '180px', justifyContent: 'space-between', padding: '8px' }}>
+                <div style={{ fontSize: theme.size.font5, width: '50px' }}>추천계보</div>
+                <Select style={{ margin: '0', width: '100px' }} className='down-level' onChange={onChangeDownLevel}>
+                    {range(1, 10).map((item, idx) => (
+                        <>
+                            <option value={item}>{item}</option>
+                        </>
+                    ))}
+                    <option value={'all'}>전체보기</option>
+                </Select>
+            </OneCard> */}
+            {/* <div style={{ marginTop: '8rem', width: '90%', maxWidth: '900px', margin: '8rem auto 0 auto' }}>
                 <Title>추천계보</Title>
+            </div> */}
+            <div style={{ marginTop: '8rem', minHeight: `${$(window).height() - 300}px` }}>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                <div style={{width:'100%',overflowX:'scroll'}} className='scroll-table-green'>
-
+                    <div style={{ width: '100%', overflowX: 'scroll' }} className='scroll-table-green'>
                         <Tree
                             lineWidth={'2px'}
                             lineColor={'green'}
                             lineBorderRadius={'10px'}
-                            label={<StyledNode><div style={{ fontSize: theme.size.font5 }}>{`${auth?.id}`}</div>
+                            label={<StyledNode style={{ cursor: 'pointer' }} onClick={() => { onClickUser(auth?.pk, auth?.depth) }}>
+                                <div style={{ fontSize: theme.size.font5 }}>{`${auth?.id}`}</div>
                                 <div style={{ fontSize: theme.size.font5 }}>{`${auth?.name}`}</div>
-                                <div style={{ fontSize: theme.size.font6 }}>{`${getTierByUserTier(auth?.tier)}`}</div></StyledNode>}
+                                <div style={{ fontSize: theme.size.font6 }}>{`${getTierByUserTier(auth?.tier)}`}</div>
+                            </StyledNode>}
                         >
                             {tree}
                         </Tree>
-                </div>
+                    </div>
 
                 </Row>
             </div>
