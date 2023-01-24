@@ -247,6 +247,13 @@ const ContentTable = (props) => {
                                             :
                                             <>
                                             </>}
+                                        {column.type === 'option_name' ?
+                                            <>
+                                                <Td style={{ width: `${column.width}%` }}>{JSON.parse(item[`explain_obj`])?.option?.name ?? "---"}</Td>
+                                            </>
+                                            :
+                                            <>
+                                            </>}
                                         {column.type === 'date' ?
                                             <>
                                                 <Td style={{ width: `${column.width}%` }}>{dateFormat(item[`${column.column}`])}</Td>
