@@ -156,12 +156,10 @@ const OutletOrder = () => {
         $('.address_detail').focus();
     }
     const deleteBag = async (idx) => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
             let bag = await localStorage.getItem('bag');
             bag = JSON.parse(bag);
             bag.splice(idx, 1);
             await localStorage.setItem('bag', JSON.stringify(bag));
-        }
     }
     return (
         <>
