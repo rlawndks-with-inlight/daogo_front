@@ -11,6 +11,8 @@ import styled from "styled-components";
 import { commarNumber, getTierByUserTier, range } from "../../../functions/utils";
 import theme from "../../../styles/theme";
 import { admin_pk, max_child_depth } from "../../../data/ContentData";
+import { OneCard } from "../../../components/elements/UserContentTemplete";
+import $ from 'jquery';
 const StyledNode = styled.div`
   padding: 5px;
   border-radius: 8px;
@@ -33,7 +35,9 @@ const MUserOrganizationChart = () => {
     const [rangeList, setRangeList] = useState([]);
     const [tree, setTree] = useState(undefined);
     const [userCount, setUserCount] = useState(0);
-    const [topUser, setTopUser] = useState({})
+    const [topUser, setTopUser] = useState({});
+    const [downLevel, setDownLevel] = useState(1);
+
     useEffect(() => {
         async function fetchPosts() {
             setRangeList(range(0, max_child_depth));
@@ -47,6 +51,7 @@ const MUserOrganizationChart = () => {
             setAllTreeList(response?.data?.data ?? []);
         }
         fetchPosts();
+        setTeeAll();
     }, []);
     const getChildByUserPk = (pk_, depth) => {
         let pk = pk_;
@@ -96,13 +101,48 @@ const MUserOrganizationChart = () => {
             }
         } else {
             tree_list[depth + 1][pk] = allTreeList[depth + 1][pk] ?? [];
+            if (downLevel > 1) {
+                let last_parent_list = tree_list[depth + 1][pk].map((item) => { return item?.pk });
+                for (var i = 2; i <= downLevel; i++) {
+                    let parent_list = [...last_parent_list];
+                    last_parent_list = [];
+                    for (var j = 0; j < parent_list.length; j++) {
+                        tree_list[depth+i][parent_list[j]] = allTreeList[depth+i][parent_list[j]]??[];
+                        last_parent_list = [...last_parent_list,...allTreeList[depth+i][parent_list[j]].map((item)=>{return item?.pk})];
+                    }
+                }
+            }
         }
         setTreeList([...tree_list]);
+    }
+    const onChangeDownLevel = async (e) => {
+        if (e.target.value == 'all') {
+            const { data: response } = await axios.post('/api/getgenealogy');
+            setTreeList(response?.data?.data ?? []);
+            $('.down-level').val(downLevel);
+        } else {
+            setDownLevel(parseInt(e.target.value));
+        }
+    }
+    const setTeeAll = async () => {
+        const { data: response } = await axios.post('/api/getgenealogy');
+        setTreeList(response?.data?.data ?? []);
     }
     return (
         <>
             <Breadcrumb title={`회원 조직도`} nickname={``} />
-            <div style={{ width: '100%', overflowX: 'scroll', marginTop: '0.5rem',minHeight:'90vh' }} className='scroll-table-green'>
+            <div style={{ width: '100%', overflowX: 'scroll', marginTop: '0.5rem', minHeight: '90vh' }} className='scroll-table-green'>
+                <OneCard style={{ position: 'fixed', background: '#fff', zIndex: '10', right: '2rem', top: `${window.innerWidth >= 700 ? '8rem' : '4rem'}`, height: '30px', opacity: '0.8', flexDirection: 'row', alignItems: 'center', width: '180px', justifyContent: 'space-between', padding: '8px' }}>
+                    <div style={{ fontSize: theme.size.font5, width: '50px' }}>추천계보</div>
+                    <Select style={{ margin: '0', width: '100px' }} className='down-level' onChange={onChangeDownLevel}>
+                        {range(1, 10).map((item, idx) => (
+                            <>
+                                <option value={item}>{item}</option>
+                            </>
+                        ))}
+                        <option value={'all'}>전체보기</option>
+                    </Select>
+                </OneCard>
                 <Tree
                     lineWidth={'2px'}
                     lineColor={'green'}

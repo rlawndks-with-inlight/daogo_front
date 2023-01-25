@@ -16,6 +16,15 @@ const StyledNode = styled.div`
   border-radius: 8px;
   display: inline-block;
   border: 1px solid ${props => props.theme.color.background1};
+  animation: fadein 0.5s;
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 `;
 const RecommendGenealogy = () => {
     const params = useParams();
@@ -29,14 +38,12 @@ const RecommendGenealogy = () => {
         async function fetchPosts() {
             setRangeList(range(0, max_child_depth));
             const { data: response } = await axios.post('/api/getgenealogy');
-            console.log(response?.data);
             let tree_list = [];
             for (var i = 0; i < max_child_depth; i++) {
                 tree_list[i] = {};
             }
             setTreeList([...tree_list]);
             setAllTreeList(response?.data?.data ?? []);
-            console.log(response?.data?.data)
             setAuth({ ...response?.data?.mine });
         }
         fetchPosts();
@@ -89,21 +96,32 @@ const RecommendGenealogy = () => {
             }
         } else {
             tree_list[depth + 1][pk] = allTreeList[depth + 1][pk] ?? [];
+            if (downLevel > 1) {
+                let last_parent_list = tree_list[depth + 1][pk].map((item) => { return item?.pk });
+                for (var i = 2; i <= downLevel; i++) {
+                    let parent_list = [...last_parent_list];
+                    last_parent_list = [];
+                    for (var j = 0; j < parent_list.length; j++) {
+                        tree_list[depth+i][parent_list[j]] = allTreeList[depth+i][parent_list[j]]??[];
+                        last_parent_list = [...last_parent_list,...allTreeList[depth+i][parent_list[j]].map((item)=>{return item?.pk})];
+                    }
+                }
+            }
         }
         setTreeList([...tree_list]);
     }
     const onChangeDownLevel = async (e) => {
         if (e.target.value == 'all') {
-            await setTreeList([...allTreeList]);
+            const { data: response } = await axios.post('/api/getgenealogy');
+            setTreeList(response?.data?.data ?? []);
             $('.down-level').val(downLevel);
         } else {
             setDownLevel(parseInt(e.target.value));
         }
-        console.log(allTreeList)
     }
     return (
         <>
-            {/* <OneCard style={{ position: 'fixed', background: '#fff', zIndex: '10', left: '2rem', top: `${window.innerWidth >= 700 ? '8rem' : '4rem'}`, height: '30px', opacity: '0.8', flexDirection: 'row', alignItems: 'center', width: '180px', justifyContent: 'space-between', padding: '8px' }}>
+            <OneCard style={{ position: 'fixed', background: '#fff', zIndex: '10', left: '2rem', top: `${window.innerWidth >= 700 ? '8rem' : '4rem'}`, height: '30px', opacity: '0.8', flexDirection: 'row', alignItems: 'center', width: '180px', justifyContent: 'space-between', padding: '8px' }}>
                 <div style={{ fontSize: theme.size.font5, width: '50px' }}>추천계보</div>
                 <Select style={{ margin: '0', width: '100px' }} className='down-level' onChange={onChangeDownLevel}>
                     {range(1, 10).map((item, idx) => (
@@ -113,7 +131,7 @@ const RecommendGenealogy = () => {
                     ))}
                     <option value={'all'}>전체보기</option>
                 </Select>
-            </OneCard> */}
+            </OneCard>
             {/* <div style={{ marginTop: '8rem', width: '90%', maxWidth: '900px', margin: '8rem auto 0 auto' }}>
                 <Title>추천계보</Title>
             </div> */}
