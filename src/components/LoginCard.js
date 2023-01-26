@@ -74,9 +74,9 @@ const LoginCard = () => {
                         <input type={'checkbox'} className='login-lock' style={{ border: '1px solid #000', outline: 'none', borderRadius: '0' }} />
                         <div>로그인 상태 유지</div>
                     </div>
-                    <div style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/findmyinfo')}>
+                    {/* <div style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/findmyinfo')}>
                         아이디/비밀번호 찾기
-                    </div>
+                    </div> */}
                 </FlexBox>
                 <CategoryName style={{ margin: '0 auto 16px auto'}}>
                 <ReCAPTCHA

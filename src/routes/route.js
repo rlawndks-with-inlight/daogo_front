@@ -69,7 +69,7 @@ const zUserRoute = [
     { link: '/home', element: <Home />, title: "홈" },
     { link: '/mypage', element: <MyPage />, title: "마이페이지" },
     { link: '/editmyinfo', element: <EditMyInfo />, title: "회원수정" },
-    { link: '/findmyinfo', element: <FindMyInfo />, title: "아이디/비밀번호 찾기" },
+    // { link: '/findmyinfo', element: <FindMyInfo />, title: "아이디/비밀번호 찾기" },
     { link: '/signup', element: <SignUp />, title: "회원가입" },
     { link: '/signup/:id', element: <SignUp />, title: "회원가입" },
     { link: '/resign', element: <Resign />, title: "회원탈퇴" },
