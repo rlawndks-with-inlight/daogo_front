@@ -114,6 +114,12 @@ const ContentTable = (props) => {
             result = `월 정산 지급 되었습니다.`;
         } else if (obj?.type == 15) {//주정산
             result = `주 정산 지급 되었습니다.`;
+        } else if (obj?.type == 16) {//경매참여
+            if(obj?.price>0){
+                result = `경매이벤트 종료 ESGWP 지급 되었습니다.`;
+            }else{
+                result = `경매이벤트 참여에 사용하였습니다.`;
+            }
         } else {
             result = "---";
         }
@@ -233,7 +239,7 @@ const ContentTable = (props) => {
                         {data.map((item, index) => (
                             <Tr style={{ cursor: `${onClick ? 'pointer' : ''}` }} onClick={() => {
                                 if (onClick) {
-                                    onClick(item?.pk)
+                                    onClick(item)
                                 } else {
 
                                 }
@@ -242,7 +248,14 @@ const ContentTable = (props) => {
                                     <>
                                         {column.type === 'text' ?
                                             <>
-                                                <Td style={{ width: `${column.width}%` }}>{item[`${column.column}`]}</Td>
+                                                <Td style={{ width: `${column.width}%` }}>{item[`${column.column}`] ?? "---"}</Td>
+                                            </>
+                                            :
+                                            <>
+                                            </>}
+                                        {column.type === 'auction_status' ?
+                                            <>
+                                                <Td style={{ width: `${column.width}%`, color: `${item[`status`] == 1 ? '#1A7EFC' : theme.color.red}` }}>{item['status'] == 1 ? '진행중' : '종료'}</Td>
                                             </>
                                             :
                                             <>
@@ -264,6 +277,13 @@ const ContentTable = (props) => {
                                         {column.type === 'number' ?
                                             <>
                                                 <Td style={{ width: `${column.width}%`, color: `${item[`${column.column}`] >= 0 ? '#1A7EFC' : theme.color.red}` }}>{item[`${column.column}`] >= 0 ? '+' : ''}{commarNumber(item[`${column.column}`])}</Td>
+                                            </>
+                                            :
+                                            <>
+                                            </>}
+                                        {column.type === 'abs' ?
+                                            <>
+                                                <Td style={{ width: `${column.width}%` }}>{commarNumber(item[`${column.column}`])}</Td>
                                             </>
                                             :
                                             <>

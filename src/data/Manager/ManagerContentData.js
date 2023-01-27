@@ -59,8 +59,8 @@ export const zSidebar = [
         sidebarObjListFormat('주문리스트', '/manager/list/coupon_order', 40, ['/manager/list/coupon_order']),//list
         //sidebarObjListFormat('예치금 변동 LOG', '/manager/list/log_coupon', 40, ['/manager/list/log_coupon']),//list
     ]),
-    sidebarContentFormat('잭팟관리', [
-        sidebarObjListFormat('추첨대기자', '/manager/list/jackpot_wait', 40, ['/manager/list/jackpot_wait']),//list
+    sidebarContentFormat('경매이벤트관리', [
+        sidebarObjListFormat('경매관리', '/manager/list/auction', 40, ['/manager/list/auction']),//list
         sidebarObjListFormat('행운의전당', '/manager/list/jackpot_winner', 40, ['/manager/list/jackpot_winner']),//list
     ]),
     sidebarContentFormat('아울렛관리', [
@@ -500,19 +500,37 @@ export const objManagerListContent = {
         false,
         false
     ),
-    jackpot_wait: sidebarObjFormat(
-        '추첨 대기자 리스트',
-        'jackpot_wait',
+    auction: sidebarObjFormat(
+        '경매 리스트',
+        'auction',
         [
-            columnObjFormat('잭팟타이틀', '', 'text', 'user_id'),
-            columnObjFormat('추첨대기자', '', 'text', 'user_name'),
-            columnObjFormat('잭팟적립금', '', 'text', 'date'),
-            columnObjFormat('추첨조건', '', 'text', 'ip'),
-            columnObjFormat('마지막추첨일', '', 'text', 'date'),
+            columnObjFormat('타이틀', '', 'text', 'title'),
+            columnObjFormat('최소금액', '', 'number', 'min_price'),
+            columnObjFormat('최대금액', '', 'number', 'max_price'),
+            columnObjFormat('단위', '', 'number', 'price_unit'),
+            columnObjFormat('상태', '', 'auction_status', 'auction_status'),
+            columnObjFormat('당첨자', '', 'text', 'winner_id'),
+            columnObjFormat('당첨금액', '', 'number', 'winner_price'),
+            columnObjFormat('등록일', '', 'text', 'date'),
+            columnObjFormat('수정', '', 'edit', 'edit'),
+            columnObjFormat('삭제', '', 'delete', 'delete'),
         ],
         [],
-        false,
-        false
+        true,
+        true
+    ),
+    auction_participate: sidebarObjFormat(
+        '경매 참여자 리스트',
+        'auction_participate',
+        [
+            columnObjFormat('아이디', '', 'text', 'id'),
+            columnObjFormat('이름', '', 'text', 'name'),
+            columnObjFormat('참여스타', '', 'number', 's_t_price'),
+            columnObjFormat('참여포인트', '', 'number', 'p_t_price'),
+        ],
+        [],
+        true,
+        true
     ),
     jackpot_winner: sidebarObjFormat(
         '행운의 전당 리스트',
@@ -715,5 +733,7 @@ export const managerNoteObj = {
     UPDATE_OUTLET_BRAND: "아울렛 브랜드가 수정 되었습니다.",
     ADD_OUTLET: "아울렛 상품이 추가 되었습니다.",
     UPDATE_OUTLET: "아울렛 상품이 수정 되었습니다.",
+    ADD_AUCTION: "경매 이벤트가 추가 되었습니다.",
+    UPDATE_AUCTION: "경매 이벤트가 수정 되었습니다.",
 }
 export { backUrl };

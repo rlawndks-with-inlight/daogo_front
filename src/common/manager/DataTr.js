@@ -5,7 +5,7 @@ import { backUrl } from '../../data/Manager/ManagerContentData'
 import { BiEditAlt } from 'react-icons/bi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { CgToggleOn, CgToggleOff } from 'react-icons/cg'
-import { AiOutlineDollar } from 'react-icons/ai'
+import { AiOutlineDollar, AiOutlineUnorderedList } from 'react-icons/ai'
 import theme from '../../styles/theme'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -130,6 +130,12 @@ export const getTextByLogType = (obj_, schema) => {
         result = `월 정산 지급 되었습니다.`;
     } else if (obj?.type == 15) {//주정산
         result = `주 정산 지급 되었습니다.`;
+    }else if (obj?.type == 16) {//경매참여
+        if(obj?.price>0){
+            result = `경매이벤트 종료 ESGWP 지급 되었습니다.`;
+        }else{
+            result = `경매이벤트 참여에 사용하였습니다.`;
+        }
     } else {
         result = "";
     }
@@ -347,7 +353,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                         navigate(`/manager/list/log_${col.column}/${data?.pk}`,{state:{breadcrumb:`${data?.id} 유저 ${schema_kr} 변동내역`}})
                                     } else {
                                     }
-                                }}>{commarNumber(data[`${col.column}`] ?? 0)}</Td>
+                                }}>{commarNumber(data[`${col.column}`] ?? '---')}</Td>
+                            </>
+                            :
+                            <>
+                            </>}
+                            {col.type == 'auction_status' ?
+                            <>
+                                <Td style={{ width: `${col.width}%` }}>{data?.status==1?'진행중':'종료'}</Td>
                             </>
                             :
                             <>

@@ -37,7 +37,7 @@ import RegisterRandomBox from '../pages/User/RandomBox/RegisterRandomBox';
 import Gift from '../pages/User/Gift/Gift';
 import History from '../pages/User/History/History';
 import RecommendGenealogy from '../pages/User/Auth/RecommendGenealogy';
-import EventGame from '../pages/User/EventGame';
+import EventGame from '../pages/User/Auction/EventGame';
 import QrCode from '../pages/User/QrCode';
 import WithdrawRequest from '../pages/User/Auth/WithdrawRequest';
 import NoticeList from '../pages/User/Notice/NoticeList';
@@ -62,6 +62,8 @@ import MUserMoneyEditByExcel from '../pages/Manager/User/MUserMoneyEditByExcel';
 import LogMoneyHistory from '../pages/User/History/LogMoneyHistory';
 import LogExchangeHistory from '../pages/User/History/LogExchangeHistory';
 import MGiftSetting from '../pages/Manager/Setting/MGiftSetting';
+import MAuctionEdit from '../pages/Manager/Auction/MAuctionEdit';
+import AuctionGamePage from '../pages/User/Auction/AuctionGamePage';
 
 const zUserRoute = [
     { link: '/', element: <Login />, title: "로그인" },
@@ -85,6 +87,7 @@ const zUserRoute = [
     { link: '/user_money/history', element: <LogMoneyHistory />, title: "변동로그" },
     { link: '/recommendgenealogy', element: <RecommendGenealogy />, title: "추천계보" },
     { link: '/eventgame', element: <EventGame />, title: "이벤트게임" },
+    { link: '/auction_game/:pk', element: <AuctionGamePage />, title: "이벤트게임" },
     { link: '/randombox_rolling/history', element: <RandomboxRollingHistory />, title: "랜덤박스 롤링 내역" },
     { link: '/:schema/history', element: <History />, title: "리스트" },
     { link: '/qrcode', element: <QrCode />, title: "QR코드" },
@@ -123,6 +126,7 @@ const zManagerRoute = [
     { link: '/manager/monthsettle', element: <MMonthSettle />, title: "월정산" },
     { link: '/manager/weeksettle', element: <MWeekSettle />, title: "주정산" },
 
+    { link: '/manager/edit/auction/:pk', element: <MAuctionEdit />, title: "경매관리" },
 
     { link: '/manager/edit/coupon/:pk', element: <MCouponEdit />, title: "쿠폰관리" },
     { link: '/manager/edit/coupon_category/:pk', element: <MCouponCategoryEdit />, title: "쿠폰카테고리관리" },

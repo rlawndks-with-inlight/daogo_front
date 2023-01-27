@@ -53,7 +53,7 @@ export const zSidebarMenu = [
     { name: 'ESGWP 변동내역', link: '/esgw/history' },
     { name: '변동로그', link: '/user_money/history' },
     { name: '출금신청내역', link: '/exchange/history' },
-   // { name: '공유코드', link: '/sharecode/history' },
+    // { name: '공유코드', link: '/sharecode/history' },
     { name: '추천계보', link: '/recommendgenealogy' },
     { name: 'QR CODE', link: '/qrcode' },
     { name: '개인정보 수정', link: '/editmyinfo' },
@@ -111,6 +111,17 @@ export const historyContent = {
             columnObjFormat('History', 50, 'history', 'note'),
             columnObjFormat('Time', 25, 'date', 'date'),
             columnObjFormat('Point', 25, 'number', 'price'),
+        ]
+    },
+    eventgame: {
+        title: "이벤트 게임",
+        columns: [
+            columnObjFormat('제목', 25, 'text', 'title'),
+            columnObjFormat('진행여부', 15, 'auction_status', 'auction_status'),
+            columnObjFormat('최소금액', 15, 'abs', 'min_price'),
+            columnObjFormat('최대금액', 15, 'abs', 'max_price'),
+            columnObjFormat('당첨자', 15, 'text', 'winner_id'),
+            columnObjFormat('등록일', 15, 'date', 'date'),
         ]
     },
     esgw: {

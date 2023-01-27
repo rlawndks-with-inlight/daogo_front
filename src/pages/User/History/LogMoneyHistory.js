@@ -56,6 +56,7 @@ const LogMoneyComponent = (props) => {
         13: returnTypeFormat(''),
         14: returnTypeFormat('월결산', 'rgb(205, 132, 241)'),
         15: returnTypeFormat('주결산', 'rgb(197, 108, 240)'),
+        16: returnTypeFormat('경매이벤트', '#000'),
     }
     return (
         <>

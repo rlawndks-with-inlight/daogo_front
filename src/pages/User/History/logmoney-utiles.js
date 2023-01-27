@@ -189,6 +189,14 @@ export const ApplyFormat = (data) => {
 
     } else if (type == 15) {
 
+    }else if (type == 16) {
+        components = (<>
+            <div style={{ display: 'flex' }}>
+                {ReturnNumberFormat(false, (data?.s_t_price + data?.p_t_price), '#fc427b')}
+                <div>=</div>
+                {ReturnNumberFormat(false, (data?.s_t_price + data?.p_t_price))}
+            </div>
+        </>);
     }
     return (
         <>
@@ -379,6 +387,15 @@ components = (<>
             {ReturnNumberFormat(false, (data?.s_t_sum))}
             </div>
         </>);
+    } else if (type == 16) {
+        components = (<>
+            <div style={{ display: 'flex' }}>
+            {ReturnNumberFormat(false, (data?.s_t_sum - data?.s_t_price))}
+            {ReturnNumberFormat(true, (data?.s_t_price))}
+            <div>=</div>
+            {ReturnNumberFormat(false, (data?.s_t_sum))}
+            </div>
+        </>);
     }
     return (
         <>
@@ -552,6 +569,25 @@ export const PointFormat = (data) => {
             <div style={{ display: 'flex' }}>
                 {ReturnNumberFormat(false, (data?.p_t_sum))}
             </div>
+        </>);
+    }else if (type == 16) {
+        components = (<>
+            {data?.p_t_price == 0 ?
+                <>
+                    <div style={{ display: 'flex' }}>
+                        {ReturnNumberFormat(false, (data?.p_t_sum))}
+                    </div>
+                </>
+                :
+                <>
+                    <div style={{ display: 'flex' }}>
+                        {ReturnNumberFormat(false, (data?.p_t_sum - data?.p_t_price))}
+                        {ReturnNumberFormat(true, (data?.p_t_price))}
+                        <div>=</div>
+                        {ReturnNumberFormat(false, (data?.p_t_sum))}
+                    </div>
+                </>}
+
         </>);
     }
     return (
@@ -738,6 +774,12 @@ export const RandomboxFormat = (data) => {
                 {ReturnNumberFormat(false, (data?.r_t_sum))}
             </div>
         </>);
+    }else if (type == 16) {
+        components = (<>
+            <div style={{ display: 'flex' }}>
+                {ReturnNumberFormat(false, (data?.r_t_sum))}
+            </div>
+        </>);
     }
     return (
         <>
@@ -877,6 +919,12 @@ export const EsgwFormat = (data) => {
             </div>
         </>);
     } else if (type == 15) {
+        components = (<>
+            <div style={{ display: 'flex' }}>
+                {ReturnNumberFormat(false, (data?.e_t_sum))}
+            </div>
+        </>);
+    }else if (type == 16) {
         components = (<>
             <div style={{ display: 'flex' }}>
                 {ReturnNumberFormat(false, (data?.e_t_sum))}
