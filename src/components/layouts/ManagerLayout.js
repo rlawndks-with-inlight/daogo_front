@@ -10,7 +10,7 @@ import { useEffect } from "react";
 const ManagerLayout = () => {
     const params = useParams();
     const location = useLocation();
-    const nonLayoutList = ['/manager', '/manager/login'];
+    const nonLayoutList = ['/manager', '/manager/login', '/manager/'];
     
     return (
         <>

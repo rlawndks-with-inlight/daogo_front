@@ -7,6 +7,8 @@ const App = () => {
         <>
             <Router>
                 <UserLayout />
+            </Router>
+            <Router>
                 <ManagerLayout />
             </Router>
         </>

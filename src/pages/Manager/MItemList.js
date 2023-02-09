@@ -20,6 +20,7 @@ import { SiMicrosoftexcel } from 'react-icons/si'
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { returnColumn } from '../../common/manager/ColumnType';
+import { Circles } from 'react-loader-spinner';
 const OptionCardWrappers = styled.div`
 width:95%;
 margin:0.5rem auto;
@@ -52,6 +53,7 @@ const MItemList = (props) => {
     const [loadingText, setLoadingText] = useState("")
     const [apiStr, setApiStr] = useState("/api/items");
     const [breadcrumbText, setBreadcrumbText] = useState("");
+    const [isExcelLoading, setIsExcelLoading] = useState(false);
     const notAddList = [
         'comment'
     ]
@@ -180,6 +182,7 @@ const MItemList = (props) => {
         changePage(page)
     });
     const exportExcel = async () => {
+        setIsExcelLoading(true);
         let obj = {};
         obj['table'] = objManagerListContent[`${params.table}`].schema;
         obj['keyword'] = $('.search').val();
@@ -201,6 +204,7 @@ const MItemList = (props) => {
         const { data: response } = await axios.post(apiStr, obj);
         //setPosts(response?.data);
         await excelDownload(response.data ?? [], objManagerListContent, params.table);
+        setIsExcelLoading(false);
     }
 
     const onChangeType = (e) => {
@@ -315,7 +319,17 @@ const MItemList = (props) => {
                             <option value={100}>100개</option>
                         </Select>
 
-                        <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>
+                        <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} 
+                        onClick={()=>{isExcelLoading?console.log(null):exportExcel()}}>
+                            {isExcelLoading?
+                            <>
+                            <Circles color='#fff' width={'16'} />
+                            </>
+                            :
+                            <>
+                            <SiMicrosoftexcel /> 액셀추출
+                            </>}
+                        </AddButton>
 
                     </Row>
 

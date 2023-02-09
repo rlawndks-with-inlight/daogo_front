@@ -94,27 +94,31 @@ const MLoginCard = () => {
 
     }, [])
     const onLogin = async () => {
-        console.log(1)
-        const { data: response } = await axios.post('/api/loginbyid', {
-            id: $('.id').val(),
-            pw: $('.pw').val(),
-            type:'manager'
-        })
-        if (response.result > 0) {
-            await localStorage.setItem('auth', JSON.stringify(response.data));
-            if (response.data?.user?.user_level >= 40) {
-                alert(response.message);
-                navigate('/manager/list/user');
-
-            } else if (response.data?.user?.user_level >= 30) {
-                alert(response.message);
-                navigate('/manager/list/strategy');
+        try{
+            const { data: response } = await axios.post('/api/loginbyid', {
+                id: $('.id').val(),
+                pw: $('.pw').val(),
+                type:'manager'
+            })
+            if (response.result > 0) {
+                await localStorage.setItem('auth', JSON.stringify(response.data));
+                if (response.data?.user?.user_level >= 40) {
+                    alert(response.message);
+                    navigate('/manager/list/user');
+    
+                } else if (response.data?.user?.user_level >= 30) {
+                    alert(response.message);
+                    navigate('/manager/list/strategy');
+                }else{
+                    alert("아이디 또는 비밀번호를 확인해주세요.");
+                }
             }else{
                 alert("아이디 또는 비밀번호를 확인해주세요.");
             }
-        }else{
-            alert("아이디 또는 비밀번호를 확인해주세요.");
+        }catch(err){
+            console.log(err);
         }
+        
     }
     const onKeyPressId = (e) => {
         if (e.key == 'Enter') {
