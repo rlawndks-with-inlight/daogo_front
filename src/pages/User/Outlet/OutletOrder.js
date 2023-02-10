@@ -81,7 +81,6 @@ const OutletOrder = () => {
     const [isSelectAddress, setIsSelectAddress] = useState(false);
     useEffect(() => {
         async function fetchPost() {
-            console.log(location)
             if (!location?.state) {
                 alert('잘못된 접근입니다.');
                 navigate(-1);
@@ -99,7 +98,6 @@ const OutletOrder = () => {
             setAuth(user_response?.data);
             let item = { ...response?.data };
             item['option_obj'] = JSON.parse(item['option_obj']);
-            console.log(location?.state?.option)
             item['option'] = item['option_obj'].find(e => (e?.name == location?.state?.option?.name && e?.price == location?.state?.option?.price));
             if (!item['option']) {
                 alert("잘못된 옵션정보 입니다. 장바구니 삭제 후 재진행 해주세요.");

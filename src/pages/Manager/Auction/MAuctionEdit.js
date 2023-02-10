@@ -20,13 +20,16 @@ import fontSize from "tui-editor-plugin-font-size";
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import { backUrl, managerNoteObj, objManagerListContent } from '../../../data/Manager/ManagerContentData';
 import $ from 'jquery';
-import { commarNumber, range } from "../../../functions/utils";
+import { commarNumber, excelDownload, range } from "../../../functions/utils";
 import { RiDeleteBinLine } from "react-icons/ri";
 import styled from "styled-components";
 import DataTable from "../../../common/manager/DataTable";
 import MBottomContent from "../../../components/elements/MBottomContent";
 import PageContainer from "../../../components/elements/pagination/PageContainer";
 import PageButton from "../../../components/elements/pagination/PageButton";
+import { AuctionContent } from "../../User/Auction/AuctionGamePage";
+import { OneCard } from "../../../components/elements/UserContentTemplete";
+import { SiMicrosoftexcel } from "react-icons/si";
 
 const Td = styled.td`
 border:1px solid ${props => props.theme.color.font3};
@@ -39,10 +42,14 @@ const MAuctionEdit = () => {
     const [pageList, setPageList] = useState([]);
     const [page, setPage] = useState(1);
     const [post, setPost] = useState({});
+    const [url, setUrl] = useState('')
+    const [content, setContent] = useState(undefined)
+    const [allCheckList, setAllCheckList] = useState([]);
     useEffect(() => {
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/item?table=auction&pk=${params.pk}`);
+                setUrl(backUrl + response.data.img_src);
                 $(`.title`).val(response?.data?.title);
                 $(`.min_price`).val(response?.data?.min_price);
                 $(`.max_price`).val(response?.data?.max_price);
@@ -56,6 +63,7 @@ const MAuctionEdit = () => {
         }
         fetchPost();
         onChangePageParticipateUser(1);
+        getAllCheckList();
     }, [])
     const editAuction = async () => {
         if (!$('.title').val() || !$('.min_price').val() || !$('.max_price').val() || !$('.price_unit').val()) {
@@ -70,7 +78,7 @@ const MAuctionEdit = () => {
             }
             if (window.confirm('저장 하시겠습니까?')) {
                 let formData = new FormData();
-
+                if (content) formData.append('auction', content);
                 formData.append('table', 'auction');
                 formData.append('title', $('.title').val());
                 formData.append('min_price', $('.min_price').val());
@@ -97,9 +105,9 @@ const MAuctionEdit = () => {
     }
     const onChangePageParticipateUser = async (num) => {
         setPage(num);
-        const { data: response } = await axios.post(`/api/getparticipateusers`,{
-            page:num,
-            game_pk:params?.pk
+        const { data: response } = await axios.post(`/api/getparticipateusers`, {
+            page: num,
+            game_pk: params?.pk
         })
         if (response.result > 0) {
             setPosts(response.data.data)
@@ -107,6 +115,12 @@ const MAuctionEdit = () => {
         } else {
             alert(response.message);
         }
+    }
+    const getAllCheckList = async () => {
+        const { data: response } = await axios.post('/api/getallauctionchecklist', {
+            game_pk: params?.pk
+        });
+        setAllCheckList(response?.data ?? []);
     }
     const onDeadline = async () => {
         if (window.confirm("마감 하시겠습니까?")) {
@@ -121,12 +135,46 @@ const MAuctionEdit = () => {
             }
         }
     }
+    const addFile = (e) => {
+        if (e.target.files[0]) {
+            setContent(e.target.files[0]);
+            setUrl(URL.createObjectURL(e.target.files[0]))
+        }
+    };
+    const exportExcel = async () => {
+        const { data: response } = await axios.post(`/api/getparticipateusers`, {
+            game_pk: params?.pk
+        })
+        await excelDownload(response?.data?.data, objManagerListContent, 'auction_participate');
+    }
     return (
         <>
             <Breadcrumb title={`경매 ${params.pk == 0 ? '등록' : '수정'}`} nickname={``} />
 
             <Card>
+                <Row>
+                    <Col>
+                        <Title>상품이미지 (권장 512x512)</Title>
+                        <ImageContainer for="file1">
 
+                            {url ?
+                                <>
+                                    <img src={url} alt="#"
+                                        style={{
+                                            width: 'auto', height: '8rem',
+                                            margin: '2rem'
+                                        }} />
+                                </>
+                                :
+                                <>
+                                    <AiFillFileImage style={{ margin: '4rem', fontSize: '4rem', color: `${theme.color.manager.font3}` }} />
+                                </>}
+                        </ImageContainer>
+                        <div>
+                            <input type="file" id="file1" onChange={addFile} style={{ display: 'none' }} />
+                        </div>
+                    </Col>
+                </Row>
                 <Row>
                     <Col>
                         <Title>제목</Title>
@@ -149,7 +197,7 @@ const MAuctionEdit = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Explain>추후 변경시 이미 참여한 유저들에게 영향이 발생하오니 신중히 작성 부탁드립니다.</Explain>
+                        <Explain>추가 후 변경시 이미 참여한 유저들에게 영향이 발생하오니 신중히 작성 부탁드립니다.</Explain>
                     </Col>
                 </Row>
                 <Row>
@@ -185,24 +233,29 @@ const MAuctionEdit = () => {
                     <>
                     </>}
             </Card>
-
-            {(params?.pk > 0 ) ?
+            <ButtonContainer style={{ marginBottom: '16px' }}>
+                <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
+                <AddButton onClick={editAuction}>{'저장'}</AddButton>
+            </ButtonContainer>
+            {(params?.pk > 0) ?
                 <>
                     <ButtonContainer>
-                        <AddButton style={{width:'104px'}} onClick={()=>{
-                            if(post?.status==1){
+                        <AddButton style={{ width: '104px' }} onClick={() => {
+                            if (post?.status == 1) {
                                 onDeadline();
                             }
-                        }}>{post?.status == 1?'마감':'마감완료'}</AddButton>
+                        }}>{post?.status == 1 ? '마감' : '마감완료'}</AddButton>
                     </ButtonContainer>
                 </>
                 :
                 <>
                 </>}
+
             {params?.pk > 0 ?
                 <>
                     <Title style={{ margin: '8px auto', width: '95%', display: 'flex', justifyContent: 'space-between' }}>
-                        참여자 리스트
+                        <div style={{ margin: 'auto 0' }}>참여자 리스트</div>
+                        <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} onClick={exportExcel}><SiMicrosoftexcel /> 액셀추출</AddButton>
                     </Title>
                     <DataTable width={'100%'} data={posts} column={objManagerListContent[`auction_participate`].zColumn ?? {}} schema={'auction_participate'} />
                     <MBottomContent>
@@ -224,14 +277,21 @@ const MAuctionEdit = () => {
                         </PageContainer>
                         <div />
                     </MBottomContent>
+                    <Title style={{ margin: '8px auto', width: '95%', display: 'flex', justifyContent: 'space-between' }}>
+                        경매표
+                    </Title>
+                    <Card width={96} style={{ height: 'auto', cursor: 'default', flexDirection: 'column', alignItems: 'center' }}>
+                        <AuctionContent
+                            game={post}
+                            allCheckList={allCheckList}
+                            isManager={true}
+                        />
+                    </Card>
                 </>
                 :
                 <>
                 </>}
-            <ButtonContainer>
-                <CancelButton onClick={() => navigate(-1)}>x 취소</CancelButton>
-                <AddButton onClick={editAuction}>{'저장'}</AddButton>
-            </ButtonContainer>
+
 
         </>
     )

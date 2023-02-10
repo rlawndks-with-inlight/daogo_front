@@ -31,12 +31,7 @@ const EventGame = () => {
 
     }
     const goGamePage = (obj) => {
-        console.log(obj);
-        if (obj?.status == 1) {
             navigate(`/auction_game/${obj?.pk}`);
-        } else {
-            alert("종료된 게임 입니다.");
-        }
     }
     return (
         <>

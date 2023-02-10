@@ -529,8 +529,8 @@ export const objManagerListContent = {
             columnObjFormat('참여포인트', '', 'number', 'p_t_price'),
         ],
         [],
-        true,
-        true
+        false,
+        false
     ),
     jackpot_winner: sidebarObjFormat(
         '행운의 전당 리스트',
