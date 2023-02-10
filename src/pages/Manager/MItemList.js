@@ -302,6 +302,7 @@ const MItemList = (props) => {
                                     <option value={-1}>반품처리</option>
                                     <option value={0}>확인대기</option>
                                     <option value={1}>주문확인</option>
+                                    <option value={3}>배송진행</option>
                                     <option value={2}>배송완료</option>
                                 </Select>
                             </>

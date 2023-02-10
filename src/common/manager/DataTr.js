@@ -282,19 +282,22 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
         let confirm_str = "";
         let manager_note = "";
         if (num == -1) {
-            if (!$(`.invoice-${item?.pk}`).val()) {
+            if (!$(`.return-${item?.pk}`).val()) {
                 alert("반송사유를 입력해 주세요.");
                 return;
             }
             confirm_str = "주문취소 하시겠습니까?";
             manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 주문을 취소 하였습니다.`;
         } else if (num == 1) {
+            confirm_str = "주문확인 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 주문을 확인 하였습니다.`;
+        } else if (num == 3) {
             if (!$(`.invoice-${item?.pk}`).val()) {
                 alert("송장을 입력해 주세요.");
                 return;
             }
-            confirm_str = "주문확인 하시겠습니까?";
-            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 주문을 확인 하였습니다.`;
+            confirm_str = "배달진행 하시겠습니까?";
+            manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 배달을 진행 하였습니다.`;
         } else if (num == 2) {
             confirm_str = "배송완료 처리 하시겠습니까?";
             manager_note = `${item['user_id']}(${item['user_name']}) 회원의 아울렛 상품 배송을 완료처리 하였습니다.`;
@@ -308,7 +311,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                 pk: item?.pk,
                 manager_note: manager_note,
                 invoice: $(`.invoice-${item?.pk}`).val(),
-                return_reason: $(`.invoice-${item?.pk}`).val(),
+                return_reason: $(`.return-${item?.pk}`).val(),
             })
             if (response?.result < 0) {
                 alert(response?.message);
@@ -868,6 +871,10 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                                 <>배송완료</>
                                                 :
                                                 <></>}
+                                                 {data?.status == 3 ?
+                                                <>배송진행</>
+                                                :
+                                                <></>}
                                         </Td>
                                     </>
                                     :
@@ -925,7 +932,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                             {data?.status == 0 ?
                                                 <>
                                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                        <Input style={{ width: '156px', margin: '4px auto' }} placeholder="송장 또는 반송사유" className={`invoice-${data['pk']}`} />
+                                                        <Input style={{ width: '156px', margin: '4px auto' }} placeholder="취소시 반송사유 입력" className={`return-${data['pk']}`} />
                                                         <div>
                                                             <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onChangeOutletOrderStatus(1, data) }}>주문확인</AddButton>
                                                             <AddButton style={{ width: '84px', background: theme.color.red }} onClick={() => { onChangeOutletOrderStatus(-1, data) }}>주문취소</AddButton>
@@ -937,7 +944,12 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                                 </>}
                                             {data?.status == 1 ?
                                                 <>
-                                                    <AddButton style={{ width: '84px', marginRight: '4px', background: theme.color.blue }} onClick={() => { onChangeOutletOrderStatus(2, data) }}>배송완료</AddButton>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                        <Input style={{ width: '156px', margin: '4px auto' }} placeholder="송장 입력" className={`invoice-${data['pk']}`} />
+                                                        <div>
+                                                            <AddButton style={{ width: '84px', background: theme.color.blue }} onClick={() => { onChangeOutletOrderStatus(3, data) }}>배달진행</AddButton>
+                                                        </div>
+                                                    </div>
                                                 </>
                                                 :
                                                 <>
@@ -945,6 +957,13 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                                             {data?.status == 2 ?
                                                 <>
                                                     배송완료
+                                                </>
+                                                :
+                                                <>
+                                                </>}
+                                                {data?.status == 3 ?
+                                                <>
+                                                    <AddButton style={{ width: '84px', background: theme.color.blue }} onClick={() => { onChangeOutletOrderStatus(2, data) }}>배달완료</AddButton>
                                                 </>
                                                 :
                                                 <>

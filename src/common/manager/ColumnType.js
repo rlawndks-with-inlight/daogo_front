@@ -172,6 +172,8 @@ export const returnColumn = async(data_, type_, column_, schema) => {
                 result = "주문확인";
             } else if (data?.status == 2) {
                 result = "배송완료";
+            }else if (data?.status == 3) {
+                result = "배송진행";
             }
         } else if (type.split('order_')[1] == 'date') {
             if (data[`explain_obj`]?.date) {

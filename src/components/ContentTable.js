@@ -147,6 +147,8 @@ const ContentTable = (props) => {
                 result = "주문확인";
             } else if (obj?.status == 2) {
                 result = "배송완료";
+            }else if (obj?.status == 3) {
+                result = "배송진행";
             } else {
                 result = "---";
             }

@@ -102,7 +102,6 @@ const MyPage = () => {
                 bag[i]['price'] = commarNumber(item?.sell_star + bag[i]?.option?.price);
                 bag[i]['option_name'] = bag[i]?.option?.name;
             }
-            console.log(bag)
             obj['bag'] = bag;
             let marketing_price = 0;
             for (var i = 0; i < obj?.marketing?.length; i++) {

@@ -45,7 +45,7 @@ export const deleteItem = async (type, obj) => {
 
 }
 export const commarNumber = (num) => {
-    if(num>0 && num < 0.000001){
+    if(num > 0 && num < 0.000001){
         return "0.00";
     }
     if (!num && num != 0) {
@@ -57,6 +57,7 @@ export const commarNumber = (num) => {
     } else {
         str = num.toString();
     }
+
     let decimal = "";
     if (str.includes(".")) {
         decimal = "." + str.split(".")[1].substring(0, 2);
