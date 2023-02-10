@@ -78,7 +78,13 @@ const MyPage = () => {
     }, [])
     async function isAdmin() {
         let bag = await localStorage.getItem('bag');
-        bag = JSON.parse(bag);
+
+        if(bag){
+            bag = JSON.parse(bag);
+        }else{
+            bag = [];
+        }
+
         let bag_pk_list = bag.map(item => {
             return item?.pk
         })
