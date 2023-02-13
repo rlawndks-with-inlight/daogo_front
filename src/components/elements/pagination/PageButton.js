@@ -9,7 +9,7 @@ min-width:28px;
 margin:1px;
 cursor:pointer;
 transition: 0.3s;
-border-radius:8px;
+border-radius:4px;
 &:hover{  
     background : ${props => props.theme.color.background1}22;
   }
