@@ -29,8 +29,8 @@ const NoticeList = () => {
         });
         setPosts(response.data)
     }
-    const onClick = (pk) =>{
-        navigate(`/post/notice/${pk}`);
+    const onClick = (item) =>{
+        navigate(`/post/notice/${item?.pk}`);
     }
     return (
         <>
