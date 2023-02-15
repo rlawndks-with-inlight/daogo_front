@@ -65,7 +65,7 @@ const MUserOrganizationChart = () => {
         if (depth > max_child_depth - 1) {
             return;
         } else {
-            return getChildByUserPk(pk, depth).map((item, idx) => (
+            return (getChildByUserPk(pk, depth) && getChildByUserPk(pk, depth).map((item, idx) => (
                 <>
                     <TreeNode label={<StyledNode style={{ cursor: 'pointer', border: `1px solid ${(allTreeList[item?.depth + 1][item?.pk] && allTreeList[item?.depth + 1][item?.pk].length > 0) ? `${theme.color.background1}` : `${theme.color.red}`}` }} onClick={() => { onClickUser(item?.pk, item?.depth) }}>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.id}`}</div>
@@ -76,7 +76,7 @@ const MUserOrganizationChart = () => {
                         {returnChildTree(item?.pk, item?.depth)}
                     </TreeNode>
                 </>
-            ))
+            )))
         }
     }
     useEffect(() => {
@@ -135,7 +135,7 @@ const MUserOrganizationChart = () => {
                 <OneCard style={{ position: 'fixed', background: '#fff', zIndex: '10', right: '2rem', top: `${window.innerWidth >= 700 ? '8rem' : '4rem'}`, height: '30px', opacity: '0.8', flexDirection: 'row', alignItems: 'center', width: '180px', justifyContent: 'space-between', padding: '8px' }}>
                     <div style={{ fontSize: theme.size.font5, width: '50px' }}>추천계보</div>
                     <Select style={{ margin: '0', width: '100px' }} className='down-level' onChange={onChangeDownLevel}>
-                        {range(1, 10).map((item, idx) => (
+                        {range(1, 10) && range(1, 10).map((item, idx) => (
                             <>
                                 <option value={item}>{item}</option>
                             </>
