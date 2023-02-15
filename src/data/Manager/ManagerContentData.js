@@ -86,6 +86,7 @@ export const objManagerListContent = {
             columnObjFormat('ESGW', '', 'number', 'esgw'),
             columnObjFormat('티어', '', 'tier', 'tier'),
             columnObjFormat('프라이더', '', 'prider', 'prider'),
+            columnObjFormat('PV점수', '', 'pv_score', 'score'),
             columnObjFormat('파트너점수', '', 'text', 'partner'),
             columnObjFormat('추천인', '', 'text', 'parent_id'),
             columnObjFormat('가입일', '', 'date', 'date'),

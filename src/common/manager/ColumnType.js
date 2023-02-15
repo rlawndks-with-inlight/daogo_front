@@ -11,6 +11,8 @@ export const returnColumn = async(data_, type_, column_, schema) => {
         result = data[`${column}`] ?? "---";
     } else if (type == 'number') {
         result = commarNumber(data[`${column}`] ?? 0);
+    }else if (type == 'pv_score') {
+        result = `${commarNumber(data[`${column}`] ?? 0)} PV`;
     } else if (type == 'minus_number') {
         result = commarNumber((data[`${column}`] ?? 0) * (-1));
     } else if (type == 'date') {

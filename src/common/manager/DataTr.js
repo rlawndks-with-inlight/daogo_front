@@ -361,6 +361,14 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, opTheTo
                             :
                             <>
                             </>}
+                            {col.type == 'pv_score' ?
+                            <>
+                            <Td style={{ width: `${col.width}%` }}>{commarNumber(data[`${col.column}`] ?? '---')} PV</Td>
+                            </>
+                            :
+                            <>
+                            </>
+                            }
                             {col.type == 'auction_status' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{data?.status==1?'진행중':'종료'}</Td>
