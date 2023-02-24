@@ -77,6 +77,19 @@ export const commarNumber = (num) => {
     }
     return result + decimal;
 }
+export const makeQueryObj = (query_) =>{
+    let obj = {};
+    if(!query_ || query_[0] != '?'){
+        return obj;
+    }
+    let query = query_.substring(1, query_.length);
+    query = query.split('&');
+    for(var i = 0;i<query.length;i++){
+        let content = query[i].split('=');
+        obj[content[0]] = content[1];
+    }
+    return obj;
+}
 export const formatPhoneNumber = (input) => {
     const cleanInput = String(input).replaceAll(/[^0-9]/g, "");
     let result = "";

@@ -8,7 +8,7 @@ import DataTable from '../../common/manager/DataTable';
 import MBottomContent from '../../components/elements/MBottomContent';
 import PageContainer from '../../components/elements/pagination/PageContainer';
 import PageButton from '../../components/elements/pagination/PageButton';
-import { excelDownload, range } from '../../functions/utils';
+import { excelDownload, makeQueryObj, range } from '../../functions/utils';
 import AddButton from '../../components/elements/button/AddButton';
 import Loading from '../../components/Loading';
 import theme from '../../styles/theme';
@@ -44,6 +44,7 @@ const MItemList = (props) => {
     const { pathname, state } = useLocation();
     const params = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [zColumn, setZColumn] = useState([])
     const [posts, setPosts] = useState([])
@@ -64,6 +65,8 @@ const MItemList = (props) => {
         setZColumn(objManagerListContent[`${params.table}`].zColumn ?? {})
         async function fetchPost() {
             let api_str = "/api/items";
+            let query = location.search??"";
+            query = await makeQueryObj(query);
             if (objManagerListContent[`${params.table}`]?.api_str) {
                 setApiStr(objManagerListContent[`${params.table}`]?.api_str);
                 api_str = objManagerListContent[`${params.table}`]?.api_str;
@@ -72,12 +75,13 @@ const MItemList = (props) => {
                 api_str = "/api/items";
             }
             setLoading(true)
-            $('.page-cut').val(10);
-            setPage(1)
+            $('.page_cut').val(10);
+            setPage(query['page'] || 1)
             let obj = {};
             obj['page'] = 1;
             obj['table'] = objManagerListContent[`${params.table}`].schema;
             obj['page_cut'] = 10;
+
             if (params?.pk && (params.table == 'log_star' || params.table == 'log_point' || params.table == 'log_randombox' || params.table == 'log_esgw')) {
                 obj['user_pk'] = params?.pk;
             }
@@ -86,7 +90,17 @@ const MItemList = (props) => {
             }
             for (var i = 0; i < objManagerListContent[`${params.table}`].queries.length; i++) {
                 obj[objManagerListContent[`${params.table}`].queries[i].split("=")[0]] = objManagerListContent[`${params.table}`].queries[i].split("=")[1];
+                if(query[objManagerListContent[`${params.table}`].queries[i].split("=")[0]]){
+                    $(`.${objManagerListContent[`${params.table}`].queries[i].split("=")[0]}`).val(query[objManagerListContent[`${params.table}`].queries[i].split("=")[0]])
+                }
             }
+            if(query['keyword']){
+                $('.search').val(query['keyword'])
+            }
+            if(query['page_cut']){
+                $('.page_cut').val(query['page_cut'])
+            }
+            obj = {...obj, ...query};
             const { data: response } = await axios.post(api_str, obj);
             setPosts(response.data.data)
             setPageList(range(1, response.data.maxPage));
@@ -101,7 +115,7 @@ const MItemList = (props) => {
         let obj = {};
         obj['page'] = num;
         obj['table'] = objManagerListContent[`${params.table}`].schema;
-        obj['page_cut'] = $('.page-cut').val();
+        obj['page_cut'] = $('.page_cut').val();
         obj['keyword'] = $('.search').val();
         if (params?.pk && (params.table == 'log_star' || params.table == 'log_point' || params.table == 'log_randombox' || params.table == 'log_esgw')) {
             obj['user_pk'] = params?.pk;
@@ -119,8 +133,20 @@ const MItemList = (props) => {
             }
         }
         const { data: response } = await axios.post(apiStr, obj);
+        delete obj['table'];
+        let query = "";
+        for (var i = 0; i < Object.keys(obj).length; i++) {
+            if (i == 0) {
+                query += `?`;
+            }
+            let key = Object.keys(obj)[i];
+            if(obj[key]){
+                query += `${key}=${obj[key]}&`;
+            }
+        }
         setPosts(response.data.data)
         setPageList(range(1, response.data.maxPage));
+        window.history.pushState("", "", location.pathname+`${query}`);
         setLoading(false)
     }
     const onchangeSelectPageCut = (e) => {
@@ -313,23 +339,23 @@ const MItemList = (props) => {
                             <Input style={{ margin: '12px 0 12px 24px', border: 'none' }} className='search' placeholder='두 글자 이상 입력해주세요.' onKeyPress={(e) => { e.key == 'Enter' ? changePage(1) : console.log("") }} />
                             <AiOutlineSearch className='search-button' style={{ padding: '14px', cursor: 'pointer' }} onClick={() => changePage(1)} />
                         </SearchContainer>
-                        <Select className='page-cut' style={{ margin: '12px 24px 12px 24px' }} onChange={onchangeSelectPageCut}>
+                        <Select className='page_cut' style={{ margin: '12px 24px 12px 24px' }} onChange={onchangeSelectPageCut}>
                             <option value={10}>10개</option>
                             <option value={20}>20개</option>
                             <option value={50}>50개</option>
                             <option value={100}>100개</option>
                         </Select>
 
-                        <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }} 
-                        onClick={()=>{isExcelLoading?console.log(null):exportExcel()}}>
-                            {isExcelLoading?
-                            <>
-                            <Circles color='#fff' width={'16'} />
-                            </>
-                            :
-                            <>
-                            <SiMicrosoftexcel /> 액셀추출
-                            </>}
+                        <AddButton style={{ margin: '12px 24px 12px 24px', width: '96px', alignItems: 'center', display: 'flex', justifyContent: 'space-around' }}
+                            onClick={() => { isExcelLoading ? console.log(null) : exportExcel() }}>
+                            {isExcelLoading ?
+                                <>
+                                    <Circles color='#fff' width={'16'} />
+                                </>
+                                :
+                                <>
+                                    <SiMicrosoftexcel /> 액셀추출
+                                </>}
                         </AddButton>
 
                     </Row>

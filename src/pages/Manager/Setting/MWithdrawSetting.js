@@ -55,6 +55,8 @@ const MWithdrawSetting = () => {
                 withdraw_15: $('.withdraw_15').val(),
                 withdraw_20: $('.withdraw_20').val(),
                 withdraw_25: $('.withdraw_25').val(),
+                withdraw_30: $('.withdraw_30').val(),
+                withdraw_35: $('.withdraw_35').val(),
                 withdraw_note: $('.withdraw_note').val(),
                 withdraw_days: JSON.stringify(selectDaysList),
                 manager_note: "출금 환경설정을 수정 하였습니다."
@@ -128,6 +130,51 @@ const MWithdrawSetting = () => {
                 </Row>
                 <Row>
                     <Col>
+                        <Title style={{ width: '100%' }}>랜덤박스보유포인트 제한 출금스타</Title>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col style={{ width: '300px' }}>
+                        <Title>0 ~ 8,999 랜덤박스 포인트</Title>
+                        <Input className='withdraw_0' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_0} />
+                    </Col>
+                    <Col style={{ width: '300px' }}>
+                        <Title>9,000 ~ 29,999 랜덤박스 포인트</Title>
+                        <Input className='withdraw_5' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_5} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col style={{ width: '300px' }}>
+                        <Title>30,000 ~ 89,999 랜덤박스 포인트</Title>
+                        <Input className='withdraw_10' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_10} />
+                    </Col>
+                    <Col style={{ width: '300px' }}>
+                        <Title>90,000 ~ 149,999 랜덤박스 포인트</Title>
+                        <Input className='withdraw_15' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_15} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col style={{ width: '300px' }}>
+                        <Title>150,000 ~ 299,999 랜덤박스 포인트</Title>
+                        <Input className='withdraw_20' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_20} />
+                    </Col>
+                    <Col style={{ width: '300px' }}>
+                        <Title>300,000 ~ 899,999 랜덤박스 포인트</Title>
+                        <Input className='withdraw_25' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_25} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col style={{ width: '300px' }}>
+                        <Title>900000 ~ 1,499,999 랜덤박스 포인트</Title>
+                        <Input className='withdraw_30' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_30} />
+                    </Col>
+                    <Col style={{ width: '300px' }}>
+                        <Title>1,500,000 이상 랜덤박스 포인트</Title>
+                        <Input className='withdraw_35' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_35} />
+                    </Col>
+                </Row>
+                {/* <Row>
+                    <Col>
                         <Title>일반 출금제한 금액 (스타)</Title>
                         <Input className='withdraw_0' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_0} />
                     </Col>
@@ -153,7 +200,7 @@ const MWithdrawSetting = () => {
                         <Title>플레티넘 출금제한 금액 (스타)</Title>
                         <Input className='withdraw_25' placeholder="스타를 입력해 주세요." defaultValue={post?.withdraw_25} />
                     </Col>
-                </Row>
+                </Row> */}
                 <Row>
                     <Col>
                         <Title>관리자 글</Title>
