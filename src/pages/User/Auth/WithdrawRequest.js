@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  Row, Title, Wrappers } from "../../../components/elements/UserContentTemplete";
+import { Row, Title, Wrappers } from "../../../components/elements/UserContentTemplete";
 import axios from "axios";
 import theme from "../../../styles/theme";
 import styled from "styled-components";
@@ -22,9 +22,9 @@ cursor:pointer;
 `
 const OneCard = styled.div`
 background:#fff;
-background:${props=>props.background};
-color:${props=>props.theme.font1};
-color:${(props=>props.color)};
+background:${props => props.background};
+color:${props => props.theme.font1};
+color:${(props => props.color)};
 box-shadow:${props => props.theme.boxShadow};
 padding:2%;
 border-radius:8px;
@@ -34,7 +34,7 @@ height:320px;
 width:${(props => props.width) ?? "100"}%;
 transition-duration: 0.3s;
 &:hover{  
-    background : ${(props=>props.is_hover?(props=>props.theme.color.background1+'29'):'')};
+    background : ${(props => props.is_hover ? (props => props.theme.color.background1 + '29') : '')};
 }
 @media screen and (max-width:700px) { 
     height:420px;
@@ -43,6 +43,7 @@ transition-duration: 0.3s;
 const WithdrawRequest = () => {
     const navigate = useNavigate();
     const [post, setPost] = useState({});
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         async function fetchPost() {
             const { data: response } = await axios.get(`/api/getusermoney?type=withdrawrequest`);
@@ -67,13 +68,15 @@ const WithdrawRequest = () => {
             return;
         }
         if (window.confirm("저장 하시겠습니까?")) {
+            setLoading(true);
+
             let obj = {
                 star: parseFloat($('.send_star').val()),
                 payment_pw: $('.payment_pw').val().toString(),
             }
             const { data: response } = await axios.post('/api/requestwithdraw', obj);
             if (response?.result > 0) {
-                alert("성공적으로 저장되었습니다.");
+                alert("출금신청이 완료되었습니다.");
                 $('.send_star').val("");
                 $('.commission').val(0);
                 $('.deduction_star').val(0);
@@ -83,19 +86,21 @@ const WithdrawRequest = () => {
             } else {
                 alert(response?.message);
             }
+            setLoading(false);
         }
+
     }
-    const onChangeSendStar = (e) =>{
+    const onChangeSendStar = (e) => {
         let price = e.target.value;
-        if(isNaN(parseInt(price[price.length-1]))){
-            $('.send_star').val($('.send_star').val().substring(0,$('.send_star').val().length-1))
-        }else{
+        if (isNaN(parseInt(price[price.length - 1]))) {
+            $('.send_star').val($('.send_star').val().substring(0, $('.send_star').val().length - 1))
+        } else {
             price = parseInt(price);
-            $('.commission').val(commarNumber(price*post?.withdraw_setting?.withdraw_commission_percent/100));
-            $('.deduction_star').val(commarNumber(price+price*post?.withdraw_setting?.withdraw_commission_percent/100));
-            $('.receipt_won').val(commarNumber(price*100));
+            $('.commission').val(commarNumber(price * post?.withdraw_setting?.withdraw_commission_percent / 100));
+            $('.deduction_star').val(commarNumber(price + price * post?.withdraw_setting?.withdraw_commission_percent / 100));
+            $('.receipt_won').val(commarNumber(price * 100));
         }
-        if(!e.target.value){
+        if (!e.target.value) {
             $('.commission').val(0);
             $('.deduction_star').val(0);
             $('.receipt_won').val(0);
@@ -104,18 +109,18 @@ const WithdrawRequest = () => {
     return (
         <>
             <Wrappers>
-                <Title  not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'}  texttextIconClick={()=>{navigate('/exchange/history')}}>출금신청</Title>
+                <Title not_arrow={true} textIcon={'출금 내역'} textIconLink={'true'} texttextIconClick={() => { navigate('/exchange/history') }}>출금신청</Title>
                 <Row style={{ margin: '0 0 64px 0' }}>
-                    <OneCard width={96} style={{position:'relative'}}>
-                        {window.innerWidth>700?
-                        <>
-                        </>
-                        :
-                        <>
-                        <div>
-                            <div style={{ margin: 'auto auto 4px auto',fontSize:theme.size.font5,whiteSpace:'pre-line' }}>{post?.withdraw_setting?.withdraw_note}</div>
-                        </div>
-                        </>
+                    <OneCard width={96} style={{ position: 'relative' }}>
+                        {window.innerWidth > 700 ?
+                            <>
+                            </>
+                            :
+                            <>
+                                <div>
+                                    <div style={{ margin: 'auto auto 4px auto', fontSize: theme.size.font5, whiteSpace: 'pre-line' }}>{post?.withdraw_setting?.withdraw_note}</div>
+                                </div>
+                            </>
                         }
                         <InputContent title="스타" placeholder="신청 스타" class_name="send_star" onChange={onChangeSendStar}
                             top_contents_margin="auto auto 0 auto"
@@ -127,23 +132,29 @@ const WithdrawRequest = () => {
                             bottom_contents={[
                                 <div style={{ marginLeft: '4px', color: theme.color.red }}>* 100단위 이상으로 신청해 주세요.</div>
                             ]} />
-                        <InputContent title="출금 수수료"  class_name="commission" input_category={'STAR'} input_disabled={true} />
-                        <InputContent title="총 차감스타"  class_name="deduction_star" input_category={'STAR'} input_disabled={true} />
-                        <InputContent title="실 수령액"  class_name="receipt_won" input_category={'￦'} input_disabled={true} />
+                        <InputContent title="출금 수수료" class_name="commission" input_category={'STAR'} input_disabled={true} />
+                        <InputContent title="총 차감스타" class_name="deduction_star" input_category={'STAR'} input_disabled={true} />
+                        <InputContent title="실 수령액" class_name="receipt_won" input_category={'￦'} input_disabled={true} />
                         <InputContent title="결제비밀번호" input_type="password" class_name="payment_pw" placeholder="결제 비밀번호를 입력하세요." />
-                        {window.innerWidth>700?
-                        <>
-                        <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', left: '12px', top: '12px' }}>
-                            <div style={{ margin: 'auto auto 4px auto',fontSize:theme.size.font5,whiteSpace:'pre-line' }}>{post?.withdraw_setting?.withdraw_note}</div>
-                        </div>
-                        </>
-                        :
-                        <>
-                        </>}
-                        
+                        {window.innerWidth > 700 ?
+                            <>
+                                <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', left: '12px', top: '12px' }}>
+                                    <div style={{ margin: 'auto auto 4px auto', fontSize: theme.size.font5, whiteSpace: 'pre-line' }}>{post?.withdraw_setting?.withdraw_note}</div>
+                                </div>
+                            </>
+                            :
+                            <>
+                            </>}
+
                     </OneCard>
                 </Row>
-                <Button onClick={requestWithdraw}>출금신청하기</Button>
+                <Button onClick={ () =>{
+                    if(!loading){
+                        requestWithdraw();
+                    }
+                    }}>
+                    {loading ? 'loading...' : '출금신청하기'}
+                </Button>
             </Wrappers>
         </>
     )
