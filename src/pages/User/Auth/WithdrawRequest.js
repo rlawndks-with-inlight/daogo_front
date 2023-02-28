@@ -125,7 +125,7 @@ const WithdrawRequest = () => {
                                 <div style={{ marginRight: '4px' }}>잔액</div>
                             ]}
                             bottom_contents={[
-                                <div style={{ marginLeft: '4px', color: theme.color.red }}>* 최소 500 스타부터 신청 가능하며, 100단위 이상으로 신청해 주세요.</div>
+                                <div style={{ marginLeft: '4px', color: theme.color.red }}>* 100단위 이상으로 신청해 주세요.</div>
                             ]} />
                         <InputContent title="출금 수수료"  class_name="commission" input_category={'STAR'} input_disabled={true} />
                         <InputContent title="총 차감스타"  class_name="deduction_star" input_category={'STAR'} input_disabled={true} />
