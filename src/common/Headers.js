@@ -1,26 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
-import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/style.css'
-import { backUrl, badgeSrc, logoSrc, zSidebarMenu } from '../data/ContentData';
-import { AiOutlineBell, AiOutlineSearch, AiOutlineSetting } from 'react-icons/ai'
-import { zBottomMenu } from '../data/ContentData';
+import { badgeSrc, logoSrc, zSidebarMenu } from '../data/ContentData';
 import theme from '../styles/theme';
 import $ from 'jquery';
-import { GiHamburgerMenu, GiLaurelsTrophy } from 'react-icons/gi'
-import { CSSTransition } from "react-transition-group";
-import { zSidebar } from '../data/Manager/ManagerContentData';
 import share from '../assets/images/icon/home/share.svg';
 import hamburger from '../assets/images/icon/home/hamburger.svg';
 import axios from 'axios';
-import { Col, Row, ViewerContainer } from '../components/elements/UserContentTemplete';
-import { commarNumber, getTierByUserTier, returnMoment } from '../functions/utils';
-import defaultProfile from '../assets/images/icon/default-profile.png'
+import { Col, Row } from '../components/elements/UserContentTemplete';
+import { getTierByUserTier, returnMoment } from '../functions/utils';
 import logoutIcon from '../assets/images/icon/logout.svg'
 import { Viewer } from '@toast-ui/react-editor';
 import { IoMdClose } from 'react-icons/io'
-import { IoCloseCircleOutline, IoCloseCircleSharp } from 'react-icons/io5'
+import { IoCloseCircleOutline } from 'react-icons/io5'
 const Header = styled.header`
 position:fixed;
 height:6rem;

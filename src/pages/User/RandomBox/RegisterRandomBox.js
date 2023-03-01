@@ -86,7 +86,7 @@ const RegisterRandomBox = () => {
                         <InputContent title="스타" placeholder="등록할 스타 수량" class_name="send_star"
                             top_contents_margin="auto auto 0 auto"
                             top_contents={[
-                                <div style={{ color: theme.color.red }}>1 Point, Star 당 3 RandomBox Point</div>
+                                <div style={{ color: theme.color.red }}>1 Point, Star 당 2 RandomBox Point</div>
                             ]}
                             bottom_contents={[
                                 <div>{commarNumber(post?.star) ?? <LoadingText width={10} />}</div>,
